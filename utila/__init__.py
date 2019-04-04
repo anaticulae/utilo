@@ -30,6 +30,6 @@ from utila.logging import profile
 # Utils
 from utila.utils import forward_slash
 
-__version__ = '0.1.0'
+__version__ = '0.2.0'
 
 ROOT = os.path.abspath(os.path.join(os.path.dirname(__file__), '..'))

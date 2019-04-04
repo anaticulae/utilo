@@ -2,6 +2,13 @@
 
 Every noteable change is logged here.
 
+## v0.2.0
+
+### Feature
+
+* add url to package and sort attributes (380f1b1dc8bc)
+* saveme-wrapper to ensure correct SystemReturnValue on startup (139c2bbe6b09)
+
 ## v0.1.0
 
 ### Feature
