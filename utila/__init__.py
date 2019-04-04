@@ -28,7 +28,9 @@ from utila.logging import logging_error
 from utila.logging import print_runtime
 from utila.logging import profile
 # Utils
+from utila.utils import FAILURE
 from utila.utils import forward_slash
+from utila.utils import SUCCESS
 
 __version__ = '0.2.0'
 
