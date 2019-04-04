@@ -7,8 +7,11 @@
 # be prosecuted under federal law. Its content is company confidential.
 #==============================================================================
 from contextlib import contextmanager
+from traceback import format_exc
 
+from utila.logging import logging
 from utila.logging import logging_error
+from utila.utils import forward_slash
 
 
 @contextmanager
@@ -28,3 +31,28 @@ def handle_error(*exceptions, code=1):
     except exceptions as error:
         logging_error(error)
         exit(code)
+
+CANCELLED_BY_USER = 130
+
+def saveme(function):
+    """Protect against KeyboardInterrupt and beautify Exceptions
+
+    Args:
+        function(callable): function which is invoked savely
+    Returns:
+        function-wrapper
+    """
+
+    def wrapper():
+        try:
+            exit(function())
+        except KeyboardInterrupt:
+            logging('\nOperation cancelled by user')
+            exit(CANCELLED_BY_USER)
+        except Exception as error:
+            logging_error(error)
+            stack_trace = format_exc()
+            logging(forward_slash(stack_trace))
+        exit(1)
+
+    return wrapper

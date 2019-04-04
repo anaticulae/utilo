@@ -10,7 +10,9 @@
 import os
 
 # Public API:
+# Error
 from utila.error import handle_error
+from utila.error import saveme
 # File
 from utila.file import assert_path
 from utila.file import file_append
