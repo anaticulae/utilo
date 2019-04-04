@@ -1,0 +1,30 @@
+{
+  "folders": [
+    {
+      "name": "write it once",
+      "path": "."
+    }
+  ],
+  "settings": {
+    "files.exclude": {
+      "**/.cache": true,
+      "**/.coverage": true,
+      "**/.git": true,
+      "**/.pytest_cache": true,
+      "**/.tmp": true,
+      "**/.virtual": true,
+      "**/.vscode": true,
+      "**/build": true,
+      "**/doctrees": true,
+      "**/html": true,
+      "**/log": true,
+      "**/tmp": true,
+    },
+    "python.unitTest.nosetestsEnabled": false,
+    "python.unitTest.pyTestEnabled": true,
+    "python.unitTest.unittestEnabled": false,
+    "python.unitTest.pyTestArgs": [
+      "tests"
+    ],
+  }
+}
