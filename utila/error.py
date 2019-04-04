@@ -6,28 +6,25 @@
 # use or distribution is an offensive act against international law and may
 # be prosecuted under federal law. Its content is company confidential.
 #==============================================================================
+from contextlib import contextmanager
 
-import os
-
-# Public API:
-from utila.error import handle_error
-# File
-from utila.file import assert_path
-from utila.file import file_append
-from utila.file import file_create
-from utila.file import file_read
-from utila.file import file_remove
-from utila.file import file_replace
-from utila.file import tmp
-# Logging
-from utila.logging import flush
-from utila.logging import logging
 from utila.logging import logging_error
-from utila.logging import print_runtime
-from utila.logging import profile
-# Utils
-from utila.utils import forward_slash
 
-__version__ = '0.0.0'
 
-ROOT = os.path.abspath(os.path.join(os.path.dirname(__file__), '..'))
+@contextmanager
+def handle_error(*exceptions, code=1):
+    """Catch given `exceptions` and print there message to `stderr`. Exit
+    system with given `code`.
+
+    Args:
+        exeception(iterable): of exception, which are handle by this context
+        code(int): returned error-code
+    Raises:
+        SystemExitExecetion if given `exceptions` is raised while executing
+        contextmanager.
+    """
+    try:
+        yield
+    except exceptions as error:
+        logging_error(error)
+        exit(code)
