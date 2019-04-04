@@ -2,6 +2,12 @@
 
 Every noteable change is logged here.
 
+## v0.3.0
+
+### Feature
+
+* expose posix-errorcodes for success and failure (faac47f04464)
+
 ## v0.2.0
 
 ### Feature
