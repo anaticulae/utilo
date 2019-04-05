@@ -8,6 +8,7 @@
 #==============================================================================
 
 from contextlib import contextmanager
+from os import environ
 from os import makedirs
 from os.path import exists
 from os.path import join
@@ -18,7 +19,11 @@ from subprocess import run as _run
 import pytest
 from utila.utils import TMP
 
-skip_not_virtual = pytest.mark.skip(reason="Require virtual environment")
+VIRTUAL_ENV_KEY = 'VIRTUAL'
+
+skip_not_virtual = pytest.mark.skipif(
+    VIRTUAL_ENV_KEY not in environ, reason="Require virtual environment")
+
 
 def tempname():
     """Get random file-name with 20-ziffre, random name
