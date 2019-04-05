@@ -55,6 +55,8 @@ def create_parser(todo: list = None):
     """
     if todo is None:
         todo = []
+    if not isinstance(todo, list):
+        todo = [todo]
 
     parser = ArgumentParser(prog='baw')
 

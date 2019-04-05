@@ -13,6 +13,7 @@ from os.path import exists
 from os.path import isfile
 from os.path import join
 
+from utila.utils import NEWLINE
 from utila.utils import TMP
 from utila.utils import UTF8
 
@@ -77,5 +78,5 @@ def file_replace(path: str, content: str):
     if current_content == content:
         return
 
-    with open(path, mode='w', newline=NEWLINE,encoding=UTF8) as fp:
+    with open(path, mode='w', newline=NEWLINE, encoding=UTF8) as fp:
         fp.write(content)

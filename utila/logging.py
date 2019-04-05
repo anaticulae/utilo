@@ -37,6 +37,7 @@ def logging_error(msg: str):
     msg = forward_slash(msg)
     print('[ERROR] %s' % msg, file=stderr)
 
+
 def flush():
     """Flush stdout"""
     print('', end='', flush=True)

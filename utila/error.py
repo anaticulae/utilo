@@ -32,7 +32,9 @@ def handle_error(*exceptions, code=1):
         logging_error(error)
         exit(code)
 
+
 CANCELLED_BY_USER = 130
+
 
 def saveme(function):
     """Protect against KeyboardInterrupt and beautify Exceptions

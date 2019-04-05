@@ -11,6 +11,7 @@ from contextlib import contextmanager
 from os import environ
 from os import makedirs
 from os.path import exists
+from os.path import isdir
 from os.path import join
 from random import randrange
 from subprocess import PIPE
@@ -53,12 +54,16 @@ def tempfile(project_root):
 
 def run(command: str, cwd: str):
     """Run external process"""
+    assert exists(cwd)
+    msg = 'cwd %s is not a valid directory' % cwd
+    assert isdir(cwd), msg
     completed = _run(
         command,
         cwd=cwd,
+        errors='replace',
         shell=True,
-        stdout=PIPE,
         stderr=PIPE,
+        stdout=PIPE,
         universal_newlines=True,
     )
     return completed
