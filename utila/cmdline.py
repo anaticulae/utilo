@@ -44,6 +44,7 @@ class Command:
 
 @dataclass
 class RequiredCommand(Command):
+
     def __post_init__(self):
         self.args['required'] = True
 
