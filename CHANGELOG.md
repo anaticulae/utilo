@@ -2,6 +2,12 @@
 
 Every noteable change is logged here.
 
+## v0.4.1
+
+### Feature
+
+* add methods to simplify testing (a3a202863dd7)
+
 ## v0.4.0
 
 ### Feature
