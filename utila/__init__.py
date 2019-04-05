@@ -15,6 +15,7 @@ from utila.cmdline import Command
 from utila.cmdline import create_parser
 from utila.cmdline import parse
 from utila.cmdline import print_help
+from utila.cmdline import RequiredCommand
 # Error
 from utila.error import handle_error
 from utila.error import saveme

@@ -9,10 +9,9 @@
 
 from argparse import ArgumentParser
 from dataclasses import dataclass
+from dataclasses import field
 
 from utila.utils import FAILURE
-
-
 """
 Exampple:
     PUSH = Command('-p', '--publish', 'Push release to repository')
@@ -36,11 +35,17 @@ class Command:
     shortcut: str
     longcut: str
     message: str
-    args: dict = None
+    args: dict = field(default_factory=dict)
 
     def __iter__(self):
         for item in [self.shortcut, self.longcut, self.message, self.args]:
             yield item
+
+
+@dataclass
+class RequiredCommand(Command):
+    def __post_init__(self):
+        self.args['required'] = True
 
 
 def create_parser(todo: list = None):

@@ -8,10 +8,17 @@
 #==============================================================================
 
 from argparse import Namespace
+from os.path import join
 
 from utila import Command
 from utila import create_parser
+from utila import forward_slash
 from utila import parse
+from utila import ROOT
+from utila.file import file_create
+from utila.test import run
+from utila.test import skip_not_virtual
+from utila.utils import NEWLINE
 
 
 def test_parse_args(monkeypatch):
@@ -32,3 +39,39 @@ def test_parse_args(monkeypatch):
         assert len(args) == 2
         assert 'all' in args
         assert 'nothing' in args
+
+
+RUN_ME = """\
+#! /usr/bin/env python
+import sys
+sys.path.append("%s")
+from utila import RequiredCommand
+from utila import create_parser
+
+parser = create_parser(RequiredCommand('-a', '--all', 'I need it all'))
+parser.parse_args()
+"""
+
+
+@skip_not_virtual
+def test_parse_required_command_missing(tmpdir):
+    runner = join(tmpdir, 'run.py')
+    file_create(runner, RUN_ME % forward_slash(ROOT))
+
+    command = 'python "%s"' % runner
+    completed = run(command, tmpdir)
+
+    IN_STDERR = 'the following arguments are required'
+    assert IN_STDERR in completed.stderr
+    assert completed.returncode > 0, str(completed)
+
+
+@skip_not_virtual
+def test_parse_required_command(tmpdir):
+    runner = join(tmpdir, 'run.py')
+    file_create(runner, RUN_ME % forward_slash(ROOT))
+
+    command = 'python "%s" -a Samba' % runner
+    completed = run(command, tmpdir)
+
+    assert completed.returncode == 0, str(completed)
