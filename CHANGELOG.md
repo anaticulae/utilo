@@ -2,6 +2,16 @@
 
 Every noteable change is logged here.
 
+## v0.4.3
+
+### Feature
+
+* add RequiredCommand as new commandline-type (a5660155c231)
+
+### Fix
+
+* check cwd of existence and correctness before running cmd (87f9cf977ef2)
+
 ## v0.4.2
 
 ### Fix
