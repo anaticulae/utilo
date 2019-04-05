@@ -2,6 +2,12 @@
 
 Every noteable change is logged here.
 
+## v0.4.4
+
+### Fix
+
+* add NEWLINE to public API (580cefb39875)
+
 ## v0.4.3
 
 ### Feature
