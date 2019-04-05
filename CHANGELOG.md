@@ -2,6 +2,12 @@
 
 Every noteable change is logged here.
 
+## v0.4.0
+
+### Feature
+
+* add simple command line parser (5e673e2e8577)
+
 ## v0.3.0
 
 ### Feature
