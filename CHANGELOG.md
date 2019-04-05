@@ -2,6 +2,12 @@
 
 Every noteable change is logged here.
 
+## v0.4.2
+
+### Fix
+
+* make skip_not_virtual depends on environment var VIRTUAL (ef5555528272)
+
 ## v0.4.1
 
 ### Feature
