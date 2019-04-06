@@ -2,6 +2,12 @@
 
 Every noteable change is logged here.
 
+## v0.5.2
+
+### Fix
+
+* input is not mandatory, if not given, stdin is used (e999c42a43bc)
+
 ## v0.5.1
 
 ### Feature

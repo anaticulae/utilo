@@ -40,6 +40,6 @@ from utila.utils import forward_slash
 from utila.utils import NEWLINE
 from utila.utils import SUCCESS
 
-__version__ = '0.5.1'
+__version__ = '0.5.2'
 
 ROOT = os.path.abspath(os.path.join(os.path.dirname(__file__), '..'))
