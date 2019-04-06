@@ -2,6 +2,12 @@
 
 Every noteable change is logged here.
 
+## v0.5.3
+
+### Feature
+
+* flag `create` to create folder when appending to not existing file (f3c4d2f2b591)
+
 ## v0.5.2
 
 ### Fix
