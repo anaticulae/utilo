@@ -2,6 +2,12 @@
 
 Every noteable change is logged here.
 
+## v0.5.0
+
+### Feature
+
+* provide logging_stacktrace (e041c6a17431)
+
 ## v0.4.4
 
 ### Fix
