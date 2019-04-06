@@ -11,8 +11,8 @@ from argparse import ArgumentParser
 from dataclasses import dataclass
 from dataclasses import field
 
+from utila.logging import logging
 from utila.utils import FAILURE
-from utila.utils import logging
 from utila.utils import SUCCESS
 
 
@@ -111,14 +111,11 @@ def parse(parser: ArgumentParser):
     """Parse arguments from sys-args and return the result as dictonary."""
     args = vars(parser.parse_args())
 
-    if args['version']:
-        try:
-            logging(parser.__version)
-            exit(SUCCESS)
-        except AttributeError:
-            exit(FAILURE)
+    if 'version' in args and args['version']:
+        logging(parser.__version)
+        exit(SUCCESS)
 
-    if args['help']:
+    if 'help' in args and args['help']:
         parser.print_help()
         exit(SUCCESS)
 

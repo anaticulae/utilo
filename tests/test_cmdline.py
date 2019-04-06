@@ -75,3 +75,52 @@ def test_parse_required_command(tmpdir):
     completed = run(command, tmpdir)
 
     assert completed.returncode == 0, str(completed)
+
+
+EMPTY_PARSER = """\
+#! /usr/bin/env python
+import sys
+sys.path.append("%s")
+from utila import create_parser, parse
+parser = create_parser(%s)
+parse(parser)
+"""
+
+
+@skip_not_virtual
+def test_parse_empty_parser_help(tmpdir):
+    """Test default parser with --help"""
+    runner = join(tmpdir, 'empty.py')
+    file_create(runner, EMPTY_PARSER % (forward_slash(ROOT), ''))
+
+    command = 'python "%s" --help' % runner
+    completed = run(command, tmpdir)
+
+    assert completed.returncode == 0, str(completed)
+
+
+@skip_not_virtual
+def test_parse_empty_parser_version(tmpdir):
+    """Test default parser with --version"""
+    runner = join(tmpdir, 'empty.py')
+    file_create(runner, EMPTY_PARSER % (forward_slash(ROOT), ''))
+
+    command = 'python "%s" --version' % runner
+    completed = run(command, tmpdir)
+
+    assert completed.returncode == 2, str(completed)
+
+
+@skip_not_virtual
+def test_parse_version_parser_version(tmpdir):
+    """Test version parser with --version flag"""
+    VERSION = "1.1.1"
+    runner = join(tmpdir, 'version.py')
+
+    PARSER = EMPTY_PARSER % (forward_slash(ROOT), 'version="%s"' % VERSION)
+    file_create(runner, PARSER)
+
+    command = 'python "%s" --version' % runner
+    completed = run(command, tmpdir)
+    assert completed.stdout.strip() == VERSION
+    assert completed.returncode == 0, str(completed)
