@@ -81,7 +81,6 @@ def create_parser(
             'Read input data from path',
             args={
                 'dest': 'input',
-                'required': True
             })
         todo.insert(0, input_command)
 
@@ -92,7 +91,6 @@ def create_parser(
             'Write output to path',
             args={
                 'dest': 'output',
-                'required': False,
             })
         todo.insert(1, output_command)
 
