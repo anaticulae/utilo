@@ -14,8 +14,6 @@ from dataclasses import field
 from utila.logging import logging
 from utila.utils import FAILURE
 from utila.utils import SUCCESS
-
-
 """
 Exampple:
     PUSH = Command('-p', '--publish', 'Push release to repository')
@@ -86,10 +84,7 @@ def create_parser(
 
     if outputparameter:
         output_command = Command(
-            '-o',
-            '--ouput',
-            'Write output to path',
-            args={
+            '-o', '--ouput', 'Write output to path', args={
                 'dest': 'output',
             })
         todo.insert(1, output_command)

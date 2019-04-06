@@ -57,8 +57,6 @@ def file_append(path: str, content: str, create: bool = False):
             fp.write(content)
 
 
-
-
 def file_create(path: str, content: str = ''):
     assert not exists(path)
     with open(path, mode='w', newline=NEWLINE, encoding=UTF8) as fp:
