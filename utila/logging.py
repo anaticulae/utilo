@@ -38,9 +38,11 @@ def logging_error(msg: str):
     msg = forward_slash(msg)
     print('[ERROR] %s' % msg, file=stderr)
 
+
 def logging_stacktrace():
     stack_trace = format_exc()
     logging_error(forward_slash(stack_trace))
+
 
 def flush():
     """Flush stdout"""

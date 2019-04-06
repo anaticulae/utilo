@@ -12,6 +12,10 @@ from dataclasses import dataclass
 from dataclasses import field
 
 from utila.utils import FAILURE
+from utila.utils import logging
+from utila.utils import SUCCESS
+
+
 """
 Exampple:
     PUSH = Command('-p', '--publish', 'Push release to repository')
@@ -49,7 +53,12 @@ class RequiredCommand(Command):
         self.args['required'] = True
 
 
-def create_parser(todo: list = None):
+def create_parser(
+        todo: list = None,
+        version=None,
+        inputparameter: bool = False,
+        outputparameter: bool = False,
+):
     """Create parser out of defined dictonary with command-line-definiton.
 
     Returns created argparser
@@ -60,6 +69,32 @@ def create_parser(todo: list = None):
         todo = [todo]
 
     parser = ArgumentParser(prog='baw')
+
+    if version:
+        todo.append(Command('-v', '--version', 'Show version and exit.'))
+        parser.__version = version
+
+    if inputparameter:
+        input_command = Command(
+            '-i',
+            '--input',
+            'Read input data from path',
+            args={
+                'dest': 'input',
+                'required': True
+            })
+        todo.insert(0, input_command)
+
+    if outputparameter:
+        output_command = Command(
+            '-o',
+            '--ouput',
+            'Write output to path',
+            args={
+                'dest': 'output',
+                'required': False,
+            })
+        todo.insert(1, output_command)
 
     for shortcut, longcut, msg, args in todo:
         shortcuts = (shortcut, longcut)
@@ -75,6 +110,18 @@ def create_parser(todo: list = None):
 def parse(parser: ArgumentParser):
     """Parse arguments from sys-args and return the result as dictonary."""
     args = vars(parser.parse_args())
+
+    if args['version']:
+        try:
+            logging(parser.__version)
+            exit(SUCCESS)
+        except AttributeError:
+            exit(FAILURE)
+
+    if args['help']:
+        parser.print_help()
+        exit(SUCCESS)
+
     return args
 
 
