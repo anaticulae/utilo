@@ -2,6 +2,12 @@
 
 Every noteable change is logged here.
 
+## v0.5.1
+
+### Feature
+
+* add default input-, output-, version-flag (49e9149050c1)
+
 ## v0.5.0
 
 ### Feature
