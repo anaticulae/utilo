@@ -31,6 +31,7 @@ from utila.file import tmp
 from utila.logging import flush
 from utila.logging import logging
 from utila.logging import logging_error
+from utila.logging import logging_stacktrace
 from utila.logging import print_runtime
 from utila.logging import profile
 # Utils

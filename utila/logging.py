@@ -12,6 +12,7 @@ from os.path import join
 from sys import stderr
 from sys import stdout
 from time import time
+from traceback import format_exc
 
 from utila.utils import forward_slash
 from utila.utils import NEWLINE
@@ -37,6 +38,9 @@ def logging_error(msg: str):
     msg = forward_slash(msg)
     print('[ERROR] %s' % msg, file=stderr)
 
+def logging_stacktrace():
+    stack_trace = format_exc()
+    logging_error(forward_slash(stack_trace))
 
 def flush():
     """Flush stdout"""

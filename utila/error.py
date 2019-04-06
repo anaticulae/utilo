@@ -7,11 +7,10 @@
 # be prosecuted under federal law. Its content is company confidential.
 #==============================================================================
 from contextlib import contextmanager
-from traceback import format_exc
 
 from utila.logging import logging
 from utila.logging import logging_error
-from utila.utils import forward_slash
+from utila.logging import logging_stacktrace
 
 
 @contextmanager
@@ -53,8 +52,7 @@ def saveme(function):
             exit(CANCELLED_BY_USER)
         except Exception as error:
             logging_error(error)
-            stack_trace = format_exc()
-            logging(forward_slash(stack_trace))
+            logging_stacktrace()
         exit(1)
 
     return wrapper
