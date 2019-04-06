@@ -37,10 +37,26 @@ def assert_path(path: str):
         raise ValueError('Path does not exists: ' % path)
 
 
-def file_append(path: str, content: str):
-    assert exists(path)
-    with open(path, mode='a', newline=NEWLINE, encoding=UTF8) as fp:
-        fp.write(content)
+def file_append(path: str, content: str, create: bool = False):
+    """Append `content` to file given in `path`.
+
+    Args:
+        path(str): file to write
+        content(str): write content to file
+        create(bool): if True, create File if not exists
+
+    Hint:
+        If file not exists and create == False,  an assertion is fired.
+    """
+    if not create:
+        assert exists(path)
+    if not exists(path):
+        file_create(path, content)
+    else:
+        with open(path, mode='a', newline=NEWLINE, encoding=UTF8) as fp:
+            fp.write(content)
+
+
 
 
 def file_create(path: str, content: str = ''):
