@@ -6,19 +6,23 @@
 # use or distribution is an offensive act against international law and may
 # be prosecuted under federal law. Its content is company confidential.
 #==============================================================================
-
 from argparse import Namespace
 from os.path import join
+from os.path import split
 
+import pytest
 from utila import Command
 from utila import create_parser
+from utila import file_append
+from utila import file_create
 from utila import forward_slash
+from utila import INVALID_COMMAND
+from utila import NEWLINE
 from utila import parse
 from utila import ROOT
-from utila.file import file_create
+from utila import SUCCESS
 from utila.test import run
 from utila.test import skip_not_virtual
-from utila.utils import NEWLINE
 
 
 def test_parse_args(monkeypatch):
@@ -83,32 +87,57 @@ import sys
 sys.path.append("%s")
 from utila import create_parser, parse
 parser = create_parser(%s)
-parse(parser)
+args = parse(parser)
+"""
+
+SOURCES = """
+from utila import sources
+
+print(sources(args))
 """
 
 
+@pytest.fixture
+def parser_example(tmpdir):
+    runner = join(tmpdir, 'empty.py')
+    content = EMPTY_PARSER % (forward_slash(ROOT),
+                              'inputparameter=True, outputparameter=True')
+    file_create(runner, content)
+    cwd = split(tmpdir)[0]
+    return cwd, runner
+
+
 @skip_not_virtual
-def test_parse_empty_parser_help(tmpdir):
+def test_parse_empty_parser_help(parser_example):
     """Test default parser with --help"""
-    runner = join(tmpdir, 'empty.py')
-    file_create(runner, EMPTY_PARSER % (forward_slash(ROOT), ''))
-
+    cwd, runner = parser_example
     command = 'python "%s" --help' % runner
-    completed = run(command, tmpdir)
+    completed = run(command, cwd)
 
-    assert completed.returncode == 0, str(completed)
+    assert completed.returncode == SUCCESS, str(completed)
 
 
 @skip_not_virtual
-def test_parse_empty_parser_version(tmpdir):
+def test_parser_source_in_out(parser_example):
+    """Test default parser with --help"""
+    cwd, runner = parser_example
+
+    file_append(runner, SOURCES)
+
+    command = 'python "%s" -i %s -o out.file' % (runner, runner)
+    completed = run(command, cwd)
+
+    assert completed.returncode == SUCCESS, str(completed)
+
+
+@skip_not_virtual
+def test_parse_empty_parser_version(parser_example):
     """Test default parser with --version"""
-    runner = join(tmpdir, 'empty.py')
-    file_create(runner, EMPTY_PARSER % (forward_slash(ROOT), ''))
-
+    cwd, runner = parser_example
     command = 'python "%s" --version' % runner
-    completed = run(command, tmpdir)
+    completed = run(command, cwd)
 
-    assert completed.returncode == 2, str(completed)
+    assert completed.returncode == INVALID_COMMAND, str(completed)
 
 
 @skip_not_virtual
@@ -123,4 +152,4 @@ def test_parse_version_parser_version(tmpdir):
     command = 'python "%s" --version' % runner
     completed = run(command, tmpdir)
     assert completed.stdout.strip() == VERSION
-    assert completed.returncode == 0, str(completed)
+    assert completed.returncode == SUCCESS, str(completed)
