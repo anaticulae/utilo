@@ -10,10 +10,19 @@
 from argparse import ArgumentParser
 from dataclasses import dataclass
 from dataclasses import field
+from os import getcwd
+from os.path import abspath
+from os.path import exists
+from os.path import isabs
+from os.path import isfile
+from os.path import join
 
 from utila.logging import logging
 from utila.utils import FAILURE
 from utila.utils import SUCCESS
+
+INVALID_COMMAND = 2
+
 """
 Exampple:
     PUSH = Command('-p', '--publish', 'Push release to repository')
@@ -124,3 +133,28 @@ def print_help(parser, systemexit: bool = False):
 
     if need_help and systemexit:
         exit(FAILURE)
+
+def sources(args):
+    cwd = abspath(getcwd())
+    inputpath = args['input']
+    outputpath = args['output']
+
+    if inputpath:
+        if not isabs(inputpath):
+            # Make path absolute
+            inputpath = join(cwd, inputpath)
+        if not exists(inputpath):
+            logging_error('Input %s does not exists' % inputpath)
+            exit(INVALID_COMMAND)
+
+    if outputpath:
+        if not isabs(outputpath):
+            outputpath = join(cwd, outputpath)
+        if isfile(outputpath):
+            logging_error('Output %s must be a directory' % outputpath)
+            exit(INVALID_COMMAND)
+        if exists(outputpath):
+            logging_error('Output %s already exists' % outputpath)
+            exit(INVALID_COMMAND)
+
+    return (inputpath, outputpath)
