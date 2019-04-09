@@ -2,6 +2,12 @@
 
 Every noteable change is logged here.
 
+## v0.5.4
+
+### Feature
+
+* add parser for -i and -o to extract input and output (a1bcc4d1f7fe)
+
 ## v0.5.3
 
 ### Feature
