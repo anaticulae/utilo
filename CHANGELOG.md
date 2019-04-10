@@ -2,6 +2,12 @@
 
 Every noteable change is logged here.
 
+## v0.5.5
+
+### Feature
+
+* add constant INF (063aa907d004)
+
 ## v0.5.4
 
 ### Feature
