@@ -13,7 +13,7 @@ FAILURE = 1
 TMP = '.tmp'
 UTF8 = 'utf8'
 NEWLINE = '\n'
-
+INF = (1 << 31) - 1
 
 def forward_slash(content: str):
     """Replace every backward slash \\ with an forward slash /

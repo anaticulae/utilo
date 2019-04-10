@@ -39,6 +39,7 @@ from utila.logging import profile
 # Utils
 from utila.utils import FAILURE
 from utila.utils import forward_slash
+from utila.utils import INF
 from utila.utils import NEWLINE
 from utila.utils import SUCCESS
 
