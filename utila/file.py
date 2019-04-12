@@ -94,3 +94,25 @@ def file_replace(path: str, content: str):
 
     with open(path, mode='w', newline=NEWLINE, encoding=UTF8) as fp:
         fp.write(content)
+
+
+def from_raw_or_path(content: str, ftype: str = 'yaml'):
+    """Provide raw content from file or pass content
+
+    This method enables the interface to get content from filepath or use
+    direct raw content.
+
+    Args:
+        content(str): filepath or raw content
+        ftype(str): file type which is checked
+    Returns:
+        loaded content or raw passed content
+    """
+    assert isinstance(content, str)
+    if content.endswith('.%s' % ftype) and not exists(content):
+        raise ValueError('File does not exists: %s' % content)
+
+    # filepath must not have any linebreaks
+    if len(content.splitlines()) == 1 and isfile(content):
+        content = file_read(content)
+    return content

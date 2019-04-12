@@ -9,11 +9,14 @@
 
 from os.path import exists
 from os.path import join
-
+from pytest import fixture
 from pytest import raises
+
 from utila import assert_path
 from utila import file_append
+from utila import file_create
 from utila import file_read
+from utila import from_raw_or_path
 
 
 def test_assert_path(tmpdir):
@@ -34,3 +37,24 @@ def test_file_append_create(tmpdir):
     file_append(first, 'AAA', create=True)
     content = file_read(first)
     assert 'AAA' in content
+
+
+def test_from_path_or_raw(tmpdir):
+    content = """\
+        I am The content
+        to
+        load and write
+    """
+
+    path = join(tmpdir, 'example.yaml')
+
+    file_create(path, content)
+
+    from_path = from_raw_or_path(path)
+    from_raw = from_raw_or_path(content)
+
+    assert from_raw == content
+    assert from_path == from_raw
+
+    with raises(ValueError):
+        from_raw_or_path('/c/test.yaml')

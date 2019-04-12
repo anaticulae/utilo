@@ -22,7 +22,6 @@ from utila.utils import FAILURE
 from utila.utils import SUCCESS
 
 INVALID_COMMAND = 2
-
 """
 Exampple:
     PUSH = Command('-p', '--publish', 'Push release to repository')
@@ -133,6 +132,7 @@ def print_help(parser, systemexit: bool = False):
 
     if need_help and systemexit:
         exit(FAILURE)
+
 
 def sources(args):
     cwd = abspath(getcwd())

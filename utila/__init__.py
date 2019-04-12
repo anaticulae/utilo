@@ -11,12 +11,12 @@ import os
 
 # Public API:
 # Cmdline
-from utila.cmdline import Command
-from utila.cmdline import create_parser
 from utila.cmdline import INVALID_COMMAND
+from utila.cmdline import Command
+from utila.cmdline import RequiredCommand
+from utila.cmdline import create_parser
 from utila.cmdline import parse
 from utila.cmdline import print_help
-from utila.cmdline import RequiredCommand
 from utila.cmdline import sources
 # Error
 from utila.error import handle_error
@@ -28,6 +28,7 @@ from utila.file import file_create
 from utila.file import file_read
 from utila.file import file_remove
 from utila.file import file_replace
+from utila.file import from_raw_or_path
 from utila.file import tmp
 # Logging
 from utila.logging import flush
@@ -38,10 +39,10 @@ from utila.logging import print_runtime
 from utila.logging import profile
 # Utils
 from utila.utils import FAILURE
-from utila.utils import forward_slash
 from utila.utils import INF
 from utila.utils import NEWLINE
 from utila.utils import SUCCESS
+from utila.utils import forward_slash
 
 __version__ = '0.5.5'
 
