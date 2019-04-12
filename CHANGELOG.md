@@ -2,6 +2,12 @@
 
 Every noteable change is logged here.
 
+## v0.5.6
+
+### Feature
+
+* provide content from interface or use direct raw content (01e0bfa19b60)
+
 ## v0.5.5
 
 ### Feature
