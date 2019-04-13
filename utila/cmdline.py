@@ -18,6 +18,7 @@ from os.path import isfile
 from os.path import join
 
 from utila.logging import logging
+from utila.logging import logging_error
 from utila.utils import FAILURE
 from utila.utils import SUCCESS
 
