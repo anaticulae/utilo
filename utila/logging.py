@@ -7,15 +7,13 @@
 # be prosecuted under federal law. Its content is company confidential.
 #==============================================================================
 
+import sys
 from contextlib import contextmanager
-from os.path import join
-from sys import stderr
-from sys import stdout
 from time import time
 from traceback import format_exc
 
-from utila.utils import forward_slash
 from utila.utils import NEWLINE
+from utila.utils import forward_slash
 
 
 def logging(msg: str = '', end: str = NEWLINE):
@@ -29,14 +27,14 @@ def logging(msg: str = '', end: str = NEWLINE):
     """
     # TODO: msg = NEWLINE.join(wrap(msg, 120))
     msg = forward_slash(msg)
-    print(msg, end=end, file=stdout, flush=True)
+    print(msg, end=end, file=sys.stdout, flush=True)
 
 
 def logging_error(msg: str):
     """Print error-message to stderr and add [ERROR]-tag"""
     # use forward slashs
     msg = forward_slash(msg)
-    print('[ERROR] %s' % msg, file=stderr)
+    print('[ERROR] %s' % msg, file=sys.stderr)
 
 
 def logging_stacktrace():
@@ -46,7 +44,7 @@ def logging_stacktrace():
 
 def flush():
     """Flush stdout"""
-    print('', end='', flush=True)
+    print('', end='', file=sys.stdout, flush=True)
 
 
 def print_runtime(before: int):
