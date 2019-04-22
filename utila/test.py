@@ -25,14 +25,21 @@ VIRTUAL_ENV_KEY = 'VIRTUAL'
 skip_not_virtual = pytest.mark.skipif(
     VIRTUAL_ENV_KEY not in environ, reason="Require virtual environment")
 
+MAX_NUMBER = 20
 
-def tempname():
+
+def tempname(width: int = MAX_NUMBER) -> str:
     """Get random file-name with 20-ziffre, random name
 
+    Args:
+        width(int): length of tempname
     Returns:
         filename(str): random file name
     """
-    return str(randrange(MAX_TEST_RANDOM)).zfill(MAX_NUMBER)
+    assert width
+    max_test_number = 10**width
+
+    return str(randrange(max_test_number)).zfill(width)
 
 
 def tempfile(project_root):
