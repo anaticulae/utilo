@@ -7,29 +7,11 @@
 # be prosecuted under federal law. Its content is company confidential.
 # =============================================================================
 
-from os.path import exists
-
 from utila import FAILURE
 from utila import SUCCESS
 from utila.test import assert_run
 from utila.test import assert_run_fail
 from utila.test import run
-from utila.test import tempfile
-from utila.test import tempname
-
-
-def test_tempname():
-    name = tempname(width=15)
-    assert len(name) == 15, name
-
-    name = tempname(width=20)
-    assert len(name) == 20, name
-
-
-def test_tempfile(tmpdir):
-    random_path = tempfile(tmpdir)
-
-    assert not exists(random_path), random_path
 
 
 def test_run(tmpdir):

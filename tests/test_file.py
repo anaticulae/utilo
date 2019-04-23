@@ -9,14 +9,15 @@
 
 from os.path import exists
 from os.path import join
-from pytest import fixture
-from pytest import raises
 
+from pytest import raises
 from utila import assert_path
 from utila import file_append
 from utila import file_create
 from utila import file_read
 from utila import from_raw_or_path
+from utila import tempfile
+from utila import tempname
 
 
 def test_assert_path(tmpdir):
@@ -58,3 +59,17 @@ def test_from_path_or_raw(tmpdir):
 
     with raises(ValueError):
         from_raw_or_path('/c/test.yaml')
+
+
+def test_tempname():
+    name = tempname(width=15)
+    assert len(name) == 15, name
+
+    name = tempname(width=20)
+    assert len(name) == 20, name
+
+
+def test_tempfile(tmpdir):
+    random_path = tempfile(tmpdir)
+
+    assert not exists(random_path), random_path

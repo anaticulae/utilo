@@ -29,6 +29,8 @@ from utila.file import file_read
 from utila.file import file_remove
 from utila.file import file_replace
 from utila.file import from_raw_or_path
+from utila.file import tempfile
+from utila.file import tempname
 from utila.file import tmp
 # Logging
 from utila.logging import flush
