@@ -2,6 +2,17 @@
 
 Every noteable change is logged here.
 
+## v0.5.8
+
+### Feature
+
+* make length of tempname changeable (5e80c17ee991)
+* allow mocking sys.stdout/stderr via pytest (a3acd755ac2a)
+
+### Fix
+
+* fix invocation when file exists and fix style (eba50a3d4057)
+
 ## v0.5.7
 
 ### Fix
