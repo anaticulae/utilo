@@ -2,6 +2,12 @@
 
 Every noteable change is logged here.
 
+## v0.5.9
+
+### Feature
+
+* add date and time in ~German~ format (5db940568ec4)
+
 ## v0.5.8
 
 ### Feature
