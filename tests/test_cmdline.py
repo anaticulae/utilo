@@ -11,16 +11,17 @@ from os.path import join
 from os.path import split
 
 import pytest
+
+from utila import INVALID_COMMAND
+from utila import NEWLINE
+from utila import ROOT
+from utila import SUCCESS
 from utila import Command
 from utila import create_parser
 from utila import file_append
 from utila import file_create
 from utila import forward_slash
-from utila import INVALID_COMMAND
-from utila import NEWLINE
 from utila import parse
-from utila import ROOT
-from utila import SUCCESS
 from utila.test import run
 from utila.test import skip_not_virtual
 

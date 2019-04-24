@@ -12,14 +12,15 @@ from os import remove
 from os.path import exists
 from os.path import isfile
 from os.path import join
-
 from random import randrange
+
 from utila.utils import NEWLINE
 from utila.utils import TMP
 from utila.utils import UTF8
 
 # width of tempfile name
 MAX_NUMBER = 20
+
 
 def tmp(root):
     """Return path to temporary folder. If not exists, create folder
@@ -119,6 +120,7 @@ def from_raw_or_path(content: str, ftype: str = 'yaml'):
     if len(content.splitlines()) == 1 and isfile(content):
         content = file_read(content)
     return content
+
 
 def tempname(width: int = MAX_NUMBER) -> str:
     """Get random file-name with 20-ziffre, random name

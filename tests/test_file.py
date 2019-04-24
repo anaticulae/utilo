@@ -11,6 +11,7 @@ from os.path import exists
 from os.path import join
 
 from pytest import raises
+
 from utila import assert_path
 from utila import file_append
 from utila import file_create
