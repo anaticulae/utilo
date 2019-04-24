@@ -1,0 +1,29 @@
+# =============================================================================
+# C O P Y R I G H T
+# -----------------------------------------------------------------------------
+# Copyright (c) 2019 by Helmut Konrad Fahrendholz. All rights reserved.
+# Tis file is property of Helmut Konrad Fahrendholz. Any unauthorized copy,
+# use or distribution is an offensive act against international law and may
+# be prosecuted under federal law. Its content is company confidential.
+# =============================================================================
+
+from utila import current
+from utila import timedate
+from utila import today
+
+
+def test_today():
+    assert len(today()) == 10
+    assert today().count('.') == 2
+
+
+def test_current():
+    assert len(current()) == 5
+    assert current().count(':') == 1
+
+    assert len(current(True)) == 8
+    assert current(True).count(':') == 2
+
+
+def test_time_and_date():
+    assert ' ' in timedate()
