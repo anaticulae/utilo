@@ -43,9 +43,9 @@ Exampple:
 
 @dataclass
 class Command:
-    shortcut: str
-    longcut: str
-    message: str
+    shortcut: str = ''
+    longcut: str = ''
+    message: str = ''
     args: dict = field(default_factory=dict)
 
     def __iter__(self):
@@ -99,7 +99,7 @@ def create_parser(
         todo.insert(1, output_command)
 
     for shortcut, longcut, msg, args in todo:
-        shortcuts = (shortcut, longcut)
+        shortcuts = (shortcut, longcut) if shortcut else (longcut,)
         add = parser.add_argument
         if args:
             args['help'] = msg
