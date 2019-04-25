@@ -88,14 +88,19 @@ def create_parser(
             'Read input data from path',
             args={
                 'dest': 'input',
-            })
+            },
+        )
         todo.insert(0, input_command)
 
     if outputparameter:
         output_command = Command(
-            '-o', '--ouput', 'Write output to path', args={
+            '-o',
+            '--ouput',
+            'Write output to path',
+            args={
                 'dest': 'output',
-            })
+            },
+        )
         todo.insert(1, output_command)
 
     for shortcut, longcut, msg, args in todo:

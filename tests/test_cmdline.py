@@ -11,7 +11,6 @@ from os.path import join
 from os.path import split
 
 import pytest
-
 from utila import INVALID_COMMAND
 from utila import NEWLINE
 from utila import ROOT
@@ -37,13 +36,13 @@ def test_parse_args(monkeypatch):
     def parsevalue():
         return Namespace(all='I am All', nothing='I am Nothing')
 
-    with monkeypatch.context() as m:
-        m.setattr(parser, 'parse_args', parsevalue)
+    with monkeypatch.context() as context:
+        context.setattr(parser, 'parse_args', parsevalue)
         args = parse(parser)
 
-        assert len(args) == 2
-        assert 'all' in args
-        assert 'nothing' in args
+    assert len(args) == 2
+    assert 'all' in args
+    assert 'nothing' in args
 
 
 RUN_ME = """\
