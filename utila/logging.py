@@ -34,7 +34,7 @@ def logging_error(msg: str):
     """Print error-message to stderr and add [ERROR]-tag"""
     # use forward slashs
     msg = forward_slash(msg)
-    print('[ERROR] %s' % msg, file=sys.stderr)
+    print('[ERROR] %s' % msg, file=sys.stderr, flush=True)
 
 
 def logging_stacktrace():
