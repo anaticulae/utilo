@@ -52,6 +52,26 @@ class Command:
         for item in [self.shortcut, self.longcut, self.message, self.args]:
             yield item
 
+# TODO: Add deprecation warning to Command
+
+class Flag(Command):
+    """A Flag is only on or off.
+
+    Example:
+        --all
+    """
+    pass
+
+class Parameter(Command):
+    """A Parameter needs data as a second argument
+
+    Example:
+        --input path
+    """
+    def __post_init__(self):
+        assert self.longcut.startswith('--')
+        self.args['dest'] = self.longcut[2:]
+
 
 @dataclass
 class RequiredCommand(Command):

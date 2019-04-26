@@ -13,6 +13,8 @@ import os
 # Cmdline
 from utila.cmdline import INVALID_COMMAND
 from utila.cmdline import Command
+from utila.cmdline import Flag
+from utila.cmdline import Parameter
 from utila.cmdline import RequiredCommand
 from utila.cmdline import create_parser
 from utila.cmdline import parse
