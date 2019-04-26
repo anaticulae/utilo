@@ -56,6 +56,7 @@ class Command:
 # TODO: Add deprecation warning to Command
 
 
+@dataclass
 class Flag(Command):
     """A Flag is only on or off.
 
@@ -65,6 +66,7 @@ class Flag(Command):
     pass
 
 
+@dataclass
 class Parameter(Command):
     """A Parameter needs data as a second argument
 
