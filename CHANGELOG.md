@@ -2,6 +2,16 @@
 
 Every noteable change is logged here.
 
+## v0.5.10
+
+### Feature
+
+* support commands which contains only a longcut (6cd496a8c5a6)
+
+### Fix
+
+* correct position of output-parameter if no input-parameter is given (3f4102c02a56)
+
 ## v0.5.9
 
 ### Feature
