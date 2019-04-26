@@ -91,6 +91,8 @@ def create_parser(
         version=None,
         inputparameter: bool = False,
         outputparameter: bool = False,
+        prog: str = '',
+        description: str = '',
 ):
     """Create parser out of defined dictonary with command-line-definiton.
 
@@ -105,7 +107,7 @@ def create_parser(
     # twice.
     todo = list(todo)
 
-    parser = ArgumentParser(prog='baw')
+    parser = ArgumentParser(prog=prog, description=description)
 
     if version:
         todo.append(Command('-v', '--version', 'Show version and exit.'))
