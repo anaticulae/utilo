@@ -2,6 +2,18 @@
 
 Every noteable change is logged here.
 
+## v0.5.11
+
+### Feature
+
+* add option to add short- and long-description to cmdline (768604d499d8)
+* add Flag and Parameter to differentiate between different cmdline types (cf0389c84b6e)
+
+### Fix
+
+* initialize object correctly due adding dataclass decorator (92e8e3b73ae5)
+* do not throw exception, when output or input is not defined (99a41d083fea)
+
 ## v0.5.10
 
 ### Feature
