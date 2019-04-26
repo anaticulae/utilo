@@ -74,6 +74,11 @@ def create_parser(
         todo = []
     if not isinstance(todo, list):
         todo = [todo]
+    # Copy to avoid changing list. If create_parse(todo) is invoked twice,
+    # changing the reference is no good idea and will produce --output, --input
+    # twice.
+    todo = list(todo)
+
 
     parser = ArgumentParser(prog='baw')
 
@@ -101,7 +106,9 @@ def create_parser(
                 'dest': 'output',
             },
         )
-        todo.insert(1, output_command)
+        # set output after input, if not input, set output at the start
+        output_position = 1 if inputparameter else 0
+        todo.insert(output_position, output_command)
 
     for shortcut, longcut, msg, args in todo:
         shortcuts = (shortcut, longcut) if shortcut else (longcut,)
