@@ -52,7 +52,9 @@ class Command:
         for item in [self.shortcut, self.longcut, self.message, self.args]:
             yield item
 
+
 # TODO: Add deprecation warning to Command
+
 
 class Flag(Command):
     """A Flag is only on or off.
@@ -62,12 +64,14 @@ class Flag(Command):
     """
     pass
 
+
 class Parameter(Command):
     """A Parameter needs data as a second argument
 
     Example:
         --input path
     """
+
     def __post_init__(self):
         assert self.longcut.startswith('--')
         self.args['dest'] = self.longcut[2:]
@@ -98,7 +102,6 @@ def create_parser(
     # changing the reference is no good idea and will produce --output, --input
     # twice.
     todo = list(todo)
-
 
     parser = ArgumentParser(prog='baw')
 
@@ -169,8 +172,8 @@ def print_help(parser, systemexit: bool = False):
 
 def sources(args):
     cwd = abspath(getcwd())
-    inputpath = args['input']
-    outputpath = args['output']
+    inputpath = args.get('input')  # if key is not present, return None
+    outputpath = args.get('output')
 
     if inputpath:
         if not isabs(inputpath):
@@ -189,5 +192,4 @@ def sources(args):
         if exists(outputpath):
             logging_error('Output %s already exists' % outputpath)
             exit(INVALID_COMMAND)
-
     return (inputpath, outputpath)

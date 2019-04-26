@@ -11,6 +11,7 @@ from os.path import join
 from os.path import split
 
 import pytest
+
 from utila import INVALID_COMMAND
 from utila import NEWLINE
 from utila import ROOT
