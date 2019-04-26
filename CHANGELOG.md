@@ -2,6 +2,12 @@
 
 Every noteable change is logged here.
 
+## v0.5.12
+
+### Fix
+
+* flush immediately when printing error to avoid confusion (921e80410dd9)
+
 ## v0.5.11
 
 ### Feature
