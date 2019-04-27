@@ -53,9 +53,6 @@ class Command:
             yield item
 
 
-# TODO: Add deprecation warning to Command
-
-
 @dataclass
 class Flag(Command):
     """A Flag is only on or off.
@@ -63,7 +60,6 @@ class Flag(Command):
     Example:
         --all
     """
-    pass
 
 
 @dataclass
@@ -156,22 +152,7 @@ def parse(parser: ArgumentParser):
         logging(parser.__version)
         exit(SUCCESS)
 
-    if 'help' in args and args['help']:
-        parser.print_help()
-        exit(SUCCESS)
-
     return args
-
-
-def print_help(parser, systemexit: bool = False):
-    args = vars(parser.parse_args())
-    need_help = not any(args.values())
-
-    if need_help:
-        parser.print_help()
-
-    if need_help and systemexit:
-        exit(FAILURE)
 
 
 def sources(args):

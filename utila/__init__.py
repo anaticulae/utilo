@@ -18,7 +18,6 @@ from utila.cmdline import Parameter
 from utila.cmdline import RequiredCommand
 from utila.cmdline import create_parser
 from utila.cmdline import parse
-from utila.cmdline import print_help
 from utila.cmdline import sources
 # Time
 from utila.datetime import current
