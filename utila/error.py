@@ -51,8 +51,9 @@ def saveme(function):
         except KeyboardInterrupt:
             logging('\nOperation cancelled by user')
             exit(CANCELLED_BY_USER)
-        except Exception as error: # pylint: disable=broad-except
+        except Exception as error:  # pylint: disable=broad-except
             logging_error(error)
             logging_stacktrace()
         exit(FAILURE)
+
     return wrapper

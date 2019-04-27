@@ -21,6 +21,7 @@ VIRTUAL_ENV_KEY = 'VIRTUAL'
 skip_not_virtual = pytest.mark.skipif(
     VIRTUAL_ENV_KEY not in environ, reason="Require virtual environment")
 
+
 def run(command: str, cwd: str):
     """Run external process"""
     assert exists(cwd)

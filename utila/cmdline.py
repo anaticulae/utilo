@@ -6,6 +6,27 @@
 # use or distribution is an offensive act against international law and may
 # be prosecuted under federal law. Its content is company confidential.
 #==============================================================================
+"""
+This module provides helper methods to create a command line parser tool.
+The purpose of this module is to write less code and use less time in
+maintaining the interface.
+
+Example:
+    PUSH = Command('-p', '--publish', 'Push release to repository')
+    RELEASE = Command(
+        '-r', '--release', 'Test and tag commit as new release', {
+            'nargs': '?',
+            'const': 'auto',
+            'choices': [
+                'major',
+                'minor',
+                'patch',
+                'noop',
+                'auto',
+            ],
+        })
+    create_parser([PUSH, RELEASE])
+"""
 
 import os
 from argparse import ArgumentParser
@@ -22,32 +43,19 @@ from utila.logging import logging
 from utila.logging import logging_error
 from utila.utils import SUCCESS
 
-# Returncode when application is invoked with invalid command.
-# See posix standard.
 INVALID_COMMAND = 2
-"""
-Example:
-    PUSH = Command('-p', '--publish', 'Push release to repository')
-    RELEASE = Command(
-        '-r', '--release', 'Test and tag commit as new release', {
-            'nargs': '?',
-            'const': 'auto',
-            'choices': [
-                'major',
-                'minor',
-                'patch',
-                'noop',
-                'auto',
-            ],
-        })
-"""
+"""Returncode when application is invoked with invalid command.
+See posix standard."""
 
 
 @dataclass
 class Command:
+    """Basic class for creation further `Flag`'s or `Parameter`.
+    """
     shortcut: str = ''
     longcut: str = ''
     message: str = ''
+    """message to display when invoking --help"""
     args: dict = field(default_factory=dict)
 
     def __iter__(self):
