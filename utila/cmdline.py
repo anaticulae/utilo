@@ -7,10 +7,11 @@
 # be prosecuted under federal law. Its content is company confidential.
 #==============================================================================
 
+import os
 from argparse import ArgumentParser
 from dataclasses import dataclass
 from dataclasses import field
-from os import getcwd
+from os import makedirs
 from os.path import abspath
 from os.path import exists
 from os.path import isabs
@@ -71,8 +72,7 @@ class Parameter(Command):
     """
 
     def __post_init__(self):
-        assert self.longcut.startswith('--')
-        self.args['dest'] = self.longcut[2:]
+        self.args['dest'] = self.longcut
 
 
 @dataclass
@@ -106,34 +106,21 @@ def create_parser(
     parser = ArgumentParser(prog=prog, description=description)
 
     if version:
-        todo.append(Command('-v', '--version', 'Show version and exit.'))
+        todo.append(Flag('-v', 'version', 'Show version and exit.'))
         parser.__version = version
 
-    if inputparameter:
-        input_command = Command(
-            '-i',
-            '--input',
-            'Read input data from path',
-            args={
-                'dest': 'input',
-            },
-        )
-        todo.insert(0, input_command)
-
-    if outputparameter:
-        output_command = Command(
-            '-o',
-            '--ouput',
-            'Write output to path',
-            args={
-                'dest': 'output',
-            },
-        )
-        # set output after input, if not input, set output at the start
-        output_position = 1 if inputparameter else 0
-        todo.insert(output_position, output_command)
+    io_ports = create_io_ports(inputparameter, outputparameter)
+    if io_ports:
+        # set io ports to the top
+        todo = io_ports + todo
 
     for shortcut, longcut, msg, args in todo:
+        # support defining shortcut without -
+        if shortcut and not shortcut.startswith('-'):
+            shortcut = '-%s' % shortcut
+        # support defining longcut without --
+        if not longcut.startswith('--'):
+            longcut = '--%s' % longcut
         shortcuts = (shortcut, longcut) if shortcut else (longcut,)
         add = parser.add_argument
         if args:
@@ -144,10 +131,35 @@ def create_parser(
     return parser
 
 
+def create_io_ports(infile: bool = False, outfile: bool = False):
+    todo = []
+    if infile:
+        input_command = Command(
+            'i',
+            'input',
+            'Read input data from path',
+            args={
+                'dest': 'input',
+            },
+        )
+        todo.append(input_command)
+
+    if outfile:
+        output_command = Command(
+            'o',
+            'ouput',
+            'Write output to path',
+            args={
+                'dest': 'output',
+            },
+        )
+        todo.append(output_command)
+    return todo
+
+
 def parse(parser: ArgumentParser):
     """Parse arguments from sys-args and return the result as dictonary."""
     args = vars(parser.parse_args())
-
     if 'version' in args and args['version']:
         logging(parser.__version)
         exit(SUCCESS)
@@ -156,25 +168,29 @@ def parse(parser: ArgumentParser):
 
 
 def sources(args):
-    cwd = abspath(getcwd())
-    inputpath = args.get('input')  # if key is not present, return None
-    outputpath = args.get('output')
+    """In- and outport must be a directory"""
+    cwd = abspath(os.getcwd())
+    input_path = args.get('input')  # if key is not present, return None
+    output_path = args.get('output')
 
-    if inputpath:
-        if not isabs(inputpath):
+    if input_path:
+        if not isabs(input_path):
             # Make path absolute
-            inputpath = join(cwd, inputpath)
-        if not exists(inputpath):
-            logging_error('Input %s does not exists' % inputpath)
+            input_path = join(cwd, input_path)
+        if isfile(input_path):
+            logging_error('Input %s must be a directory' % input_path)
+            exit(INVALID_COMMAND)
+        if not exists(input_path):
+            logging_error('Input %s does not exists' % input_path)
             exit(INVALID_COMMAND)
 
-    if outputpath:
-        if not isabs(outputpath):
-            outputpath = join(cwd, outputpath)
-        if isfile(outputpath):
-            logging_error('Output %s must be a directory' % outputpath)
+    if output_path:
+        if not isabs(output_path):
+            output_path = join(cwd, output_path)
+        if isfile(output_path):
+            logging_error('Output %s must be a directory' % output_path)
             exit(INVALID_COMMAND)
-        if exists(outputpath):
-            logging_error('Output %s already exists' % outputpath)
-            exit(INVALID_COMMAND)
-    return (inputpath, outputpath)
+        if not exists(output_path):
+            logging('Creating: %s' % output_path)
+            makedirs(output_path)
+    return (input_path, output_path)
