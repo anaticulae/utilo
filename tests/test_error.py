@@ -8,12 +8,11 @@
 #==============================================================================
 
 from pytest import raises
-
 from utila import saveme
 from utila.error import CANCELLED_BY_USER
 
 
-def test_invoking_execption():
+def test_invoking_exception():
 
     @saveme
     def function_with_exception():
