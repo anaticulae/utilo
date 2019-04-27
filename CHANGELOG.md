@@ -2,6 +2,18 @@
 
 Every noteable change is logged here.
 
+## v0.5.13
+
+### Feature
+
+* use only directory's as in and output - support simpler --flags (61783fb976de)
+* add new tests and refactor old one (0010987a11c9)
+
+### Fix
+
+* remove unused code (4aee57aced0b)
+* use new Parameter instead of Command (0ea45f9d0158)
+
 ## v0.5.12
 
 ### Fix
