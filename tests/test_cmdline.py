@@ -16,7 +16,7 @@ from utila import INVALID_COMMAND
 from utila import NEWLINE
 from utila import ROOT
 from utila import SUCCESS
-from utila import Command
+from utila import Parameter
 from utila import create_parser
 from utila import file_append
 from utila import file_create
@@ -28,8 +28,8 @@ from utila.test import skip_not_virtual
 
 def test_parse_args(monkeypatch):
     todo = [
-        Command('-a', '--all', 'Do all!'),
-        Command('-n', '--nothing', 'Do nothing!'),
+        Parameter('-a', '--all', 'Do all!'),
+        Parameter('-n', '--nothing', 'Do nothing!'),
     ]
 
     parser = create_parser(todo=todo)
