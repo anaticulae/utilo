@@ -9,10 +9,8 @@
 
 from contextlib import contextmanager
 from os import environ
-from os import makedirs
 from os.path import exists
 from os.path import isdir
-from os.path import join
 from subprocess import PIPE
 from subprocess import run as _run
 
@@ -22,7 +20,6 @@ VIRTUAL_ENV_KEY = 'VIRTUAL'
 
 skip_not_virtual = pytest.mark.skipif(
     VIRTUAL_ENV_KEY not in environ, reason="Require virtual environment")
-
 
 def run(command: str, cwd: str):
     """Run external process"""

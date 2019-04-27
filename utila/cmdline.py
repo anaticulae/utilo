@@ -20,12 +20,13 @@ from os.path import join
 
 from utila.logging import logging
 from utila.logging import logging_error
-from utila.utils import FAILURE
 from utila.utils import SUCCESS
 
+# Returncode when application is invoked with invalid command.
+# See posix standard.
 INVALID_COMMAND = 2
 """
-Exampple:
+Example:
     PUSH = Command('-p', '--publish', 'Push release to repository')
     RELEASE = Command(
         '-r', '--release', 'Test and tag commit as new release', {

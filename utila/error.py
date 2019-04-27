@@ -11,6 +11,7 @@ from contextlib import contextmanager
 from utila.logging import logging
 from utila.logging import logging_error
 from utila.logging import logging_stacktrace
+from utila.utils import FAILURE
 
 
 @contextmanager
@@ -50,9 +51,8 @@ def saveme(function):
         except KeyboardInterrupt:
             logging('\nOperation cancelled by user')
             exit(CANCELLED_BY_USER)
-        except Exception as error:
+        except Exception as error: # pylint: disable=broad-except
             logging_error(error)
             logging_stacktrace()
-        exit(1)
-
+        exit(FAILURE)
     return wrapper

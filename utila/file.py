@@ -143,8 +143,8 @@ def tempfile(project_root):
         filepath(str): to tempfile in TEMP_FOLDER
     """
     assert exists(project_root)
-    tmp = join(project_root, TMP)
-    makedirs(tmp, exist_ok=True)
+    tmppath = join(project_root, TMP)
+    makedirs(tmppath, exist_ok=True)
 
     name = 'temp%s' % tempname()
     path = join(tmp, name)
