@@ -56,7 +56,7 @@ def run_command(command, monkeypatch, process, main, success=True):
     """
     with suppress(AttributeError):
         command = command.split()
-    assert isinstance(main, callable), str(main)
+    assert callable(main), str(main)
 
     with monkeypatch.context() as context:
         # proccess is removed as first arg
