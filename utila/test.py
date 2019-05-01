@@ -7,12 +7,10 @@
 # be prosecuted under federal law. Its content is company confidential.
 #==============================================================================
 
+import os
 import sys
 from contextlib import contextmanager
 from contextlib import suppress
-from os import environ
-from os.path import exists
-from os.path import isdir
 from subprocess import PIPE
 from subprocess import run as _run
 
@@ -20,7 +18,7 @@ from pytest import mark
 from pytest import raises
 
 VIRTUAL_ENV_KEY = 'VIRTUAL'
-NON_VIRTUAL = VIRTUAL_ENV_KEY not in environ
+NON_VIRTUAL = VIRTUAL_ENV_KEY not in os.environ
 
 # pylint: disable=invalid-name
 skip_nonvirtual = mark.skipif(NON_VIRTUAL, reason="Require virtual environment")
@@ -31,7 +29,7 @@ def run(command: str, cwd: str):
     """Run external process"""
     assert exists(cwd)
     msg = 'cwd %s is not a valid directory' % cwd
-    assert isdir(cwd), msg
+    assert os.path.isdir(cwd), msg
     completed = _run(
         command,
         cwd=cwd,
