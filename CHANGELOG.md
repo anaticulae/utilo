@@ -2,6 +2,16 @@
 
 Every noteable change is logged here.
 
+## v0.5.15
+
+### Feature
+
+* support run without passing cwd, use current cwd instead (d60bcc41fb4f)
+
+### Fix
+
+* add skip_nonvirtual to public api (59b63ec8d2a8)
+
 ## v0.5.14
 
 ### Feature
