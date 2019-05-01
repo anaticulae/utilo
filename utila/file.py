@@ -136,18 +136,17 @@ def tempname(width: int = MAX_NUMBER) -> str:
     return str(randrange(max_test_number)).zfill(width)
 
 
-def tempfile(project_root):
+def tempfile(root):
     """Get temporary file-path located in `TEMP_FOLDER`.
 
     Returns:
         filepath(str): to tempfile in TEMP_FOLDER
     """
-    assert exists(project_root)
-    tmppath = join(project_root, TMP)
-    makedirs(tmppath, exist_ok=True)
+    assert exists(root)
+    tmppath = tmp(root)
 
     name = 'temp%s' % tempname()
-    path = join(tmp, name)
+    path = join(tmppath, name)
     if exists(path):
-        return tempfile(project_root)
+        return tempfile(root)
     return path
