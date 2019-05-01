@@ -2,6 +2,21 @@
 
 Every noteable change is logged here.
 
+## v0.5.14
+
+### Feature
+
+* add method to run tests with pytester (ccb63ff5009b)
+* use skip_nonvirtual instead of skip_not_virtual (ffc6cc185537)
+
+### Fix
+
+* use callable to test if variable is callable (26937211d5ec)
+
+### Documentation
+
+* extend sphinx global documentation (0da5b2442f64)
+
 ## v0.5.13
 
 ### Feature
