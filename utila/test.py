@@ -25,9 +25,10 @@ skip_nonvirtual = mark.skipif(NON_VIRTUAL, reason="Require virtual environment")
 skip_not_virtual = skip_nonvirtual
 
 
-def run(command: str, cwd: str):
+def run(command: str, cwd: str = None):
     """Run external process"""
-    assert exists(cwd)
+    cwd = cwd if cwd else os.getcwd()
+    assert os.path.exists(cwd)
     msg = 'cwd %s is not a valid directory' % cwd
     assert os.path.isdir(cwd), msg
     completed = _run(
