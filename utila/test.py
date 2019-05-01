@@ -17,9 +17,11 @@ from subprocess import run as _run
 import pytest
 
 VIRTUAL_ENV_KEY = 'VIRTUAL'
+NON_VIRTUAL = VIRTUAL_ENV_KEY not in environ
 
-skip_not_virtual = pytest.mark.skipif(
-    VIRTUAL_ENV_KEY not in environ, reason="Require virtual environment")
+# pylint: disable=invalid-name
+skip_nonvirtual = mark.skipif(NON_VIRTUAL, reason="Require virtual environment")
+skip_not_virtual = skip_nonvirtual
 
 
 def run(command: str, cwd: str):
