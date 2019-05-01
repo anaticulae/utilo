@@ -235,6 +235,5 @@ def create_and_run_parser(tmpdir, monkeypatch, argv):
         context.setattr(sys, 'argv', argv)
         context.setattr(os, 'getcwd', getcwd)
         parsed = parse(parser)
-        print(parsed)
         inpath, outpath = sources(parsed)
     return inpath, outpath
