@@ -44,6 +44,11 @@ from utila.logging import logging_error
 from utila.logging import logging_stacktrace
 from utila.logging import print_runtime
 from utila.logging import profile
+# Tests
+from utila.test import assert_run
+from utila.test import assert_run_fail
+from utila.test import run
+from utila.test import run_command
 # Utils
 from utila.utils import FAILURE
 from utila.utils import INF

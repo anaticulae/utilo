@@ -7,14 +7,17 @@
 # be prosecuted under federal law. Its content is company confidential.
 #==============================================================================
 
+import sys
 from contextlib import contextmanager
+from contextlib import suppress
 from os import environ
 from os.path import exists
 from os.path import isdir
 from subprocess import PIPE
 from subprocess import run as _run
 
-import pytest
+from pytest import mark
+from pytest import raises
 
 VIRTUAL_ENV_KEY = 'VIRTUAL'
 NON_VIRTUAL = VIRTUAL_ENV_KEY not in environ
@@ -39,6 +42,33 @@ def run(command: str, cwd: str):
         universal_newlines=True,
     )
     return completed
+
+
+def run_command(command, monkeypatch, process, main, success=True):
+    """Run `main` with `command`
+
+    Args:
+        command([str] or str): command to run
+        monkeypatch: pytest patch feature
+        process(str): name of executed tool
+        main(callable): method to run
+        success(bool): expectation that process succed or failes
+    """
+    with suppress(AttributeError):
+        command = command.split()
+    assert isinstance(main, callable), str(main)
+
+    with monkeypatch.context() as context:
+        # proccess is removed as first arg
+        context.setattr(sys, 'argv', [process] + command)
+        with raises(SystemExit) as result:
+            main()
+        result = str(result)
+
+    if success:
+        assert 'SystemExit: 0' in result, result
+    else:
+        assert 'SystemExit: 1' in result, result
 
 
 @contextmanager
