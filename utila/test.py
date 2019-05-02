@@ -64,10 +64,7 @@ def run_command(command, monkeypatch, process, main, success=True):
             main()
         result = str(result)
 
-    if success:
-        assert 'SystemExit: 0' in result, result
-    else:
-        assert 'SystemExit: 1' in result, result
+    assert ('SystemExit: 0' in result) == success
 
 
 @contextmanager
