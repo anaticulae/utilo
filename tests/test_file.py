@@ -12,17 +12,12 @@ from os.path import join
 
 from pytest import raises
 
-from utila import assert_path
 from utila import file_append
 from utila import file_create
 from utila import file_read
 from utila import from_raw_or_path
 from utila import tempfile
 from utila import tempname
-
-
-def test_assert_path(tmpdir):
-    assert_path(tmpdir)
 
 
 def test_file_append_assert(tmpdir):

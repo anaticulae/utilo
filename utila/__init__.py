@@ -27,7 +27,6 @@ from utila.datetime import today
 from utila.error import handle_error
 from utila.error import saveme
 # File
-from utila.file import assert_path
 from utila.file import file_append
 from utila.file import file_create
 from utila.file import file_read

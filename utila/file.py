@@ -36,11 +36,6 @@ def tmp(root):
     return path
 
 
-def assert_path(path: str):
-    if not exists(path):
-        raise ValueError('Path does not exists: ' % path)
-
-
 def file_append(path: str, content: str, create: bool = False):
     """Append `content` to file given in `path`.
 
