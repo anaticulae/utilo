@@ -32,12 +32,6 @@ import os
 from argparse import ArgumentParser
 from dataclasses import dataclass
 from dataclasses import field
-from os import makedirs
-from os.path import abspath
-from os.path import exists
-from os.path import isabs
-from os.path import isfile
-from os.path import join
 
 from utila.logging import logging
 from utila.logging import logging_error
@@ -81,6 +75,7 @@ class Parameter(Command):
     """
 
     def __post_init__(self):
+        #pylint:disable=unsupported-assignment-operation
         self.args['dest'] = self.longcut
 
 
@@ -88,6 +83,7 @@ class Parameter(Command):
 class RequiredCommand(Command):
 
     def __post_init__(self):
+        #pylint:disable=unsupported-assignment-operation
         self.args['required'] = True
 
 
@@ -178,28 +174,28 @@ def parse(parser: ArgumentParser):
 
 def sources(args):
     """In- and outport must be a directory"""
-    cwd = abspath(os.getcwd())
+    cwd = os.path.abspath(os.getcwd())
     input_path = args.get('input')  # if key is not present, return None
     output_path = args.get('output')
 
     if input_path:
-        if not isabs(input_path):
+        if not os.path.isabs(input_path):
             # Make path absolute
-            input_path = join(cwd, input_path)
-        if isfile(input_path):
+            input_path = os.path.join(cwd, input_path)
+        if os.path.isfile(input_path):
             logging_error('Input %s must be a directory' % input_path)
             exit(INVALID_COMMAND)
-        if not exists(input_path):
+        if not os.path.exists(input_path):
             logging_error('Input %s does not exists' % input_path)
             exit(INVALID_COMMAND)
 
     if output_path:
-        if not isabs(output_path):
-            output_path = join(cwd, output_path)
-        if isfile(output_path):
+        if not os.path.isabs(output_path):
+            output_path = os.path.join(cwd, output_path)
+        if os.path.isfile(output_path):
             logging_error('Output %s must be a directory' % output_path)
             exit(INVALID_COMMAND)
-        if not exists(output_path):
+        if not os.path.exists(output_path):
             logging('Creating: %s' % output_path)
-            makedirs(output_path)
+            os.makedirs(output_path)
     return (input_path, output_path)

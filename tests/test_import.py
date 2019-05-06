@@ -7,6 +7,9 @@
 # be prosecuted under federal law. Its content is company confidential.
 #==============================================================================
 
+# pylint:disable=wildcard-import, unused-wildcard-import
+from utila import *
+
 
 def test_import():
-    import utila
+    pass

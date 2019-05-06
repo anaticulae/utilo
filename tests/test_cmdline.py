@@ -173,7 +173,7 @@ def parser_example(tmpdir):
 
 
 @skip_not_virtual
-def test_parse_empty_parser_help(parser_example):
+def test_parse_empty_parser_help(parser_example):  # pylint: disable=W0621
     """Test default parser with --help"""
     cwd, runner = parser_example
     command = 'python "%s" --help' % runner
@@ -183,7 +183,7 @@ def test_parse_empty_parser_help(parser_example):
 
 
 @skip_not_virtual
-def test_parser_source_in_out(parser_example):
+def test_parser_source_in_out(parser_example):  # pylint: disable=W0621
     """Test default parser with --help"""
     cwd, runner = parser_example
     file_append(runner, SOURCES)
@@ -195,7 +195,7 @@ def test_parser_source_in_out(parser_example):
 
 
 @skip_not_virtual
-def test_parse_empty_parser_version(parser_example):
+def test_parse_empty_parser_version(parser_example):  # pylint: disable=W0621
     """Test default parser with --version"""
     cwd, runner = parser_example
     command = 'python "%s" --version' % runner
