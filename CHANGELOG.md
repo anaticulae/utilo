@@ -2,6 +2,18 @@
 
 Every noteable change is logged here.
 
+## v0.6.0
+
+### Feature
+
+* add method to copy the content of a folder (35523e200ea1)
+* add verbose flag to default parser - supports verbose level (375355821592)
+* redirect creating temp file to separated folder. (9c822581a709)
+
+### Fix
+
+* exit codes higher than one fail too (a17fa580f69c)
+
 ## v0.5.15
 
 ### Feature
