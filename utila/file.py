@@ -7,11 +7,13 @@
 # be prosecuted under federal law. Its content is company confidential.
 #==============================================================================
 
+import os
 from os import makedirs
 from os import remove
 from os.path import exists
 from os.path import isfile
 from os.path import join
+from os.path import split
 from random import randrange
 
 from utila.utils import NEWLINE
@@ -20,10 +22,15 @@ from utila.utils import UTF8
 
 # width of tempfile name
 MAX_NUMBER = 20
+SHARED_TEMP = 'SHARED_TMP'
 
 
 def tmp(root):
     """Return path to temporary folder. If not exists, create folder
+
+    To redirect the tempbase, define `KIWI_TEMPBASE` as a global envionment
+    variable. The temp folder is created in this folder under the name of the
+    given project, defined in `root` variable.
 
     Args:
         root(str): project root
@@ -31,7 +38,15 @@ def tmp(root):
         path to temporary folder
     """
     assert root
-    path = join(root, TMP)
+
+    try:
+        # redirect temp folder to central folder, defined in `SHARED_TEMP`.
+        # we need control about temp folder. Temp folder must not exist in
+        # site-packages, so `SHARED_TEMP` is required.
+        _, projectname = split(root)
+        path = join(os.environ[SHARED_TEMP], projectname)
+    except KeyError:
+        path = join(root, TMP)
     makedirs(path, exist_ok=True)
     return path
 

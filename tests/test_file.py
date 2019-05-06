@@ -7,17 +7,21 @@
 # be prosecuted under federal law. Its content is company confidential.
 #==============================================================================
 
+import os
 from os.path import exists
 from os.path import join
 
 from pytest import raises
 
+from utila import ROOT
 from utila import file_append
 from utila import file_create
 from utila import file_read
 from utila import from_raw_or_path
 from utila import tempfile
 from utila import tempname
+from utila import tmp
+from utila.file import SHARED_TEMP
 
 
 def test_file_append_assert(tmpdir):
@@ -67,5 +71,15 @@ def test_tempname():
 
 def test_tempfile(tmpdir):
     random_path = tempfile(tmpdir)
-
     assert not exists(random_path), random_path
+
+
+def test_temp_redirect(testdir, monkeypatch):
+    """Redirect tmp-path with KIWI_TEMPBASE environ variable"""
+    with monkeypatch.context() as context:
+        context.setattr(os, 'environ', {SHARED_TEMP: str(testdir)})
+        temp = tmp(ROOT)
+        assert exists(temp), temp
+
+    without_redirect = tmp(ROOT)
+    assert without_redirect.endswith('.tmp'), without_redirect
