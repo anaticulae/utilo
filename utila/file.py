@@ -8,6 +8,7 @@
 #==============================================================================
 
 import os
+from os import listdir
 from os import makedirs
 from os import remove
 from os.path import exists
@@ -15,6 +16,7 @@ from os.path import isfile
 from os.path import join
 from os.path import split
 from random import randrange
+from shutil import copy
 
 from utila.utils import NEWLINE
 from utila.utils import TMP
@@ -108,6 +110,16 @@ def file_replace(path: str, content: str):
 
     with open(path, mode='w', newline=NEWLINE, encoding=UTF8) as fp:
         fp.write(content)
+
+
+def copy_content(source, destination, recursive: bool = False):
+    """Copy the content from `source` to `destination` folder. If `desitination`
+    folder does not exists, it will created."""
+    # TODO: add recursive flag
+    assert exists(source)
+    makedirs(destination, exist_ok=True)
+    for item in listdir(source):
+        copy(join(source, item), join(destination, item))
 
 
 def from_raw_or_path(content: str, ftype: str = 'yaml'):
