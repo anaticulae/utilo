@@ -87,6 +87,18 @@ class RequiredCommand(Command):
         self.args['required'] = True
 
 
+VERBOSE = 'verbose'
+
+COMMANDS = [
+    Flag(
+        args={'action': 'count'},
+        longcut=VERBOSE,
+        message='define how verbose logging is',
+        shortcut='V',
+    ),
+]
+
+
 def create_parser(
         todo: list = None,
         version=None,
@@ -103,10 +115,11 @@ def create_parser(
         todo = []
     if not isinstance(todo, list):
         todo = [todo]
-    # Copy to avoid changing list. If create_parse(todo) is invoked twice,
-    # changing the reference is no good idea and will produce --output, --input
-    # twice.
+    # Copy to avoid changing the source list. If create_parse(todo) is invoked
+    # twice, changing the reference is no good idea and will produce --output,
+    # --input twice.
     todo = list(todo)
+    todo.extend(COMMANDS)
 
     parser = ArgumentParser(prog=prog, description=description)
 
@@ -172,8 +185,13 @@ def parse(parser: ArgumentParser):
     return args
 
 
-def sources(args):
-    """In- and outport must be a directory"""
+def sources(args, verbose: bool = False):
+    """In- and outport must be a directory
+
+    Args:
+        args
+        verbose(bool): if True, evaluate the verbose level
+    """
     cwd = os.path.abspath(os.getcwd())
     input_path = args.get('input')  # if key is not present, return None
     output_path = args.get('output')
@@ -198,4 +216,8 @@ def sources(args):
         if not os.path.exists(output_path):
             logging('Creating: %s' % output_path)
             os.makedirs(output_path)
+
+    if verbose:
+        verb = int(args[VERBOSE]) if args[VERBOSE] else 0
+        return (input_path, output_path, verb)
     return (input_path, output_path)

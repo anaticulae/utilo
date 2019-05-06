@@ -45,7 +45,7 @@ def test_parse_args(monkeypatch):
         parser.print_help()
         args = parse(parser)
 
-    assert len(args) == len(todo)
+    assert len(args) == len(todo) + 1  # for verbose level --verbose
     assert '--all' in args
     assert '--nothing' in args
 
