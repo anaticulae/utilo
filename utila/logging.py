@@ -13,6 +13,7 @@ from time import time
 from traceback import format_exc
 
 from utila.utils import NEWLINE
+from utila.utils import fix_encoding
 from utila.utils import forward_slash
 
 
@@ -25,6 +26,8 @@ def logging(msg: str = '', end: str = NEWLINE):
     Hint:
         Logging with default arguments will log a newline
     """
+    # avoid problems when using with windows console(cp1252)
+    msg = fix_encoding(msg)
     # TODO: msg = NEWLINE.join(wrap(msg, 120))
     msg = forward_slash(msg)
     print(msg, end=end, file=sys.stdout, flush=True)
@@ -32,6 +35,8 @@ def logging(msg: str = '', end: str = NEWLINE):
 
 def logging_error(msg: str):
     """Print error-message to stderr and add [ERROR]-tag"""
+    # avoid problems when using with windows console(cp1252)
+    msg = fix_encoding(msg)
     # use forward slashs
     msg = forward_slash(msg)
     print('[ERROR] %s' % msg, file=sys.stderr, flush=True)
