@@ -17,6 +17,8 @@ from subprocess import run as _run
 from pytest import mark
 from pytest import raises
 
+from utila import SUCCESS
+
 VIRTUAL_ENV_KEY = 'VIRTUAL'
 NON_VIRTUAL = VIRTUAL_ENV_KEY not in os.environ
 
@@ -81,3 +83,14 @@ def assert_run_fail(command: str, cwd: str):
     msg = '%s\n%s' % (completed.stderr, completed.stdout)
     assert completed.returncode, msg
     yield completed
+
+
+def install_and_run(root, package, executable=None):
+    """Install and run --help to ensure basic function"""
+    executable = executable if executable else package
+    uninstall = 'pip uninstall %s -y' % package
+    install = 'python setup.py install && %s --help' % executable
+
+    clean_and_run = uninstall + ' && ' + install
+    completed = run(clean_and_run, cwd=root)
+    assert completed.returncode == SUCCESS, completed.stdout + completed.stderr
