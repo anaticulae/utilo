@@ -45,15 +45,21 @@ def run(command: str, cwd: str = None):
     return completed
 
 
-def run_command(command, monkeypatch, process, main, success=True):
+def run_command(
+        command,
+        process: str,
+        main: callable,
+        success: bool,
+        monkeypatch,
+):
     """Run `main` with `command`
 
     Args:
         command([str] or str): command to run
-        monkeypatch: pytest patch feature
         process(str): name of executed tool
         main(callable): method to run
         success(bool): expectation that process succed or failes
+        monkeypatch: pytest patch feature
     """
     with suppress(AttributeError):
         command = command.split()
