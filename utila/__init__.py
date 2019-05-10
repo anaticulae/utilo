@@ -24,6 +24,7 @@ from utila.datetime import current
 from utila.datetime import timedate
 from utila.datetime import today
 # Error
+from utila.error import CANCELLED_BY_USER
 from utila.error import handle_error
 from utila.error import saveme
 # File
