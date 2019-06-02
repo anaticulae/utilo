@@ -36,7 +36,7 @@ def handle_error(*exceptions, code=1):
 CANCELLED_BY_USER = 130
 
 
-def saveme(systemexit=True):
+def saveme(func=None, *, systemexit=True):
     """Protect against KeyboardInterrupt and beautify Exceptions
 
     Args:
@@ -45,6 +45,7 @@ def saveme(systemexit=True):
     Returns:
         function-wrapper
     """
+
     def decorating_function(user_function):
 
         def wrapper(*args, **kwds):
@@ -64,4 +65,7 @@ def saveme(systemexit=True):
 
         return wrapper
 
-    return decorating_function
+    # support @decorator() and @decorator
+    if func is None:
+        return decorating_function
+    return decorating_function(func)
