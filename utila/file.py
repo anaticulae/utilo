@@ -170,5 +170,6 @@ def tempfile(root):
     name = 'temp%s' % tempname()
     path = join(tmppath, name)
     if exists(path):
+        # try again to find unused temp file
         return tempfile(root)
     return path
