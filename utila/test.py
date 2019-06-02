@@ -17,7 +17,7 @@ from subprocess import run as _run
 from pytest import mark
 from pytest import raises
 
-from utila import SUCCESS
+from utila.utils import SUCCESS
 
 VIRTUAL_ENV_KEY = 'VIRTUAL'
 NON_VIRTUAL = VIRTUAL_ENV_KEY not in os.environ
