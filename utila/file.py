@@ -27,7 +27,7 @@ MAX_NUMBER = 20
 SHARED_TEMP = 'SHARED_TMP'
 
 
-def tmp(root):
+def tmp(root) -> str:
     """Return path to temporary folder. If not exists, create folder
 
     To redirect the tempbase, define `KIWI_TEMPBASE` as a global envionment

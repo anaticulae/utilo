@@ -9,6 +9,7 @@
 
 from pytest import raises
 
+from utila import FAILURE
 from utila import saveme
 from utila.error import CANCELLED_BY_USER
 
@@ -22,7 +23,7 @@ def test_invoking_exception():
     with raises(SystemExit) as exception:
         function_with_exception()
 
-    assert exception.value.code == 1
+    assert exception.value.code == FAILURE
 
 
 def test_canceling_by_user():

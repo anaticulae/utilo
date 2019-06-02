@@ -79,7 +79,7 @@ def run_command(
 def assert_run(command: str, cwd: str):
     completed = run(command, cwd)
     msg = '%s\n%s' % (completed.stderr, completed.stdout)
-    assert completed.returncode == 0, msg
+    assert completed.returncode == SUCCESS, msg
     yield completed
 
 
