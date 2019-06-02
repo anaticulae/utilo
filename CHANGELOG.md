@@ -2,6 +2,22 @@
 
 Every noteable change is logged here.
 
+## v0.6.1
+
+### Feature
+
+* support @saveme decorator without braces (84fd67f6c181)
+* extend public API with error code CANCELLED_BY_USER (b3a47c6074db)
+* add option to use return value of saveme - or exit instantly (9d24731fce7a)
+* add test pattern to un/install and run package to verify setup process (eb5affdfcbcb)
+
+### Fix
+
+* add missing invocation of decorator() (0a501ca18574)
+* add separate test for testing without SHARED_TEMP environment var (02303cab6002)
+* use direct import instead of public API (d947abf49933)
+* avoid conversion problem when logging to windows console (44d54407594b)
+
 ## v0.6.0
 
 ### Feature
