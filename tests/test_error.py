@@ -40,10 +40,29 @@ def test_canceling_by_user():
 
 def test_invoking_empty():
 
-    @saveme
+    @saveme()
     def function():
         return 2
 
     with raises(SystemExit) as exception:
         function()
     assert exception.value.code == 2
+
+
+def test_invoking_exception_without_system_exit():
+
+    @saveme(systemexit=False)
+    def function_with_exception():
+        raise Exception()
+
+    returncode = function_with_exception()
+
+    assert returncode == FAILURE
+
+    @saveme(systemexit=False)
+    def no_exception():
+        return 'Hallo'
+
+    returncode = no_exception()
+
+    assert returncode == 'Hallo'
