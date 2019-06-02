@@ -16,7 +16,7 @@ from utila.error import CANCELLED_BY_USER
 
 def test_invoking_exception():
 
-    @saveme
+    @saveme()
     def function_with_exception():
         raise Exception()
 
@@ -28,7 +28,7 @@ def test_invoking_exception():
 
 def test_canceling_by_user():
 
-    @saveme
+    @saveme()
     def keyboard_interrupt():
         raise KeyboardInterrupt
 
