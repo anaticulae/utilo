@@ -16,7 +16,20 @@ from utila.error import CANCELLED_BY_USER
 
 def test_invoking_exception():
 
-    @saveme()
+    @saveme
+    def function_with_exception():
+        raise Exception()
+
+    with raises(SystemExit) as exception:
+        function_with_exception()
+
+    assert exception.value.code == FAILURE
+
+
+def test_invoking_exception_with_argument():
+    """Check passing decorator argument"""
+
+    @saveme(systemexit=True)
     def function_with_exception():
         raise Exception()
 
@@ -28,7 +41,7 @@ def test_invoking_exception():
 
 def test_canceling_by_user():
 
-    @saveme()
+    @saveme
     def keyboard_interrupt():
         raise KeyboardInterrupt
 
@@ -40,7 +53,7 @@ def test_canceling_by_user():
 
 def test_invoking_empty():
 
-    @saveme()
+    @saveme
     def function():
         return 2
 
