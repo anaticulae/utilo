@@ -81,5 +81,11 @@ def test_temp_redirect(testdir, monkeypatch):
         temp = tmp(ROOT)
         assert exists(temp), temp
 
-    without_redirect = tmp(ROOT)
-    assert without_redirect.endswith('.tmp'), without_redirect
+
+def test_temp_without_shared_temp(testdir, monkeypatch):
+    """Do not redirect SHARED_TEMP"""
+    with monkeypatch.context() as context:
+        # unset SHARED_TEMP
+        context.setattr(os, 'environ', {})
+        without_redirect = tmp(ROOT)
+        assert without_redirect.endswith('.tmp'), without_redirect
