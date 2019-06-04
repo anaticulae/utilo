@@ -22,6 +22,8 @@ from utila import create_step
 from utila import featurepack
 from utila import file_create
 
+#pylint:disable=W0621,W0613
+
 
 def worker(one_input: str) -> Tuple[str, str]:
     return {'first': '', 'second': ''}
@@ -145,12 +147,11 @@ def test_featurepack_with_broken_worker(featureexample, monkeypatch, worker):
 
 def test_featurepack(featureexample, monkeypatch):
     root, path = featureexample
-    executed = None
     with monkeypatch.context() as context:
         context.setattr(sys, 'argv', [PROCESS_NAME, '-i', root, '-o', root])
         context.syspath_prepend(root)
         with raises(SystemExit) as result:
-            executed = pack(workplan(worker), path)
+            pack(workplan(worker), path)
         assert returncode(result) == SUCCESS
 
 
