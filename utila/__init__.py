@@ -27,6 +27,9 @@ from utila.datetime import today
 from utila.error import CANCELLED_BY_USER
 from utila.error import handle_error
 from utila.error import saveme
+# Feature
+from utila.feature import create_step
+from utila.feature import featurepack
 # File
 from utila.file import copy_content
 from utila.file import file_append
