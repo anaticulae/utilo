@@ -62,7 +62,7 @@ def file_append(path: str, content: str, create: bool = False):
         create(bool): if True, create File if not exists
 
     Hint:
-        If file not exists and create == False,  an assertion is fired.
+        If file not exists and create == False, an assertion is fired.
     """
     if not create:
         assert exists(path)
@@ -74,7 +74,17 @@ def file_append(path: str, content: str, create: bool = False):
 
 
 def file_create(path: str, content: str = ''):
-    assert not exists(path)
+    """Create file `path` with the content `content`
+
+    Args:
+        path(str): path to write file, path must not exists
+        content(str): content to write in given `path`
+
+    Hint:
+        If file exists, an assertion is raised.
+    """
+
+    assert not exists(path), 'File already exists: %s' % path
     with open(path, mode='w', newline=NEWLINE, encoding=UTF8) as fp:
         fp.write(content)
 
