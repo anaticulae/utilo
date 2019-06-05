@@ -144,7 +144,7 @@ def from_raw_or_path(content: str, ftype: str = 'yaml'):
     Returns:
         loaded content or raw passed content
     """
-    assert isinstance(content, str)
+    assert isinstance(content, str), 'Require `str` %s' % type(content)
     if content.endswith('.%s' % ftype) and not exists(content):
         raise ValueError('File does not exists: %s' % content)
 
