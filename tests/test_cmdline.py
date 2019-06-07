@@ -12,6 +12,7 @@ import sys
 from pytest import fixture
 from pytest import raises
 
+from tests import returncode
 from utila import INVALID_COMMAND
 from utila import ROOT
 from utila import SUCCESS

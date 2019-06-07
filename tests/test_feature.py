@@ -16,6 +16,7 @@ from pytest import fixture
 from pytest import mark
 from pytest import raises
 
+from tests import returncode
 from utila import FAILURE
 from utila import SUCCESS
 from utila import create_step
@@ -153,7 +154,3 @@ def test_featurepack(featureexample, monkeypatch):
         with raises(SystemExit) as result:
             pack(workplan(worker), path)
         assert returncode(result) == SUCCESS
-
-
-def returncode(exeception):
-    return int(str(exeception.value))
