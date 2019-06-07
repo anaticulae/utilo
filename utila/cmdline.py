@@ -185,12 +185,19 @@ def parse(parser: ArgumentParser):
     return args
 
 
-def sources(args, verbose: bool = False):
-    """In- and outport must be a directory
+def sources(args, *, singleinput: bool = False, verbose: bool = False):
+    """Parse the in- and outport from given command line args
+
+    The input- and output-path must be a directory. If singleinput flag is
+    activated, a file is addtionaly allowed as input.
 
     Args:
-        args
+        args(str): arguments, passed by command line
+        singleinput(bool): allow a single file instead of a directory as
+                           input
         verbose(bool): if True, evaluate the verbose level
+    Returns:
+        (input, output): path(str) to in-/ and output-location
     """
     cwd = os.path.abspath(os.getcwd())
     input_path = args.get('input')  # if key is not present, return None
@@ -200,9 +207,10 @@ def sources(args, verbose: bool = False):
         if not os.path.isabs(input_path):
             # Make path absolute
             input_path = os.path.join(cwd, input_path)
-        if os.path.isfile(input_path):
-            logging_error('Input %s must be a directory' % input_path)
-            exit(INVALID_COMMAND)
+        if not singleinput:
+            if os.path.isfile(input_path):
+                logging_error('Input %s must be a directory' % input_path)
+                exit(INVALID_COMMAND)
         if not os.path.exists(input_path):
             logging_error('Input %s does not exists' % input_path)
             exit(INVALID_COMMAND)
