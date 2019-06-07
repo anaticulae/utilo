@@ -2,6 +2,15 @@
 
 Every noteable change is logged here.
 
+## v0.6.2
+
+### Feature
+
+* support single file input as input for cmdline interface (e87cf5616d33)
+* add hint to asserted type when loading from wrong datatype (4c366d24f325)
+* add hint which file already exists (786a04be40ad)
+* add featurepack to public API (44741219646c)
+
 ## v0.6.1
 
 ### Feature

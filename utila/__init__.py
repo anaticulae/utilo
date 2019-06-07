@@ -63,6 +63,6 @@ from utila.utils import SUCCESS
 from utila.utils import fix_encoding
 from utila.utils import forward_slash
 
-__version__ = '0.6.1'
+__version__ = '0.6.2'
 
 ROOT = os.path.abspath(os.path.join(os.path.dirname(__file__), '..'))
