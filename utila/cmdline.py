@@ -44,8 +44,7 @@ See posix standard."""
 
 @dataclass
 class Command:
-    """Basic class for creation further `Flag`'s or `Parameter`.
-    """
+    """Basic class for creation further `Flag`'s or `Parameter`."""
     shortcut: str = ''
     longcut: str = ''
     message: str = ''

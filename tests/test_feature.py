@@ -48,10 +48,9 @@ def worker_with_wrong_input() -> Tuple[str, str]:
 
 def workplan(worker):
 
-    # pylint:disable=invalid-name
-    FEATURE_NAME = 'hitthebox_view'
+    featurename = 'hitthebox_view'
     plan = [
-        create_step(FEATURE_NAME, worker, [
+        create_step(featurename, worker, [
             ('decider_border_hitthebox', 'hits'),
         ], (
             ('result', 'html'),
@@ -66,16 +65,15 @@ PROCESS_NAME = 'feedback_decider_border'
 
 
 def pack(plan, featurepath):
-    # pylint:disable=invalid-name
-    DESCRIPTION = 'generate html view for overlapping content'
-    VERSION = '1.0.0'
+    description = 'generate html view for overlapping content'
+    version = '1.0.0'
     executed = featurepack(
         workplan=plan,
         feature_path=featurepath,
         feature_package='feedback.features.border',
         name=PROCESS_NAME,
-        description=DESCRIPTION,
-        version=VERSION,
+        description=description,
+        version=version,
     )
     return executed
 
@@ -89,7 +87,6 @@ def featureexample(testdir):
     file_create(join(root, 'feedback/__init__.py'))
     file_create(join(root, 'feedback/features/__init__.py'))
     file_create(join(feature_path, '__init__.py'))
-    # file_create(join(feature_path, 'broken_worker.py'))
 
     file_create(
         join(feature_path, 'working_worker.py'), """
