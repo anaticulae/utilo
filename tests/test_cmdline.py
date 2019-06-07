@@ -13,7 +13,6 @@ from pytest import fixture
 from pytest import mark
 from pytest import raises
 
-from tests import returncode
 from utila import INVALID_COMMAND
 from utila import ROOT
 from utila import SUCCESS
@@ -23,6 +22,7 @@ from utila import file_append
 from utila import file_create
 from utila import forward_slash
 from utila import parse
+from utila import returncode
 from utila import sources
 from utila.test import run
 from utila.test import skip_not_virtual

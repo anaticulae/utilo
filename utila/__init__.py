@@ -52,6 +52,7 @@ from utila.logging import profile
 from utila.test import assert_run
 from utila.test import assert_run_fail
 from utila.test import install_and_run
+from utila.test import returncode
 from utila.test import run
 from utila.test import run_command
 from utila.test import skip_nonvirtual

@@ -16,12 +16,12 @@ from pytest import fixture
 from pytest import mark
 from pytest import raises
 
-from tests import returncode
 from utila import FAILURE
 from utila import SUCCESS
 from utila import create_step
 from utila import featurepack
 from utila import file_create
+from utila import returncode
 
 #pylint:disable=W0621,W0613
 

@@ -6,8 +6,3 @@
 # use or distribution is an offensive act against international law and may
 # be prosecuted under federal law. Its content is company confidential.
 # =============================================================================
-
-
-def returncode(exeception: Exception) -> int:
-    """Determine returncode raised from exit()"""
-    return int(str(exeception.value))

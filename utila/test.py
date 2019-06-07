@@ -100,3 +100,7 @@ def install_and_run(root, package, executable=None):
     clean_and_run = uninstall + ' && ' + install
     completed = run(clean_and_run, cwd=root)
     assert completed.returncode == SUCCESS, completed.stdout + completed.stderr
+
+def returncode(exeception: Exception) -> int:
+    """Determine returncode raised from exit()"""
+    return int(str(exeception.value))
