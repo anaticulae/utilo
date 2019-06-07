@@ -10,6 +10,7 @@ import os
 import sys
 
 from pytest import fixture
+from pytest import mark
 from pytest import raises
 
 from tests import returncode
@@ -220,7 +221,12 @@ def test_parse_version_parser_version(tmpdir):
     assert completed.returncode == SUCCESS, str(completed)
 
 
-def create_and_run_parser(testdir, monkeypatch, argv):
+def create_and_run_parser(
+        testdir,
+        monkeypatch,
+        argv,
+        singleinput: bool = False,
+):
     prog = 'parser'
     argv = [prog] + argv
     parser = create_parser(
@@ -233,5 +239,53 @@ def create_and_run_parser(testdir, monkeypatch, argv):
         context.setattr(sys, 'argv', argv)
         context.setattr(os, 'getcwd', lambda: str(testdir))
         parsed = parse(parser)
-        inpath, outpath = sources(parsed)
+        inpath, outpath = sources(parsed, singleinput=singleinput)
     return inpath, outpath
+
+
+@mark.parametrize('singlefile', [True, False])
+def test_singlefile_input(testdir, monkeypatch, singlefile):
+    """Test reading a file direct from input
+
+    1. singlefile = True
+        read root       ok
+        read sample.txt ok
+    2. singlefile = False
+        read root       ok
+        read sample.txt SystemExit
+    """
+    root = str(testdir)
+    # Create input file
+    filepath = os.path.join(root, 'sample.txt')
+    file_create(filepath)
+
+    # read root
+    argv = ['-i', root, '-o', root]
+    inpath, _ = create_and_run_parser(
+        testdir,
+        monkeypatch,
+        argv=argv,
+        singleinput=True,
+    )
+    assert inpath == root, 'folderinput does not deliver the right path'
+
+    # read sample.txt
+    argv = ['-i', filepath, '-o', root]
+    if singlefile:
+        inpath, _ = create_and_run_parser(
+            testdir,
+            monkeypatch,
+            argv=argv,
+            singleinput=True,
+        )
+        assert inpath == filepath, 'singleinput does not deliver the right path'
+    else:
+        with raises(SystemExit) as result:
+            argv = ['-i', filepath, '-o', root]
+            create_and_run_parser(
+                testdir,
+                monkeypatch,
+                argv=argv,
+                singleinput=False,
+            )
+        assert returncode(result) == INVALID_COMMAND
