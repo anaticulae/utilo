@@ -219,7 +219,7 @@ def test_parse_version_parser_version(tmpdir):
     assert completed.returncode == SUCCESS, str(completed)
 
 
-def create_and_run_parser(tmpdir, monkeypatch, argv):
+def create_and_run_parser(testdir, monkeypatch, argv):
     prog = 'parser'
     argv = [prog] + argv
     parser = create_parser(
@@ -228,12 +228,9 @@ def create_and_run_parser(tmpdir, monkeypatch, argv):
         outputparameter=True,
     )
 
-    def getcwd():
-        return tmpdir.strpath
-
     with monkeypatch.context() as context:
         context.setattr(sys, 'argv', argv)
-        context.setattr(os, 'getcwd', getcwd)
+        context.setattr(os, 'getcwd', lambda: str(testdir))
         parsed = parse(parser)
         inpath, outpath = sources(parsed)
     return inpath, outpath
