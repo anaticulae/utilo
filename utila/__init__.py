@@ -35,6 +35,10 @@ from utila.error import saveme
 from utila.feature import create_step
 from utila.feature import featurepack
 # File
+from utila.file import assert_file
+from utila.file import assert_html
+from utila.file import assert_json
+from utila.file import assert_yaml
 from utila.file import copy_content
 from utila.file import file_append
 from utila.file import file_create

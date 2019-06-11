@@ -14,6 +14,8 @@ from os.path import join
 from pytest import raises
 
 from utila import ROOT
+from utila import assert_file
+from utila import assert_html
 from utila import file_append
 from utila import file_create
 from utila import file_read
@@ -89,3 +91,15 @@ def test_temp_without_shared_temp(testdir, monkeypatch):
         context.setattr(os, 'environ', {})
         without_redirect = tmp(ROOT)
         assert without_redirect.endswith('.tmp'), without_redirect
+
+
+def test_assert_html_files():
+    files = [
+        'test/abc.html',
+        'test/www.html',
+        'test/elfe.html',
+    ]
+    assert_html(files)
+
+    with raises(AssertionError):
+        assert_file(files, '.txt')

@@ -18,6 +18,7 @@ from os.path import split
 from random import randrange
 from shutil import copy
 
+from utila.logging import logging_error
 from utila.utils import NEWLINE
 from utila.utils import TMP
 from utila.utils import UTF8
@@ -183,3 +184,39 @@ def tempfile(root):
         # try again to find unused temp file
         return tempfile(root)
     return path
+
+
+def assert_file(files, filetype: str):
+    """Ensure that the given `files` have the correct `filetype`
+
+    Args:
+        List[str]: list with files
+        filetype(str): filetype without leading dot
+    Returns:
+        raises assertion when passing invalid files
+    """
+    # support passing single str
+    files = [files] if isinstance(files, str) else files
+    # ensure passing without dot
+    filetype = filetype[1:] if filetype[0] == '.' else filetype
+    raises = 0
+    for item in files:
+        if not item.endswith('.%s' % filetype):
+            logging_error('No %s file: %s' % (filetype, item))
+            raises += 1
+    assert not raises, 'wrong file types'
+
+
+def assert_html(files):
+    """Ensure that all given `files` are `html` files"""
+    assert_file(files, 'html')
+
+
+def assert_yaml(files):
+    """Ensure that all given `files` are `yaml` files"""
+    assert_file(files, 'yaml')
+
+
+def assert_json(files):
+    """Ensure that all given `files` are `json` files"""
+    assert_file(files, 'json')
