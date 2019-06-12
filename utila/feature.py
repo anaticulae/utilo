@@ -26,6 +26,7 @@ from os.path import join
 from typing import List
 from typing import Tuple
 
+from utila.cmdline import Flag
 from utila.cmdline import create_parser
 from utila.cmdline import parse
 from utila.cmdline import sources
@@ -83,6 +84,14 @@ def process(
         workplan,
         verbose: bool = False,
 ):
+    """Process the given features
+
+    Args:
+        workplan(List[steps]):
+        verbose(bool): extend logging verbosity
+    Returns:
+        SUCCESS if all features process successfully, if not FAILURE
+    """
     for step in workplan:
         name = step[NAME]
         logging('processing %s' % name)
@@ -115,9 +124,11 @@ def process(
             return FAILURE
     return SUCCESS
 
-
 def find_features(path: str, feature_package):
     """Locate all feautures in given path
+
+    Ensure that feature methods are defined. If some feature interface is not
+    implemented properly, the exection ends with FAILURE.
     """
     assert exists(path), path
     collected = [
@@ -131,7 +142,7 @@ def find_features(path: str, feature_package):
         current = importlib.import_module(feature_package + '.' + item,
                                           feature_package)
         try:
-            result.append((current.name(), current.commandline, current.work))
+            result.append(connect_feature_interface(current, item))
         except AttributeError as exception:
             logging_error('SKIP LOADING %s' % item)
             logging_error(exception)
@@ -140,6 +151,16 @@ def find_features(path: str, feature_package):
         exit(FAILURE)
     return result
 
+def connect_feature_interface(current, item):
+    """Ensure that feature supports `name`, `commandline` and `work`-method"""
+    curname = current.name() if hasattr(current, 'name') else item
+    curcommandline = None
+    if hasattr(current, 'commandline'):
+        curcommandline = current.commandline
+    if not curcommandline:
+        def curcommandline():
+            return Flag(longcut=curname, message='export %s' % curname)
+    return (curname, curcommandline, current.work)
 
 def commandline(features):
     result = []

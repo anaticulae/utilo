@@ -89,14 +89,19 @@ def featureexample(testdir):
     file_create(join(feature_path, '__init__.py'))
 
     file_create(
-        join(feature_path, 'working_worker.py'), """
+        join(feature_path, 'incomplete_worker.py'), """
+def work():
+    return 'work'
+    """)
+    file_create(
+        join(feature_path, 'complete_worker.py'), """
 from utila import Flag
 def name():
-    return 'worker'
+    return 'complete_worker'
 def commandline():
     return Flag(longcut=name(), message='export the html result of %s' % name())
 def work():
-    return 'work'
+    return 'work completed'
     """)
     file_create('decider_border_hitthebox__hits.yaml', '')
     return root, feature_path
