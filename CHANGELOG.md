@@ -2,6 +2,20 @@
 
 Every noteable change is logged here.
 
+## v0.6.3
+
+### Feature
+
+* support multiple parameter of feature cmdline tool (8da62bc9aa35)
+* support features without name or commandline method (edb45cc417b9)
+* add assert_file, assert_html to public API (4da5a4dacd8b)
+* extend public API with classificatory (2bb00196c3bd)
+* add `returncode()` to public API (64258eba882e)
+
+### Fix
+
+* replace feature_path with root - interface change (41110f4cf563)
+
 ## v0.6.2
 
 ### Feature
