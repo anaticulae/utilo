@@ -26,6 +26,7 @@ from os.path import join
 from typing import List
 from typing import Tuple
 
+from utila.cmdline import Command
 from utila.cmdline import Flag
 from utila.cmdline import create_parser
 from utila.cmdline import parse
@@ -122,7 +123,7 @@ def process(
                 for path, content in zip(step[OUTPUT], result):
                     if verbose:
                         logging('write: %s' % path)
-                    # Write content to file.
+                    # write content to file.
                     file_create(path, content)
             except TypeError as error:
                 logging_error('while processing %s' % name)
@@ -136,6 +137,7 @@ def process(
             logging_stacktrace()
             return FAILURE
     return SUCCESS
+
 
 def find_features(path: str, feature_package):
     """Locate all feautures in given path
@@ -164,6 +166,7 @@ def find_features(path: str, feature_package):
         exit(FAILURE)
     return result
 
+
 def connect_feature_interface(current, item):
     """Ensure that feature supports `name`, `commandline` and `work`-method"""
     curname = current.name() if hasattr(current, 'name') else item
@@ -171,17 +174,37 @@ def connect_feature_interface(current, item):
     if hasattr(current, 'commandline'):
         curcommandline = current.commandline
     if not curcommandline:
+
         def curcommandline():
             return Flag(longcut=curname, message='export %s' % curname)
+
     return (curname, curcommandline, current.work)
 
-def commandline(features):
-    result = []
 
+Name = str
+CommandLineInterface = List[Command]
+Worker = callable  #pylint:disable=C0103
+Feature = Tuple[Name, CommandLineInterface, Worker]
+
+
+def commandline(features: List[Feature]) -> List[Command]:
+    """Build command line interface due iterating searched features
+
+    Args:
+        features: list of parsed features
+    Returns:
+        list of `Command`s
+    """
+    result = []
     # name, cmd, work
     for _, command, _ in features:
-        result.append(command())
-
+        commands = command()
+        # one single command is iterable, testing of Iterable is not possible
+        if isinstance(commands, (list, tuple)):
+            # support adding commands from iterable and single command
+            result.extend(commands)
+        else:
+            result.append(commands)
     return result
 
 
