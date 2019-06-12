@@ -64,13 +64,13 @@ def workplan(worker):
 PROCESS_NAME = 'feedback_decider_border'
 
 
-def pack(plan, featurepath):
+def pack(plan, root, feature_package):
     description = 'generate html view for overlapping content'
     version = '1.0.0'
     executed = featurepack(
         workplan=plan,
-        feature_path=featurepath,
-        feature_package='feedback.features.border',
+        root=root,
+        feature_package=feature_package,
         name=PROCESS_NAME,
         description=description,
         version=version,
@@ -81,7 +81,8 @@ def pack(plan, featurepath):
 @fixture
 def featureexample(testdir):
     root = str(testdir)
-    feature_path = join(root, 'feedback/features/border')
+    feature_package = 'feedback.features.border'
+    feature_path = join(root, feature_package.replace('.', '/'))
     makedirs(feature_path)
     file_create(join(root, '__init__.py'))
     file_create(join(root, 'feedback/__init__.py'))
@@ -104,30 +105,30 @@ def work():
     return 'work completed'
     """)
     file_create('decider_border_hitthebox__hits.yaml', '')
-    return root, feature_path
+    return root, feature_package
 
 
 def test_featurepack_without_input(featureexample, monkeypatch):
-    root, path = featureexample
+    root, package = featureexample
     with monkeypatch.context() as context:
         context.setattr(sys, 'argv', [PROCESS_NAME])
         context.syspath_prepend(root)
         with raises(SystemExit) as result:
-            pack(workplan(worker), path)
+            pack(workplan(worker), root=root, feature_package=package)
         assert returncode(result) == FAILURE
 
 
 def test_featurepack_with_broken_feature(featureexample, monkeypatch):
     """Skip broken worker"""
-    root, path = featureexample
+    root, package = featureexample
     # create the broken feature
-    file_create(join(path, 'broken_worker.py'))
+    file_create(join(package.replace('.', '/'), 'broken_worker.py'))
 
     with monkeypatch.context() as context:
         context.setattr(sys, 'argv', [PROCESS_NAME, '-i', root, '-o', root])
         context.syspath_prepend(root)
         with raises(SystemExit) as result:
-            pack(workplan(worker), path)
+            pack(workplan(worker), root=root, feature_package=package)
         assert returncode(result) == FAILURE
 
 
@@ -138,21 +139,21 @@ def test_featurepack_with_broken_feature(featureexample, monkeypatch):
     worker_with_wrong_returnvalue,
 ])
 def test_featurepack_with_broken_worker(featureexample, monkeypatch, worker):
-    root, path = featureexample
+    root, package = featureexample
     with monkeypatch.context() as context:
         context.setattr(sys, 'argv', [PROCESS_NAME, '-i', root, '-o', root])
         context.syspath_prepend(root)
 
         with raises(SystemExit) as result:
-            pack(workplan(worker), path)
+            pack(workplan(worker), root=root, feature_package=package)
         assert returncode(result) == FAILURE
 
 
 def test_featurepack(featureexample, monkeypatch):
-    root, path = featureexample
+    root, package = featureexample
     with monkeypatch.context() as context:
         context.setattr(sys, 'argv', [PROCESS_NAME, '-i', root, '-o', root])
         context.syspath_prepend(root)
         with raises(SystemExit) as result:
-            pack(workplan(worker), path)
+            pack(workplan(worker), root=root, feature_package=package)
         assert returncode(result) == SUCCESS

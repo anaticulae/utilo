@@ -47,12 +47,25 @@ HOOK = 'hook'
 @saveme(systemexit=True)
 def featurepack(
         workplan,
-        feature_path: str,
+        root: str,
         feature_package: str,
         name: str,
         description: str,
         version: str,
-):
+) -> int:
+    """Run featurepack defined in `workplan`
+
+    Args:
+        workplan:
+        root(str): path to project root
+        feature_package(str): location to feature_package releative to root
+        name(str): name to invoke cmdline tool
+        description(str): description shown in cmdline tool
+        version(str): version to display with --version command
+    Returns:
+        return SUCCESS or FAILURE
+    """
+    feature_path = join(root, feature_package.replace('.', '/'))
     feature = find_features(feature_path, feature_package)
     commands = commandline(feature)
     parser = create_parser(
