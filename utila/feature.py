@@ -86,6 +86,10 @@ def featurepack(
         return FAILURE
 
     workplan = read_workplan(workplan, inputpath, outputpath, verify=True)
+    # an empty workplan is defined by user code, feature pack does nothing
+    if not workplan:
+        logging_error('empty workplan - nothing todo - abort!')
+        exit(FAILURE)
 
     # Ensure to have output folder
     makedirs(outputpath, exist_ok=True)
