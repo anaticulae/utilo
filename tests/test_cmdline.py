@@ -96,7 +96,7 @@ def test_relative_output(tmpdir, monkeypatch):
     create_and_run_parser(
         tmpdir,
         monkeypatch,
-        ['-o', '/abc'],
+        ['-o', './abc'],
     )
     assert os.path.exists(os.path.join(tmpdir, 'abc'))
 
