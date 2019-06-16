@@ -112,6 +112,8 @@ def process(
     """
     for step in workplan:
         name = step[NAME]
+        # TODO: change name to step name, not the process name
+        # for example processing chapter, processing title, processing index...
         logging('processing %s' % name)
         try:
             hook = step[HOOK]
