@@ -32,7 +32,7 @@ from utila.cmdline import create_parser
 from utila.cmdline import parse
 from utila.cmdline import sources
 from utila.error import saveme
-from utila.file import file_create
+from utila.file import file_replace
 from utila.logging import logging
 from utila.logging import logging_error
 from utila.logging import logging_stacktrace
@@ -136,7 +136,7 @@ def process(
                     if verbose:
                         logging('write: %s' % path)
                     # write content to file.
-                    file_create(path, content)
+                    file_replace(path, content)
             except TypeError as error:
                 logging_error('while processing %s' % name)
                 logging_error('wrong return value')
