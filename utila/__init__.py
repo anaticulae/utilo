@@ -69,6 +69,7 @@ from utila.utils import FAILURE
 from utila.utils import INF
 from utila.utils import NEWLINE
 from utila.utils import SUCCESS
+from utila.utils import UTF8
 from utila.utils import fix_encoding
 from utila.utils import forward_slash
 
