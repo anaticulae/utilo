@@ -47,7 +47,8 @@ def test_cmdline_parse_args(monkeypatch):
         parser.print_help()
         args = parse(parser)
 
-    assert len(args) == len(todo) + 1  # for verbose level --verbose
+    verbose_and_prefix = 2  # for verbose level --verbose and --prefix
+    assert len(args) == len(todo) + verbose_and_prefix
     assert '--all' in args
     assert '--nothing' in args
 

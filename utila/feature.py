@@ -80,12 +80,18 @@ def featurepack(
     args = parse(parser)
 
     # evaluate the verbose flag
-    inputpath, outputpath, verbose = sources(args, verbose=True)
+    inputpath, outputpath, prefix, verbose = sources(args, verbose=True)
     if not inputpath or not outputpath:
         parser.print_usage()
         return FAILURE
 
-    workplan = read_workplan(workplan, inputpath, outputpath, verify=True)
+    workplan = read_workplan(
+        workplan,
+        inputpath,
+        outputpath,
+        prefix=prefix,
+        verify=True,
+    )
     # an empty workplan is defined by user code, feature pack does nothing
     if not workplan:
         logging_error('empty workplan - nothing todo - abort!')
@@ -244,8 +250,15 @@ def create_step(
     return step
 
 
-def read_workplan(plan, inspace, outspace=None, verify: bool = False):
+def read_workplan(
+        plan,
+        inspace,
+        outspace=None,
+        prefix: str = None,
+        verify: bool = False,
+):
     outspace = outspace if outspace else inspace
+    prefix = '%s_' % prefix if prefix else ''
 
     result = []
     ret = 0
@@ -261,8 +274,7 @@ def read_workplan(plan, inspace, outspace=None, verify: bool = False):
             datatype = 'yaml'
             if not isinstance(item, str):
                 item, datatype = item
-
-            _outputs.append('%s__%s.%s' % (name, item, datatype))
+            _outputs.append('%s__%s%s.%s' % (name, prefix, item, datatype))
         outputs = [join(outspace, item) for item in _outputs]
 
         verify_interface(inputs, outputs, caller)

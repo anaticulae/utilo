@@ -95,6 +95,10 @@ COMMANDS = [
         message='define how verbose logging is',
         shortcut='V',
     ),
+    Parameter(
+        longcut='prefix',
+        message='add prefix to separate different output files',
+    ),
 ]
 
 
@@ -136,9 +140,15 @@ def create_parser(
         if shortcut and not shortcut.startswith('-'):
             shortcut = '-%s' % shortcut
         # support defining longcut without --
-        if not longcut.startswith('--'):
+        if longcut and not longcut.startswith('--'):
             longcut = '--%s' % longcut
-        shortcuts = (shortcut, longcut) if shortcut else (longcut,)
+
+        if longcut:
+            shortcuts = (shortcut, longcut) if shortcut else (longcut,)
+        else:
+            # no longcut is defined
+            shortcuts = (shortcut,)
+
         add = parser.add_argument
         if args:
             args['help'] = msg
@@ -152,9 +162,8 @@ def create_io_ports(infile: bool = False, outfile: bool = False):
     todo = []
     if infile:
         input_command = Command(
-            'i',
-            'input',
-            'Read input data from path',
+            shortcut='i',
+            message='Read input data from path',
             args={
                 'dest': 'input',
             },
@@ -163,9 +172,8 @@ def create_io_ports(infile: bool = False, outfile: bool = False):
 
     if outfile:
         output_command = Command(
-            'o',
-            'ouput',
-            'Write output to path',
+            shortcut='o',
+            message='Write output to path',
             args={
                 'dest': 'output',
             },
@@ -201,6 +209,7 @@ def sources(args, *, singleinput: bool = False, verbose: bool = False):
     cwd = os.path.abspath(os.getcwd())
     input_path = args.get('input')  # if key is not present, return None
     output_path = args.get('output')
+    prefix = args.get('prefix')
 
     if input_path:
         if not os.path.isabs(input_path):
@@ -226,5 +235,5 @@ def sources(args, *, singleinput: bool = False, verbose: bool = False):
 
     if verbose:
         verb = int(args[VERBOSE]) if args[VERBOSE] else 0
-        return (input_path, output_path, verb)
-    return (input_path, output_path)
+        return (input_path, output_path, prefix, verb)
+    return (input_path, output_path, prefix)
