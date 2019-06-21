@@ -2,6 +2,25 @@
 
 Every noteable change is logged here.
 
+## v0.6.4
+
+### Feature
+
+* add recursive flag to copy_content (60b2d932e6c5)
+* replace existing files instead of throwing an error (616c49f4eddc)
+* add prefix to feature output (21e6eb9e61c9)
+* extend public API with UTF8 (d2a36111a38f)
+* add error output for missing workplan (418d18cead40)
+
+### Fix
+
+* remove create_parser from public API, use featurepack (46494046f45c)
+* rename cmdline test to easier invoke cmdline tests (1082b399e955)
+
+### Documentation
+
+* add hint that `create_parser` should not be part of public API (d41233052d83)
+
 ## v0.6.3
 
 ### Feature
