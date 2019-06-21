@@ -22,6 +22,7 @@ from utila import copy_content
 from utila import file_append
 from utila import file_create
 from utila import file_read
+from utila import file_replace
 from utila import from_raw_or_path
 from utila import tempfile
 from utila import tempname
@@ -145,3 +146,20 @@ def test_file_copy_content_recursive_false(testdir, content_folder):  #pylint:di
     assert exists(join(goal, 'www.txt'))
 
     assert exists(join(goal, 'abc'))
+
+
+def test_file_replace_file(testdir):
+    path = join(str(testdir), 'file.txt')
+    assert not exists(path)
+
+    file_replace(path, 'Content')
+    assert exists(path)
+    file_replace(path, 'NewContent')
+
+    content = file_read(path)
+    assert content == 'NewContent'
+
+    # no changes in file
+    file_replace(path, 'NewContent')
+    content = file_read(path)
+    assert content == 'NewContent'

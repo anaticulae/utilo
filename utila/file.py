@@ -122,6 +122,7 @@ def file_replace(path: str, content: str):
     with open(path, mode='w', newline=NEWLINE, encoding=UTF8) as fp:
         fp.write(content)
 
+
 def copy_content(source: str, destination: str, recursive: bool = False):
     """Copy the content from `source` to `destination` folder. If `desitination`
     folder does not exists, it will be created.
