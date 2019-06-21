@@ -87,6 +87,7 @@ def featurepack(
         singleinput=singleinput,
         verbose=True,
     )
+    current_todo = todo(args)
     if not inputpath or not outputpath:
         parser.print_usage()
         return FAILURE
@@ -106,12 +107,17 @@ def featurepack(
     # Ensure to have output folder
     makedirs(outputpath, exist_ok=True)
 
-    completed = process(workplan, verbose=verbose)
+    completed = process(
+        workplan,
+        todo=current_todo,
+        verbose=verbose,
+    )
     return completed
 
 
 def process(
         workplan,
+        todo: List = None,
         verbose: bool = False,
 ):
     """Process the given features
@@ -122,12 +128,21 @@ def process(
     Returns:
         SUCCESS if all features process successfully, if not FAILURE
     """
+    # TODO: add todo to select features
+    if todo is None:
+        todo = []
+    todo = set(todo)
     for step in workplan:
         name = step[NAME]
         # TODO: change name to step name, not the process name
         # for example processing chapter, processing title, processing index...
         logging('processing %s' % name)
         try:
+            if name not in todo and todo:
+                # if todo is empty, nothing is selected, so run every step
+                logging('Skipping %s' % name)
+                continue
+
             hook = step[HOOK]
             result = hook()
             if isinstance(result, str):
@@ -365,3 +380,16 @@ def verify_interface(inputs, outputs, worker):
         outputs,
     )
     assert len(outputs) == return_count, interface_error_msg
+
+
+def todo(args):
+    args = dict(args)
+    del args['input']
+    del args['output']
+
+    if not any(args.values()):
+        # run all features
+        result = [key for key, value in args.items()]
+    else:
+        result = [key for key, value in args.items() if value]
+    return result
