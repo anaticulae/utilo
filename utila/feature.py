@@ -18,10 +18,12 @@
 """
 import importlib
 from functools import partial
+from glob import glob
 from inspect import signature
 from os import listdir
 from os import makedirs
 from os.path import exists
+from os.path import isfile
 from os.path import join
 from typing import List
 from typing import Tuple
@@ -310,10 +312,36 @@ def read_workplan(
     return result
 
 
-def prepare_inputs(inputs, inspace):
-    inputs = ['%s__%s.yaml' % item for item in inputs]
-    inputs = [join(inspace, item) for item in inputs]
-    return inputs
+def prepare_inputs(inputs, inspace) -> List[str]:
+    """Parse single and multiple file input
+
+    Loacted files by defined pattern in `Workplan`. A file pattern is defined
+    via (name, typ). The typ is written in UPPER-CASES, for example (*, PDF)
+    to locate multiple pdf's.
+
+    Args:
+        inputs(str): inputs is deliverd by workplan
+        inspace(str): inspace is the current input via -i/--input
+    Returns:
+        list of located files
+    """
+    result = []
+    # single file input
+    if isfile(inspace) and len(inputs) == 1:
+        # TODO: Not stable for multiple inputs
+        return [inspace]
+
+    for item in inputs:
+        (name, typ) = item
+        if typ.isupper():
+            typ = typ.lower()
+            pattern = '%s/%s.%s' % (inspace, name, typ)
+            for finding in glob(pattern):
+                result.append(finding)
+        else:
+            filename = '%s__%s.yaml' % (name, typ)
+            result.append(join(inspace, filename))
+    return result
 
 
 def prepare_outputs(
