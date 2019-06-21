@@ -62,13 +62,13 @@ def workplan(worker):
 PROCESS_NAME = 'feedback_decider_border'
 
 
-def pack(plan, root, feature_package):
+def pack(plan, root, featurepackage):
     description = 'generate html view for overlapping content'
     version = '1.0.0'
     executed = featurepack(
         workplan=plan,
         root=root,
-        feature_package=feature_package,
+        featurepackage=featurepackage,
         name=PROCESS_NAME,
         description=description,
         version=version,
@@ -79,8 +79,8 @@ def pack(plan, root, feature_package):
 @fixture
 def featureexample(testdir):
     root = str(testdir)
-    feature_package = 'feedback.features.border'
-    feature_path = join(root, feature_package.replace('.', '/'))
+    featurepackage = 'feedback.features.border'
+    feature_path = join(root, featurepackage.replace('.', '/'))
     makedirs(feature_path)
     file_create(join(root, '__init__.py'))
     file_create(join(root, 'feedback/__init__.py'))
@@ -103,7 +103,7 @@ def work():
     return 'work completed'
     """)
     file_create('decider_border_hitthebox__hits.yaml', '')
-    return root, feature_package
+    return root, featurepackage
 
 
 def test_featurepack_without_input(featureexample, monkeypatch):
@@ -112,7 +112,7 @@ def test_featurepack_without_input(featureexample, monkeypatch):
         context.setattr(sys, 'argv', [PROCESS_NAME])
         context.syspath_prepend(root)
         with raises(SystemExit) as result:
-            pack(workplan(worker), root=root, feature_package=package)
+            pack(workplan(worker), root=root, featurepackage=package)
         assert returncode(result) == FAILURE
 
 
@@ -126,7 +126,7 @@ def test_featurepack_with_broken_feature(featureexample, monkeypatch):
         context.setattr(sys, 'argv', [PROCESS_NAME, '-i', root, '-o', root])
         context.syspath_prepend(root)
         with raises(SystemExit) as result:
-            pack(workplan(worker), root=root, feature_package=package)
+            pack(workplan(worker), root=root, featurepackage=package)
         assert returncode(result) == FAILURE
 
 
@@ -143,7 +143,7 @@ def test_featurepack_with_broken_worker(featureexample, monkeypatch, worker):
         context.syspath_prepend(root)
 
         with raises(SystemExit) as result:
-            pack(workplan(worker), root=root, feature_package=package)
+            pack(workplan(worker), root=root, featurepackage=package)
         assert returncode(result) == FAILURE
 
 

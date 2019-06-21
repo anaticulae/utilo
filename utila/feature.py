@@ -51,7 +51,7 @@ HOOK = 'hook'
 def featurepack(
         workplan,
         root: str,
-        feature_package: str,
+        featurepackage: str,
         name: str,
         description: str,
         version: str,
@@ -62,7 +62,7 @@ def featurepack(
     Args:
         workplan:
         root(str): path to project root
-        feature_package(str): location to feature_package releative to root
+        featurepackage(str): location to featurepackage releative to root
         name(str): name to invoke cmdline tool
         description(str): description shown in cmdline tool
         version(str): version to display with --version command
@@ -71,7 +71,7 @@ def featurepack(
     Returns:
         return SUCCESS or FAILURE
     """
-    feature = find_features(root, feature_package)
+    feature = find_features(root, featurepackage)
     commands = commandline(feature)
     parser = create_parser(
         commands,
@@ -89,10 +89,10 @@ def featurepack(
         singleinput=singleinput,
         verbose=True,
     )
-    current_todo = todo(args)
     if not inputpath or not outputpath:
         parser.print_usage()
         return FAILURE
+
 
     workplan = read_workplan(
         workplan,
@@ -109,6 +109,7 @@ def featurepack(
     # Ensure to have output folder
     makedirs(outputpath, exist_ok=True)
 
+    current_todo = todo(args)
     completed = process(
         workplan,
         todo=current_todo,
