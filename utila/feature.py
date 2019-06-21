@@ -53,6 +53,7 @@ def featurepack(
         name: str,
         description: str,
         version: str,
+        singleinput: bool = False,
 ) -> int:
     """Run featurepack defined in `workplan`
 
@@ -63,6 +64,8 @@ def featurepack(
         name(str): name to invoke cmdline tool
         description(str): description shown in cmdline tool
         version(str): version to display with --version command
+        singleinput(bool): if true, files as input are allowed, else only
+                           directories are allowed
     Returns:
         return SUCCESS or FAILURE
     """
@@ -79,7 +82,11 @@ def featurepack(
     args = parse(parser)
 
     # evaluate the verbose flag
-    inputpath, outputpath, prefix, verbose = sources(args, verbose=True)
+    inputpath, outputpath, prefix, verbose = sources(
+        args,
+        singleinput=singleinput,
+        verbose=True,
+    )
     if not inputpath or not outputpath:
         parser.print_usage()
         return FAILURE
