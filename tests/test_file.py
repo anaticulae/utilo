@@ -42,7 +42,7 @@ def test_file_append_create(tmpdir):
     assert 'AAA' in content
 
 
-def test_from_path_or_raw(tmpdir):
+def test_file_from_path_or_raw(tmpdir):
     content = """\
         I am The content
         to
@@ -63,7 +63,7 @@ def test_from_path_or_raw(tmpdir):
         from_raw_or_path('/c/test.yaml')
 
 
-def test_tempname():
+def test_file_tempname():
     name = tempname(width=15)
     assert len(name) == 15, name
 
@@ -71,12 +71,12 @@ def test_tempname():
     assert len(name) == 20, name
 
 
-def test_tempfile(tmpdir):
+def test_file_tempfile(tmpdir):
     random_path = tempfile(tmpdir)
     assert not exists(random_path), random_path
 
 
-def test_temp_redirect(testdir, monkeypatch):
+def test_file_temp_redirect(testdir, monkeypatch):
     """Redirect tmp-path with KIWI_TEMPBASE environ variable"""
     with monkeypatch.context() as context:
         context.setattr(os, 'environ', {SHARED_TEMP: str(testdir)})
@@ -84,7 +84,7 @@ def test_temp_redirect(testdir, monkeypatch):
         assert exists(temp), temp
 
 
-def test_temp_without_shared_temp(testdir, monkeypatch):
+def test_file_temp_without_shared_temp(testdir, monkeypatch):
     """Do not redirect SHARED_TEMP"""
     with monkeypatch.context() as context:
         # unset SHARED_TEMP
@@ -93,7 +93,7 @@ def test_temp_without_shared_temp(testdir, monkeypatch):
         assert without_redirect.endswith('.tmp'), without_redirect
 
 
-def test_assert_html_files():
+def test_file_assert_html_files():
     files = [
         'test/abc.html',
         'test/www.html',
