@@ -20,7 +20,6 @@ from utila.cmdline import Command
 from utila.cmdline import Flag
 from utila.cmdline import Parameter
 from utila.cmdline import RequiredCommand
-from utila.cmdline import create_parser  # TODO: remove? use featurepack!
 from utila.cmdline import parse
 from utila.cmdline import sources
 # Time

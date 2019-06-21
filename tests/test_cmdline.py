@@ -17,13 +17,13 @@ from utila import INVALID_COMMAND
 from utila import ROOT
 from utila import SUCCESS
 from utila import Parameter
-from utila import create_parser
 from utila import file_append
 from utila import file_create
 from utila import forward_slash
 from utila import parse
 from utila import returncode
 from utila import sources
+from utila.cmdline import create_parser
 from utila.test import run
 from utila.test import skip_not_virtual
 
@@ -118,7 +118,7 @@ RUN_ME = """\
 import sys
 sys.path.append("%s")
 from utila import RequiredCommand
-from utila import create_parser
+from utila.cmdline import create_parser
 
 parser = create_parser(RequiredCommand('-a', '--all', 'I need it all'))
 parser.parse_args()
@@ -153,7 +153,7 @@ EMPTY_PARSER = """\
 #! /usr/bin/env python
 import sys
 sys.path.append("%s")
-from utila import create_parser, parse
+from utila.cmdline import create_parser, parse
 parser = create_parser(%s)
 args = parse(parser)
 """
