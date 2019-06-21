@@ -2,6 +2,14 @@
 
 Every noteable change is logged here.
 
+## v0.6.5
+
+### Feature
+
+* add singleinput flag to allow files as direct input (6c8134747e6c)
+* add method to uniform the result of a likelihood computation (841077cc845a)
+* add clean_install method to test setup.py of project (bd9c05646776)
+
 ## v0.6.4
 
 ### Feature
