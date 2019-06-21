@@ -58,6 +58,7 @@ from utila.logging import profile
 # Tests
 from utila.test import assert_run
 from utila.test import assert_run_fail
+from utila.test import clean_install
 from utila.test import install_and_run
 from utila.test import returncode
 from utila.test import run
@@ -75,3 +76,4 @@ from utila.utils import forward_slash
 __version__ = '0.6.4'
 
 ROOT = os.path.abspath(os.path.join(os.path.dirname(__file__), '..'))
+PACKAGENAME = 'utila'

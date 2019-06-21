@@ -8,6 +8,8 @@
 # =============================================================================
 
 from utila import FAILURE
+from utila import PACKAGENAME
+from utila import ROOT
 from utila import SUCCESS
 from utila import assert_run
 from utila import assert_run_fail
@@ -24,3 +26,7 @@ def test_run(tmpdir):
 
     with assert_run_fail('this is not a command', tmpdir) as result:
         assert result.returncode == FAILURE
+
+
+def test_clean_install():
+    clean_install(ROOT, PACKAGENAME)
