@@ -9,9 +9,10 @@
 
 from utila import FAILURE
 from utila import SUCCESS
-from utila.test import assert_run
-from utila.test import assert_run_fail
-from utila.test import run
+from utila import assert_run
+from utila import assert_run_fail
+from utila import clean_install
+from utila import run
 
 
 def test_run(tmpdir):
