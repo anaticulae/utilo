@@ -47,10 +47,8 @@ def worker_with_wrong_input() -> Tuple[str, str]:
 
 
 def workplan(worker):
-
-    featurename = 'hitthebox_view'
     plan = [
-        create_step(featurename, worker, [
+        create_step('complete_worker', worker, [
             ('decider_border_hitthebox', 'hits'),
         ], (
             ('result', 'html'),

@@ -240,7 +240,10 @@ def create_and_run_parser(
         context.setattr(sys, 'argv', argv)
         context.setattr(os, 'getcwd', lambda: str(testdir))
         parsed = parse(parser)
-        inpath, outpath, _ = sources(parsed, singleinput=singleinput)
+        inpath, outpath, _ = sources(
+            parsed,
+            singleinput=singleinput,
+        )
     return inpath, outpath
 
 
