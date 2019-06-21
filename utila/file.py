@@ -122,15 +122,27 @@ def file_replace(path: str, content: str):
     with open(path, mode='w', newline=NEWLINE, encoding=UTF8) as fp:
         fp.write(content)
 
-
-def copy_content(source, destination, recursive: bool = False):
+def copy_content(source: str, destination: str, recursive: bool = False):
     """Copy the content from `source` to `destination` folder. If `desitination`
-    folder does not exists, it will created."""
-    # TODO: add recursive flag
+    folder does not exists, it will be created.
+
+    Hint:
+        Why not using shutil.copytree?: Copy tree expect that destination does
+        not exists, but we need this.
+    """
     assert exists(source)
     makedirs(destination, exist_ok=True)
     for item in listdir(source):
-        copy(join(source, item), join(destination, item))
+        source_ = join(source, item)
+        dest_ = join(destination, item)
+        if isfile(source_):
+            # copy files
+            copy(source_, dest_)
+        else:
+            # 'copy' folder
+            makedirs(dest_)
+            if recursive:
+                copy_content(source_, dest_, recursive=True)
 
 
 def from_raw_or_path(content: str, ftype: str = 'yaml'):

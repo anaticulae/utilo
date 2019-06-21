@@ -8,14 +8,17 @@
 #==============================================================================
 
 import os
+from os import makedirs
 from os.path import exists
 from os.path import join
 
+from pytest import fixture
 from pytest import raises
 
 from utila import ROOT
 from utila import assert_file
 from utila import assert_html
+from utila import copy_content
 from utila import file_append
 from utila import file_create
 from utila import file_read
@@ -103,3 +106,42 @@ def test_file_assert_html_files():
 
     with raises(AssertionError):
         assert_file(files, '.txt')
+
+
+@fixture
+def content_folder(tmpdir):
+    root = str(tmpdir)
+    file_create(join(root, 'test.txt'))
+    file_create(join(root, 'abc.txt'))
+    file_create(join(root, 'www.txt'))
+
+    makedirs(join(root, 'abc', 'def', 'ghi', 'jklm'))
+    file_create(join(root, 'abc/def/ghi/www.txt'))
+    file_create(join(root, 'abc/def/ghi/jklm/ggg.txt'))
+    return root
+
+
+def test_file_copy_content_recursive(testdir, content_folder):  #pylint:disable=W0621
+    """Test to copy `content_folder` recursive"""
+    goal = str(testdir)
+    copy_content(content_folder, goal, recursive=True)
+
+    assert exists(join(goal, 'test.txt'))
+    assert exists(join(goal, 'abc.txt'))
+    assert exists(join(goal, 'www.txt'))
+
+    assert exists(join(goal, 'abc/def/ghi/jklm'))
+    assert exists(join(goal, 'abc/def/ghi/www.txt'))
+    assert exists(join(goal, 'abc/def/ghi/jklm/ggg.txt'))
+
+
+def test_file_copy_content_recursive_false(testdir, content_folder):  #pylint:disable=W0621
+    """Test to copy `content_folder` non recursive"""
+    goal = str(testdir)
+    copy_content(content_folder, goal, recursive=False)
+
+    assert exists(join(goal, 'test.txt'))
+    assert exists(join(goal, 'abc.txt'))
+    assert exists(join(goal, 'www.txt'))
+
+    assert exists(join(goal, 'abc'))
