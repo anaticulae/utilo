@@ -48,6 +48,8 @@ from utila.file import from_raw_or_path
 from utila.file import tempfile
 from utila.file import tempname
 from utila.file import tmp
+# likelihood
+from utila.likelihood import uniform_result
 # Logging
 from utila.logging import flush
 from utila.logging import logging
