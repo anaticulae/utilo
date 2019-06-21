@@ -66,8 +66,7 @@ def featurepack(
     Returns:
         return SUCCESS or FAILURE
     """
-    feature_path = join(root, feature_package.replace('.', '/'))
-    feature = find_features(feature_path, feature_package)
+    feature = find_features(root, feature_package)
     commands = commandline(feature)
     parser = create_parser(
         commands,
@@ -151,23 +150,26 @@ def process(
     return SUCCESS
 
 
-def find_features(path: str, feature_package):
+def find_features(root: str, featurepackage):
     """Locate all feautures in given path
 
     Ensure that feature methods are defined. If some feature interface is not
     implemented properly, the exection ends with FAILURE.
     """
-    assert exists(path), path
+    featurepath = join(root, featurepackage.replace('.', '/'))
+    assert exists(root), root
     collected = [
         item.replace('.py', '')
-        for item in listdir(path)
+        for item in listdir(featurepath)
         if not '__init__' in item and item.endswith('.py')
     ]
     result = []
     ret = 0
     for item in collected:
-        current = importlib.import_module(feature_package + '.' + item,
-                                          feature_package)
+        current = importlib.import_module(
+            featurepackage + '.' + item,
+            featurepackage,
+        )
         try:
             result.append(connect_feature_interface(current, item))
         except AttributeError as exception:
@@ -182,13 +184,13 @@ def find_features(path: str, feature_package):
 def connect_feature_interface(current, item):
     """Ensure that feature supports `name`, `commandline` and `work`-method"""
     curname = current.name() if hasattr(current, 'name') else item
-    curcommandline = None
+
+    # no commandline information is defined
+    def curcommandline():
+        return Flag(longcut=curname, message='export %s' % curname)
+
     if hasattr(current, 'commandline'):
         curcommandline = current.commandline
-    if not curcommandline:
-
-        def curcommandline():
-            return Flag(longcut=curname, message='export %s' % curname)
 
     return (curname, curcommandline, current.work)
 
@@ -264,18 +266,10 @@ def read_workplan(
     ret = 0
     for step in plan:
         inputs, outputs = step[INPUT], step[OUTPUT]
+        inputs = prepare_inputs(inputs, inspace)
+
         name, caller = step[NAME], step[HOOK]
-
-        inputs = ['%s__%s.yaml' % item for item in inputs]
-        inputs = [join(inspace, item) for item in inputs]
-
-        _outputs = []
-        for item in outputs:
-            datatype = 'yaml'
-            if not isinstance(item, str):
-                item, datatype = item
-            _outputs.append('%s__%s%s.%s' % (name, prefix, item, datatype))
-        outputs = [join(outspace, item) for item in _outputs]
+        outputs = prepare_outputs(name, prefix, outputs, outspace)
 
         verify_interface(inputs, outputs, caller)
         ret += verify_resources(inputs, outputs)
@@ -292,6 +286,38 @@ def read_workplan(
         exit(FAILURE)
 
     return result
+
+
+def prepare_inputs(inputs, inspace):
+    inputs = ['%s__%s.yaml' % item for item in inputs]
+    inputs = [join(inspace, item) for item in inputs]
+    return inputs
+
+
+def prepare_outputs(
+        stepname: str,
+        prefix: str,
+        outputs: str,
+        outspace: str,
+) -> List[str]:
+    """Support different output types
+
+    Args:
+        stepname(str):
+        prefix(str): optional to add prefix to differentiate output files
+        outputs(str):
+        outspace(str): folder to write results
+    Returns:
+        a list with paths to write output
+    """
+    _outputs = []
+    for item in outputs:
+        datatype = 'yaml'
+        if not isinstance(item, str):
+            item, datatype = item
+        _outputs.append('%s__%s%s.%s' % (stepname, prefix, item, datatype))
+    outputs = [join(outspace, item) for item in _outputs]
+    return outputs
 
 
 def verify_resources(inputs, outputs):
