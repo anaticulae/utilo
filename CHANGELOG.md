@@ -2,6 +2,18 @@
 
 Every noteable change is logged here.
 
+## v0.7.0
+
+### Feature
+
+* replace old feature collector with new one (656111c01737)
+* support single/multiple file input (4bb2a19beef2)
+* parse passed --flags as todo (649fc652bf83)
+
+### Fix
+
+* fix feature definition to pass the tests (54bae89f8791)
+
 ## v0.6.5
 
 ### Feature
