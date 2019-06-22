@@ -46,6 +46,8 @@ INPUT = 'input'
 OUTPUT = 'output'
 HOOK = 'hook'
 
+FeatureInterface = Tuple[str, Command, callable]
+
 
 @saveme(systemexit=True)
 def featurepack(
@@ -93,11 +95,13 @@ def featurepack(
         parser.print_usage()
         return FAILURE
 
-
+    hooks = prepare_hooks(feature)
     workplan = read_workplan(
         workplan,
-        inputpath,
-        outputpath,
+        process_=name,
+        hooks=hooks,
+        inspace=inputpath,
+        outspace=outputpath,
         prefix=prefix,
         verify=True,
     )
@@ -118,6 +122,14 @@ def featurepack(
     return completed
 
 
+def prepare_hooks(items: List[FeatureInterface]):
+    result = {}
+    for item in items:
+        name, _, caller = item
+        result[name] = caller
+    return result
+
+
 def process(
         workplan,
         todo: List = None,
@@ -131,51 +143,67 @@ def process(
     Returns:
         SUCCESS if all features process successfully, if not FAILURE
     """
-    # TODO: add todo to select features
     if todo is None:
         todo = []
     todo = set(todo)
     for step in workplan:
         name = step[NAME]
-        # TODO: change name to step name, not the process name
-        # for example processing chapter, processing title, processing index...
-        logging('processing %s' % name)
-        try:
-            if name not in todo and todo:
-                # if todo is empty, nothing is selected, so run every step
-                logging('Skipping %s' % name)
-                continue
+        logging('processing: %s' % name)
+        if name not in todo and todo:
+            # if todo is empty, nothing is selected, so run every step
+            logging('skipping: %s' % name)
+            continue
 
-            hook = step[HOOK]
-            result = hook()
-            if isinstance(result, str):
-                result = [result]
-            if result and len(step[OUTPUT]) != len(result):
-                logging_error('wrong return value count')
-                logging_error('interface count %d' % len(step[OUTPUT]))
-                logging_error('return count from method %d' % len(result))
-                return FAILURE
-            try:
-                for path, content in zip(step[OUTPUT], result):
-                    if verbose:
-                        logging('write: %s' % path)
-                    # write content to file.
-                    file_replace(path, content)
-            except TypeError as error:
-                logging_error('while processing %s' % name)
-                logging_error('wrong return value')
-                logging_error('current return value: %s' % result)
-                logging_error(error)
-                return FAILURE
-        except Exception as error:  # pylint: disable=broad-except
-            logging_error('while processing %s' % name)
-            logging_error(error)
-            logging_stacktrace()
+        hook = step[HOOK]
+        result = run_hook_safely(hook, name, step[OUTPUT])
+        if result == FAILURE:
+            # Stop processing if some error occurs while processing hook
+            return FAILURE
+
+        result = write_result_safely(result, name, step[OUTPUT], verbose)
+        if result == FAILURE:
+            # Stop processing if some error occurs while writing result
             return FAILURE
     return SUCCESS
 
 
-def find_features(root: str, featurepackage):
+def run_hook_safely(hook: callable, name: str, stepoutput):
+    try:
+        result = hook()
+    except Exception as error:  # pylint: disable=broad-except
+        logging_error('while processing %s' % name)
+        logging_error(error)
+        logging_stacktrace()
+        return FAILURE
+
+    if isinstance(result, str):
+        result = [result]
+    # Verify result
+    if result and len(stepoutput) != len(result):
+        logging_error('wrong return value count')
+        logging_error('interface count %d' % len(stepoutput))
+        logging_error('return count from method %d' % len(result))
+        return FAILURE
+    return result
+
+
+def write_result_safely(result, processstep, outputstep, verbose):
+    try:
+        for path, content in zip(outputstep, result):
+            if verbose:
+                logging('write: %s' % path)
+            # write content to file.
+            file_replace(path, content)
+        return SUCCESS
+    except TypeError as error:
+        logging_error('while processing %s' % processstep)
+        logging_error('wrong return value')
+        logging_error('current return value: %s' % result)
+        logging_error(error)
+        return FAILURE
+
+
+def find_features(root: str, featurepackage) -> List[FeatureInterface]:
     """Locate all feautures in given path
 
     Ensure that feature methods are defined. If some feature interface is not
@@ -206,7 +234,7 @@ def find_features(root: str, featurepackage):
     return result
 
 
-def connect_feature_interface(current, item):
+def connect_feature_interface(current, item) -> FeatureInterface:
     """Ensure that feature supports `name`, `commandline` and `work`-method"""
     curname = current.name() if hasattr(current, 'name') else item
 
@@ -249,7 +277,6 @@ def commandline(features: List[Feature]) -> List[Command]:
 
 def create_step(
         name: str,
-        hook: callable,
         inputs: List[Tuple[str]],
         output: Tuple[str],
 ):
@@ -261,24 +288,23 @@ def create_step(
             ('iamraw', 'toc'),
         ],
         OUTPUT: ('butter', 'tart', 'cream'),
-        HOOK: hook,
     }
     """
     assert isinstance(inputs, List), type(inputs)
-    assert all([isinstance(item, tuple) for item in inputs])
     assert isinstance(output, tuple), type(output)
 
     step = {
         NAME: name,
         INPUT: inputs,
         OUTPUT: output,
-        HOOK: hook,
     }
     return step
 
 
 def read_workplan(
         plan,
+        process_: str,
+        hooks: dict,
         inspace,
         outspace=None,
         prefix: str = None,
@@ -293,8 +319,20 @@ def read_workplan(
         inputs, outputs = step[INPUT], step[OUTPUT]
         inputs = prepare_inputs(inputs, inspace)
 
-        name, caller = step[NAME], step[HOOK]
-        outputs = prepare_outputs(name, prefix, outputs, outspace)
+        name = step[NAME]
+        try:
+            caller = hooks[name]
+        except KeyError:
+            logging_error('missing hook with name %s' % name)
+            ret += 1
+            continue
+        outputs = prepare_outputs(
+            process_=process_,
+            stepname=name,
+            prefix=prefix,
+            outputs=outputs,
+            outspace=outspace,
+        )
 
         verify_interface(inputs, outputs, caller)
         ret += verify_resources(inputs, outputs)
@@ -302,7 +340,7 @@ def read_workplan(
         function_call = partial(caller, *inputs)
 
         result.append({
-            NAME: step[NAME],
+            NAME: name,
             HOOK: function_call,
             OUTPUT: outputs,
         })
@@ -346,6 +384,7 @@ def prepare_inputs(inputs, inspace) -> List[str]:
 
 
 def prepare_outputs(
+        process_: str,
         stepname: str,
         prefix: str,
         outputs: str,
@@ -354,25 +393,34 @@ def prepare_outputs(
     """Support different output types
 
     Args:
-        stepname(str):
+        process(str):
         prefix(str): optional to add prefix to differentiate output files
         outputs(str):
         outspace(str): folder to write results
     Returns:
         a list with paths to write output
     """
+    ret = 0
     _outputs = []
-    for item in outputs:
+    for index, item in enumerate(outputs):
         datatype = 'yaml'
         if not isinstance(item, str):
-            item, datatype = item
-        _outputs.append('%s__%s%s.%s' % (stepname, prefix, item, datatype))
+            try:
+                item, datatype = item
+            except ValueError:
+                logging_error('checking output number %d' % index)
+                msg = 'require tuple with (item, datatype). got: %r %s'
+                logging_error(msg % (item, type(item)))
+                ret += 1
+        _outputs.append(
+            '%s__%s%s_%s.%s' % (process_, prefix, stepname, item, datatype))
+    if ret:
+        exit(FAILURE)
     outputs = [join(outspace, item) for item in _outputs]
     return outputs
 
 
 def verify_resources(inputs, outputs):
-
     ret = 0
     # require input files
     for path in inputs:
