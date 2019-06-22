@@ -10,7 +10,6 @@
 import sys
 from os import makedirs
 from os.path import join
-from typing import Tuple
 
 from pytest import fixture
 from pytest import mark
@@ -23,37 +22,49 @@ from utila import featurepack
 from utila import file_create
 from utila import returncode
 
-#pylint:disable=W0621,W0613
-
-
-def worker(one_input: str) -> Tuple[str, str]:
+WORKER = """
+from typing import Tuple
+def work(one_input: str) -> Tuple[str, str]:
     return {'first': '', 'second': ''}
+"""
 
-
-def worker_with_wrong_returnvalue(one_input: str) -> Tuple[str, str]:
+WORKER_WITH_WRONG_RETURNVALUE = """
+from typing import Tuple
+def work(one_input: str) -> Tuple[str, str]:
     return {'first': ''}
+"""
 
-
-def worker_with_no_returnvalue(one_input: str) -> Tuple[str, str]:
+WORKER_WITH_NO_RETURNVALUE = """
+from typing import Tuple
+def work(one_input: str) -> Tuple[str, str]:
     pass
+"""
 
-
-def worker_with_exception(one_input: str) -> Tuple[str, str]:
+WORKER_WITH_EXCEPTION = """
+from typing import Tuple
+def work(one_input: str) -> Tuple[str, str]:
     raise ValueError
+"""
 
-
-def worker_with_wrong_input() -> Tuple[str, str]:
+WORKER_WITH_WRONG_INPUT = """
+from typing import Tuple
+def work() -> Tuple[str, str]:
     return {'first': '', 'second': ''}
+"""
 
 
-def workplan(worker):
+def workplan(name: str = 'complete_worker'):
     plan = [
-        create_step('complete_worker', worker, [
-            ('decider_border_hitthebox', 'hits'),
-        ], (
-            ('result', 'html'),
-            'error',
-        )),
+        create_step(
+            name,
+            [
+                ('decider_border_hitthebox', 'hits'),
+            ],
+            (
+                ('result', 'html'),
+                'error',
+            ),
+        ),
     ]
 
     return plan
@@ -99,20 +110,22 @@ def name():
     return 'complete_worker'
 def commandline():
     return Flag(longcut=name(), message='export the html result of %s' % name())
-def work():
-    return 'work completed'
+from typing import Tuple
+def work(path : str) -> Tuple[str, str]:
+    return 'work completed', 'Error'
     """)
     file_create('decider_border_hitthebox__hits.yaml', '')
     return root, featurepackage
 
 
+# pylint:disable=W0621
 def test_featurepack_without_input(featureexample, monkeypatch):
     root, package = featureexample
     with monkeypatch.context() as context:
         context.setattr(sys, 'argv', [PROCESS_NAME])
         context.syspath_prepend(root)
         with raises(SystemExit) as result:
-            pack(workplan(worker), root=root, featurepackage=package)
+            pack(workplan(), root=root, featurepackage=package)
         assert returncode(result) == FAILURE
 
 
@@ -126,32 +139,112 @@ def test_featurepack_with_broken_feature(featureexample, monkeypatch):
         context.setattr(sys, 'argv', [PROCESS_NAME, '-i', root, '-o', root])
         context.syspath_prepend(root)
         with raises(SystemExit) as result:
-            pack(workplan(worker), root=root, featurepackage=package)
+            pack(workplan(), root=root, featurepackage=package)
         assert returncode(result) == FAILURE
 
 
-@mark.parametrize('worker', [
-    worker_with_exception,
-    worker_with_no_returnvalue,
-    worker_with_wrong_input,
-    worker_with_wrong_returnvalue,
-])
-def test_featurepack_with_broken_worker(featureexample, monkeypatch, worker):
+@mark.parametrize(
+    'name,worker', [
+        ('worker_with_exception', WORKER_WITH_EXCEPTION),
+        ('worker_with_no_returnvalue', WORKER_WITH_NO_RETURNVALUE),
+        ('worker_with_wrong_input', WORKER_WITH_WRONG_INPUT),
+        ('worker_with_wrong_returnvalue', WORKER_WITH_WRONG_RETURNVALUE),
+    ],
+    ids=[
+        'worker_with_expection',
+        'worker_with_no_returnvalue',
+        'worker_with_wrong_input',
+        'worker_with_wrong_returnvalue',
+    ])
+def test_featurepack_with_broken_worker(  #pylint:disable=W0621
+        featureexample,
+        monkeypatch,
+        name,
+        worker,
+):
     root, package = featureexample
+    featurepath = join(root, package.replace('.', '/'))
+    # create feature
+    file_create(join(
+        featurepath,
+        '%s.py' % name,
+    ), worker)
     with monkeypatch.context() as context:
         context.setattr(sys, 'argv', [PROCESS_NAME, '-i', root, '-o', root])
         context.syspath_prepend(root)
 
         with raises(SystemExit) as result:
-            pack(workplan(worker), root=root, featurepackage=package)
+            pack(workplan(name), root=root, featurepackage=package)
         assert returncode(result) == FAILURE
 
 
-def test_featurepack(featureexample, monkeypatch):
+def test_featurepack(featureexample, monkeypatch):  #pylint:disable=W0621
     root, package = featureexample
     with monkeypatch.context() as context:
         context.setattr(sys, 'argv', [PROCESS_NAME, '-i', root, '-o', root])
         context.syspath_prepend(root)
         with raises(SystemExit) as result:
-            pack(workplan(worker), root=root, feature_package=package)
+            pack(workplan(), root=root, featurepackage=package)
         assert returncode(result) == SUCCESS
+
+
+PDF_PARSER = """
+from utila import Flag
+def name():
+    return 'parser'
+
+def commandline():
+    return Flag(longcut=name(), message='export the html result of %s' % name())
+
+def work(pdffile : str) -> str:
+    return 'parsed_file'
+"""
+
+
+def test_feature_featurepack_workplan_pdf_parser(testdir, monkeypatch):
+    """Test featurepack with multiple input via *.PDF"""
+    # TODO: Clean up test creating process
+    root = str(testdir)
+    featurepackage = 'feedback.features'
+    processname = 'pdfparser'
+    feature_path = join(root, featurepackage.replace('.', '/'))
+    makedirs(feature_path)
+    file_create(join(root, '__init__.py'))
+    file_create(join(root, 'feedback/__init__.py'))
+    file_create(join(root, 'feedback/features/__init__.py'))
+    file_create(join(feature_path, 'parser.py'), PDF_PARSER)
+
+    examplepath = join(root, 'example')
+    makedirs(examplepath)
+    file_create(join(examplepath, 'test.pdf'), 'this pdf is empty')
+
+    workplan = [
+        create_step(
+            'parser',
+            [
+                ('*', 'PDF'),
+            ],
+            (('result'),),
+        ),
+    ]
+    with monkeypatch.context() as context:
+        context.setattr(sys, 'argv', [
+            processname,
+            '-i',
+            examplepath,
+            '-o',
+            root,
+        ])
+        context.syspath_prepend(root)
+        with raises(SystemExit) as result:
+            context.syspath_prepend(root)
+            featurepack(
+                workplan,
+                root,
+                featurepackage,
+                name='parsi',
+                description='Description',
+                version='1.0.0',
+                singleinput=True,
+            )
+    assert returncode(result) == SUCCESS
