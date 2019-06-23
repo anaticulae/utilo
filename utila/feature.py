@@ -281,8 +281,10 @@ def commandline(features: List[Feature], workplan) -> List[Command]:
             result.extend(commands)
         else:
             result.append(commands)
+    # add sorted, unique parameter as parameterization point
     variables = determine_variables(workplan)
-    for item in variables:
+    variables = list(set(variables))  # avoid duplicating parameter
+    for item in sorted(variables):
         result.append(Parameter(longcut=item))
     return result
 
