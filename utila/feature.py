@@ -393,13 +393,14 @@ def prepare_variables(variables, args):
             continue
         typ = variable.typ
         try:
-            converted = typ(args[variable.name])
+            values = args[variable.name]
+            defaultvalues = typ(variable.defaultvar)
+            converted = typ(values) if values is not None else defaultvalues
             result.append(converted)
         except ValueError:
             msg = 'while processing %s with value %s'
             logging_error(msg % (variable.name, variable.typ))
     return result
-
 
 def prepare_inputs(inputs, inspace) -> List[str]:
     """Parse single and multiple file input
@@ -538,9 +539,9 @@ class Input:
 class Value(Input):
     name: str
     typ: str
+    defaultvar: str
     minimum: str = ''
     maximum: str = ''
-
 
 @dataclass
 class Pattern(Input):
