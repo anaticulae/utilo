@@ -2,6 +2,12 @@
 
 Every noteable change is logged here.
 
+## v0.7.3
+
+### Feature
+
+* add default value for running without all parameter (af5559936abf)
+
 ## v0.7.2
 
 ### Fix
