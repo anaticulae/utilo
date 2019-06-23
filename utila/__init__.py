@@ -31,6 +31,11 @@ from utila.error import CANCELLED_BY_USER
 from utila.error import handle_error
 from utila.error import saveme
 # Feature
+from utila.feature import File
+from utila.feature import Input
+from utila.feature import Pattern
+from utila.feature import ResultFile
+from utila.feature import Value
 from utila.feature import create_step
 from utila.feature import featurepack
 # File

@@ -20,7 +20,11 @@ from utila import SUCCESS
 from utila import create_step
 from utila import featurepack
 from utila import file_create
+from utila import file_read
 from utila import returncode
+from utila.feature import Pattern
+from utila.feature import ResultFile
+from utila.feature import Value
 
 WORKER = """
 from typing import Tuple
@@ -58,7 +62,7 @@ def workplan(name: str = 'complete_worker'):
         create_step(
             name,
             [
-                ('decider_border_hitthebox', 'hits'),
+                ResultFile(producer='decider_border_hitthebox', name='hits'),
             ],
             (
                 ('result', 'html'),
@@ -185,48 +189,96 @@ def test_featurepack(featureexample, monkeypatch):  #pylint:disable=W0621
         context.syspath_prepend(root)
         with raises(SystemExit) as result:
             pack(workplan(), root=root, featurepackage=package)
-        assert returncode(result) == SUCCESS
+        assert returncode(result) == SUCCESS, str(result)
 
 
-PDF_PARSER = """
+def create_worker(
+        stepname: str,
+        worker: str,
+        featurepath: str,
+):
+    example = """
 from utila import Flag
 def name():
-    return 'parser'
+    return '%s'
 
 def commandline():
-    return Flag(longcut=name(), message='export the html result of %s' % name())
+    return Flag(longcut='%s', message='run %s')
 
-def work(pdffile : str) -> str:
-    return 'parsed_file'
-"""
+%s
+    """
+    # TODO: what is wrong with str format? oh man!
+    example = example % (stepname, stepname, stepname, worker)
+    file_create(join(featurepath, '%s.py' % stepname), example)
+
+
+def create_example(
+        root: str,
+        featurepackage: str,
+        stepname: str,
+        worker: str,
+):
+    featurepath = join(root, featurepackage.replace('.', '/'))
+    makedirs(featurepath)
+    file_create(join(root, '__init__.py'))
+    file_create(join(root, 'feedback/__init__.py'))
+    file_create(join(root, 'feedback/features/__init__.py'))
+
+    create_worker(stepname, worker, featurepath)
 
 
 def test_feature_featurepack_workplan_pdf_parser(testdir, monkeypatch):
     """Test featurepack with multiple input via *.PDF"""
     # TODO: Clean up test creating process
     root = str(testdir)
-    featurepackage = 'feedback.features'
     processname = 'pdfparser'
-    feature_path = join(root, featurepackage.replace('.', '/'))
-    makedirs(feature_path)
-    file_create(join(root, '__init__.py'))
-    file_create(join(root, 'feedback/__init__.py'))
-    file_create(join(root, 'feedback/features/__init__.py'))
-    file_create(join(feature_path, 'parser.py'), PDF_PARSER)
+    featurepackage = 'feedback.features'
+    featurepath = join(root, featurepackage.replace('.', '/'))
+    stepname = 'parser'
 
-    examplepath = join(root, 'example')
-    makedirs(examplepath)
-    file_create(join(examplepath, 'test.pdf'), 'this pdf is empty')
-
+    # Define first working step
+    worker = """
+def work(pdffile : str) -> str:
+    return 'parsed_file'
+"""
     workplan = [
         create_step(
-            'parser',
+            stepname,
             [
-                ('*', 'PDF'),
+                Pattern('*', 'pdf'),
             ],
             (('result'),),
         ),
     ]
+    examplepath = join(root, 'example')
+    makedirs(examplepath)
+    file_create(join(examplepath, 'test.pdf'), 'this pdf is empty')
+
+    create_example(
+        root,
+        featurepackage=featurepackage,
+        stepname=stepname,
+        worker=worker,
+    )
+
+    # Define second work step
+    path_with_value_worker = """
+def work(pdf : str, char_margin : float, char_align : float) -> str:
+    return '%.2f %.2f' % (char_margin,char_align)
+"""
+
+    create_worker('path_with_value', path_with_value_worker, featurepath)
+    workplan.append(
+        create_step(
+            'path_with_value',
+            [
+                Pattern('*', 'pdf'),
+                Value('char_margin', float, 0.1),
+                Value('char_align', float, 20),
+            ],
+            (('result'),),
+        ))
+
     with monkeypatch.context() as context:
         context.setattr(sys, 'argv', [
             processname,
@@ -234,6 +286,10 @@ def test_feature_featurepack_workplan_pdf_parser(testdir, monkeypatch):
             examplepath,
             '-o',
             root,
+            '--char_margin',
+            '1.0',
+            '--char_align',
+            '50.5',
         ])
         context.syspath_prepend(root)
         with raises(SystemExit) as result:
@@ -248,3 +304,5 @@ def test_feature_featurepack_workplan_pdf_parser(testdir, monkeypatch):
                 singleinput=True,
             )
     assert returncode(result) == SUCCESS
+    written = file_read(join(root, 'parsi__path_with_value_result.yaml'))
+    assert written == '1.00 50.50', str(written)

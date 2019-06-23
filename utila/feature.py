@@ -17,6 +17,7 @@
     )
 """
 import importlib
+from dataclasses import dataclass
 from functools import partial
 from glob import glob
 from inspect import signature
@@ -25,11 +26,13 @@ from os import makedirs
 from os.path import exists
 from os.path import isfile
 from os.path import join
+from typing import Callable
 from typing import List
 from typing import Tuple
 
 from utila.cmdline import Command
 from utila.cmdline import Flag
+from utila.cmdline import Parameter
 from utila.cmdline import create_parser
 from utila.cmdline import parse
 from utila.cmdline import sources
@@ -48,10 +51,15 @@ HOOK = 'hook'
 
 FeatureInterface = Tuple[str, Command, callable]
 
+Outputs = List[str]
+Hook = Callable
+Name = str
+WorkStep = Tuple[Name, Hook, Outputs]
+
 
 @saveme(systemexit=True)
 def featurepack(
-        workplan,
+        workplan: List[WorkStep],
         root: str,
         featurepackage: str,
         name: str,
@@ -74,7 +82,7 @@ def featurepack(
         return SUCCESS or FAILURE
     """
     feature = find_features(root, featurepackage)
-    commands = commandline(feature)
+    commands = commandline(feature, workplan)
     parser = create_parser(
         commands,
         prog=name,
@@ -102,6 +110,7 @@ def featurepack(
         hooks=hooks,
         inspace=inputpath,
         outspace=outputpath,
+        args=args,
         prefix=prefix,
         verify=True,
     )
@@ -203,7 +212,7 @@ def write_result_safely(result, processstep, outputstep, verbose):
         return FAILURE
 
 
-def find_features(root: str, featurepackage) -> List[FeatureInterface]:
+def find_features(root: str, featurepackage: str) -> List[FeatureInterface]:
     """Locate all feautures in given path
 
     Ensure that feature methods are defined. If some feature interface is not
@@ -254,7 +263,7 @@ Worker = callable  #pylint:disable=C0103
 Feature = Tuple[Name, CommandLineInterface, Worker]
 
 
-def commandline(features: List[Feature]) -> List[Command]:
+def commandline(features: List[Feature], workplan) -> List[Command]:
     """Build command line interface due iterating searched features
 
     Args:
@@ -272,6 +281,9 @@ def commandline(features: List[Feature]) -> List[Command]:
             result.extend(commands)
         else:
             result.append(commands)
+    variables = determine_variables(workplan)
+    for item in variables:
+        result.append(Parameter(longcut=item))
     return result
 
 
@@ -290,8 +302,8 @@ def create_step(
         OUTPUT: ('butter', 'tart', 'cream'),
     }
     """
-    assert isinstance(inputs, List), type(inputs)
-    assert isinstance(output, tuple), type(output)
+    assert isinstance(inputs, List), '%s %s' % (type(inputs), str(inputs))
+    assert isinstance(output, tuple), '%s %s' % (type(output), str(output))
 
     step = {
         NAME: name,
@@ -307,9 +319,18 @@ def read_workplan(
         hooks: dict,
         inspace,
         outspace=None,
+        args=None,
         prefix: str = None,
         verify: bool = False,
-):
+) -> List[WorkStep]:
+    """Parse user defined workplan
+
+    Args:
+
+    Returns:
+
+
+    """
     outspace = outspace if outspace else inspace
     prefix = '%s_' % prefix if prefix else ''
 
@@ -317,8 +338,8 @@ def read_workplan(
     ret = 0
     for step in plan:
         inputs, outputs = step[INPUT], step[OUTPUT]
-        inputs = prepare_inputs(inputs, inspace)
-
+        variables = prepare_variables(variables=inputs, args=args)
+        call_inputs = prepare_inputs(inputs, inspace)
         name = step[NAME]
         try:
             caller = hooks[name]
@@ -333,11 +354,12 @@ def read_workplan(
             outputs=outputs,
             outspace=outspace,
         )
+        ret += verify_resources(call_inputs, outputs)
+        if variables:
+            call_inputs.extend(variables)
+        verify_interface(call_inputs, outputs, caller)
 
-        verify_interface(inputs, outputs, caller)
-        ret += verify_resources(inputs, outputs)
-
-        function_call = partial(caller, *inputs)
+        function_call = partial(caller, *call_inputs)
 
         result.append({
             NAME: name,
@@ -347,7 +369,33 @@ def read_workplan(
 
     if ret and verify:
         exit(FAILURE)
+    return result
 
+
+def determine_variables(workplan):
+    result = []
+    for step in workplan:
+        inputs = step[INPUT]
+        for item in inputs:
+            if not isinstance(item, Value):
+                continue
+            result.append(item.name)
+    return result
+
+
+def prepare_variables(variables, args):
+    """Extract variables out of inputs, ignore files and pattern"""
+    result = []
+    for variable in variables:
+        if not isinstance(variable, Value):
+            continue
+        typ = variable.typ
+        try:
+            converted = typ(args[variable.name])
+            result.append(converted)
+        except ValueError:
+            msg = 'while processing %s with value %s'
+            logging_error(msg % (variable.name, variable.typ))
     return result
 
 
@@ -368,18 +416,25 @@ def prepare_inputs(inputs, inspace) -> List[str]:
     # single file input
     if isfile(inspace) and len(inputs) == 1:
         # TODO: Not stable for multiple inputs
+        # TODO: check Value-Pattern-Problem
         return [inspace]
 
     for item in inputs:
-        (name, typ) = item
-        if typ.isupper():
-            typ = typ.lower()
-            pattern = '%s/%s.%s' % (inspace, name, typ)
+        if not isinstance(item, Pattern):
+            continue
+        (name, ext) = item.name, item.ext
+        if isinstance(item, ResultFile):
+            producer = item.producer
+            filename = '%s__%s.%s' % (producer, name, ext)
+            result.append(join(inspace, filename))
+        elif isinstance(item, File):
+            filename = '%s.%s' % (name, ext)
+            result.append(join(inspace, filename))
+        else:
+            ext = ext.lower()
+            pattern = '%s/%s.%s' % (inspace, name, ext)
             for finding in glob(pattern):
                 result.append(finding)
-        else:
-            filename = '%s__%s.yaml' % (name, typ)
-            result.append(join(inspace, filename))
     return result
 
 
@@ -463,10 +518,39 @@ def todo(args):
     args = dict(args)
     del args['input']
     del args['output']
-
     if not any(args.values()):
         # run all features
         result = [key for key, value in args.items()]
     else:
-        result = [key for key, value in args.items() if value]
+        # True is important!
+        result = [key for key, value in args.items() if value == True]
     return result
+
+
+@dataclass
+class Input:
+    pass
+
+
+@dataclass
+class Value(Input):
+    name: str
+    typ: str
+    minimum: str = ''
+    maximum: str = ''
+
+
+@dataclass
+class Pattern(Input):
+    name: str
+    ext: str
+
+
+@dataclass
+class File(Pattern):
+    ext: str = 'yaml'
+
+
+@dataclass
+class ResultFile(File):
+    producer: str = 'default'
