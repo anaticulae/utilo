@@ -2,6 +2,12 @@
 
 Every noteable change is logged here.
 
+## v0.7.2
+
+### Fix
+
+* do not allow defining conflicting cmdline interface (f454f69d49a2)
+
 ## v0.7.1
 
 ### Feature
