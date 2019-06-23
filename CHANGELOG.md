@@ -2,6 +2,12 @@
 
 Every noteable change is logged here.
 
+## v0.7.1
+
+### Feature
+
+* add new feature creator (36947b30d85d)
+
 ## v0.7.0
 
 ### Feature
