@@ -2,6 +2,12 @@
 
 Every noteable change is logged here.
 
+## v0.7.4
+
+### Fix
+
+* fix single file input as source (176fcb18c7c9)
+
 ## v0.7.3
 
 ### Feature
