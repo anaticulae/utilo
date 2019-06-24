@@ -207,33 +207,33 @@ def sources(args, *, singleinput: bool = False, verbose: bool = False):
         (input, output): path(str) to in-/ and output-location
     """
     cwd = os.path.abspath(os.getcwd())
-    input_path = args.get('input')  # if key is not present, return None
-    output_path = args.get('output')
+    inputpath = args.get('input')  # if key is not present, return None
+    outputpath = args.get('output')
     prefix = args.get('prefix')
 
-    if input_path:
-        if not os.path.isabs(input_path):
+    if inputpath:
+        if not os.path.isabs(inputpath):
             # Make path absolute
-            input_path = os.path.join(cwd, input_path)
+            inputpath = os.path.join(cwd, inputpath)
         if not singleinput:
-            if os.path.isfile(input_path):
-                logging_error('Input %s must be a directory' % input_path)
+            if os.path.isfile(inputpath):
+                logging_error('Input %s must be a directory' % inputpath)
                 exit(INVALID_COMMAND)
-        if not os.path.exists(input_path):
-            logging_error('Input %s does not exists' % input_path)
+        if not os.path.exists(inputpath):
+            logging_error('Input %s does not exists' % inputpath)
             exit(INVALID_COMMAND)
 
-    if output_path:
-        if not os.path.isabs(output_path):
-            output_path = os.path.join(cwd, output_path)
-        if os.path.isfile(output_path):
-            logging_error('Output %s must be a directory' % output_path)
+    if outputpath:
+        if not os.path.isabs(outputpath):
+            outputpath = os.path.join(cwd, outputpath)
+        if os.path.isfile(outputpath):
+            logging_error('Output %s must be a directory' % outputpath)
             exit(INVALID_COMMAND)
-        if not os.path.exists(output_path):
-            logging('Creating: %s' % output_path)
-            os.makedirs(output_path)
+        if not os.path.exists(outputpath):
+            logging('Creating: %s' % outputpath)
+            os.makedirs(outputpath)
 
     if verbose:
         verb = int(args[VERBOSE]) if args[VERBOSE] else 0
-        return (input_path, output_path, prefix, verb)
-    return (input_path, output_path, prefix)
+        return (inputpath, outputpath, prefix, verb)
+    return (inputpath, outputpath, prefix)
