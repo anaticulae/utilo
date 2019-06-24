@@ -263,7 +263,7 @@ def work(pdffile : str) -> str:
 
     # Define second work step
     path_with_value_worker = """
-def work(pdf : str, char_margin : float, char_align : float) -> str:
+def work(pdf : str, result: str, char_margin : float, char_align : float) -> str:
     return '%.2f %.2f' % (char_margin,char_align)
 """
 
@@ -273,6 +273,7 @@ def work(pdf : str, char_margin : float, char_align : float) -> str:
             'path_with_value',
             [
                 Pattern('*', 'pdf'),
+                ResultFile(producer=processname, name='result'),
                 Value('char_margin', float, 0.1),
                 Value('char_align', float, 20),
             ],
