@@ -80,7 +80,7 @@ def three_side_equal_cluster(todo):
 def same_area_cluster(todo, max_difference=10.0):
 
     def classificator(candidat, clusteritem, max_difference=max_difference):
-        assert max_difference > 0.0
+        assert max_difference >= 0.0
 
         from math import sqrt
 
@@ -91,15 +91,23 @@ def same_area_cluster(todo, max_difference=10.0):
             testbox, _ = candidat
             goalbox, _ = clusteritem
             equality = distance(
-                testbox.x_bottom,
-                testbox.y_bottom,
-                goalbox.x_bottom,
-                goalbox.y_bottom,
+                # testbox.x_bottom,
+                testbox[0],
+                # testbox.y_bottom,
+                testbox[1],
+                # goalbox.x_bottom,
+                goalbox[0],
+                # goalbox.y_bottom,
+                goalbox[1],
             ) + distance(
-                testbox.x_top,
-                testbox.y_top,
-                goalbox.x_top,
-                goalbox.y_top,
+                # testbox.x_top,
+                testbox[2],
+                # testbox.y_top,
+                testbox[3],
+                # goalbox.x_top,
+                testbox[2],
+                # goalbox.y_top,
+                testbox[3],
             )
             return equality <= max_difference
 
