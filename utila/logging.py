@@ -22,11 +22,17 @@ class Level(IntEnum):
     LOGGING = 0
     CALLS = 1
     INFORMATION = 2
-    DEBUG = 4
-    ERROR = 64
+    DEBUG = 3
+    ERROR = -1
+
 
 
 LEVEL = Level.LOGGING
+
+
+def level(level: Level):
+    global LEVEL
+    LEVEL = level
 
 
 def logging(msg: str = '', level: Level = Level.LOGGING, end: str = NEWLINE):
@@ -59,15 +65,15 @@ def log(msg: str = '', level: Level = Level.LOGGING, end: str = NEWLINE):
 
 
 def call(msg: str):
-    logging(msg, Level.CALLS)
+    logging('  %s' % msg, Level.CALLS)
 
 
 def info(msg: str):
-    logging(msg, Level.INFORMATION)
+    logging('    %s' % msg, Level.INFORMATION)
 
 
 def debug(msg: str):
-    logging(msg, Level.DEBUG)
+    logging('      %s' % msg, Level.DEBUG)
 
 
 def error(msg: str):

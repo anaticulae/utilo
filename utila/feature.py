@@ -38,6 +38,10 @@ from utila.cmdline import parse
 from utila.cmdline import sources
 from utila.error import saveme
 from utila.file import file_replace
+from utila.logging import Level
+from utila.logging import call
+from utila.logging import info
+from utila.logging import level
 from utila.logging import logging
 from utila.logging import logging_error
 from utila.logging import logging_stacktrace
@@ -99,6 +103,7 @@ def featurepack(
         singleinput=singleinput,
         verbose=True,
     )
+    level(Level(verbose))
     if not inputpath or not outputpath:
         parser.print_usage()
         return FAILURE
@@ -126,7 +131,6 @@ def featurepack(
     completed = process(
         workplan,
         todo=current_todo,
-        verbose=verbose,
     )
     return completed
 
@@ -142,7 +146,6 @@ def prepare_hooks(items: List[FeatureInterface]):
 def process(
         workplan,
         todo: List = None,
-        verbose: bool = False,
 ):
     """Process the given features
 
@@ -169,7 +172,7 @@ def process(
             # Stop processing if some error occurs while processing hook
             return FAILURE
 
-        result = write_result_safely(result, name, step[OUTPUT], verbose)
+        result = write_result_safely(result, name, step[OUTPUT])
         if result == FAILURE:
             # Stop processing if some error occurs while writing result
             return FAILURE
@@ -196,11 +199,11 @@ def run_hook_safely(hook: callable, name: str, stepoutput):
     return result
 
 
-def write_result_safely(result, processstep, outputstep, verbose):
+def write_result_safely(result, processstep, outputstep):
+    call('write results')
     try:
         for path, content in zip(outputstep, result):
-            if verbose:
-                logging('write: %s' % path)
+            info('write %s' % path)
             # write content to file.
             file_replace(path, content)
         return SUCCESS
@@ -416,6 +419,7 @@ def prepare_inputs(inputs, inspace) -> List[str]:
     Returns:
         list of located files
     """
+    call('prepare inputs')
     result = []
     # single file input
     if isfile(inspace) and len(inputs) == 1:
@@ -441,8 +445,12 @@ def prepare_inputs(inputs, inspace) -> List[str]:
             else:
                 ext = ext.lower()
                 pattern = '%s/%s.%s' % (inspace, name, ext)
+                info('using pattern: %s' % pattern)
+                files = glob(pattern)
+                info('%s' % str(files))
                 for finding in glob(pattern):
                     result.append(finding)
+    call('result: %s\n' % result)
     return result
 
 
