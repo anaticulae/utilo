@@ -402,6 +402,7 @@ def prepare_variables(variables, args):
             logging_error(msg % (variable.name, variable.typ))
     return result
 
+
 def prepare_inputs(inputs, inspace) -> List[str]:
     """Parse single and multiple file input
 
@@ -434,10 +435,14 @@ def prepare_inputs(inputs, inspace) -> List[str]:
             filename = '%s.%s' % (name, ext)
             result.append(join(inspace, filename))
         else:
-            ext = ext.lower()
-            pattern = '%s/%s.%s' % (inspace, name, ext)
-            for finding in glob(pattern):
-                result.append(finding)
+            if '.' in inspace:
+                # File as a input name
+                result.append(inspace)
+            else:
+                ext = ext.lower()
+                pattern = '%s/%s.%s' % (inspace, name, ext)
+                for finding in glob(pattern):
+                    result.append(finding)
     return result
 
 
@@ -542,6 +547,7 @@ class Value(Input):
     defaultvar: str
     minimum: str = ''
     maximum: str = ''
+
 
 @dataclass
 class Pattern(Input):
