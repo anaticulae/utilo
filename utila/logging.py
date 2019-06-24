@@ -26,7 +26,6 @@ class Level(IntEnum):
     ERROR = -1
 
 
-
 LEVEL = Level.LOGGING
 
 

@@ -24,8 +24,8 @@ from inspect import signature
 from os import listdir
 from os import makedirs
 from os.path import exists
-from os.path import isfile
 from os.path import join
+from os.path import split
 from typing import Callable
 from typing import List
 from typing import Tuple
@@ -344,7 +344,7 @@ def read_workplan(
     for step in plan:
         inputs, outputs = step[INPUT], step[OUTPUT]
         variables = prepare_variables(variables=inputs, args=args)
-        call_inputs = prepare_inputs(inputs, inspace)
+        call_inputs = prepare_inputs(inputs, inspace, outspace)
         name = step[NAME]
         try:
             caller = hooks[name]
@@ -360,10 +360,13 @@ def read_workplan(
             outspace=outspace,
         )
         ret += verify_resources(call_inputs, outputs)
+        # filter rewrite recursive inputs
+        call_inputs = [
+            item[1:] if item[0] == '_' else item for item in call_inputs
+        ]
         if variables:
             call_inputs.extend(variables)
         verify_interface(call_inputs, outputs, caller)
-
         function_call = partial(caller, *call_inputs)
 
         result.append({
@@ -406,7 +409,7 @@ def prepare_variables(variables, args):
     return result
 
 
-def prepare_inputs(inputs, inspace) -> List[str]:
+def prepare_inputs(inputs, inspace, outspace) -> List[str]:
     """Parse single and multiple file input
 
     Loacted files by defined pattern in `Workplan`. A file pattern is defined
@@ -422,11 +425,6 @@ def prepare_inputs(inputs, inspace) -> List[str]:
     call('prepare inputs')
     result = []
     # single file input
-    if isfile(inspace) and len(inputs) == 1:
-        # TODO: Not stable for multiple inputs
-        # TODO: check Value-Pattern-Problem
-        return [inspace]
-
     for item in inputs:
         if not isinstance(item, Pattern):
             continue
@@ -434,12 +432,20 @@ def prepare_inputs(inputs, inspace) -> List[str]:
         if isinstance(item, ResultFile):
             producer = item.producer
             filename = '%s__%s.%s' % (producer, name, ext)
-            result.append(join(inspace, filename))
+            filepath = join(inspace, filename)
+            if exists(filepath):
+                result.append(filepath)
+            else:
+                # TODO: Refactor recursive inputs
+                recursivepath = join(outspace, filename)
+                info('recursive input %s' % recursivepath)
+                result.append('_%s' % recursivepath)
         elif isinstance(item, File):
             filename = '%s.%s' % (name, ext)
             result.append(join(inspace, filename))
         else:
-            if '.' in inspace:
+            _, filename = split(inspace)
+            if '.' in filename:
                 # File as a input name
                 result.append(inspace)
             else:
@@ -448,7 +454,7 @@ def prepare_inputs(inputs, inspace) -> List[str]:
                 info('using pattern: %s' % pattern)
                 files = glob(pattern)
                 info('%s' % str(files))
-                for finding in glob(pattern):
+                for finding in files:
                     result.append(finding)
     call('result: %s\n' % result)
     return result
@@ -483,8 +489,10 @@ def prepare_outputs(
                 msg = 'require tuple with (item, datatype). got: %r %s'
                 logging_error(msg % (item, type(item)))
                 ret += 1
-        _outputs.append(
-            '%s__%s%s_%s.%s' % (process_, prefix, stepname, item, datatype))
+        outitem = '%s__%s%s_%s.%s'
+        outitem = outitem % (process_, prefix, stepname, item, datatype)
+        _outputs.append(outitem)
+
     if ret:
         exit(FAILURE)
     outputs = [join(outspace, item) for item in _outputs]
@@ -496,6 +504,10 @@ def verify_resources(inputs, outputs):
     # require input files
     for path in inputs:
         if exists(path):
+            continue
+        if path[0] == '_':
+            # recursive inputs start with _. We do not check recursive inputs,
+            # because there are generated later.
             continue
         logging_error('File does not exists: %s' % path)
         ret += 1
@@ -512,7 +524,6 @@ def verify_resources(inputs, outputs):
 def verify_interface(inputs, outputs, worker):
     # check callable
     # check input parameter
-    # inputs = ['%s__%s.yaml' % item for item in inputs]
     call_parameter = signature(worker).parameters
     interface_error_msg = 'interface error %s != %s' % (
         list(call_parameter.keys()),
@@ -539,7 +550,7 @@ def todo(args):
         result = [key for key, value in args.items()]
     else:
         # True is important!
-        result = [key for key, value in args.items() if value == True]
+        result = [key for key, value in args.items() if value == True]  # pylint:disable=singleton-comparison
     return result
 
 
@@ -556,11 +567,25 @@ class Value(Input):
     minimum: str = ''
     maximum: str = ''
 
+    def __repr__(self):
+        ctor = ("Value(name='%s', typ='%s', defaultvar='%s',"
+                " minimum='%s', maximum='%s')")
+        return ctor % (
+            self.name,
+            self.typ,
+            self.defaultvar,
+            self.minimum,
+            self.maximum,
+        )
+
 
 @dataclass
 class Pattern(Input):
     name: str
     ext: str
+
+    def __str__(self):
+        return '%s.%s' % (self.name, self.ext)
 
 
 @dataclass
@@ -571,3 +596,6 @@ class File(Pattern):
 @dataclass
 class ResultFile(File):
     producer: str = 'default'
+
+    def __str__(self):
+        return '%s__%s.%s' % (self.producer, self.name, self.ext)
