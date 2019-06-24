@@ -2,6 +2,18 @@
 
 Every noteable change is logged here.
 
+## v0.7.5
+
+### Feature
+
+* add recursive inputs to use resource which are generated later (4b9401c8848a)
+* add different logging level by -vvv (36accbc2bb83)
+* extend logging API with different logging level (c72ed1f66d82)
+
+### Fix
+
+* remove dependencies to BoundingBox (bcf09f8b4a3a)
+
 ## v0.7.4
 
 ### Fix
