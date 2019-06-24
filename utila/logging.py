@@ -9,6 +9,7 @@
 
 import sys
 from contextlib import contextmanager
+from enum import IntEnum
 from time import time
 from traceback import format_exc
 
@@ -17,15 +18,39 @@ from utila.utils import fix_encoding
 from utila.utils import forward_slash
 
 
-def logging(msg: str = '', end: str = NEWLINE):
+class Level(IntEnum):
+    LOGGING = 0
+    CALLS = 1
+    INFORMATION = 2
+    DEBUG = 4
+    ERROR = 64
+
+
+LEVEL = Level.LOGGING
+
+
+def logging(msg: str = '', level: Level = Level.LOGGING, end: str = NEWLINE):
+    import warnings
+    warnings.warn('Use log instead', DeprecationWarning)
+    log(msg, level, end)
+
+
+def log(msg: str = '', level: Level = Level.LOGGING, end: str = NEWLINE):
     """Write message to logger
 
     Args:
         msg(str): message to log
+        level(Level): define logging level which is required to print on
+                      console
         end(str): lineending
     Hint:
         Logging with default arguments will log a newline
     """
+    if level == Level.ERROR:
+        logging_error(msg)
+        return
+    if level > LEVEL:
+        return
     # avoid problems when using with windows console(cp1252)
     msg = fix_encoding(msg)
     # TODO: msg = NEWLINE.join(wrap(msg, 120))
@@ -33,8 +58,26 @@ def logging(msg: str = '', end: str = NEWLINE):
     print(msg, end=end, file=sys.stdout, flush=True)
 
 
+def call(msg: str):
+    logging(msg, Level.CALLS)
+
+
+def info(msg: str):
+    logging(msg, Level.INFORMATION)
+
+
+def debug(msg: str):
+    logging(msg, Level.DEBUG)
+
+
+def error(msg: str):
+    logging_error(msg)
+
+
 def logging_error(msg: str):
     """Print error-message to stderr and add [ERROR]-tag"""
+    import warnings
+    warnings.warn('replace with log()', DeprecationWarning)
     # avoid problems when using with windows console(cp1252)
     msg = fix_encoding(msg)
     # use forward slashs

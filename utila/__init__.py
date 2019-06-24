@@ -56,7 +56,13 @@ from utila.file import tmp
 # likelihood
 from utila.likelihood import uniform_result
 # Logging
+from utila.logging import Level
+from utila.logging import call
+from utila.logging import debug
+from utila.logging import error
 from utila.logging import flush
+from utila.logging import info
+from utila.logging import log
 from utila.logging import logging
 from utila.logging import logging_error
 from utila.logging import logging_stacktrace
