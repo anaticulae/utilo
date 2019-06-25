@@ -87,7 +87,7 @@ from utila.utils import UTF8
 from utila.utils import fix_encoding
 from utila.utils import forward_slash
 
-__version__ = '0.7.5'
+__version__ = '0.7.6'
 
 ROOT = os.path.abspath(os.path.join(os.path.dirname(__file__), '..'))
 PACKAGENAME = 'utila'

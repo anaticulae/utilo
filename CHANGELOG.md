@@ -2,6 +2,12 @@
 
 Every noteable change is logged here.
 
+## v0.7.6
+
+### Fix
+
+* ignore existing files, overwrite them (56ab5f521f4c)
+
 ## v0.7.5
 
 ### Feature
