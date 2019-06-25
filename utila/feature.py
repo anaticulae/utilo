@@ -160,11 +160,13 @@ def process(
     todo = set(todo)
     for step in workplan:
         name = step[NAME]
-        logging('processing: %s' % name)
         if name not in todo and todo:
             # if todo is empty, nothing is selected, so run every step
             logging('skipping: %s' % name)
             continue
+        else:
+            logging('processing: %s' % name)
+
 
         hook = step[HOOK]
         result = run_hook_safely(hook, name, step[OUTPUT])
