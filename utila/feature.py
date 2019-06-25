@@ -359,7 +359,7 @@ def read_workplan(
             outputs=outputs,
             outspace=outspace,
         )
-        ret += verify_resources(call_inputs, outputs)
+        ret += verify_resources(call_inputs)
         # filter rewrite recursive inputs
         call_inputs = [
             item[1:] if item[0] == '_' else item for item in call_inputs
@@ -499,7 +499,7 @@ def prepare_outputs(
     return outputs
 
 
-def verify_resources(inputs, outputs):
+def verify_resources(inputs):
     ret = 0
     # require input files
     for path in inputs:
@@ -510,13 +510,6 @@ def verify_resources(inputs, outputs):
             # because there are generated later.
             continue
         logging_error('File does not exists: %s' % path)
-        ret += 1
-
-    # check that output does not exists
-    for path in outputs:
-        if not exists(path):
-            continue
-        logging_error('File exists: %s' % path)
         ret += 1
     return ret
 
