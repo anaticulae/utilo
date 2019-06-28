@@ -408,6 +408,7 @@ def prepare_variables(variables, args):
         except ValueError:
             msg = 'while processing %s with value %s'
             logging_error(msg % (variable.name, variable.typ))
+            logging_error('given args %r' % args)
     return result
 
 
