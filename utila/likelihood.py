@@ -7,7 +7,9 @@
 # be prosecuted under federal law. Its content is company confidential.
 # =============================================================================
 
+from typing import Dict
 from typing import List
+from typing import Tuple
 
 
 def uniform_result(items) -> List[float]:
@@ -20,4 +22,14 @@ def uniform_result(items) -> List[float]:
     result = [feature / max_features for (_, feature) in items]
     # round to 2 digits
     result = [round(item, 2) for item in result]
+    return result
+
+
+def uniform_result_with_items(items: Dict[str, int],
+                             ) -> List[Tuple[str, float]]:
+    common = sum(items.values())
+    result = [(
+        size,
+        round(occurence / common, 2),
+    ) for size, occurence in items.items()]
     return result

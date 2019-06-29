@@ -167,7 +167,6 @@ def process(
         else:
             logging('processing: %s' % name)
 
-
         hook = step[HOOK]
         result = run_hook_safely(hook, name, step[OUTPUT])
         if result == FAILURE:

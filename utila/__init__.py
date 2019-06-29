@@ -55,6 +55,7 @@ from utila.file import tempname
 from utila.file import tmp
 # likelihood
 from utila.likelihood import uniform_result
+from utila.likelihood import uniform_result_with_items
 # Logging
 from utila.logging import Level
 from utila.logging import call
