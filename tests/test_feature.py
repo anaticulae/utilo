@@ -115,6 +115,8 @@ def name():
 def commandline():
     return Flag(longcut=name(), message='export the html result of %s' % name())
 from typing import Tuple
+from utila import checkdatatype
+@checkdatatype
 def work(path : str) -> Tuple[str, str]:
     return 'work completed', 'Error'
     """)
