@@ -21,16 +21,16 @@ def checkdatatype(func):
         def wrapper(*args, **kwds):
             uf_name = user_function.__name__
             parameter = list(signature(user_function).parameters.items())
-            parameter = [item.annotation for (_, item) in parameter]
+            parameter = [(name, item.annotation) for (name, item) in parameter]
 
-            msg = 'Expected: %r, current %r:'
+            msg = 'parameter: %s, expected: %r, current %r:'
             error = []
-            for current, expected in zip(args, parameter):
+            for current, (name, expected) in zip(args, parameter):
                 if isinstance(current, expected):
                     continue
                 if expected is Signature.empty:
                     continue
-                error.append((msg % (expected, type(current))))
+                error.append((msg % (name, expected, type(current))))
                 error.append(str(current))
             if error:
                 logging_error('Invalid function input `%s`' % uf_name)
