@@ -2,6 +2,19 @@
 
 Every noteable change is logged here.
 
+## v0.7.7
+
+### Feature
+
+* support @checkdatatype with feature worker (9aed44b45154)
+* add type checker to verify that input match with defined datatype (91453883c1a7)
+* add method to compute common likelihood on base 1 (b093d7e51239)
+* print given args on values error to ease verifying error (1fb8b01a2b80)
+
+### Fix
+
+* fix logging output (e67d3235e82a)
+
 ## v0.7.6
 
 ### Fix
