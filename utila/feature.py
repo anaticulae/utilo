@@ -17,6 +17,7 @@
     )
 """
 import importlib
+from contextlib import suppress
 from dataclasses import dataclass
 from functools import partial
 from glob import glob
@@ -515,10 +516,15 @@ def verify_resources(inputs):
         ret += 1
     return ret
 
-
 def verify_interface(inputs, outputs, worker):
     # check callable
     # check input parameter
+    signatures = str(signature(worker))
+    if worker.__name__ == 'wrapper' and signatures == '(*args, **kwds)':
+        with suppress(AttributeError):
+            # bypass wrapper of `typechecker.checkdatatype`
+            worker = worker.__userfunc__
+
     call_parameter = signature(worker).parameters
     interface_error_msg = 'interface error %s != %s' % (
         list(call_parameter.keys()),

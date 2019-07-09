@@ -38,5 +38,8 @@ def checkdatatype(func):
                     logging_error(item)
                 raise ValueError('Invalid function input %s' % uf_name)
             return user_function(*args, **kwds)
+
+        wrapper.__userfunc__ = user_function
         return wrapper
+
     return decorating_function(func)
