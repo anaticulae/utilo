@@ -79,6 +79,8 @@ from utila.test import returncode
 from utila.test import run
 from utila.test import run_command
 from utila.test import skip_nonvirtual
+# Typerchecker
+from utila.typechecker import checkdatatype
 # Utils
 from utila.utils import FAILURE
 from utila.utils import INF
