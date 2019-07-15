@@ -2,6 +2,13 @@
 
 Every noteable change is logged here.
 
+## v0.7.8
+
+### Feature
+
+* add method to round and to chain a list of lists (0d2cfedc1d29)
+* add print broken parameter name to ease debugging (f6b73f144515)
+
 ## v0.7.7
 
 ### Feature
