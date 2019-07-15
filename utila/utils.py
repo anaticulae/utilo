@@ -17,6 +17,7 @@ UTF8 = 'utf8'
 NEWLINE = '\n'
 INF = (1 << 31) - 1
 
+NDIGITS = 2
 
 def forward_slash(content: str):
     """Replace every backward slash \\ with an forward slash /
@@ -47,3 +48,17 @@ def fix_encoding(msg: str):
     # remove non valid char to avoid error on (win)-console
     msg = msg.encode(encoding, errors='xmlcharrefreplace').decode(encoding)
     return msg
+
+
+
+def roundme(value: float):
+    """Round value to `NDGITS`=2"""
+    return round(value, NDIGITS)
+
+
+def flatten(lists):
+    """Chain lists of list to one list"""
+    result = []
+    for item in lists:
+        result.extend(item)
+    return result
