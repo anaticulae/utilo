@@ -14,6 +14,7 @@ from utila.logging import logging_error
 
 # TODO: USE functools.update_wrapper
 
+
 def checkdatatype(func):
     """Check that passed arguments have the right datatype"""
 

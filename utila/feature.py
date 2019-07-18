@@ -516,6 +516,7 @@ def verify_resources(inputs):
         ret += 1
     return ret
 
+
 def verify_interface(inputs, outputs, worker):
     # check callable
     # check input parameter

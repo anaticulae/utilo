@@ -19,6 +19,7 @@ INF = (1 << 31) - 1
 
 NDIGITS = 2
 
+
 def forward_slash(content: str):
     """Replace every backward slash \\ with an forward slash /
 
@@ -48,7 +49,6 @@ def fix_encoding(msg: str):
     # remove non valid char to avoid error on (win)-console
     msg = msg.encode(encoding, errors='xmlcharrefreplace').decode(encoding)
     return msg
-
 
 
 def roundme(value: float):

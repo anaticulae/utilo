@@ -89,15 +89,15 @@ class RequiredCommand(Command):
 VERBOSE = 'verbose'
 
 COMMANDS = [
+    Parameter(
+        longcut='prefix',
+        message='add prefix to separate different output files',
+    ),
     Flag(
         args={'action': 'count'},
         longcut=VERBOSE,
         message='define how verbose logging is',
         shortcut='V',
-    ),
-    Parameter(
-        longcut='prefix',
-        message='add prefix to separate different output files',
     ),
 ]
 
