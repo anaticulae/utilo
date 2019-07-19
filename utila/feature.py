@@ -47,6 +47,7 @@ from utila.logging import logging
 from utila.logging import logging_error
 from utila.logging import logging_stacktrace
 from utila.utils import FAILURE
+from utila.utils import NEWLINE
 from utila.utils import SUCCESS
 
 NAME = 'name'
@@ -88,6 +89,9 @@ def featurepack(
     """
     feature = find_features(root, featurepackage)
     commands = commandline(feature, workplan)
+
+    description = prepare_description(name, description, workplan)
+
     parser = create_parser(
         commands,
         prog=name,
@@ -104,7 +108,10 @@ def featurepack(
         singleinput=singleinput,
         verbose=True,
     )
+
+    # update logging level
     level(Level(verbose))
+
     if not inputpath or not outputpath:
         parser.print_usage()
         return FAILURE
@@ -134,14 +141,6 @@ def featurepack(
         todo=current_todo,
     )
     return completed
-
-
-def prepare_hooks(items: List[FeatureInterface]):
-    result = {}
-    for item in items:
-        name, _, caller = item
-        result[name] = caller
-    return result
 
 
 def process(
@@ -179,6 +178,43 @@ def process(
             # Stop processing if some error occurs while writing result
             return FAILURE
     return SUCCESS
+
+
+def prepare_hooks(items: List[FeatureInterface]):
+    result = {}
+    for item in items:
+        name, _, caller = item
+        result[name] = caller
+    return result
+
+
+def prepare_description(name: str, description: str, workplan):
+    result = [
+        '\nworking plan resources:\n',
+    ]
+    for item in workplan:
+        result.append('step:\n   %s' % item['name'])
+
+        # prepare inputs
+        result.append('inputs:')
+        inputs = ['   %s' % input_ for input_ in item['input']]
+        result.extend(sorted(inputs))
+
+        # prepare outputs
+        result.append('outputs:')
+        outputs = []
+        for output_ in item['output']:
+            try:
+                fname, fending = output_
+            except ValueError:
+                fname, fending = output_, 'yaml'
+            outputs.append('   %s__%s.%s' % (name, fname, fending))
+        result.extend(sorted(outputs))
+
+        # final newline
+        result.append('')
+    result = NEWLINE.join(result)
+    return description + NEWLINE + result
 
 
 def run_hook_safely(hook: callable, name: str, stepoutput):
