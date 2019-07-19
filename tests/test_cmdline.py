@@ -32,7 +32,7 @@ def test_cmdline_parse_args(monkeypatch):
     """Create a parser with 2 parameter, pass arguments and evaluate the
     result"""
     todo = [
-        Parameter('-a', '--all', 'Do all!'),
+        Parameter('-a', '--alls', 'Do all!'),
         Parameter('-n', '--nothing', 'Do nothing!'),
     ]
     parser = create_parser(
@@ -41,7 +41,7 @@ def test_cmdline_parse_args(monkeypatch):
         todo=todo,
     )
 
-    argv = ['parser', '--all', '"hallo this is helmut"', '--nothing', 'aaa']
+    argv = ['parser', '--alls', '"hallo this is helmut"', '--nothing', 'aaa']
     with monkeypatch.context() as context:
         context.setattr(sys, 'argv', argv)
         parser.print_help()
@@ -49,7 +49,7 @@ def test_cmdline_parse_args(monkeypatch):
 
     verbose_and_prefix = 2  # for verbose level --verbose and --prefix
     assert len(args) == len(todo) + verbose_and_prefix
-    assert '--all' in args
+    assert '--alls' in args
     assert '--nothing' in args
 
 
@@ -120,7 +120,7 @@ sys.path.append("%s")
 from utila import RequiredCommand
 from utila.cmdline import create_parser
 
-parser = create_parser(RequiredCommand('-a', '--all', 'I need it all'))
+parser = create_parser(RequiredCommand('-a', '--alls', 'I need it all'))
 parser.parse_args()
 """
 
