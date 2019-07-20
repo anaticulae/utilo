@@ -30,6 +30,7 @@ Example:
 
 import os
 from argparse import ArgumentParser
+from argparse import RawDescriptionHelpFormatter
 from dataclasses import dataclass
 from dataclasses import field
 
@@ -124,7 +125,11 @@ def create_parser(
     todo = list(todo)
     todo.extend(COMMANDS)
 
-    parser = ArgumentParser(prog=prog, description=description)
+    parser = ArgumentParser(
+        prog=prog,
+        description=description,
+        formatter_class=RawDescriptionHelpFormatter,
+    )
 
     if version:
         todo.append(Flag('-v', 'version', 'Show version and exit.'))
