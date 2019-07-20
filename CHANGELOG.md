@@ -2,6 +2,21 @@
 
 Every noteable change is logged here.
 
+## v0.8.0
+
+### Feature
+
+* support external variables in description preview (ceb4514bc56a)
+* add --all flag to run every feature step (eb9f5b17683c)
+* continue on error and terminate with error at the end (169792d1d029)
+* use current working directory as default in/output path (5dbcc62a4244)
+* add format ability to parser description (fc644b8ffb52)
+* print inputs/outputs of working plan via --help (f1805d8af1c1)
+
+### Documentation
+
+* extend interface documentation and fix some spelling errors (d0549124cad5)
+
 ## v0.7.8
 
 ### Feature
