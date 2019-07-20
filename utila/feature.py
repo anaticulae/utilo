@@ -42,6 +42,7 @@ from utila.error import saveme
 from utila.file import file_replace
 from utila.logging import Level
 from utila.logging import call
+from utila.logging import error
 from utila.logging import info
 from utila.logging import level
 from utila.logging import logging
@@ -162,6 +163,7 @@ def process(
     if todo is None:
         todo = []
     todo = set(todo)
+    success = True
     for step in workplan:
         name = step[NAME]
         # if todo is empty, nothing is selected, run every step
@@ -174,14 +176,15 @@ def process(
         hook = step[HOOK]
         result = run_hook_safely(hook, name, step[OUTPUT])
         if result == FAILURE:
-            # Stop processing if some error occurs while processing hook
-            return FAILURE
+            # mark failure, but process further
+            success = False
+            continue
 
         result = write_result_safely(result, name, step[OUTPUT])
         if result == FAILURE:
-            # Stop processing if some error occurs while writing result
-            return FAILURE
-    return SUCCESS
+            # mark failure, but process further
+            success = False
+    return SUCCESS if success else FAILURE
 
 
 def prepare_hooks(items: List[FeatureInterface]):
@@ -408,7 +411,9 @@ def read_workplan(
         ]
         if variables:
             call_inputs.extend(variables)
-        verify_interface(call_inputs, outputs, caller)
+        if verify_interface(call_inputs, outputs, caller) == FAILURE:
+            ret += 1
+            continue
         function_call = partial(caller, *call_inputs)
 
         result.append({
@@ -572,7 +577,9 @@ def verify_interface(inputs, outputs, worker):
         list(call_parameter.keys()),
         inputs,
     )
-    assert len(call_parameter) == len(inputs), interface_error_msg
+    if not len(call_parameter) == len(inputs):
+        error('missing input resources: %s' % interface_error_msg)
+        return FAILURE
 
     # check output parameter
     return_parameter = str(signature(worker).return_annotation)
@@ -581,7 +588,10 @@ def verify_interface(inputs, outputs, worker):
         return_parameter,
         outputs,
     )
-    assert len(outputs) == return_count, interface_error_msg
+    if not len(outputs) == return_count:
+        error('missing output resources: %s' % interface_error_msg)
+        return FAILURE
+    return SUCCESS
 
 
 def todo(args):
