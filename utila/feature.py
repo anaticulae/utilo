@@ -92,7 +92,6 @@ def featurepack(
     commands = commandline(feature, workplan)
 
     description = prepare_description(name, description, workplan)
-
     parser = create_parser(
         commands,
         prog=name,
@@ -102,7 +101,6 @@ def featurepack(
         inputparameter=True,
     )
     args = parse(parser)
-
     # evaluate the verbose flag
     inputpath, outputpath, prefix, verbose = sources(
         args,
@@ -147,14 +145,17 @@ def featurepack(
 
 
 def process(
-        workplan,
+        workplan: List[WorkStep],
         todo: List = None,
 ):
-    """Process the given features
+    """Process the given features. The process ignores errors in sub-steps
+    and run till the end. If some error occurs, the process stoppes at the
+    end. If the todo-list is empty, every single step is executed.
 
     Args:
-        workplan(List[steps]):
-        verbose(bool): extend logging verbosity
+        workplan(List[WorkStep]):
+        todo: list with steps to run, if no steps are None, every step is
+              executed
     Returns:
         SUCCESS if all features process successfully, if not FAILURE
     """
@@ -163,8 +164,8 @@ def process(
     todo = set(todo)
     for step in workplan:
         name = step[NAME]
+        # if todo is empty, nothing is selected, run every step
         if name not in todo and todo:
-            # if todo is empty, nothing is selected, so run every step
             logging('skipping: %s' % name)
             continue
         else:
@@ -455,8 +456,8 @@ def prepare_inputs(inputs, inspace, outspace) -> List[str]:
     """Parse single and multiple file input
 
     Loacted files by defined pattern in `Workplan`. A file pattern is defined
-    via (name, typ). The typ is written in UPPER-CASES, for example (*, PDF)
-    to locate multiple pdf's.
+    via (name, typ). The ext is in UPPER-CASES, for example (*, PDF) to
+    locate multiple pdf's.
 
     Args:
         inputs(str): inputs is deliverd by workplan
@@ -468,6 +469,7 @@ def prepare_inputs(inputs, inspace, outspace) -> List[str]:
     result = []
     # single file input
     for item in inputs:
+        info('skipping input `%s`, require `Pattern' % str(item))
         if not isinstance(item, Pattern):
             continue
         (name, ext) = item.name, item.ext
@@ -548,8 +550,8 @@ def verify_resources(inputs):
         if exists(path):
             continue
         if path[0] == '_':
-            # recursive inputs start with _. We do not check recursive inputs,
-            # because there are generated later.
+            # recursive input-definition start with _. We do not check
+            # recursive inputs, because there were generated later.
             continue
         logging_error('File does not exists: %s' % path)
         ret += 1
