@@ -163,6 +163,9 @@ def process(
     if todo is None:
         todo = []
     todo = set(todo)
+    # process all features, see some lines below
+    if 'all' in todo:
+        todo = set()
     success = True
     for step in workplan:
         name = step[NAME]
@@ -334,6 +337,10 @@ def commandline(features: List[Feature], workplan) -> List[Command]:
     variables = list(set(variables))  # avoid duplicating parameter
     for item in sorted(variables):
         result.append(Parameter(longcut=item))
+
+    # run all workplan feature
+    result.append(Flag('--all'))
+
     return result
 
 
