@@ -17,6 +17,7 @@
     )
 """
 import importlib
+import os
 from contextlib import suppress
 from dataclasses import dataclass
 from functools import partial
@@ -112,9 +113,11 @@ def featurepack(
     # update logging level
     level(Level(verbose))
 
-    if not inputpath or not outputpath:
-        parser.print_usage()
-        return FAILURE
+    # run application in current working directory if not paths are provided
+    if not inputpath:
+        inputpath = os.getcwd()
+    if not outputpath:
+        outputpath = os.getcwd()
 
     hooks = prepare_hooks(feature)
     workplan = read_workplan(

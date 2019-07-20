@@ -126,13 +126,15 @@ def work(path : str) -> Tuple[str, str]:
 
 # pylint:disable=W0621
 def test_featurepack_without_input(featureexample, monkeypatch):
+    """Running process without any args, runs all features in current working
+    directory."""
     root, package = featureexample
     with monkeypatch.context() as context:
         context.setattr(sys, 'argv', [PROCESS_NAME])
         context.syspath_prepend(root)
         with raises(SystemExit) as result:
             pack(workplan(), root=root, featurepackage=package)
-        assert returncode(result) == FAILURE
+        assert returncode(result) == SUCCESS
 
 
 def test_featurepack_with_broken_feature(featureexample, monkeypatch):
