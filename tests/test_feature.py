@@ -266,7 +266,8 @@ def work(pdffile : str) -> str:
     )
 
     # Define second work step
-    path_with_value_worker = """
+    path_with_value_worker =\
+"""
 def work(pdf : str, result: str, char_margin : float, char_align : float) -> str:
     return '%.2f %.2f' % (char_margin,char_align)
 """
@@ -311,3 +312,56 @@ def work(pdf : str, result: str, char_margin : float, char_align : float) -> str
     assert returncode(result) == SUCCESS
     written = file_read(join(root, 'parsi__path_with_value_result.yaml'))
     assert written == '1.00 50.50', str(written)
+
+
+def test_feature_featurepack_help_with_variable(testdir, monkeypatch, capsys):
+    root = str(testdir)
+    processname = 'pdfparser'
+    featurepackage = 'feedback.features'
+    featurepath = join(root, featurepackage.replace('.', '/'))
+
+    path_with_value_worker = """
+def work(pdf : str, result: str, char_margin : float, char_align : float) -> str:
+    return '%.2f %.2f' % (char_margin,char_align)
+"""
+    makedirs(featurepath)
+    create_worker('path_with_value', path_with_value_worker, featurepath)
+    workplan = [(create_step(
+        'path_with_value',
+        [
+            Pattern('*', 'pdf'),
+            ResultFile(producer=processname, name='result'),
+            Value('char_margin', float, 0.1),
+            Value('char_align', float, 20),
+        ],
+        (('result'),),
+    ))]
+
+    # check --help
+    with monkeypatch.context() as context:
+        context.setattr(sys, 'argv', [
+            processname,
+            '--help',
+        ])
+        context.syspath_prepend(root)
+        with raises(SystemExit) as result:
+            context.syspath_prepend(root)
+            featurepack(
+                workplan,
+                root,
+                featurepackage,
+                name='parsi',
+                description='Description',
+                version='1.0.0',
+                singleinput=True,
+            )
+    out, err = capsys.readouterr()
+    assert not err, str(err)
+    assert out.count('variable:') == 2, str(out)
+    assert out.count('type:') == 2, str(out)
+    assert out.count('default:') == 2, str(out)
+
+    assert returncode(result) == SUCCESS
+
+
+# TODO: REMOVE COPY AND PASTE, MOVE EXAMPLES TO REGULAR PYTHON FILES

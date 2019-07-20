@@ -207,7 +207,18 @@ def prepare_description(name: str, description: str, workplan):
 
         # prepare inputs
         result.append('inputs:')
-        inputs = ['   %s' % input_ for input_ in item['input']]
+        inputs = []
+        for input_ in item['input']:
+            if isinstance(input_, Value):
+                msg = '   variable: %s, type: %s, default: %s'
+                msg = msg % (input_.name, input_.typ, str(input_.defaultvar))
+                inputs.append(msg)
+            else:
+                try:
+                    fname, fending = input_
+                except ValueError:
+                    fname, fending = input_, 'yaml'
+                inputs.append('   %s.%s' % (fname, fending))
         result.extend(sorted(inputs))
 
         # prepare outputs
@@ -646,6 +657,10 @@ class Pattern(Input):
 
     def __str__(self):
         return '%s.%s' % (self.name, self.ext)
+
+    def __getitem__(self, index):
+        # make pattern iterable
+        return [self.name, self.ext][index]
 
 
 @dataclass
