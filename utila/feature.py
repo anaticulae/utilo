@@ -140,6 +140,7 @@ def featurepack(
     current_todo = todo(args)
     completed = process(
         workplan,
+        name,
         todo=current_todo,
     )
     return completed
@@ -147,6 +148,7 @@ def featurepack(
 
 def process(
         workplan: List[WorkStep],
+        name: str = None,
         todo: List = None,
 ):
     """Process the given features. The process ignores errors in sub-steps
@@ -155,6 +157,7 @@ def process(
 
     Args:
         workplan(List[WorkStep]):
+        name(str): name of executable
         todo: list with steps to run, if no steps are None, every step is
               executed
     Returns:
@@ -167,6 +170,10 @@ def process(
     if 'all' in todo:
         todo = set()
     success = True
+    if name:
+        # log start of executable
+        logging(name)
+
     for step in workplan:
         name = step[NAME]
         # if todo is empty, nothing is selected, run every step
