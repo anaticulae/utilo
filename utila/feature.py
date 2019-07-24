@@ -242,9 +242,9 @@ def run_hook_safely(hook: callable, name: str, stepoutput):
     try:
         result = hook()
     except Exception as error:  # pylint: disable=broad-except
+        logging_stacktrace()
         logging_error('while processing %s' % name)
         logging_error(error)
-        logging_stacktrace()
         return FAILURE
 
     if isinstance(result, str):
