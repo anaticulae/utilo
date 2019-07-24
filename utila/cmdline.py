@@ -110,7 +110,17 @@ def create_parser(
 ):
     """Create parser out of defined dictonary with command-line-definiton.
 
-    Returns created argparser
+    Args:
+        todo(list): extend default parser with todo list
+        version(str): current version of parser applicatin
+        inputparameter(bool): if true, default input parameter is active
+        outputparameter(bool): if true, default output parameter is active
+        prefix(bool): if true, default prefix is active
+        prog(str): name of application `prog --help`
+        description(str): description text of --help invocation
+
+    Returns:
+        created argparser
     """
     if todo is None:
         todo = []
