@@ -16,6 +16,7 @@ from pytest import raises
 from utila import INVALID_COMMAND
 from utila import ROOT
 from utila import SUCCESS
+from utila import Flag
 from utila import Parameter
 from utila import file_append
 from utila import file_create
@@ -51,6 +52,32 @@ def test_cmdline_parse_args(monkeypatch):
     assert len(args) == len(todo) + verbose_and_prefix
     assert '--alls' in args
     assert '--nothing' in args
+
+
+@mark.parametrize('prefix', [
+    True,
+    False,
+])
+def test_cli_prefix_activation(monkeypatch, prefix):
+    todo = [
+        Flag(longcut='--longcut', message='display longcuts'),
+    ]
+    parsername = 'parser'
+    parser = create_parser(
+        description='This is just a sample parser',
+        prog=parsername,
+        todo=todo,
+        prefix=prefix,
+    )
+
+    argv = [parsername, '--longcut']
+    with monkeypatch.context() as context:
+        context.setattr(sys, 'argv', argv)
+        args = parse(parser)
+        source = sources(args)
+
+    expected_return_count = 3 if prefix else 2
+    assert len(source) == expected_return_count
 
 
 def test_cmdline_non_existing_input(tmpdir, monkeypatch):
@@ -226,6 +253,7 @@ def create_and_run_parser(
         testdir,
         monkeypatch,
         argv,
+        prefix: bool = True,
         singleinput: bool = False,
 ):
     prog = 'parser'
@@ -234,6 +262,7 @@ def create_and_run_parser(
         prog=prog,
         inputparameter=True,
         outputparameter=True,
+        prefix=prefix,
     )
 
     with monkeypatch.context() as context:

@@ -90,10 +90,6 @@ class RequiredCommand(Command):
 VERBOSE = 'verbose'
 
 COMMANDS = [
-    Parameter(
-        longcut='prefix',
-        message='add prefix to separate different output files',
-    ),
     Flag(
         args={'action': 'count'},
         longcut=VERBOSE,
@@ -108,6 +104,7 @@ def create_parser(
         version=None,
         inputparameter: bool = False,
         outputparameter: bool = False,
+        prefix: bool = True,
         prog: str = '',
         description: str = '',
 ):
@@ -123,6 +120,14 @@ def create_parser(
     # twice, changing the reference is no good idea and will produce --output,
     # --input twice.
     todo = list(todo)
+
+    if prefix:
+        prefixcommand = Parameter(
+            longcut='prefix',
+            message='add prefix to separate different output files',
+        )
+        todo = [prefixcommand] + todo
+
     todo.extend(COMMANDS)
 
     parser = ArgumentParser(
@@ -214,7 +219,13 @@ def sources(args, *, singleinput: bool = False, verbose: bool = False):
     cwd = os.path.abspath(os.getcwd())
     inputpath = args.get('input')  # if key is not present, return None
     outputpath = args.get('output')
-    prefix = args.get('prefix')
+
+    # check if prefix is a key in passed `args`
+    try:
+        prefix = args['prefix']
+    except KeyError:
+        # prefix is disabled
+        prefix= False
 
     if inputpath:
         if not os.path.isabs(inputpath):
@@ -238,7 +249,13 @@ def sources(args, *, singleinput: bool = False, verbose: bool = False):
             logging('Creating: %s' % outputpath)
             os.makedirs(outputpath)
 
+    result = [inputpath, outputpath]
+    if prefix is not False:
+        print(prefix)
+        result.append(prefix)
     if verbose:
         verb = int(args[VERBOSE]) if args[VERBOSE] else 0
-        return (inputpath, outputpath, prefix, verb)
-    return (inputpath, outputpath, prefix)
+        result.append(verb)
+    return  tuple(result)
+    #     return (inputpath, outputpath, prefix, verb)
+    # return (inputpath, outputpath, prefix)
