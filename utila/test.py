@@ -23,8 +23,14 @@ from utila.utils import SUCCESS
 VIRTUAL_ENV_KEY = 'VIRTUAL'
 NON_VIRTUAL = VIRTUAL_ENV_KEY not in os.environ
 
+FAST = 'FAST' in os.environ.keys()
+LONGRUN = 'LONGRUN' in os.environ.keys()
+FAST_TESTS = not LONGRUN or FAST
+
+LONGRUN_REASON = 'test requires to mutch time'
 VIRTUAL_REASON = 'requires virtual environmnet'
 # pylint: disable=invalid-name
+skip_longrun = mark.skipif(FAST_TESTS, reason=LONGRUN_REASON)
 skip_nonvirtual = mark.skipif(NON_VIRTUAL, reason=VIRTUAL_REASON)
 
 

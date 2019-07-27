@@ -78,6 +78,7 @@ from utila.test import install_and_run
 from utila.test import returncode
 from utila.test import run
 from utila.test import run_command
+from utila.test import skip_longrun
 from utila.test import skip_nonvirtual
 # Typerchecker
 from utila.typechecker import checkdatatype
