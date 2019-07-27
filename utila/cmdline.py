@@ -235,7 +235,7 @@ def sources(args, *, singleinput: bool = False, verbose: bool = False):
         prefix = args['prefix']
     except KeyError:
         # prefix is disabled
-        prefix= False
+        prefix = False
 
     if inputpath:
         if not os.path.isabs(inputpath):
@@ -266,6 +266,6 @@ def sources(args, *, singleinput: bool = False, verbose: bool = False):
     if verbose:
         verb = int(args[VERBOSE]) if args[VERBOSE] else 0
         result.append(verb)
-    return  tuple(result)
+    return tuple(result)
     #     return (inputpath, outputpath, prefix, verb)
     # return (inputpath, outputpath, prefix)
