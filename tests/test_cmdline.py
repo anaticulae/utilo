@@ -26,7 +26,7 @@ from utila import returncode
 from utila import sources
 from utila.cmdline import create_parser
 from utila.test import run
-from utila.test import skip_not_virtual
+from utila.test import skip_nonvirtual
 
 
 def test_cmdline_parse_args(monkeypatch):
@@ -152,7 +152,7 @@ parser.parse_args()
 """
 
 
-@skip_not_virtual
+@skip_nonvirtual
 def test_cmdline_parse_required_command_missing(tmpdir):
     runner = os.path.join(tmpdir, 'run.py')
     file_create(runner, RUN_ME % forward_slash(ROOT))
@@ -165,7 +165,7 @@ def test_cmdline_parse_required_command_missing(tmpdir):
     assert completed.returncode > 0, str(completed)
 
 
-@skip_not_virtual
+@skip_nonvirtual
 def test_cmdline_parse_required_command(tmpdir):
     runner = os.path.join(tmpdir, 'run.py')
     file_create(runner, RUN_ME % forward_slash(ROOT))
@@ -202,7 +202,7 @@ def parser_example(tmpdir):
     return cwd, runner
 
 
-@skip_not_virtual
+@skip_nonvirtual
 def test_cmdline_parse_empty_parser_help(parser_example):  # pylint: disable=W0621
     """Test default parser with --help"""
     cwd, runner = parser_example
@@ -212,7 +212,7 @@ def test_cmdline_parse_empty_parser_help(parser_example):  # pylint: disable=W06
     assert completed.returncode == SUCCESS, str(completed)
 
 
-@skip_not_virtual
+@skip_nonvirtual
 def test_cmdline_parser_source_in_out(parser_example):  # pylint: disable=W0621
     """Test default parser with --help"""
     cwd, runner = parser_example
@@ -224,7 +224,7 @@ def test_cmdline_parser_source_in_out(parser_example):  # pylint: disable=W0621
     assert completed.returncode == INVALID_COMMAND, str(completed)
 
 
-@skip_not_virtual
+@skip_nonvirtual
 def test_cmdline_parse_empty_parser_version(parser_example):  # pylint: disable=W0621
     """Test default parser with --version"""
     cwd, runner = parser_example
@@ -234,7 +234,7 @@ def test_cmdline_parse_empty_parser_version(parser_example):  # pylint: disable=
     assert completed.returncode == INVALID_COMMAND, str(completed)
 
 
-@skip_not_virtual
+@skip_nonvirtual
 def test_cmdline_parse_version_parser_version(tmpdir):
     """Test version parser with --version flag"""
     version = "1.1.1"

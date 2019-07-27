@@ -22,9 +22,10 @@ from utila.utils import SUCCESS
 VIRTUAL_ENV_KEY = 'VIRTUAL'
 NON_VIRTUAL = VIRTUAL_ENV_KEY not in os.environ
 
+VIRTUAL_REASON = 'requires virtual environmnet'
 # pylint: disable=invalid-name
-skip_nonvirtual = mark.skipif(NON_VIRTUAL, reason="Require virtual environment")
-skip_not_virtual = skip_nonvirtual
+skip_nonvirtual = mark.skipif(NON_VIRTUAL, reason=VIRTUAL_REASON)
+
 
 
 def run(command: str, cwd: str = None):
