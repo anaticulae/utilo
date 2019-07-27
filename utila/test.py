@@ -12,6 +12,7 @@ import sys
 from contextlib import contextmanager
 from contextlib import suppress
 from subprocess import PIPE
+from subprocess import CompletedProcess
 from subprocess import run as _run
 
 from pytest import mark
@@ -27,9 +28,15 @@ VIRTUAL_REASON = 'requires virtual environmnet'
 skip_nonvirtual = mark.skipif(NON_VIRTUAL, reason=VIRTUAL_REASON)
 
 
+def run(command: str, cwd: str = None) -> CompletedProcess:
+    """Run external process
 
-def run(command: str, cwd: str = None):
-    """Run external process"""
+    Args:
+        command(str/[str]): command to run
+        cwd(str): current working directory
+    Returns:
+        return completed process
+    """
     cwd = cwd if cwd else os.getcwd()
     assert os.path.exists(cwd)
     msg = 'cwd %s is not a valid directory' % cwd
