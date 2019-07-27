@@ -2,6 +2,22 @@
 
 Every noteable change is logged here.
 
+## v0.9.0
+
+### Feature
+
+* add @skip_longrun to support baw --test=longrun (b6457070edf1)
+* declare --prefix parameter optional (cc623f211ff5)
+* print name of executable before log actions (466490e396b6)
+
+### Fix
+
+* swap printing error message (4f281f9bf828)
+
+### Documentation
+
+* extend interface documentation of `run` (daa884e6baf2)
+
 ## v0.8.0
 
 ### Feature
