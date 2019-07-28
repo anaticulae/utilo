@@ -168,11 +168,11 @@ def from_raw_or_path(content: str, ftype: str = 'yaml'):
     return content
 
 
-def tempname(width: int = MAX_NUMBER) -> str:
+def tmpname(width: int = MAX_NUMBER) -> str:
     """Get random file-name with 20-ziffre, random name
 
     Args:
-        width(int): length of tempname
+        width(int): length of tmpname
     Returns:
         filename(str): random file name
     """
@@ -182,7 +182,7 @@ def tempname(width: int = MAX_NUMBER) -> str:
     return str(randrange(max_test_number)).zfill(width)
 
 
-def tempfile(root):
+def tmpfile(root):
     """Get temporary file-path located in `TEMP_FOLDER`.
 
     Returns:
@@ -191,11 +191,11 @@ def tempfile(root):
     assert exists(root)
     tmppath = tmp(root)
 
-    name = 'temp%s' % tempname()
+    name = 'tmp%s' % tmpname()
     path = join(tmppath, name)
     if exists(path):
         # try again to find unused temp file
-        return tempfile(root)
+        return tmpfile(root)
     return path
 
 

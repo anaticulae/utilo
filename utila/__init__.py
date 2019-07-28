@@ -50,9 +50,9 @@ from utila.file import file_read
 from utila.file import file_remove
 from utila.file import file_replace
 from utila.file import from_raw_or_path
-from utila.file import tempfile
-from utila.file import tempname
 from utila.file import tmp
+from utila.file import tmpfile
+from utila.file import tmpname
 # likelihood
 from utila.likelihood import uniform_result
 from utila.likelihood import uniform_result_with_items

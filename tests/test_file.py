@@ -24,9 +24,9 @@ from utila import file_create
 from utila import file_read
 from utila import file_replace
 from utila import from_raw_or_path
-from utila import tempfile
-from utila import tempname
 from utila import tmp
+from utila import tmpfile
+from utila import tmpname
 from utila.file import SHARED_TEMP
 
 
@@ -67,20 +67,20 @@ def test_file_from_path_or_raw(tmpdir):
         from_raw_or_path('/c/test.yaml')
 
 
-def test_file_tempname():
-    name = tempname(width=15)
+def test_file_tmpname():
+    name = tmpname(width=15)
     assert len(name) == 15, name
 
-    name = tempname(width=20)
+    name = tmpname(width=20)
     assert len(name) == 20, name
 
 
-def test_file_tempfile(tmpdir):
-    random_path = tempfile(tmpdir)
+def test_file_tmpfile(tmpdir):
+    random_path = tmpfile(tmpdir)
     assert not exists(random_path), random_path
 
 
-def test_file_temp_redirect(testdir, monkeypatch):
+def test_file_tmp_redirect(testdir, monkeypatch):
     """Redirect tmp-path with KIWI_TEMPBASE environ variable"""
     with monkeypatch.context() as context:
         context.setattr(os, 'environ', {SHARED_TEMP: str(testdir)})
@@ -88,7 +88,7 @@ def test_file_temp_redirect(testdir, monkeypatch):
         assert exists(temp), temp
 
 
-def test_file_temp_without_shared_temp(testdir, monkeypatch):
+def test_file_tmp_without_shared_temp(testdir, monkeypatch):
     """Do not redirect SHARED_TEMP"""
     with monkeypatch.context() as context:
         # unset SHARED_TEMP
