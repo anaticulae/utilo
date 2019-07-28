@@ -315,6 +315,7 @@ def work(pdf : str, result: str, char_margin : float, char_align : float) -> str
 
 
 def test_feature_featurepack_help_with_variable(testdir, monkeypatch, capsys):
+    # TODO: DIRTY CODE
     root = str(testdir)
     processname = 'pdfparser'
     featurepackage = 'feedback.features'
@@ -325,6 +326,12 @@ def work(pdf : str, result: str, char_margin : float, char_align : float) -> str
     return '%.2f %.2f' % (char_margin,char_align)
 """
     makedirs(featurepath)
+
+    # make directories to packages
+    file_create(join(root, '__init__.py'), '')
+    file_create(join(root, 'feedback/__init__.py'), '')
+    file_create(join(root, 'feedback/features/__init__.py'), '')
+
     create_worker('path_with_value', path_with_value_worker, featurepath)
     workplan = [(create_step(
         'path_with_value',
