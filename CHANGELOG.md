@@ -2,6 +2,16 @@
 
 Every noteable change is logged here.
 
+## v0.9.1
+
+### Feature
+
+* extend `copy_content` to support copy files and folder (f03814865111)
+
+### Fix
+
+* add __init__ to access directories as packages (b67664979cc4)
+
 ## v0.9.0
 
 ### Feature
