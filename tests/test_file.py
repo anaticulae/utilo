@@ -8,6 +8,7 @@
 #==============================================================================
 
 import os
+from os import listdir
 from os import makedirs
 from os.path import exists
 from os.path import join
@@ -163,3 +164,51 @@ def test_file_replace_file(testdir):
     file_replace(path, 'NewContent')
     content = file_read(path)
     assert content == 'NewContent'
+
+
+def test_file_copy_content_file_to_directory(testdir):
+    testdir = str(testdir)
+    filename = 'abc.txt'
+    file_create(filename)
+    destination = join(testdir, 'destination')
+    copy_content(filename, destination)
+
+    assert exists(join(destination, filename))
+
+
+def test_file_copy_content_file_to_file(testdir):
+    testdir = str(testdir)
+    filename = 'abc.txt'
+    file_create(filename)
+    destination = join(testdir, 'cba.txt')
+    copy_content(filename, destination)
+
+    assert exists(destination)
+
+
+def test_file_copy_content_directory_to_directory(testdir):
+    testdir = str(testdir)
+    folder = prepare_example(testdir)
+
+    goal = join(testdir, 'goal')
+    copy_content(folder, goal)
+
+    assert len(listdir(goal)) == 3, listdir(goal)
+
+
+def prepare_example(directory):
+    folder = join(directory, 'first')
+
+    folder_abc = join(folder, 'abc.txt')
+    folder_def = join(folder, 'def.txt')
+    folder_ghi = join(folder, 'ghi.txt')
+
+    makedirs(folder)
+    for item in [
+            folder_abc,
+            folder_def,
+            folder_ghi,
+    ]:
+        file_create(item, item)
+
+    return folder

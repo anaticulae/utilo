@@ -11,6 +11,7 @@ import os
 from os import listdir
 from os import makedirs
 from os import remove
+from os.path import basename
 from os.path import exists
 from os.path import isfile
 from os.path import join
@@ -123,6 +124,17 @@ def file_replace(path: str, content: str):
         fp.write(content)
 
 
+def isfilepath(path: str):
+    assert path, path
+    if exists(path):
+        return isfile(path)
+    base = basename(path)
+    if base[0] == '.':
+        # .tmp
+        return False
+    return '.' in base
+
+
 def copy_content(source: str, destination: str, recursive: bool = False):
     """Copy the content from `source` to `destination` folder. If `desitination`
     folder does not exists, it will be created.
@@ -131,7 +143,18 @@ def copy_content(source: str, destination: str, recursive: bool = False):
         Why not using shutil.copytree?: Copy tree expect that destination does
         not exists, but we need this.
     """
-    assert exists(source)
+    assert exists(source), str(source)
+    if isfile(source):
+        content = file_read(source)
+        if not isfilepath(destination):
+            makedirs(destination, exist_ok=True)
+            destination = join(destination, basename(source))
+
+        # ensure that parent directories exists
+        makedirs(split(destination)[0], exist_ok=True)
+        file_create(destination, content)
+        return
+
     makedirs(destination, exist_ok=True)
     for item in listdir(source):
         source_ = join(source, item)
