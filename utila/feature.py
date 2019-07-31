@@ -18,6 +18,7 @@
 """
 import importlib
 import os
+from collections import defaultdict
 from contextlib import suppress
 from dataclasses import dataclass
 from functools import partial
@@ -51,6 +52,7 @@ from utila.logger import log_stacktrace
 from utila.utils import FAILURE
 from utila.utils import NEWLINE
 from utila.utils import SUCCESS
+from utila.utils import determine_order
 
 NAME = 'name'
 INPUT = 'input'
@@ -197,6 +199,42 @@ def process(
             # mark failure, but process further
             success = False
     return SUCCESS if success else FAILURE
+
+
+def input_order(plan):
+    require = defaultdict(set)
+    for step in plan:
+        name = step['name']
+        inputs = [str(item) for item in step['input']]
+
+        for item in inputs:
+            with suppress(ValueError):
+                producer, _ = item.split('_', maxsplit=1)
+                require[name].add(producer)
+            continue
+    order = determine_order(require, flat=False)
+    return order
+
+
+def parallelize_workplan(plan, max_processes=1):
+
+    order = input_order(plan)
+
+    steps = {step['name']: step for step in plan}
+    result = []
+
+    for level in order:
+        level_result = []
+        for item in level:
+            if len(level_result) < max_processes:
+                level_result.append(steps[item])
+            else:
+                result.append(level_result)
+                level_result = [steps[item]]
+        if level_result:
+            result.append(level_result)
+
+    return result
 
 
 def prepare_process(todo, name, processes):

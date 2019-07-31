@@ -62,3 +62,22 @@ def flatten(lists):
     for item in lists:
         result.extend(item)
     return result
+
+
+def determine_order(requirements, flat=True):
+    requirements = dict(requirements)
+    todo = list(requirements.keys())
+    result = []
+    while todo:
+        level = []
+        before = len(todo)
+        for item in todo[:]:
+            if any([current in todo for current in requirements[item]]):
+                continue
+            todo.remove(item)
+            level.append(item)
+        result.append(level)
+        assert len(todo) != before, 'zyclic definition of workplan'
+    if flat:
+        result = flatten(result)
+    return result
