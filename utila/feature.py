@@ -239,10 +239,12 @@ def input_order(plan):
             inputs = [str(item) for item in hook.args]
 
         for item in inputs:
-            with suppress(ValueError):
+            try:
                 producer, _ = item.split('_', maxsplit=1)
                 require[name].add(producer)
-            continue
+            except ValueError:
+                # for example input.pdf
+                require[name].add(item)
     order = determine_order(require, flat=False)
     return order
 
