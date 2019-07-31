@@ -115,7 +115,7 @@ def featurepack(
 
     # run application in current working directory if not paths are provided
     if not inputpath:
-        inputpath = os.getcwd()
+        inputpath = [os.getcwd()]
     if not outputpath:
         outputpath = os.getcwd()
 
@@ -407,7 +407,8 @@ def read_workplan(
 
 
     """
-    outspace = outspace if outspace else inspace
+    # if no outspace is defined, use the first passed inspace to write output
+    outspace = outspace if outspace else inspace[0]
     prefix = '%s_' % prefix if prefix else ''
 
     result = []
@@ -483,7 +484,7 @@ def prepare_variables(variables, args):
     return result
 
 
-def prepare_inputs(inputs, inspace, outspace) -> List[str]:
+def prepare_inputs(inputs, inspaces, outspace) -> List[str]:
     """Parse single and multiple file input
 
     Loacted files by defined pattern in `Workplan`. A file pattern is defined
@@ -492,45 +493,60 @@ def prepare_inputs(inputs, inspace, outspace) -> List[str]:
 
     Args:
         inputs(str): inputs is deliverd by workplan
-        inspace(str): inspace is the current input via -i/--input
+        inspaces([str]): inspaces is the current input via -i
     Returns:
         list of located files
     """
     call('prepare inputs')
     result = []
     # single file input
+    search_location = ' '.join(inspaces)
     for item in inputs:
+        lastinput = item == inputs[-1]
         info('skipping input `%s`, require `Pattern' % str(item))
         if not isinstance(item, Pattern):
             continue
         (name, ext) = item.name, item.ext
-        if isinstance(item, ResultFile):
-            producer = item.producer
-            filename = '%s__%s.%s' % (producer, name, ext)
-            filepath = join(inspace, filename)
-            if exists(filepath):
-                result.append(filepath)
+        for inspace in inspaces:
+            if isinstance(item, ResultFile):
+                producer = item.producer
+                filename = '%s__%s.%s' % (producer, name, ext)
+                filepath = join(inspace, filename)
+                if exists(filepath):
+                    result.append(filepath)
+                else:
+                    # TODO: Refactor recursive inputs
+                    # Only on the last inspace, because the file could exists
+                    # in other input folder
+                    if inspace == inspaces[-1]:
+                        recursivepath = join(outspace, filename)
+                        info('recursive input %s' % recursivepath)
+                        result.append('_%s' % recursivepath)
+            elif isinstance(item, File):
+                filename = '%s.%s' % (name, ext)
+                filepath = join(inspace, filename)
+                if exists(filepath):
+                    result.append(filepath)
+                else:
+                    if not lastinput:
+                        continue
+                    logging_error('search location: %s' % search_location)
+                    logging_error('missing input: %s' % filepath)
             else:
-                # TODO: Refactor recursive inputs
-                recursivepath = join(outspace, filename)
-                info('recursive input %s' % recursivepath)
-                result.append('_%s' % recursivepath)
-        elif isinstance(item, File):
-            filename = '%s.%s' % (name, ext)
-            result.append(join(inspace, filename))
-        else:
-            _, filename = split(inspace)
-            if '.' in filename:
-                # File as a input name
-                result.append(inspace)
-            else:
-                ext = ext.lower()
-                pattern = '%s/%s.%s' % (inspace, name, ext)
-                info('using pattern: %s' % pattern)
-                files = glob(pattern)
-                info('%s' % str(files))
-                for finding in files:
-                    result.append(finding)
+                _, filename = split(inspace)
+                if '.' in filename:
+                    # File as a input name
+                    result.append(inspace)
+                else:
+                    ext = ext.lower()
+                    pattern = '%s/%s.%s' % (inspace, name, ext)
+                    info('using pattern: %s' % pattern)
+                    files = glob(pattern)
+                    info('%s' % str(files))
+                    for finding in files:
+                        print('FINDING %s' % finding)
+                        result.append(finding)
+
     call('result: %s\n' % result)
     return result
 

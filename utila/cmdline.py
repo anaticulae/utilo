@@ -34,6 +34,7 @@ from argparse import RawDescriptionHelpFormatter
 from dataclasses import dataclass
 from dataclasses import field
 
+from utila.file import make_absolute
 from utila.logging import logging
 from utila.logging import logging_error
 from utila.utils import SUCCESS
@@ -186,6 +187,7 @@ def create_io_ports(infile: bool = False, outfile: bool = False):
             message='Read input data from path',
             args={
                 'dest': 'input',
+                'action': 'append'  # support multiple -i
             },
         )
         todo.append(input_command)
@@ -218,6 +220,10 @@ def sources(args, *, singleinput: bool = False, verbose: bool = False):
     The input- and output-path must be a directory. If singleinput flag is
     activated, a file is addtionaly allowed as input.
 
+    The argparser supports multiple input locations. If the same input is
+    passed twice, only the first one is used. The inputs will returned
+    alphabetically as a list.
+
     Args:
         args(str): arguments, passed by command line
         singleinput(bool): allow a single file instead of a directory as
@@ -227,7 +233,8 @@ def sources(args, *, singleinput: bool = False, verbose: bool = False):
         (input, output): path(str) to in-/ and output-location
     """
     cwd = os.path.abspath(os.getcwd())
-    inputpath = args.get('input')  # if key is not present, return None
+    # multiple inputs are possible
+    inputpaths = args.get('input')  # if key is not present, return None
     outputpath = args.get('output')
 
     # check if prefix is a key in passed `args`
@@ -237,17 +244,19 @@ def sources(args, *, singleinput: bool = False, verbose: bool = False):
         # prefix is disabled
         prefix = False
 
-    if inputpath:
-        if not os.path.isabs(inputpath):
-            # Make path absolute
-            inputpath = os.path.join(cwd, inputpath)
-        if not singleinput:
-            if os.path.isfile(inputpath):
-                logging_error('Input %s must be a directory' % inputpath)
+    if inputpaths:
+        # make path absolute
+        inputpaths = [make_absolute(item) for item in inputpaths]
+        # make unique and sort alphabetically
+        inputpaths = sorted(list(set(inputpaths)))
+        for inputpath in inputpaths:
+            if not singleinput:
+                if os.path.isfile(inputpath):
+                    logging_error('Input %s must be a directory' % inputpath)
+                    exit(INVALID_COMMAND)
+            if not os.path.exists(inputpath):
+                logging_error('Input %s does not exists' % inputpath)
                 exit(INVALID_COMMAND)
-        if not os.path.exists(inputpath):
-            logging_error('Input %s does not exists' % inputpath)
-            exit(INVALID_COMMAND)
 
     if outputpath:
         if not os.path.isabs(outputpath):
@@ -259,7 +268,7 @@ def sources(args, *, singleinput: bool = False, verbose: bool = False):
             logging('Creating: %s' % outputpath)
             os.makedirs(outputpath)
 
-    result = [inputpath, outputpath]
+    result = [inputpaths, outputpath]
     if prefix is not False:
         result.append(prefix)
     if verbose:

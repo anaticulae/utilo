@@ -300,7 +300,7 @@ def test_cmdline_singlefile_input(testdir, monkeypatch, singlefile):
         argv=argv,
         singleinput=True,
     )
-    assert inpath == root, 'folderinput does not deliver the right path'
+    assert inpath == [root], 'folderinput does not deliver the right path'
 
     # read sample.txt
     argv = ['-i', filepath, '-o', root]
@@ -311,7 +311,7 @@ def test_cmdline_singlefile_input(testdir, monkeypatch, singlefile):
             argv=argv,
             singleinput=True,
         )
-        assert inpath == filepath, 'singleinput does not deliver the right path'
+        assert inpath == [filepath], 'singleinp does not deliver the right path'
     else:
         with raises(SystemExit) as result:
             argv = ['-i', filepath, '-o', root]
