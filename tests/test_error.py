@@ -10,6 +10,7 @@
 from pytest import raises
 
 from utila import FAILURE
+from utila import handle_error
 from utila import saveme
 from utila.error import CANCELLED_BY_USER
 
@@ -79,3 +80,12 @@ def test_invoking_exception_without_system_exit():
     returncode = no_exception()
 
     assert returncode == 'Hallo'
+
+
+def test_error_handle_error():
+    """Catch raised errror and return specified return code `37`"""
+    with raises(SystemExit) as exception:
+        with handle_error(ValueError, code=37):
+            raise ValueError()
+
+    assert exception.value.code == 37
