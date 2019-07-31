@@ -24,12 +24,12 @@ from utila import forward_slash
 from utila import parse
 from utila import returncode
 from utila import sources
-from utila.cmdline import create_parser
+from utila.cli import create_parser
 from utila.test import run
 from utila.test import skip_nonvirtual
 
 
-def test_cmdline_parse_args(monkeypatch):
+def test_cli_parse_args(monkeypatch):
     """Create a parser with 2 parameter, pass arguments and evaluate the
     result"""
     todo = [
@@ -80,7 +80,7 @@ def test_cli_prefix_activation(monkeypatch, prefix):
     assert len(source) == expected_return_count
 
 
-def test_cmdline_non_existing_input(tmpdir, monkeypatch):
+def test_cli_non_existing_input(tmpdir, monkeypatch):
     """Non existing input will raise an SystemExit error with value > 0"""
     result = None
     with raises(SystemExit) as result:
@@ -92,7 +92,7 @@ def test_cmdline_non_existing_input(tmpdir, monkeypatch):
     assert 'SystemExit: 2' in str(result)
 
 
-def test_cmdline_non_existing_output(tmpdir, monkeypatch):
+def test_cli_non_existing_output(tmpdir, monkeypatch):
     """First invocation creates the folder, second invocation use it"""
     expected_out = os.path.join(tmpdir.strpath, 'abc')
     _, outpath = create_and_run_parser(
@@ -111,7 +111,7 @@ def test_cmdline_non_existing_output(tmpdir, monkeypatch):
     )
 
 
-def test_cmdline_existing_input(tmpdir, monkeypatch):
+def test_cli_existing_input(tmpdir, monkeypatch):
     create_and_run_parser(
         tmpdir,
         monkeypatch,
@@ -119,7 +119,7 @@ def test_cmdline_existing_input(tmpdir, monkeypatch):
     )
 
 
-def test_cmdline_relative_output(tmpdir, monkeypatch):
+def test_cli_relative_output(tmpdir, monkeypatch):
     os.makedirs(os.path.join(tmpdir, 'abc'))
     create_and_run_parser(
         tmpdir,
@@ -129,7 +129,7 @@ def test_cmdline_relative_output(tmpdir, monkeypatch):
     assert os.path.exists(os.path.join(tmpdir, 'abc'))
 
 
-def test_cmdline_file_as_output(tmpdir, monkeypatch):
+def test_cli_file_as_output(tmpdir, monkeypatch):
     file_create(os.path.join(tmpdir, 'test.txt'), 'I am a file.')
     with raises(SystemExit) as result:
         create_and_run_parser(
@@ -145,7 +145,7 @@ RUN_ME = """\
 import sys
 sys.path.append("%s")
 from utila import RequiredCommand
-from utila.cmdline import create_parser
+from utila.cli import create_parser
 
 parser = create_parser(RequiredCommand('-a', '--alls', 'I need it all'))
 parser.parse_args()
@@ -153,7 +153,7 @@ parser.parse_args()
 
 
 @skip_nonvirtual
-def test_cmdline_parse_required_command_missing(tmpdir):
+def test_cli_parse_required_command_missing(tmpdir):
     runner = os.path.join(tmpdir, 'run.py')
     file_create(runner, RUN_ME % forward_slash(ROOT))
 
@@ -166,7 +166,7 @@ def test_cmdline_parse_required_command_missing(tmpdir):
 
 
 @skip_nonvirtual
-def test_cmdline_parse_required_command(tmpdir):
+def test_cli_parse_required_command(tmpdir):
     runner = os.path.join(tmpdir, 'run.py')
     file_create(runner, RUN_ME % forward_slash(ROOT))
 
@@ -180,7 +180,7 @@ EMPTY_PARSER = """\
 #! /usr/bin/env python
 import sys
 sys.path.append("%s")
-from utila.cmdline import create_parser, parse
+from utila.cli import create_parser, parse
 parser = create_parser(%s)
 args = parse(parser)
 """
@@ -203,7 +203,7 @@ def parser_example(tmpdir):
 
 
 @skip_nonvirtual
-def test_cmdline_parse_empty_parser_help(parser_example):  # pylint: disable=W0621
+def test_cli_parse_empty_parser_help(parser_example):  # pylint: disable=W0621
     """Test default parser with --help"""
     cwd, runner = parser_example
     command = 'python "%s" --help' % runner
@@ -213,7 +213,7 @@ def test_cmdline_parse_empty_parser_help(parser_example):  # pylint: disable=W06
 
 
 @skip_nonvirtual
-def test_cmdline_parser_source_in_out(parser_example):  # pylint: disable=W0621
+def test_cli_parser_source_in_out(parser_example):  # pylint: disable=W0621
     """Test default parser with --help"""
     cwd, runner = parser_example
     file_append(runner, SOURCES)
@@ -225,7 +225,7 @@ def test_cmdline_parser_source_in_out(parser_example):  # pylint: disable=W0621
 
 
 @skip_nonvirtual
-def test_cmdline_parse_empty_parser_version(parser_example):  # pylint: disable=W0621
+def test_cli_parse_empty_parser_version(parser_example):  # pylint: disable=W0621
     """Test default parser with --version"""
     cwd, runner = parser_example
     command = 'python "%s" --version' % runner
@@ -235,7 +235,7 @@ def test_cmdline_parse_empty_parser_version(parser_example):  # pylint: disable=
 
 
 @skip_nonvirtual
-def test_cmdline_parse_version_parser_version(tmpdir):
+def test_cli_parse_version_parser_version(tmpdir):
     """Test version parser with --version flag"""
     version = "1.1.1"
     runner = os.path.join(tmpdir, 'version.py')
@@ -277,7 +277,7 @@ def create_and_run_parser(
 
 
 @mark.parametrize('singlefile', [True, False])
-def test_cmdline_singlefile_input(testdir, monkeypatch, singlefile):
+def test_cli_singlefile_input(testdir, monkeypatch, singlefile):
     """Test reading a file direct from input
 
     1. singlefile = True

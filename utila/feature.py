@@ -34,12 +34,12 @@ from typing import Callable
 from typing import List
 from typing import Tuple
 
-from utila.cmdline import Command
-from utila.cmdline import Flag
-from utila.cmdline import Parameter
-from utila.cmdline import create_parser
-from utila.cmdline import parse
-from utila.cmdline import sources
+from utila.cli import Command
+from utila.cli import Flag
+from utila.cli import Parameter
+from utila.cli import create_parser
+from utila.cli import parse
+from utila.cli import sources
 from utila.error import saveme
 from utila.file import file_replace
 from utila.logger import Level
