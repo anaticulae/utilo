@@ -2,6 +2,20 @@
 
 Every noteable change is logged here.
 
+## v1.0.0
+
+### Feature
+
+* add method to determine order of processes (577cdef0637c)
+* remove old logging/error interface (11c325255298)
+* add parallelized process interface (cea91b42a829)
+* add multiple input sources (7673f17d1b65)
+* add method to make path absolute (7a5a216330e3)
+
+### Documentation
+
+* extend public interface documentation of read_workplan (2314382d8fae)
+
 ## v0.9.1
 
 ### Feature
