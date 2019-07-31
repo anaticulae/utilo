@@ -13,6 +13,7 @@ from os import makedirs
 from os import remove
 from os.path import basename
 from os.path import exists
+from os.path import isabs
 from os.path import isfile
 from os.path import join
 from os.path import split
@@ -219,6 +220,25 @@ def tmpfile(root):
     if exists(path):
         # try again to find unused temp file
         return tmpfile(root)
+    return path
+
+
+def make_absolute(path: str, cwd=None):
+    """Covert path to absolute. If path is already absolute, do nothing
+
+    Args:
+        path(str): relative path to convert to absolute path
+        cwd(str): current working directory. If nothing is passed,
+                  os.getcwd is used.
+    Returns:
+        absolute path
+    """
+    if cwd is None:
+        cwd = os.getcwd()
+
+    if not isabs(path):
+        # Make path absolute
+        path = join(cwd, path)
     return path
 
 
