@@ -88,7 +88,7 @@ Runner = partial(
 
 
 @contextmanager
-def run_cli(root, monkeypatch, cmdline):
+def run_cli(root, monkeypatch, cmdline, runner=Runner):
     """Run test command line interface
 
     Args:
@@ -100,7 +100,7 @@ def run_cli(root, monkeypatch, cmdline):
     with monkeypatch.context() as context:
         with raises(SystemExit) as result:
             context.setattr(sys, 'argv', [PROCESSNAME] + cmdline)
-            Runner(root=root)
+            runner(root=root)
     yield result
 
 
@@ -164,3 +164,37 @@ def test_cli_multiple_input(
     expected_result = SUCCESS if create_missing_input else FAILURE
     error_message = '%s\n%s\n%s' % (result, out, err)
     assert returncode(result) == expected_result, error_message
+
+
+MultiRunner = partial(
+    featurepack,
+    description='',
+    featurepackage='example.features',
+    multiprocessed=True,
+    name=PROCESSNAME,
+    version='beta',
+    workplan=WORKPLAN,
+)
+
+
+@mark.parametrize(
+    'processes',
+    [
+        1,  # single processed
+        10,
+    ],
+)
+def test_cli_multiple_processes(
+        testdir,
+        monkeypatch,
+        capsys,
+        cli_example,
+        processes: int,
+):
+    root = str(testdir)
+
+    cmd = '--processes %d --all' % processes
+    with run_cli(root, monkeypatch, cmd, MultiRunner) as result:
+        out, err = capsys.readouterr()
+    error_message = '%s\n%s\n%s' % (result, out, err)
+    assert returncode(result) == SUCCESS, str(error_message)
