@@ -146,7 +146,7 @@ def featurepack(
     # Ensure to have output folder
     makedirs(outputpath, exist_ok=True)
 
-    current_todo = todo(args)
+    current_todo = determine_todo(args)
     completed = process(
         workplan,
         name,
@@ -173,19 +173,9 @@ def process(
     Returns:
         SUCCESS if all features process successfully, if not FAILURE
     """
-    if todo is None:
-        todo = []
-    todo = set(todo)
-    # process all features, see some lines below
-    if 'all' in todo:
-        todo = set()
-    success = True
-    if name:
-        # log start of executable
-        log(name)
+    todo = prepare_process(todo, name, processes)
 
-    if processes > 1:
-        log('use multiple processes')
+    success = True
     for step in workplan:
         name = step[NAME]
         # if todo is empty, nothing is selected, run every step
@@ -198,7 +188,7 @@ def process(
         hook = step[HOOK]
         result = run_hook_safely(hook, name, step[OUTPUT])
         if result == FAILURE:
-            # mark failure, but process further
+            # mark failure, but continue processing
             success = False
             continue
 
@@ -207,6 +197,21 @@ def process(
             # mark failure, but process further
             success = False
     return SUCCESS if success else FAILURE
+
+
+def prepare_process(todo, name, processes):
+    if todo is None:
+        todo = []
+    todo = set(todo)
+    # process all features, see some lines below
+    if 'all' in todo:
+        todo = set()
+    if name:
+        # log start of executable
+        log(name)
+    if processes > 1:
+        log('use multiple processes')
+    return todo
 
 
 def prepare_hooks(items: List[FeatureInterface]):
@@ -658,7 +663,7 @@ def verify_interface(inputs, outputs, worker):
     return SUCCESS
 
 
-def todo(args):
+def determine_todo(args):
     args = dict(args)
     del args['input']
     del args['output']
