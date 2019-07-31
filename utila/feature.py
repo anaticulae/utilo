@@ -402,9 +402,17 @@ def read_workplan(
     """Parse user defined workplan
 
     Args:
-
+        plan:
+        process_: step name to print on console
+        hooks:
+        inspace([str]): list of input spaces
+        outspace(str): absolute path to write output
+        args:
+        prefix(str): to distingush different parameterization written in the
+                     same folder
+        verify(bool): if True, let execution failed on workplan error
     Returns:
-
+        parsed list of worksteps with verified inputs
 
     """
     # if no outspace is defined, use the first passed inspace to write output

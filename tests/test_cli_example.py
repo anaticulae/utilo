@@ -91,6 +91,13 @@ Runner = partial(
 
 @contextmanager
 def run_cli(root, monkeypatch, cmdline):
+    """Run test command line interface
+
+    Args:
+        root(str):
+        monkeypatch:
+        cmdline(str/[str]): commands to execute
+    """
     cmdline = cmdline.split()
     with monkeypatch.context() as context:
         with raises(SystemExit) as result:
