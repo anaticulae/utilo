@@ -12,6 +12,8 @@ import sys
 from pytest import mark
 
 from utila import fix_encoding
+from utila import flatten
+from utila import roundme
 
 
 @mark.parametrize('platform,given,expected', [
@@ -25,3 +27,18 @@ def test_fix_encoding(platform, given, expected, monkeypatch):
         context.setattr(sys, 'platform', platform)
         fixed = fix_encoding(given)
     assert fixed == expected
+
+
+def test_roundme():
+    rounded = roundme(2.3333)
+    assert rounded == 2.33
+
+
+def test_flatten():
+    todo = [
+        [10],
+        [1, 2],
+        [1, 2, 3, 4],
+    ]
+    flat = flatten(todo)
+    assert len(flat) == 7, str(flat)

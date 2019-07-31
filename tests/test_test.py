@@ -15,6 +15,7 @@ from utila import assert_run
 from utila import assert_run_fail
 from utila import clean_install
 from utila import run
+from utila import run_command
 
 
 def test_run(tmpdir):
@@ -30,3 +31,12 @@ def test_run(tmpdir):
 
 def test_clean_install():
     clean_install(ROOT, PACKAGENAME)
+
+
+def test_test_run_command(monkeypatch):
+
+    def main():
+        # example runnable
+        exit(SUCCESS)
+
+    run_command('--number 10', 'main', main, True, monkeypatch)
