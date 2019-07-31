@@ -23,6 +23,7 @@ from dataclasses import dataclass
 from functools import partial
 from glob import glob
 from inspect import signature
+# pylint:disable=ungrouped-imports
 from os import listdir
 from os import makedirs
 from os.path import exists
@@ -248,10 +249,10 @@ def prepare_description(name: str, description: str, workplan):
 def run_hook_safely(hook: callable, name: str, stepoutput):
     try:
         result = hook()
-    except Exception as error:  # pylint: disable=broad-except
+    except Exception as msg:  # pylint: disable=broad-except
         logging_stacktrace()
         logging_error('while processing %s' % name)
-        logging_error(error)
+        logging_error(msg)
         return FAILURE
 
     if isinstance(result, str):

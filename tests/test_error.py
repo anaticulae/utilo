@@ -9,10 +9,10 @@
 
 from pytest import raises
 
+from utila import CANCELLED_BY_USER
 from utila import FAILURE
 from utila import handle_error
 from utila import saveme
-from utila.error import CANCELLED_BY_USER
 
 
 def test_invoking_exception():

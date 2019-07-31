@@ -261,11 +261,8 @@ def sources(args, *, singleinput: bool = False, verbose: bool = False):
 
     result = [inputpath, outputpath]
     if prefix is not False:
-        print(prefix)
         result.append(prefix)
     if verbose:
         verb = int(args[VERBOSE]) if args[VERBOSE] else 0
         result.append(verb)
     return tuple(result)
-    #     return (inputpath, outputpath, prefix, verb)
-    # return (inputpath, outputpath, prefix)

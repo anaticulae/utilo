@@ -15,7 +15,7 @@ from utila.utils import FAILURE
 
 
 @contextmanager
-def handle_error(*exceptions, code=1):
+def handle_error(*exceptions, code=FAILURE):
     """Catch given `exceptions` and print there message to `stderr`. Exit
     system with given `code`.
 
