@@ -20,7 +20,7 @@ from os.path import split
 from random import randrange
 from shutil import copy
 
-from utila.logging import logging_error
+from utila.logger import error
 from utila.utils import NEWLINE
 from utila.utils import TMP
 from utila.utils import UTF8
@@ -258,7 +258,7 @@ def assert_file(files, filetype: str):
     raises = 0
     for item in files:
         if not item.endswith('.%s' % filetype):
-            logging_error('No %s file: %s' % (filetype, item))
+            error('No %s file: %s' % (filetype, item))
             raises += 1
     assert not raises, 'wrong file types'
 

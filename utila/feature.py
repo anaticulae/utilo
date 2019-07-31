@@ -41,14 +41,13 @@ from utila.cmdline import parse
 from utila.cmdline import sources
 from utila.error import saveme
 from utila.file import file_replace
-from utila.logging import Level
-from utila.logging import call
-from utila.logging import error
-from utila.logging import info
-from utila.logging import level
-from utila.logging import logging
-from utila.logging import logging_error
-from utila.logging import logging_stacktrace
+from utila.logger import Level
+from utila.logger import call
+from utila.logger import error
+from utila.logger import info
+from utila.logger import level
+from utila.logger import log
+from utila.logger import log_stacktrace
 from utila.utils import FAILURE
 from utila.utils import NEWLINE
 from utila.utils import SUCCESS
@@ -141,7 +140,7 @@ def featurepack(
     )
     # an empty workplan is defined by user code, feature pack does nothing
     if not workplan:
-        logging_error('empty workplan - nothing todo - abort!')
+        error('empty workplan - nothing todo - abort!')
         exit(FAILURE)
 
     # Ensure to have output folder
@@ -183,18 +182,18 @@ def process(
     success = True
     if name:
         # log start of executable
-        logging(name)
+        log(name)
 
     if processes > 1:
-        logging('use multiple processes')
+        log('use multiple processes')
     for step in workplan:
         name = step[NAME]
         # if todo is empty, nothing is selected, run every step
         if name not in todo and todo:
-            logging('skipping: %s' % name)
+            log('skipping: %s' % name)
             continue
         else:
-            logging('processing: %s' % name)
+            log('processing: %s' % name)
 
         hook = step[HOOK]
         result = run_hook_safely(hook, name, step[OUTPUT])
@@ -262,18 +261,18 @@ def run_hook_safely(hook: callable, name: str, stepoutput):
     try:
         result = hook()
     except Exception as msg:  # pylint: disable=broad-except
-        logging_stacktrace()
-        logging_error('while processing %s' % name)
-        logging_error(msg)
+        log_stacktrace()
+        error('while processing %s' % name)
+        error(msg)
         return FAILURE
 
     if isinstance(result, str):
         result = [result]
     # Verify result
     if result and len(stepoutput) != len(result):
-        logging_error('wrong return value count')
-        logging_error('interface count %d' % len(stepoutput))
-        logging_error('return count from method %d' % len(result))
+        error('wrong return value count')
+        error('interface count %d' % len(stepoutput))
+        error('return count from method %d' % len(result))
         return FAILURE
     return result
 
@@ -286,11 +285,11 @@ def write_result_safely(result, processstep, outputstep):
             # write content to file.
             file_replace(path, content)
         return SUCCESS
-    except TypeError as error:
-        logging_error('while processing %s' % processstep)
-        logging_error('wrong return value')
-        logging_error('current return value: %s' % result)
-        logging_error(error)
+    except TypeError as msg:
+        error('while processing %s' % processstep)
+        error('wrong return value')
+        error('current return value: %s' % result)
+        error(msg)
         return FAILURE
 
 
@@ -317,8 +316,8 @@ def find_features(root: str, featurepackage: str) -> List[FeatureInterface]:
         try:
             result.append(connect_feature_interface(current, item))
         except AttributeError as exception:
-            logging_error('SKIP LOADING %s' % item)
-            logging_error(exception)
+            error('SKIP LOADING %s' % item)
+            error(exception)
             ret += 1
     if ret:
         exit(FAILURE)
@@ -444,7 +443,7 @@ def read_workplan(
         try:
             caller = hooks[name]
         except KeyError:
-            logging_error('missing hook with name %s' % name)
+            error('missing hook with name %s' % name)
             ret += 1
             continue
         outputs = prepare_outputs(
@@ -502,8 +501,8 @@ def prepare_variables(variables, args):
             result.append(converted)
         except ValueError:
             msg = 'while processing %s with value %s'
-            logging_error(msg % (variable.name, variable.typ))
-            logging_error('given args %r' % args)
+            error(msg % (variable.name, variable.typ))
+            error('given args %r' % args)
     return result
 
 
@@ -553,8 +552,8 @@ def prepare_inputs(inputs, inspaces, outspace) -> List[str]:
                 else:
                     if not lastinput:
                         continue
-                    logging_error('search location: %s' % search_location)
-                    logging_error('missing input: %s' % filepath)
+                    error('search location: %s' % search_location)
+                    error('missing input: %s' % filepath)
             else:
                 _, filename = split(inspace)
                 if '.' in filename:
@@ -599,9 +598,9 @@ def prepare_outputs(
             try:
                 item, datatype = item
             except ValueError:
-                logging_error('checking output number %d' % index)
+                error('checking output number %d' % index)
                 msg = 'require tuple with (item, datatype). got: %r %s'
-                logging_error(msg % (item, type(item)))
+                error(msg % (item, type(item)))
                 ret += 1
         outitem = '%s__%s%s_%s.%s'
         outitem = outitem % (process_, prefix, stepname, item, datatype)
@@ -623,7 +622,7 @@ def verify_resources(inputs):
             # recursive input-definition start with _. We do not check
             # recursive inputs, because there were generated later.
             continue
-        logging_error('File does not exists: %s' % path)
+        error('File does not exists: %s' % path)
         ret += 1
     return ret
 

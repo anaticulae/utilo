@@ -57,19 +57,17 @@ from utila.file import tmpname
 from utila.likelihood import uniform_result
 from utila.likelihood import uniform_result_with_items
 # Logging
-from utila.logging import Level
-from utila.logging import call
-from utila.logging import debug
-from utila.logging import error
-from utila.logging import flush
-from utila.logging import info
-from utila.logging import level
-from utila.logging import log
-from utila.logging import logging
-from utila.logging import logging_error
-from utila.logging import logging_stacktrace
-from utila.logging import print_runtime
-from utila.logging import profile
+from utila.logger import Level
+from utila.logger import call
+from utila.logger import debug
+from utila.logger import error
+from utila.logger import flush
+from utila.logger import info
+from utila.logger import level
+from utila.logger import log
+from utila.logger import log_stacktrace
+from utila.logger import print_runtime
+from utila.logger import profile
 # Tests
 from utila.test import assert_run
 from utila.test import assert_run_fail

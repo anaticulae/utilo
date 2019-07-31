@@ -8,9 +8,9 @@
 #==============================================================================
 from contextlib import contextmanager
 
-from utila.logging import logging
-from utila.logging import logging_error
-from utila.logging import logging_stacktrace
+from utila.logger import error
+from utila.logger import log
+from utila.logger import log_stacktrace
 from utila.utils import FAILURE
 
 
@@ -28,8 +28,8 @@ def handle_error(*exceptions, code=FAILURE):
     """
     try:
         yield
-    except exceptions as error:
-        logging_error(error)
+    except exceptions as msg:
+        error(msg)
         exit(code)
 
 
@@ -53,11 +53,11 @@ def saveme(func=None, *, systemexit=True):
             try:
                 ret = user_function(*args, **kwds)
             except KeyboardInterrupt:
-                logging('\nOperation cancelled by user')
+                log('\nOperation cancelled by user')
                 ret = CANCELLED_BY_USER
-            except Exception as error:  # pylint: disable=broad-except
-                logging_error(error)
-                logging_stacktrace()
+            except Exception as msg:  # pylint: disable=broad-except
+                error(msg)
+                log_stacktrace()
                 ret = FAILURE
             if systemexit:
                 exit(ret)

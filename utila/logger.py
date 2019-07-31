@@ -34,12 +34,6 @@ def level(level: Level):
     LEVEL = level
 
 
-def logging(msg: str = '', level: Level = Level.LOGGING, end: str = NEWLINE):
-    import warnings
-    warnings.warn('Use log instead', DeprecationWarning)
-    log(msg, level, end)
-
-
 def log(msg: str = '', level: Level = Level.LOGGING, end: str = NEWLINE):
     """Write message to logger
 
@@ -52,7 +46,7 @@ def log(msg: str = '', level: Level = Level.LOGGING, end: str = NEWLINE):
         Logging with default arguments will log a newline
     """
     if level == Level.ERROR:
-        logging_error(msg)
+        error(msg)
         return
     if level > LEVEL:
         return
@@ -64,25 +58,19 @@ def log(msg: str = '', level: Level = Level.LOGGING, end: str = NEWLINE):
 
 
 def call(msg: str):
-    logging('  %s' % msg, Level.CALLS)
+    log('  %s' % msg, Level.CALLS)
 
 
 def info(msg: str):
-    logging('    %s' % msg, Level.INFORMATION)
+    log('    %s' % msg, Level.INFORMATION)
 
 
 def debug(msg: str):
-    logging('      %s' % msg, Level.DEBUG)
+    log('      %s' % msg, Level.DEBUG)
 
 
 def error(msg: str):
-    logging_error(msg)
-
-
-def logging_error(msg: str):
     """Print error-message to stderr and add [ERROR]-tag"""
-    import warnings
-    warnings.warn('replace with log()', DeprecationWarning)
     # avoid problems when using with windows console(cp1252)
     msg = fix_encoding(msg)
     # use forward slashs
@@ -90,9 +78,9 @@ def logging_error(msg: str):
     print('[ERROR] %s' % msg, file=sys.stderr, flush=True)
 
 
-def logging_stacktrace():
+def log_stacktrace():
     stack_trace = format_exc()
-    logging_error(forward_slash(stack_trace))
+    error(forward_slash(stack_trace))
 
 
 def flush():
@@ -108,7 +96,7 @@ def print_runtime(before: int):
         before(int): time recorded some time before - use time.time()
     """
     time_diff = time() - before
-    logging('Runtime: %.2f secs' % time_diff)
+    log('Runtime: %.2f secs' % time_diff)
 
 
 @contextmanager

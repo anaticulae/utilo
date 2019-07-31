@@ -35,8 +35,8 @@ from dataclasses import dataclass
 from dataclasses import field
 
 from utila.file import make_absolute
-from utila.logging import logging
-from utila.logging import logging_error
+from utila.logger import error
+from utila.logger import log
 from utila.utils import SUCCESS
 
 INVALID_COMMAND = 2
@@ -232,7 +232,7 @@ def parse(parser: ArgumentParser):
     """Parse arguments from sys-args and return the result as dictonary."""
     args = vars(parser.parse_args())
     if 'version' in args and args['version']:
-        logging(parser.__version)
+        log(parser.__version)
         exit(SUCCESS)
 
     return args
@@ -276,20 +276,20 @@ def sources(args, *, singleinput: bool = False, verbose: bool = False):
         for inputpath in inputpaths:
             if not singleinput:
                 if os.path.isfile(inputpath):
-                    logging_error('Input %s must be a directory' % inputpath)
+                    error('Input %s must be a directory' % inputpath)
                     exit(INVALID_COMMAND)
             if not os.path.exists(inputpath):
-                logging_error('Input %s does not exists' % inputpath)
+                error('Input %s does not exists' % inputpath)
                 exit(INVALID_COMMAND)
 
     if outputpath:
         if not os.path.isabs(outputpath):
             outputpath = os.path.join(cwd, outputpath)
         if os.path.isfile(outputpath):
-            logging_error('Output %s must be a directory' % outputpath)
+            error('Output %s must be a directory' % outputpath)
             exit(INVALID_COMMAND)
         if not os.path.exists(outputpath):
-            logging('Creating: %s' % outputpath)
+            log('Creating: %s' % outputpath)
             os.makedirs(outputpath)
 
     result = [inputpaths, outputpath]

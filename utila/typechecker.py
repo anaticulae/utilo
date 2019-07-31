@@ -10,7 +10,7 @@
 from inspect import Signature
 from inspect import signature
 
-from utila.logging import logging_error
+from utila.logger import error
 
 # TODO: USE functools.update_wrapper
 
@@ -26,19 +26,19 @@ def checkdatatype(func):
             parameter = [(name, item.annotation) for (name, item) in parameter]
 
             msg = 'parameter: %s, expected: %r, current %r:'
-            error = []
+            errors = []
             for current, (name, expected) in zip(args, parameter):
                 if isinstance(current, expected):
                     continue
                 if expected is Signature.empty:
                     continue
-                error.append((msg % (name, expected, type(current))))
-                error.append(str(current))
-            if error:
-                logging_error('Invalid function input `%s`' % uf_name)
-                for item in error:
-                    logging_error(item)
-                raise ValueError('Invalid function input %s' % uf_name)
+                errors.append((msg % (name, expected, type(current))))
+                errors.append(str(current))
+            if errors:
+                error('invalid function input `%s`' % uf_name)
+                for item in errors:
+                    error(item)
+                raise ValueError('invalid function input %s' % uf_name)
             return user_function(*args, **kwds)
 
         wrapper.__userfunc__ = user_function
