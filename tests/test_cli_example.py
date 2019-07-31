@@ -9,18 +9,23 @@
 
 import sys
 from contextlib import contextmanager
+from copy import deepcopy
 from functools import partial
 from os import makedirs
 from os.path import basename
+from os.path import exists
 from os.path import join
 
 from pytest import fixture
+from pytest import mark
 from pytest import raises
 
+from utila import FAILURE
 from utila import File
 from utila import create_step
 from utila import featurepack
 from utila import file_create
+from utila import file_remove
 from utila import returncode
 from utila.utils import SUCCESS
 
@@ -116,3 +121,41 @@ def test_cli_example_all(testdir, monkeypatch, capsys, cli_example):
     assert not err, str(err)
 
     assert returncode(result) == SUCCESS, str(result)
+
+
+@mark.parametrize(
+    'create_missing_input',
+    [True, False],
+)
+def test_cli_multiple_input(
+        testdir,
+        monkeypatch,
+        capsys,
+        cli_example,
+        create_missing_input: bool,
+):
+    root = str(testdir)
+    # remove file out of first example to test multiple -i sources
+    first_yaml = join(root, 'first.yaml')
+    assert exists(first_yaml), first_yaml
+    file_remove(first_yaml)
+    assert not exists(first_yaml), first_yaml
+
+    second_input = join(root, 'second')
+    makedirs(second_input)
+
+    if create_missing_input:
+        second_first_yaml = join(second_input, 'first.yaml')
+        assert not exists(second_first_yaml), second_first_yaml
+        file_create(second_first_yaml)
+        assert exists(second_first_yaml), second_first_yaml
+
+    # run
+    inputcmd = '-i %s -i %s -VVV' % (root, second_input)
+    with run_cli(root, monkeypatch, inputcmd) as result:
+        out, err = capsys.readouterr()
+
+    # check
+    expected_result = SUCCESS if create_missing_input else FAILURE
+    error_message = '%s\n%s\n%s' % (result, out, err)
+    assert returncode(result) == expected_result, error_message
