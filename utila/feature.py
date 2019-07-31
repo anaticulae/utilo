@@ -19,6 +19,8 @@
 import importlib
 import os
 from collections import defaultdict
+from concurrent.futures import ProcessPoolExecutor
+from concurrent.futures import ThreadPoolExecutor
 from contextlib import suppress
 from dataclasses import dataclass
 from functools import partial
@@ -30,6 +32,7 @@ from os import makedirs
 from os.path import exists
 from os.path import join
 from os.path import split
+from queue import Queue
 from typing import Callable
 from typing import List
 from typing import Tuple
@@ -157,6 +160,15 @@ def featurepack(
     return completed
 
 
+def callback(runnable, name: str, output, writer, failure):
+    # run runnable
+    result = runnable()
+    if result == FAILURE:
+        failure.put(True)
+    else:
+        writer.put([result, name, output])
+
+
 def process(
         workplan: List[WorkStep],
         name: str = None,
@@ -177,35 +189,54 @@ def process(
     """
     todo = prepare_process(todo, name, processes)
 
-    success = True
-    for step in workplan:
-        name = step[NAME]
-        # if todo is empty, nothing is selected, run every step
-        if name not in todo and todo:
-            log('skipping: %s' % name)
-            continue
-        else:
-            log('processing: %s' % name)
+    workplan = parallelize_workplan(workplan, processes)
 
-        hook = step[HOOK]
-        result = run_hook_safely(hook, name, step[OUTPUT])
-        if result == FAILURE:
-            # mark failure, but continue processing
-            success = False
-            continue
+    failure, writer = Queue(), Queue()
+    executor = ThreadPoolExecutor if processes < 4 else ProcessPoolExecutor
+    with executor(max_workers=processes) as pool:
+        for level in workplan:
+            for step in level:
+                name = step[NAME]
+                # if todo is empty, nothing is selected, run every step
+                if name not in todo and todo:
+                    log('skipping: %s' % name)
+                    continue
+                else:
+                    log('processing: %s' % name)
+                runner = partial(
+                    run_hook_safely,
+                    hook=step[HOOK],
+                    name=name,
+                    stepoutput=step[OUTPUT],
+                )
+                result = pool.submit(
+                    callback,
+                    runner,
+                    name,
+                    step[OUTPUT],
+                    writer,
+                    failure,
+                )
+    pool.shutdown(wait=True)
 
-        result = write_result_safely(result, name, step[OUTPUT])
-        if result == FAILURE:
-            # mark failure, but process further
-            success = False
-    return SUCCESS if success else FAILURE
+    # write results with single process
+    while writer.qsize():
+        result, name, output = writer.get()
+        completed = write_result_safely(result, name, output)
+        if completed == FAILURE:
+            failure.put(True)
+    return SUCCESS if failure.empty() else FAILURE
 
 
 def input_order(plan):
     require = defaultdict(set)
     for step in plan:
         name = step['name']
-        inputs = [str(item) for item in step['input']]
+        try:
+            inputs = [str(item) for item in step['input']]
+        except KeyError:
+            hook = step['hook']
+            inputs = [str(item) for item in hook.args]
 
         for item in inputs:
             with suppress(ValueError):
@@ -300,7 +331,7 @@ def prepare_description(name: str, description: str, workplan):
     return description + NEWLINE + result
 
 
-def run_hook_safely(hook: callable, name: str, stepoutput):
+def run_hook_safely(hook: callable, name: str, stepoutput) -> int:
     try:
         result = hook()
     except Exception as msg:  # pylint: disable=broad-except
