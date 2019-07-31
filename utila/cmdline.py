@@ -81,6 +81,18 @@ class Parameter(Command):
 
 
 @dataclass
+class Number(Parameter):
+
+    default: int = 1
+
+    def __post_init__(self):
+        #pylint:disable=unsupported-assignment-operation
+        self.args['dest'] = self.longcut
+        self.args['default'] = self.default
+        self.args['type'] = type(self.default)
+
+
+@dataclass
 class RequiredCommand(Command):
 
     def __post_init__(self):
@@ -103,11 +115,13 @@ COMMANDS = [
 def create_parser(
         todo: list = None,
         version=None,
+        description: str = '',
+        prog: str = '',
+        *,
         inputparameter: bool = False,
+        multiprocessed: bool = False,
         outputparameter: bool = False,
         prefix: bool = True,
-        prog: str = '',
-        description: str = '',
 ):
     """Create parser out of defined dictonary with command-line-definiton.
 
@@ -138,6 +152,14 @@ def create_parser(
             message='add prefix to separate different output files',
         )
         todo = [prefixcommand] + todo
+
+    if multiprocessed:
+        multicmd = Number(
+            longcut='processes',
+            default=1,
+            message='select number of used processes',
+        )
+        todo = [multicmd] + todo
 
     todo.extend(COMMANDS)
 

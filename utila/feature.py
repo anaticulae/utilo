@@ -74,6 +74,8 @@ def featurepack(
         name: str,
         description: str,
         version: str,
+        *,
+        multiprocessed: bool = False,
         singleinput: bool = False,
 ) -> int:
     """Run featurepack defined in `workplan`
@@ -99,10 +101,16 @@ def featurepack(
         prog=name,
         description=description,
         version=version,
-        outputparameter=True,
         inputparameter=True,
+        multiprocessed=multiprocessed,
+        outputparameter=True,
     )
     args = parse(parser)
+
+    processes = 1 if not multiprocessed else args.get('processes')
+    if multiprocessed:
+        del args['processes']
+
     # evaluate the verbose flag
     inputpath, outputpath, prefix, verbose = sources(
         args,
@@ -128,6 +136,7 @@ def featurepack(
         outspace=outputpath,
         args=args,
         prefix=prefix,
+        processes=processes,
         verify=True,
     )
     # an empty workplan is defined by user code, feature pack does nothing
@@ -151,6 +160,7 @@ def process(
         workplan: List[WorkStep],
         name: str = None,
         todo: List = None,
+        processes: int = 1,
 ):
     """Process the given features. The process ignores errors in sub-steps
     and run till the end. If some error occurs, the process stoppes at the
@@ -175,6 +185,8 @@ def process(
         # log start of executable
         logging(name)
 
+    if processes > 1:
+        logging('use multiple processes')
     for step in workplan:
         name = step[NAME]
         # if todo is empty, nothing is selected, run every step
@@ -398,6 +410,7 @@ def read_workplan(
         args=None,
         prefix: str = None,
         verify: bool = False,
+        processes: int = 1,
 ) -> List[WorkStep]:
     """Parse user defined workplan
 
@@ -411,10 +424,12 @@ def read_workplan(
         prefix(str): to distingush different parameterization written in the
                      same folder
         verify(bool): if True, let execution failed on workplan error
+        processes(int): maximum parallel used processes
     Returns:
         parsed list of worksteps with verified inputs
 
     """
+    assert processes >= 1, 'invalid process count %d' % processes
     # if no outspace is defined, use the first passed inspace to write output
     outspace = outspace if outspace else inspace[0]
     prefix = '%s_' % prefix if prefix else ''
