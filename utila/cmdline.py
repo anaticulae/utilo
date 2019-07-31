@@ -104,7 +104,9 @@ VERBOSE = 'verbose'
 
 COMMANDS = [
     Flag(
-        args={'action': 'count'},
+        args={
+            'action': 'count',
+        },
         longcut=VERBOSE,
         message='define how verbose logging is',
         shortcut='V',

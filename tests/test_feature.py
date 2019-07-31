@@ -302,8 +302,8 @@ def work(pdf : str, result: str, char_margin : float, char_align : float) -> str
             context.syspath_prepend(root)
             featurepack(
                 workplan,
-                root,
-                featurepackage,
+                root=root,
+                featurepackage=featurepackage,
                 name='parsi',
                 description='Description',
                 version='1.0.0',
@@ -355,8 +355,8 @@ def work(pdf : str, result: str, char_margin : float, char_align : float) -> str
             context.syspath_prepend(root)
             featurepack(
                 workplan,
-                root,
-                featurepackage,
+                root=root,
+                featurepackage=featurepackage,
                 name='parsi',
                 description='Description',
                 version='1.0.0',

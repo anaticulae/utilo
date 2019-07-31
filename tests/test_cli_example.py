@@ -9,10 +9,8 @@
 
 import sys
 from contextlib import contextmanager
-from copy import deepcopy
 from functools import partial
 from os import makedirs
-from os.path import basename
 from os.path import exists
 from os.path import join
 

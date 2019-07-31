@@ -136,7 +136,7 @@ def featurepack(
         outspace=outputpath,
         args=args,
         prefix=prefix,
-        processes=processes,
+        used_processes=processes,
         verify=True,
     )
     # an empty workplan is defined by user code, feature pack does nothing
@@ -410,7 +410,7 @@ def read_workplan(
         args=None,
         prefix: str = None,
         verify: bool = False,
-        processes: int = 1,
+        used_processes: int = 1,
 ) -> List[WorkStep]:
     """Parse user defined workplan
 
@@ -429,7 +429,7 @@ def read_workplan(
         parsed list of worksteps with verified inputs
 
     """
-    assert processes >= 1, 'invalid process count %d' % processes
+    assert used_processes >= 1, 'invalid process count %d' % used_processes
     # if no outspace is defined, use the first passed inspace to write output
     outspace = outspace if outspace else inspace[0]
     prefix = '%s_' % prefix if prefix else ''
