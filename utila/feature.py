@@ -45,7 +45,7 @@ from utila.logger import Level
 from utila.logger import call
 from utila.logger import error
 from utila.logger import info
-from utila.logger import level
+from utila.logger import level_setup
 from utila.logger import log
 from utila.logger import log_stacktrace
 from utila.utils import FAILURE
@@ -118,7 +118,7 @@ def featurepack(
     )
 
     # update logging level
-    level(Level(verbose))
+    level_setup(Level(verbose))
 
     # run application in current working directory if not paths are provided
     if not inputpath:

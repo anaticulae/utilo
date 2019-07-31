@@ -63,7 +63,7 @@ from utila.logger import debug
 from utila.logger import error
 from utila.logger import flush
 from utila.logger import info
-from utila.logger import level
+from utila.logger import level_setup
 from utila.logger import log
 from utila.logger import log_stacktrace
 from utila.logger import print_runtime

@@ -29,7 +29,7 @@ class Level(IntEnum):
 LEVEL = Level.LOGGING
 
 
-def level(level: Level):
+def level_setup(level: Level):
     global LEVEL
     LEVEL = level
 
