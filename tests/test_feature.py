@@ -21,10 +21,12 @@ from utila import create_step
 from utila import featurepack
 from utila import file_create
 from utila import file_read
+from utila import parallelize_workplan
 from utila import returncode
 from utila.feature import Pattern
 from utila.feature import ResultFile
 from utila.feature import Value
+from utila.feature import input_order
 
 WORKER = """
 from typing import Tuple
@@ -372,3 +374,49 @@ def work(pdf : str, result: str, char_margin : float, char_align : float) -> str
 
 
 # TODO: REMOVE COPY AND PASTE, MOVE EXAMPLES TO REGULAR PYTHON FILES
+
+PROCESS = 'process'
+PLAN = [
+    create_step(
+        'second',
+        [
+            ResultFile(producer=PROCESS, name='third_result'),
+            ResultFile(producer='first', name='b'),
+            ResultFile(producer='B', name='c'),
+        ],
+        ('result',),
+    ),
+    create_step(
+        'third',
+        [
+            ResultFile(producer=PROCESS, name='first_result'),
+            ResultFile(producer=PROCESS, name='b_b'),
+        ],
+        ('result',),
+    ),
+    create_step(
+        'first',
+        [
+            ResultFile(producer='A', name='a'),
+            ResultFile(producer='A', name='b'),
+            ResultFile(producer='A', name='c'),
+        ],
+        ('result',),
+    ),
+]
+
+
+def test_parallelize_workplan_order():
+    # 2 level's
+    order = input_order(PLAN)
+    assert len(order) == 2, str(order)
+
+
+def test_parallelize_workplan():
+    # 3 level
+    single_processed = parallelize_workplan(PLAN, 1)
+    assert len(single_processed) == 3, str(single_processed)
+
+    # multilevel limited by required resoure
+    multi_processed = parallelize_workplan(PLAN, 10)
+    assert len(multi_processed) == 2, str(multi_processed)
