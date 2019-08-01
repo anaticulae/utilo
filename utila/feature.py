@@ -161,13 +161,15 @@ def featurepack(
     return completed
 
 
-def callback(runnable, name: str, output, writer, failure):
+def callback(runnable, name: str, output):
+    log('processing: %s' % name)
     # run runnable
     result = runnable()
     if result == FAILURE:
-        failure.put(True)
-    else:
-        writer.put([result, name, output])
+        error('%s failed' % name)
+        return FAILURE
+    log('completed: %s' % name)
+    return [result, name, output]
 
 
 def process(
@@ -202,8 +204,6 @@ def process(
                 if name not in todo and todo:
                     log('skipping: %s' % name)
                     continue
-                else:
-                    log('processing: %s' % name)
                 runner = partial(
                     run_hook_safely,
                     hook=step[HOOK],
