@@ -32,7 +32,6 @@ from os import makedirs
 from os.path import exists
 from os.path import join
 from os.path import split
-from queue import Queue
 from typing import Callable
 from typing import List
 from typing import Tuple
@@ -194,8 +193,10 @@ def process(
 
     workplan = parallelize_workplan(workplan, processes)
 
-    failure, writer = Queue(), Queue()
-    executor = ThreadPoolExecutor if processes < 4 else ProcessPoolExecutor
+    # TODO: how to use multiprocessing with pytest, see pytest: 38.3.1
+    testrun = os.environ.get('PYTEST_PLUGINS', False)
+    executor = ThreadPoolExecutor if testrun else ProcessPoolExecutor
+    results = []
     with executor(max_workers=processes) as pool:
         for level in workplan:
             for step in level:
@@ -210,23 +211,27 @@ def process(
                     name=name,
                     stepoutput=step[OUTPUT],
                 )
-                result = pool.submit(
+                future = pool.submit(
                     callback,
                     runner,
                     name,
                     step[OUTPUT],
-                    writer,
-                    failure,
                 )
+                results.append(future)
+    # wait to finish the work
     pool.shutdown(wait=True)
 
-    # write results with single process
-    while writer.qsize():
-        result, name, output = writer.get()
-        completed = write_result_safely(result, name, output)
-        if completed == FAILURE:
-            failure.put(True)
-    return SUCCESS if failure.empty() else FAILURE
+    success = True
+    for result in results:
+        try:
+            writer, name, output = result.result()
+        except ValueError:
+            success = False
+        else:
+            completed = write_result_safely(writer, name, output)
+            if completed == FAILURE:
+                success = False
+    return SUCCESS if success else FAILURE
 
 
 def input_order(plan):
