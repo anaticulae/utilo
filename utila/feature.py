@@ -156,6 +156,7 @@ def featurepack(
         workplan,
         name,
         todo=current_todo,
+        processes=processes,
     )
     return completed
 
