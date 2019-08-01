@@ -2,6 +2,15 @@
 
 Every noteable change is logged here.
 
+## v1.1.1
+
+### Fix
+
+* fix multiprocessing problem (e3f02c847b93)
+* print step name when work starts (8188da525fc4)
+* fix passing process count (6c142069291f)
+* support single file as requirement (ac214bd511fc)
+
 ## v1.1.0
 
 ### Feature
