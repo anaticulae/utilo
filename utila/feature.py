@@ -110,9 +110,9 @@ def featurepack(
     )
     args = parse(parser)
 
-    processes = 1 if not multiprocessed else args.get('processes')
+    processes = 1 if not multiprocessed else args.get('p')
     if multiprocessed:
-        del args['processes']
+        del args['p']
 
     # evaluate the verbose flag
     inputpath, outputpath, prefix, verbose = sources(

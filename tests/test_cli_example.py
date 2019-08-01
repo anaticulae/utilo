@@ -193,7 +193,7 @@ def test_cli_multiple_processes(
 ):
     root = str(testdir)
 
-    cmd = '--processes %d --all' % processes
+    cmd = '--p %d --all' % processes
     with run_cli(root, monkeypatch, cmd, MultiRunner) as result:
         out, err = capsys.readouterr()
     error_message = '%s\n%s\n%s' % (result, out, err)

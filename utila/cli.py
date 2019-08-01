@@ -87,7 +87,8 @@ class Number(Parameter):
 
     def __post_init__(self):
         #pylint:disable=unsupported-assignment-operation
-        self.args['dest'] = self.longcut
+        assert self.longcut or self.shortcut, 'no short or longcut defined'
+        self.args['dest'] = self.longcut if self.longcut else self.shortcut
         self.args['default'] = self.default
         self.args['type'] = type(self.default)
 
@@ -157,7 +158,7 @@ def create_parser(
 
     if multiprocessed:
         multicmd = Number(
-            longcut='processes',
+            shortcut='p',
             default=1,
             message='select number of used processes',
         )
