@@ -8,6 +8,7 @@
 #==============================================================================
 
 import os
+import shutil
 from os import listdir
 from os import makedirs
 from os.path import exists
@@ -194,6 +195,35 @@ def test_file_copy_content_directory_to_directory(testdir):
     copy_content(folder, goal)
 
     assert len(listdir(goal)) == 3, listdir(goal)
+
+
+def test_file_copy_content_access_error(testdir, monkeypatch, capsys):
+    """Copy file to path which exists and is not overwriteable like an open
+    pdf file.
+
+    Create example with 2 directories called source and sink. Both
+    directories contains a file named `single.pdf`. Using
+    copy_content(source, sink) should raises an error, cause the sink pdf is
+    locked by an pdf reader for example.
+    """
+    root = str(testdir)
+    source = join(root, 'source')
+    sink = join(root, 'sink')
+
+    for item in [source, sink]:
+        makedirs(item)
+        pdf = join(item, 'single.pdf')
+        file_create(pdf)
+
+    def copy(source, dest):
+        raise OSError()
+
+    with monkeypatch.context() as context:
+        context.setattr(shutil, 'copy', copy)
+        with raises(SystemExit):
+            copy_content(source, sink)
+    out, err = capsys.readouterr()
+    assert 'single.pdf' in err, (out + err)
 
 
 def prepare_example(directory):

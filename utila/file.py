@@ -8,6 +8,8 @@
 #==============================================================================
 
 import os
+import shutil
+# pylint:disable=ungrouped-imports
 from os import listdir
 from os import makedirs
 from os import remove
@@ -18,9 +20,9 @@ from os.path import isfile
 from os.path import join
 from os.path import split
 from random import randrange
-from shutil import copy
 
 from utila.logger import error
+from utila.utils import FAILURE
 from utila.utils import NEWLINE
 from utila.utils import TMP
 from utila.utils import UTF8
@@ -162,7 +164,11 @@ def copy_content(source: str, destination: str, recursive: bool = False):
         dest_ = join(destination, item)
         if isfile(source_):
             # copy files
-            copy(source_, dest_)
+            try:
+                shutil.copy(source_, dest_)
+            except OSError:
+                error('could not overwrite: %s' % dest_)
+                exit(FAILURE)
         else:
             # 'copy' folder
             makedirs(dest_)
