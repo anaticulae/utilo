@@ -160,9 +160,15 @@ def featurepack(
     return completed
 
 
-def callback(runnable, name: str, output):
+def callback(hook, name: str, output):
     log('processing: %s' % name)
     # run runnable
+    runnable = partial(
+        run_hook_safely,
+        hook=hook,
+        name=name,
+        stepoutput=output,
+    )
     result = runnable()
     if result == FAILURE:
         error('%s failed' % name)
@@ -178,14 +184,16 @@ def process(
         processes: int = 1,
 ):
     """Process the given features. The process ignores errors in sub-steps
-    and run till the end. If some error occurs, the process stoppes at the
-    end. If the todo-list is empty, every single step is executed.
+    and run till the end. If some error occurs, the process returns an
+    `FAILURE` after finishing. If the todo-list is empty, every single step
+    is processed.
 
     Args:
         workplan(List[WorkStep]):
         name(str): name of executable
         todo: list with steps to run, if no steps are None, every step is
               executed
+        processes(int): maximal parallel exection steps
     Returns:
         SUCCESS if all features process successfully, if not FAILURE
     """
@@ -193,44 +201,40 @@ def process(
 
     workplan = parallelize_workplan(workplan, processes)
 
+    success = True
     # TODO: how to use multiprocessing with pytest, see pytest: 38.3.1
     testrun = os.environ.get('PYTEST_PLUGINS', False)
     executor = ThreadPoolExecutor if testrun else ProcessPoolExecutor
-    results = []
     with executor(max_workers=processes) as pool:
         for level in workplan:
+            results = []
             for step in level:
                 name = step[NAME]
                 # if todo is empty, nothing is selected, run every step
                 if name not in todo and todo:
                     log('skipping: %s' % name)
                     continue
-                runner = partial(
-                    run_hook_safely,
-                    hook=step[HOOK],
-                    name=name,
-                    stepoutput=step[OUTPUT],
-                )
+                # TODO: REFACTOR STEP TO NAMEDTUPLE
                 future = pool.submit(
                     callback,
-                    runner,
+                    step[HOOK],
                     name,
                     step[OUTPUT],
                 )
                 results.append(future)
-    # wait to finish the work
-    pool.shutdown(wait=True)
-
-    success = True
-    for result in results:
-        try:
-            writer, name, output = result.result()
-        except ValueError:
-            success = False
-        else:
-            completed = write_result_safely(writer, name, output)
-            if completed == FAILURE:
-                success = False
+            # wait that level finishes
+            # without waiting, a next level which require resource of the
+            # current may will not find the resource, cause the excution is
+            # not done.
+            for result in results:
+                completed = result.result()
+                if completed == FAILURE:
+                    success = False
+                else:
+                    writer, name, output = completed
+                    written = write_result_safely(writer, name, output)
+                    if written == FAILURE:
+                        success = False
     return SUCCESS if success else FAILURE
 
 
