@@ -205,17 +205,19 @@ def create_worker(
 ):
     example = """
 from utila import Flag
+
 def name():
-    return '%s'
+    return '{stepname}'
 
 def commandline():
-    return Flag(longcut='%s', message='run %s')
+    return Flag(longcut='{stepname}', message='run {stepname}')
 
-%s
-    """
-    # TODO: what is wrong with str format? oh man!
-    example = example % (stepname, stepname, stepname, worker)
-    file_create(join(featurepath, '%s.py' % stepname), example)
+{worker}
+"""
+
+    example = example.format(stepname=stepname, worker=worker)
+    outputpath = join(featurepath, '%s.py' % stepname)
+    file_create(outputpath, example)
 
 
 def create_example(
