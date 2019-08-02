@@ -88,7 +88,8 @@ class Number(Parameter):
     def __post_init__(self):
         #pylint:disable=unsupported-assignment-operation
         assert self.longcut or self.shortcut, 'no short or longcut defined'
-        self.args['dest'] = self.longcut if self.longcut else self.shortcut
+        if 'dest' not in self.args:  # do not overwrite user defined flags
+            self.args['dest'] = self.longcut if self.longcut else self.shortcut
         self.args['default'] = self.default
         self.args['type'] = type(self.default)
 
@@ -112,6 +113,10 @@ COMMANDS = [
         message='define how verbose logging is',
         shortcut='V',
     ),
+    Flag(
+        longcut='ff',
+        message='failfast: quit after this first error',
+    )
 ]
 
 
@@ -161,7 +166,7 @@ def create_parser(
             shortcut='p',
             default=1,
             message='select number of used processes',
-        )
+            args={'dest': 'processes'})
         todo = [multicmd] + todo
 
     todo.extend(COMMANDS)

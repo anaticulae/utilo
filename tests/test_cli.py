@@ -48,8 +48,8 @@ def test_cli_parse_args(monkeypatch):
         parser.print_help()
         args = parse(parser)
 
-    verbose_and_prefix = 2  # for verbose level --verbose and --prefix
-    assert len(args) == len(todo) + verbose_and_prefix
+    verbose_prefix_failfast = 3  # for verbose level --verbose, --prefix, --ff
+    assert len(args) == len(todo) + verbose_prefix_failfast
     assert '--alls' in args
     assert '--nothing' in args
 

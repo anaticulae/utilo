@@ -110,9 +110,13 @@ def featurepack(
     )
     args = parse(parser)
 
-    processes = 1 if not multiprocessed else args.get('p')
-    if multiprocessed:
-        del args['p']
+    processes = 1 if not multiprocessed else args.get('processes')
+    with suppress(KeyError):
+        del args['processes']
+
+    failfast = args.get('ff', False)
+    with suppress(KeyError):
+        del args['ff']
 
     # evaluate the verbose flag
     inputpath, outputpath, prefix, verbose = sources(
@@ -156,6 +160,7 @@ def featurepack(
         name,
         todo=current_todo,
         processes=processes,
+        failfast=failfast,
     )
     return completed
 
@@ -182,6 +187,8 @@ def process(
         name: str = None,
         todo: List = None,
         processes: int = 1,
+        *,
+        failfast: bool = False,
 ):
     """Process the given features. The process ignores errors in sub-steps
     and run till the end. If some error occurs, the process returns an
@@ -230,10 +237,14 @@ def process(
                 completed = result.result()
                 if completed == FAILURE:
                     success = False
+                    if failfast:
+                        return FAILURE
                 else:
                     writer, name, output = completed
                     written = write_result_safely(writer, name, output)
                     if written == FAILURE:
+                        if failfast:
+                            return FAILURE
                         success = False
     return SUCCESS if success else FAILURE
 
