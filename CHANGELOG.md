@@ -2,6 +2,13 @@
 
 Every noteable change is logged here.
 
+## v1.1.2
+
+### Fix
+
+* fix avoid double data input (cb91baef8ee4)
+* write all level step results before processing next level (a1314c338dfc)
+
 ## v1.1.1
 
 ### Fix
