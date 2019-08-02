@@ -145,31 +145,7 @@ def create_parser(
     Returns:
         created argparser
     """
-    if todo is None:
-        todo = []
-    if not isinstance(todo, list):
-        todo = [todo]
-    # Copy to avoid changing the source list. If create_parse(todo) is invoked
-    # twice, changing the reference is no good idea and will produce --output,
-    # --input twice.
-    todo = list(todo)
-
-    if prefix:
-        prefixcommand = Parameter(
-            longcut='prefix',
-            message='add prefix to separate different output files',
-        )
-        todo = [prefixcommand] + todo
-
-    if multiprocessed:
-        multicmd = Number(
-            shortcut='p',
-            default=1,
-            message='select number of used processes',
-            args={'dest': 'processes'})
-        todo = [multicmd] + todo
-
-    todo.extend(COMMANDS)
+    todo = prepare_todo(todo, prefix=prefix, multiprocessed=multiprocessed)
 
     parser = ArgumentParser(
         prog=prog,
@@ -200,13 +176,47 @@ def create_parser(
             # no longcut is defined
             shortcuts = (shortcut,)
 
-        add = parser.add_argument
         if args:
             args['help'] = msg
-            add(*shortcuts, **args)
+            parser.add_argument(*shortcuts, **args)
         else:
-            add(*shortcuts, action='store_true', help=msg)
+            parser.add_argument(*shortcuts, action='store_true', help=msg)
     return parser
+
+
+def prepare_todo(
+        todo,
+        *,
+        prefix: bool,
+        multiprocessed: bool,
+):
+    if todo is None:
+        todo = []
+    if not isinstance(todo, list):
+        todo = [todo]
+    # Copy to avoid changing the source list. If create_parse(todo) is invoked
+    # twice, changing the reference is no good idea and will produce --output,
+    # --input twice.
+    todo = list(todo)
+
+    if prefix:
+        prefixcommand = Parameter(
+            longcut='prefix',
+            message='add prefix to separate different output files',
+        )
+        todo = [prefixcommand] + todo
+
+    if multiprocessed:
+        multicmd = Number(
+            shortcut='p',
+            default=1,
+            message='select number of used processes',
+            args={'dest': 'processes'})
+        todo = [multicmd] + todo
+
+    todo.extend(COMMANDS)
+
+    return todo
 
 
 def create_io_ports(infile: bool = False, outfile: bool = False):
