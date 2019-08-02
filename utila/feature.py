@@ -622,6 +622,7 @@ def prepare_inputs(inputs, inspaces, outspace) -> List[str]:
                 filepath = join(inspace, filename)
                 if exists(filepath):
                     result.append(filepath)
+                    break  # do not double add path
                 else:
                     # TODO: Refactor recursive inputs
                     # Only on the last inspace, because the file could exists
@@ -635,6 +636,7 @@ def prepare_inputs(inputs, inspaces, outspace) -> List[str]:
                 filepath = join(inspace, filename)
                 if exists(filepath):
                     result.append(filepath)
+                    break  # do not double add path
                 else:
                     if not lastinput:
                         continue
@@ -645,6 +647,7 @@ def prepare_inputs(inputs, inspaces, outspace) -> List[str]:
                 if '.' in filename:
                     # File as a input name
                     result.append(inspace)
+                    break  # do not double add path
                 else:
                     ext = ext.lower()
                     pattern = '%s/%s.%s' % (inspace, name, ext)

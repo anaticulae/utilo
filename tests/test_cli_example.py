@@ -166,6 +166,30 @@ def test_cli_multiple_input(
     assert returncode(result) == expected_result, error_message
 
 
+def test_cli_multiple_input_with_double_input(
+        testdir,
+        monkeypatch,
+        capsys,
+        cli_example,
+):
+    """Test that resources exists in both input source"""
+    root = str(testdir)
+
+    second_input = join(root, 'second')
+    makedirs(second_input)
+
+    third_path = join(second_input, 'third.yaml')
+    file_create(third_path)
+    assert exists(third_path)
+
+    inputcmd = '-i %s -i %s -VVV' % (root, second_input)
+    with run_cli(root, monkeypatch, inputcmd) as result:
+        out, err = capsys.readouterr()
+    print(out)
+    print(err)
+    assert returncode(result) == SUCCESS, str(result)
+
+
 MultiRunner = partial(
     featurepack,
     description='',
