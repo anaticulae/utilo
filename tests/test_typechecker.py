@@ -12,12 +12,12 @@ from utila import checkdatatype
 
 
 @checkdatatype
-def three_args(first: str, second: int, third: str):
+def three_args(first: str, second: int, third: str):  # pylint:disable=unused-argument
     pass
 
 
 @checkdatatype
-def no_datatype(oneelement):
+def no_datatype(oneelement):  # pylint:disable=unused-argument
     pass
 
 

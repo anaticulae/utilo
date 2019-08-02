@@ -84,7 +84,7 @@ Runner = partial(
     name=PROCESSNAME,
     description='',
     version='beta',
-)
+)  # pylint:disable=C0103
 
 
 @contextmanager
