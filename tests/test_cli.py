@@ -89,7 +89,7 @@ def test_cli_non_existing_input(tmpdir, monkeypatch):
             monkeypatch,
             ['-i', 'abc'],
         )
-    assert 'SystemExit: 2' in str(result)
+    assert returncode(result) == 2, str(result)
 
 
 def test_cli_non_existing_output(tmpdir, monkeypatch):
@@ -137,7 +137,7 @@ def test_cli_file_as_output(tmpdir, monkeypatch):
             monkeypatch,
             ['-o', os.path.join(tmpdir, 'test.txt')],
         )
-    assert 'SystemExit: 2' in str(result)
+    assert returncode(result) == 2, str(result)
 
 
 RUN_ME = """\

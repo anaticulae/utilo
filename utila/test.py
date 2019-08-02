@@ -84,9 +84,7 @@ def run_command(
         context.setattr(sys, 'argv', [process] + command)
         with raises(SystemExit) as result:
             main()
-        result = str(result)
-
-    assert ('SystemExit: 0' in result) == success
+    assert (returncode(result) == SUCCESS) == success, str(result)
 
 
 @contextmanager
