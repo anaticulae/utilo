@@ -7,41 +7,42 @@
 # be prosecuted under federal law. Its content is company confidential.
 # =============================================================================
 
+from functools import wraps
 from inspect import Signature
 from inspect import signature
 
 from utila.logger import error
 
-# TODO: USE functools.update_wrapper
-
 
 def checkdatatype(func):
-    """Check that passed arguments have the right datatype"""
+    """Decorator to ensure that passed data matches with defined datatype
 
-    def decorating_function(user_function):
+    Args:
+        func(callable): function to ensure correct data input
+    Returns:
+        ensured callable
+    """
 
-        def wrapper(*args, **kwds):
-            uf_name = user_function.__name__
-            parameter = list(signature(user_function).parameters.items())
-            parameter = [(name, item.annotation) for (name, item) in parameter]
+    @wraps(func)
+    def wrapper(*args, **kwargs):
+        parameter = list(signature(func).parameters.items())
+        parameter = [(name, item.annotation) for (name, item) in parameter]
 
-            msg = 'parameter: %s, expected: %r, current %r:'
-            errors = []
-            for current, (name, expected) in zip(args, parameter):
-                if isinstance(current, expected):
-                    continue
-                if expected is Signature.empty:
-                    continue
-                errors.append((msg % (name, expected, type(current))))
-                errors.append(str(current))
-            if errors:
-                error('invalid function input `%s`' % uf_name)
-                for item in errors:
-                    error(item)
-                raise ValueError('invalid function input %s' % uf_name)
-            return user_function(*args, **kwds)
+        msg = 'parameter: %s, expected: %r, current %r:'
+        errors = []
+        for current, (name, expected) in zip(args, parameter):
+            if isinstance(current, expected):
+                continue
+            if expected is Signature.empty:
+                continue
+            errors.append((msg % (name, expected, type(current))))
+            errors.append(str(current))
+        if errors:
+            uf_name = func.__name__
+            error('invalid function input `%s`' % uf_name)
+            for item in errors:
+                error(item)
+            raise ValueError('invalid function input %s' % uf_name)
+        return func(*args, **kwargs)
 
-        wrapper.__userfunc__ = user_function
-        return wrapper
-
-    return decorating_function(func)
+    return wrapper
