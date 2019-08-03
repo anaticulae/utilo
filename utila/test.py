@@ -34,12 +34,14 @@ skip_longrun = mark.skipif(FAST_TESTS, reason=LONGRUN_REASON)
 skip_nonvirtual = mark.skipif(NON_VIRTUAL, reason=VIRTUAL_REASON)
 
 
-def run(command: str, cwd: str = None) -> CompletedProcess:
+def run(command: str, cwd: str = None, env: dict = None) -> CompletedProcess:
     """Run external process
 
     Args:
         command(str/[str]): command to run
         cwd(str): current working directory
+        env(dict): modify environment variable for test run. If nothing is
+                   passed, the global environment variable is used.
     Returns:
         return completed process
     """
@@ -47,9 +49,13 @@ def run(command: str, cwd: str = None) -> CompletedProcess:
     assert os.path.exists(cwd)
     msg = 'cwd %s is not a valid directory' % cwd
     assert os.path.isdir(cwd), msg
+
+    env = os.environ if env is None else env
+
     completed = _run(
         command,
         cwd=cwd,
+        env=env,
         errors='replace',
         shell=True,
         stderr=PIPE,
