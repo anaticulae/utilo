@@ -2,6 +2,19 @@
 
 Every noteable change is logged here.
 
+## v1.1.4
+
+### Feature
+
+* add parameter to `run` to manipulate the environment variable (296a6c76fbdf)
+* return SystemExit when running wrong featurepack configuration (fee9ee46508f)
+* add --ff to stop execution after the first error (27f441c12594)
+* catch error on failed file access while copy items (4ab936eb16b0)
+
+### Fix
+
+* fix pickle problem in multithreading (71d95fa1026e)
+
 ## v1.1.3
 
 ## v1.1.2
