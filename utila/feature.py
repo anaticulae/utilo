@@ -398,6 +398,10 @@ def find_features(root: str, featurepackage: str) -> List[FeatureInterface]:
     """
     featurepath = join(root, featurepackage.replace('.', '/'))
     assert exists(root), root
+    if not exists(featurepath):
+        error('wrong featurepack configuration, check `featurepackage` path')
+        error('featurepath %s does not exists' % featurepath)
+        exit(FAILURE)
     collected = [
         item.replace('.py', '')
         for item in listdir(featurepath)

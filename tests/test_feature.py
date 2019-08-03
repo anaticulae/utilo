@@ -198,6 +198,18 @@ def test_featurepack(featureexample, monkeypatch):  #pylint:disable=W0621
         assert returncode(result) == SUCCESS, str(result)
 
 
+def test_featurepack_wrong_featurepath(featureexample, monkeypatch, capsys):  #pylint:disable=W0621
+    root, _ = featureexample
+    with monkeypatch.context() as context:
+        context.setattr(sys, 'argv', [PROCESS_NAME, '-i', root, '-o', root])
+        context.syspath_prepend(root)
+        with raises(SystemExit) as result:
+            pack(workplan(), root=root, featurepackage='features.wrongpath')
+        assert returncode(result) == FAILURE, str(result)
+        _, err = capsys.readouterr()
+        assert '[ERROR] wrong featurepack configuration, check' in err, str(err)
+
+
 def create_worker(
         stepname: str,
         worker: str,
