@@ -184,6 +184,9 @@ def create_parser(
     return parser
 
 
+MULTI_FLAG = 'job'
+
+
 def prepare_todo(
         todo,
         *,
@@ -208,10 +211,10 @@ def prepare_todo(
 
     if multiprocessed:
         multicmd = Number(
-            shortcut='p',
+            shortcut=MULTI_FLAG[0],
             default=1,
-            message='select number of used processes',
-            args={'dest': 'processes'})
+            message='select number of used jobs',
+            args={'dest': MULTI_FLAG})
         todo = [multicmd] + todo
 
     todo.extend(COMMANDS)

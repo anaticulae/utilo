@@ -202,22 +202,22 @@ MultiRunner = partial(
 
 
 @mark.parametrize(
-    'processes',
+    'jobs',
     [
         1,  # single processed
         10,
     ],
 )
-def test_cli_multiple_processes(
+def test_cli_multiple_jobs(
         testdir,
         monkeypatch,
         capsys,
         cli_example,
-        processes: int,
+        jobs: int,
 ):
     root = str(testdir)
 
-    cmd = '--p %d --all' % processes
+    cmd = '-j %d --all' % jobs
     with run_cli(root, monkeypatch, cmd, MultiRunner) as result:
         out, err = capsys.readouterr()
     error_message = '%s\n%s\n%s' % (result, out, err)

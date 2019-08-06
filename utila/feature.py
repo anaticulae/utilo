@@ -36,6 +36,7 @@ from typing import Callable
 from typing import List
 from typing import Tuple
 
+from utila.cli import MULTI_FLAG
 from utila.cli import Command
 from utila.cli import Flag
 from utila.cli import Parameter
@@ -110,9 +111,9 @@ def featurepack(
     )
     args = parse(parser)
 
-    processes = 1 if not multiprocessed else args.get('processes')
+    processes = 1 if not multiprocessed else args.get(MULTI_FLAG)
     with suppress(KeyError):
-        del args['processes']
+        del args[MULTI_FLAG]
 
     failfast = args.get('ff', False)
     with suppress(KeyError):
