@@ -2,6 +2,13 @@
 
 Every noteable change is logged here.
 
+## v1.2.0
+
+### Feature
+
+* add --pages flag to specify processed pages (4aa00ee404b0)
+* add method to parse user defined page ranges `5:10`; 1,2,3 (b2169db1ebdc)
+
 ## v1.1.5
 
 ### Fix

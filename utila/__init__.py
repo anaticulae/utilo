@@ -93,7 +93,7 @@ from utila.utils import forward_slash
 from utila.utils import pages
 from utila.utils import roundme
 
-__version__ = '1.1.5'
+__version__ = '1.2.0'
 
 ROOT = os.path.abspath(os.path.join(os.path.dirname(__file__), '..'))
 PACKAGENAME = 'utila'
