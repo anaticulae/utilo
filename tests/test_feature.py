@@ -30,7 +30,7 @@ from utila.feature import input_order
 
 WORKER = """
 from typing import Tuple
-def work(one_input: str) -> Tuple[str, str]:
+def work(input_with_pag: str, pages: list) -> Tuple[str, str]:
     return {'first': '', 'second': ''}
 """
 
@@ -154,23 +154,26 @@ def test_featurepack_with_broken_feature(featureexample, monkeypatch):
 
 
 @mark.parametrize(
-    'name,worker', [
-        ('worker_with_exception', WORKER_WITH_EXCEPTION),
-        ('worker_with_no_returnvalue', WORKER_WITH_NO_RETURNVALUE),
-        ('worker_with_wrong_input', WORKER_WITH_WRONG_INPUT),
-        ('worker_with_wrong_returnvalue', WORKER_WITH_WRONG_RETURNVALUE),
+    'name,worker,expected_result', [
+        ('worker_with_exception', WORKER_WITH_EXCEPTION, FAILURE),
+        ('worker_with_no_returnvalue', WORKER_WITH_NO_RETURNVALUE, FAILURE),
+        ('worker_with_wrong_input', WORKER_WITH_WRONG_INPUT, FAILURE),
+        ('worker_with_wrong_returnval', WORKER_WITH_WRONG_RETURNVALUE, FAILURE),
+        ('worker_with_pages', WORKER, SUCCESS),
     ],
     ids=[
         'worker_with_expection',
         'worker_with_no_returnvalue',
         'worker_with_wrong_input',
         'worker_with_wrong_returnvalue',
+        'worker_with_pages',
     ])
-def test_featurepack_with_broken_worker(  #pylint:disable=W0621
+def test_featurepack_with_different_worker(  #pylint:disable=W0621
         featureexample,
         monkeypatch,
         name,
         worker,
+        expected_result,
 ):
     root, package = featureexample
     featurepath = join(root, package.replace('.', '/'))
@@ -185,7 +188,7 @@ def test_featurepack_with_broken_worker(  #pylint:disable=W0621
 
         with raises(SystemExit) as result:
             pack(workplan(name), root=root, featurepackage=package)
-        assert returncode(result) == FAILURE
+        assert returncode(result) == expected_result, str(result)
 
 
 def test_featurepack(featureexample, monkeypatch):  #pylint:disable=W0621

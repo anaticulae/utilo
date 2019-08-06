@@ -14,7 +14,6 @@ from os import makedirs
 from os.path import exists
 from os.path import join
 
-from pytest import fixture
 from pytest import mark
 from pytest import raises
 
@@ -25,6 +24,7 @@ from utila import featurepack
 from utila import file_create
 from utila import file_remove
 from utila import returncode
+from utila.feature import PAGES_FLAG
 from utila.utils import SUCCESS
 
 WORKPLAN = [
@@ -47,22 +47,56 @@ def name():
     return 'cli_example'
 """
 
+EXAMPLE_WITH_PAGE = """
+def work(second: str, third: str, pages: int)->str:
+    # Ensure that passing pages works correctly!
+    assert pages == list(range(5,10)), pages
+    return str(pages)
 
-@fixture
-def cli_example(testdir):
+def name():
+    return 'cli_with_pages'
+"""
+
+EXAMPLE_WITH_PAGE_WORKPLAN = [
+    create_step(
+        'cli_with_pages',
+        [
+            File('second', 'html'),
+            File('third'),
+        ],
+        (('result'),),
+    ),
+]
+
+INVALID_WORKPLAN = [
+    create_step(
+        'cli_with_pages',
+        [
+            # Pages parameter is not allowed in workplan, it is delivered
+            # automatically if needed
+            File(PAGES_FLAG),
+            File('second', 'html'),
+            File('third'),
+        ],
+        (('result'),),
+    ),
+]
+
+
+def cli_example(testdir, example=EXAMPLE):
     root = str(testdir)
-    example = join(root, 'example')
-    makedirs(example)
-    featurepath = join(example, 'features')
+    example_path = join(root, 'example')
+    makedirs(example_path)
+    featurepath = join(example_path, 'features')
     makedirs(featurepath)
 
     cli_example_feature = join(featurepath, 'cli_example.py')
-    file_create(cli_example_feature, EXAMPLE)
+    file_create(cli_example_feature, example)
 
     cli_example_feature_init = join(featurepath, '__init__.py')
     file_create(cli_example_feature_init, '')
 
-    cli_example_init = join(example, '__init__.py')
+    cli_example_init = join(example_path, '__init__.py')
     file_create(cli_example_init, '')
 
     sys.path.append(root)
@@ -77,14 +111,33 @@ def cli_example(testdir):
 
 PROCESSNAME = 'cli_example'
 
-Runner = partial(
-    featurepack,
-    workplan=WORKPLAN,
-    featurepackage='example.features',
-    name=PROCESSNAME,
-    description='',
-    version='beta',
-)  # pylint:disable=C0103
+
+def create_runner(
+        featurepack_=featurepack,
+        description='',
+        featurepackage='example.features',
+        multiprocessed=False,
+        name=PROCESSNAME,
+        pages=True,
+        version='beta',
+        workplan=None,
+):
+    if workplan is None:
+        workplan = list(WORKPLAN)
+    runner = partial(
+        featurepack_,
+        description=description,
+        featurepackage=featurepackage,
+        multiprocessed=multiprocessed,
+        name=name,
+        pages=pages,
+        version=version,
+        workplan=workplan,
+    )
+    return runner
+
+
+Runner = create_runner()  # pylint:disable=C0103
 
 
 @contextmanager
@@ -104,8 +157,26 @@ def run_cli(root, monkeypatch, cmdline, runner=Runner):
     yield result
 
 
-def test_cli_example(testdir, monkeypatch, capsys, cli_example):
-    root, _ = cli_example
+def test_workplan_invalid(testdir, monkeypatch, capsys):  # pylint:disable=W0621
+    invalid = create_runner(workplan=INVALID_WORKPLAN)
+    root, _ = cli_example(testdir, EXAMPLE_WITH_PAGE)
+    with run_cli(root, monkeypatch, '--all', runner=invalid) as result:
+        out, err = capsys.readouterr()
+    assert 'parameter `pages` is not allowed' in err
+    assert returncode(result) == FAILURE, str(out) + str(err)
+
+
+def test_workplan_valid_with_pages(testdir, monkeypatch, capsys):  # pylint:disable=W0621
+    valid = create_runner(workplan=EXAMPLE_WITH_PAGE_WORKPLAN)
+    root, _ = cli_example(testdir, EXAMPLE_WITH_PAGE)
+    command = '--all --pages=5:10'
+    with run_cli(root, monkeypatch, command, runner=valid) as result:
+        out, err = capsys.readouterr()
+    assert returncode(result) == SUCCESS, str(out) + str(err)
+
+
+def test_cli_example(testdir, monkeypatch, capsys):  # pylint:disable=W0621
+    root, _ = cli_example(testdir)
 
     with run_cli(root, monkeypatch, '-h') as result:
         captured = capsys.readouterr().out
@@ -116,13 +187,17 @@ def test_cli_example(testdir, monkeypatch, capsys, cli_example):
     assert returncode(result) == SUCCESS, str(result)
 
 
-def test_cli_example_all(testdir, monkeypatch, capsys, cli_example):
-    """Run every feature step with --all flag"""
-    root, _ = cli_example
+@mark.parametrize('command', [
+    '--all',
+    '--pages=0:10',
+])
+def test_cli_example_all(testdir, monkeypatch, capsys, command):
+    """Run cli example with commands"""
+    root, _ = cli_example(testdir)
 
-    with run_cli(root, monkeypatch, '--all -VVV') as result:
+    with run_cli(root, monkeypatch, '%s -VVV' % command) as result:
         out, err = capsys.readouterr()
-    assert len(out) > 50, str(out)
+    assert len(out) > 50, str(out) + str(err)
     assert not err, str(err)
 
     assert returncode(result) == SUCCESS, str(result)
@@ -136,9 +211,9 @@ def test_cli_multiple_input(
         testdir,
         monkeypatch,
         capsys,
-        cli_example,
         create_missing_input: bool,
 ):
+    cli_example(testdir)
     root = str(testdir)
     # remove file out of first example to test multiple -i sources
     first_yaml = join(root, 'first.yaml')
@@ -170,9 +245,9 @@ def test_cli_multiple_input_with_double_input(
         testdir,
         monkeypatch,
         capsys,
-        cli_example,
 ):
     """Test that resources exists in both input source"""
+    cli_example(testdir)
     root = str(testdir)
 
     second_input = join(root, 'second')
@@ -185,20 +260,10 @@ def test_cli_multiple_input_with_double_input(
     inputcmd = '-i %s -i %s -VVV' % (root, second_input)
     with run_cli(root, monkeypatch, inputcmd) as result:
         out, err = capsys.readouterr()
-    print(out)
-    print(err)
-    assert returncode(result) == SUCCESS, str(result)
+    assert returncode(result) == SUCCESS, str(result) + str(out) + str(err)
 
 
-MultiRunner = partial(
-    featurepack,
-    description='',
-    featurepackage='example.features',
-    multiprocessed=True,
-    name=PROCESSNAME,
-    version='beta',
-    workplan=WORKPLAN,
-)
+MultiRunner = create_runner(multiprocessed=True)
 
 
 @mark.parametrize(
@@ -212,9 +277,9 @@ def test_cli_multiple_jobs(
         testdir,
         monkeypatch,
         capsys,
-        cli_example,
         jobs: int,
 ):
+    cli_example(testdir)
     root = str(testdir)
 
     cmd = '-j %d --all' % jobs
