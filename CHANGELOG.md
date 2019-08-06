@@ -2,6 +2,12 @@
 
 Every noteable change is logged here.
 
+## v1.1.5
+
+### Fix
+
+* rename multiple job flag according to GNU reference (75f68fe412c8)
+
 ## v1.1.4
 
 ### Feature
