@@ -129,6 +129,7 @@ def create_parser(
         inputparameter: bool = False,
         multiprocessed: bool = False,
         outputparameter: bool = False,
+        pages: bool = False,
         prefix: bool = True,
 ):
     """Create parser out of defined dictonary with command-line-definiton.
@@ -145,12 +146,17 @@ def create_parser(
     Returns:
         created argparser
     """
-    todo = prepare_todo(todo, prefix=prefix, multiprocessed=multiprocessed)
+    todo = prepare_todo(
+        todo,
+        multiprocessed=multiprocessed,
+        pages=pages,
+        prefix=prefix,
+    )
 
     parser = ArgumentParser(
-        prog=prog,
         description=description,
         formatter_class=RawDescriptionHelpFormatter,
+        prog=prog,
     )
 
     if version:
@@ -185,13 +191,15 @@ def create_parser(
 
 
 MULTI_FLAG = 'job'
+PAGES_FLAG = 'pages'
 
 
 def prepare_todo(
         todo,
         *,
-        prefix: bool,
         multiprocessed: bool,
+        pages: bool,
+        prefix: bool,
 ):
     if todo is None:
         todo = []
@@ -207,7 +215,7 @@ def prepare_todo(
             longcut='prefix',
             message='add prefix to separate different output files',
         )
-        todo = [prefixcommand] + todo
+        todo.insert(0, prefixcommand)
 
     if multiprocessed:
         multicmd = Number(
@@ -215,7 +223,20 @@ def prepare_todo(
             default=1,
             message='select number of used jobs',
             args={'dest': MULTI_FLAG})
-        todo = [multicmd] + todo
+        todo.insert(0, multicmd)
+
+    if pages:
+        # TODO: pages flag in def work is only possible as the last parameter
+        # BUG
+        page = Parameter(
+            longcut=PAGES_FLAG,
+            message='run computation on given pages',
+            args={
+                'dest': PAGES_FLAG,
+                'default': ':',
+            },
+        )
+        todo.insert(0, page)
 
     todo.extend(COMMANDS)
 

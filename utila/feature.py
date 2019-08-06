@@ -37,6 +37,7 @@ from typing import List
 from typing import Tuple
 
 from utila.cli import MULTI_FLAG
+from utila.cli import PAGES_FLAG
 from utila.cli import Command
 from utila.cli import Flag
 from utila.cli import Parameter
@@ -52,10 +53,12 @@ from utila.logger import info
 from utila.logger import level_setup
 from utila.logger import log
 from utila.logger import log_stacktrace
+from utila.utils import ALL_PAGES
 from utila.utils import FAILURE
 from utila.utils import NEWLINE
 from utila.utils import SUCCESS
 from utila.utils import determine_order
+from utila.utils import pages as parse_pages
 
 NAME = 'name'
 INPUT = 'input'
@@ -81,6 +84,7 @@ def featurepack(
         *,
         multiprocessed: bool = False,
         singleinput: bool = False,
+        pages: bool = False,
 ) -> int:
     """Run featurepack defined in `workplan`
 
@@ -108,6 +112,7 @@ def featurepack(
         inputparameter=True,
         multiprocessed=multiprocessed,
         outputparameter=True,
+        pages=pages,
     )
     args = parse(parser)
 
@@ -118,6 +123,10 @@ def featurepack(
     failfast = args.get('ff', False)
     with suppress(KeyError):
         del args['ff']
+
+    pages = parse_pages(args.get(PAGES_FLAG, ALL_PAGES))
+    with suppress(KeyError):
+        del args[PAGES_FLAG]
 
     # evaluate the verbose flag
     inputpath, outputpath, prefix, verbose = sources(
@@ -159,14 +168,15 @@ def featurepack(
     completed = process(
         workplan,
         name,
-        todo=current_todo,
-        processes=processes,
         failfast=failfast,
+        pagenumbers=pages,
+        processes=processes,
+        todo=current_todo,
     )
     return completed
 
 
-def callback(hook, name: str, output):
+def callback(hook, name: str, output, pagenumbers: list):
     log('processing: %s' % name)
     # run runnable
     runnable = partial(
@@ -174,6 +184,7 @@ def callback(hook, name: str, output):
         hook=hook,
         name=name,
         stepoutput=output,
+        pagenumbers=pagenumbers,
     )
     result = runnable()
     if result == FAILURE:
@@ -188,6 +199,7 @@ def process(
         name: str = None,
         todo: List = None,
         processes: int = 1,
+        pagenumbers: list = None,
         *,
         failfast: bool = False,
 ):
@@ -228,6 +240,7 @@ def process(
                     step[HOOK],
                     name,
                     step[OUTPUT],
+                    pagenumbers=pagenumbers,
                 )
                 results.append(future)
             # wait that level finishes
@@ -355,9 +368,19 @@ def prepare_description(name: str, description: str, workplan):
     return description + NEWLINE + result
 
 
-def run_hook_safely(hook: callable, name: str, stepoutput) -> int:
+def run_hook_safely(
+        hook: callable,
+        name: str,
+        stepoutput,
+        pagenumbers,
+) -> int:
+    sig = signature(hook)
     try:
-        result = hook()
+        if PAGES_FLAG in sig.parameters:
+            # optional page numbers flag
+            result = hook(pages=pagenumbers)
+        else:
+            result = hook()
     except Exception as msg:  # pylint: disable=broad-except
         log_stacktrace()
         error('while processing %s' % name)
@@ -528,7 +551,6 @@ def read_workplan(
         processes(int): maximum parallel used processes
     Returns:
         parsed list of worksteps with verified inputs
-
     """
     assert used_processes >= 1, 'invalid process count %d' % used_processes
     # if no outspace is defined, use the first passed inspace to write output
@@ -540,6 +562,15 @@ def read_workplan(
     for step in plan:
         inputs, outputs = step[INPUT], step[OUTPUT]
         variables = prepare_variables(variables=inputs, args=args)
+
+        # optional pages flag is not allowed in workplan
+        if PAGES_FLAG in [item.name for item in inputs]:
+            error(str(inputs))
+            msg = 'parameter `pages` is not allowed in `workplan`, step: %s'
+            error(msg % step[NAME])
+            ret += 1
+            continue
+
         call_inputs = prepare_inputs(inputs, inspace, outspace)
         name = step[NAME]
         try:
@@ -621,6 +652,7 @@ def prepare_inputs(inputs, inspaces, outspace) -> List[str]:
     Returns:
         list of located files
     """
+
     call('prepare inputs')
     result = []
     # single file input
@@ -671,7 +703,7 @@ def prepare_inputs(inputs, inspaces, outspace) -> List[str]:
                     files = glob(pattern)
                     info('%s' % str(files))
                     for finding in files:
-                        print('FINDING %s' % finding)
+                        log('FINDING %s' % finding)
                         result.append(finding)
 
     call('result: %s\n' % result)
@@ -740,7 +772,10 @@ def verify_interface(inputs, outputs, worker):
         list(call_parameter.keys()),
         inputs,
     )
-    if not len(call_parameter) == len(inputs):
+
+    # optional pages flag, reduces count of required parameter in definition
+    has_pages = int(PAGES_FLAG in call_parameter)
+    if not len(call_parameter) == len(inputs) + has_pages:
         error('missing input resources: %s' % interface_error_msg)
         return FAILURE
 
