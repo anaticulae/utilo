@@ -90,6 +90,7 @@ from utila.utils import UTF8
 from utila.utils import fix_encoding
 from utila.utils import flatten
 from utila.utils import forward_slash
+from utila.utils import pages
 from utila.utils import roundme
 
 __version__ = '1.1.5'

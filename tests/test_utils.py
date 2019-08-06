@@ -13,6 +13,7 @@ from pytest import mark
 
 from utila import fix_encoding
 from utila import flatten
+from utila import pages
 from utila import roundme
 
 
@@ -42,3 +43,23 @@ def test_flatten():
     ]
     flat = flatten(todo)
     assert len(flat) == 7, str(flat)
+
+
+@mark.parametrize('pattern, expected', [
+    (' :  ', []),
+    ('0:0', list(range(0, 0))),
+    ('0:10', list(range(0, 10))),
+    ('5:5', list(range(5, 5))),
+    ('5:6', list(range(5, 6))),
+    (':', []),
+    ('asdas:', None),
+    ('   ', None),
+    ('5', [5]),
+    ('0', [0]),
+    ('1,2,3,5,10', [1, 2, 3, 5, 10]),
+    ('a,2,d,,10', None),
+    ('a,10', None),
+])
+def test_pages(pattern, expected):
+    result = pages(pattern)
+    assert result == expected

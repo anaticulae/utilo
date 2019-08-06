@@ -19,6 +19,8 @@ INF = (1 << 31) - 1
 
 NDIGITS = 2
 
+ALL_PAGES = ':'
+
 
 def forward_slash(content: str):
     """Replace every backward slash \\ with an forward slash /
@@ -80,4 +82,69 @@ def determine_order(requirements, flat=True):
         assert len(todo) != before, 'zyclic definition of workplan'
     if flat:
         result = flatten(result)
+    return result
+
+
+def pages(pattern: str, pagecount=None) -> list:
+    """Determine list of pages out of given `pattern`.
+
+    Args:
+        pattern(str): user defined pattern
+        pagecount(int): maximum number of pages for example `5:` -> 5:pagecount
+                        not implement yet.
+    Returns:
+        list with user defined pages
+    """
+
+    # TODO: implement pagecount
+
+    def parse_comma(pattern):
+        """Pattern contains `,`"""
+        splitted = numbers(pattern.split(','))
+        if not all([isinstance(item, int) for item in splitted]):
+            return None
+        return splitted
+
+    def parse_collon(pattern):
+        """Pattern contains `:`"""
+        if len(pattern) == 1:
+            # single :
+            return []
+        splitted = pattern.split(':')
+        if len(splitted) == 1:
+            return [int(splitted[0])]
+        if len(splitted) == 2:
+            # left, right
+            try:
+                left = int(splitted[0])
+                right = int(splitted[1])
+                return list(range(left, right))
+            except ValueError:
+                return None
+        return None
+
+    def parse_single(pattern):
+        """Pattern contains no special character"""
+        try:
+            return [int(pattern)]
+        except ValueError:
+            return None
+
+    pattern = pattern.strip()
+    if not pattern:
+        return None
+    if ',' in pattern:
+        return parse_comma(pattern)
+    if ':' in pattern:
+        return parse_collon(pattern)
+    return parse_single(pattern)
+
+
+def numbers(items):
+    result = []
+    for item in items:
+        try:
+            result.append(int(item))
+        except ValueError:
+            result.append(None)
     return result
