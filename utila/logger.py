@@ -57,25 +57,25 @@ def log(msg: str = '', level: Level = Level.LOGGING, end: str = NEWLINE):
     print(msg, end=end, file=sys.stdout, flush=True)
 
 
-def call(msg: str):
-    log('  %s' % msg, Level.CALLS)
+def call(msg: str, end: str = NEWLINE):
+    log('  %s' % msg, Level.CALLS, end=end)
 
 
-def info(msg: str):
-    log('    %s' % msg, Level.INFORMATION)
+def info(msg: str, end: str = NEWLINE):
+    log('    %s' % msg, Level.INFORMATION, end=end)
 
 
-def debug(msg: str):
-    log('      %s' % msg, Level.DEBUG)
+def debug(msg: str, end: str = NEWLINE):
+    log('      %s' % msg, Level.DEBUG, end=end)
 
 
-def error(msg: str):
+def error(msg: str, end: str = NEWLINE):
     """Print error-message to stderr and add [ERROR]-tag"""
     # avoid problems when using with windows console(cp1252)
     msg = fix_encoding(msg)
     # use forward slashs
     msg = forward_slash(msg)
-    print('[ERROR] %s' % msg, file=sys.stderr, flush=True)
+    print('[ERROR] %s' % msg, file=sys.stderr, flush=True, end=end)
 
 
 def log_stacktrace():
