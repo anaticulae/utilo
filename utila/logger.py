@@ -83,11 +83,6 @@ def log_stacktrace():
     error(forward_slash(stack_trace))
 
 
-def flush():
-    """Flush stdout"""
-    print('', end='', file=sys.stdout, flush=True)
-
-
 def print_runtime(before: int):
     """Determine runtime due the diff of current time and provided time
     `before`. Log this timediff.
