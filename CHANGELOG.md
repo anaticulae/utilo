@@ -2,6 +2,12 @@
 
 Every noteable change is logged here.
 
+## v1.2.1
+
+### Feature
+
+* add option to change end-line when logging (2dcc0c76232f)
+
 ## v1.2.0
 
 ### Feature
