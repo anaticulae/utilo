@@ -59,6 +59,7 @@ from utila.likelihood import uniform_result
 from utila.likelihood import uniform_result_with_items
 # Logging
 from utila.logger import Level
+from utila.logger import SkipCollector
 from utila.logger import call
 from utila.logger import debug
 from utila.logger import error

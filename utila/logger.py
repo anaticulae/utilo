@@ -105,3 +105,36 @@ def profile():
         raise
     else:
         print_runtime(start)
+
+
+class SkipCollector:
+    """Contenxtmanager to handle selective pages."""
+
+    def __init__(self, pages):
+        """Initialize SkipCollector with pages which should not be skipped
+
+        Args:
+            pages(list): list with pages which `skip(page)` return False
+        """
+        self.pages = pages
+        self.data = []
+
+    def skip(self, page):
+        if self.pages and page not in self.pages:
+            self.data.append(str(page))
+            return True
+        self.log()
+        return False
+
+    def log(self):
+        """Print current state of skipped items and reset this state"""
+        if self.data:
+            msg = ', '.join(self.data)
+            debug('skip: %s' % msg)
+        self.data = []
+
+    def __enter__(self):
+        return self
+
+    def __exit__(self, exc_type, exc_value, traceback):
+        self.log()
