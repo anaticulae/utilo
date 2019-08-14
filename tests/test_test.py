@@ -16,6 +16,7 @@ from utila import assert_run_fail
 from utila import clean_install
 from utila import run
 from utila import run_command
+from utila import skip_longrun
 
 
 def test_run(tmpdir):
@@ -29,6 +30,7 @@ def test_run(tmpdir):
         assert result.returncode == FAILURE
 
 
+@skip_longrun
 def test_clean_install():
     clean_install(ROOT, PACKAGENAME)
 
