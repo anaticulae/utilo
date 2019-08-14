@@ -2,6 +2,12 @@
 
 Every noteable change is logged here.
 
+## v1.2.2
+
+### Fix
+
+* add comma ',' to increase readability (9f5cfb5ee898)
+
 ## v1.2.1
 
 ### Feature
