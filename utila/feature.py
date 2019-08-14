@@ -820,7 +820,7 @@ class Value(Input):
 
     def __repr__(self):
         ctor = ("Value(name='%s', typ='%s', defaultvar='%s',"
-                " minimum='%s', maximum='%s')")
+                " minimum='%s', maximum='%s',)")
         return ctor % (
             self.name,
             self.typ,
