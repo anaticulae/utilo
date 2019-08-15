@@ -18,7 +18,11 @@ def forward_slash(content: str):
     Returns:
         content without backslashs
     """
+    # TODO: LEARN MORE ABOUT REGEX
+    safety_token = '_1337THISISSECRET1337_'
+    content = content.replace(r'\n', safety_token)
     content = str(content).replace(r'\\', '/').replace('\\', '/')
+    content = content.replace(safety_token, r'\n')
     return content
 
 

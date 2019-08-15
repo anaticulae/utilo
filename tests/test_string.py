@@ -10,8 +10,11 @@
 import sys
 
 from pytest import mark
+from pytest import param
 
+from utila import NEWLINE
 from utila import fix_encoding
+from utila import forward_slash
 
 
 @mark.parametrize('platform,given,expected', [
@@ -25,3 +28,20 @@ def test_fix_encoding(platform, given, expected, monkeypatch):
         context.setattr(sys, 'platform', platform)
         fixed = fix_encoding(given)
     assert fixed == expected
+
+
+def test_string_forward_slash_do_not_replace_newline():
+    text_with_newline = r'Hello\n\nHello' + '\n'
+    forwarded = forward_slash(text_with_newline)
+    assert forwarded == text_with_newline
+
+
+@mark.parametrize('string, expected', [
+    param(r'\wello\dister', r'/wello/dister', id='replace backslash'),
+    param(r'\n', r'\n', id='do not replace raw newline'),
+    param('\n', '\n', id='do not replace newline'),
+    param('\\\n', '/\n', id='replace backslash before newline'),
+])
+def test_string_forward_slash_replace_backslash(string, expected):
+    replaced = forward_slash(string)
+    assert replaced == expected
