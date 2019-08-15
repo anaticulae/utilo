@@ -2,6 +2,13 @@
 
 Every noteable change is logged here.
 
+## v1.2.4
+
+### Fix
+
+* fix forward slash to not replace '\n' newlines (5a71ebd215c3)
+* change pages return type to tuple (a075bb757e92)
+
 ## v1.2.3
 
 ### Feature

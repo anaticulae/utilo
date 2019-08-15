@@ -96,7 +96,7 @@ from utila.utils import UTF8
 from utila.utils import flatten
 from utila.utils import roundme
 
-__version__ = '1.2.3'
+__version__ = '1.2.4'
 
 ROOT = os.path.abspath(os.path.join(os.path.dirname(__file__), '..'))
 PACKAGENAME = 'utila'
