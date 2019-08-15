@@ -53,12 +53,12 @@ from utila.logger import info
 from utila.logger import level_setup
 from utila.logger import log
 from utila.logger import log_stacktrace
+from utila.pages import pages as parse_pages
 from utila.utils import ALL_PAGES
 from utila.utils import FAILURE
 from utila.utils import NEWLINE
 from utila.utils import SUCCESS
 from utila.utils import determine_order
-from utila.utils import pages as parse_pages
 
 NAME = 'name'
 INPUT = 'input'

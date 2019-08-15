@@ -1,0 +1,83 @@
+# =============================================================================
+# C O P Y R I G H T
+# -----------------------------------------------------------------------------
+# Copyright (c) 2019 by Helmut Konrad Fahrendholz. All rights reserved.
+# This file is property of Helmut Konrad Fahrendholz. Any unauthorized copy,
+# use or distribution is an offensive act against international law and may
+# be prosecuted under federal law. Its content is company confidential.
+# =============================================================================
+
+from utila.utils import numbers
+
+
+def pages(pattern: str, pagecount=None) -> list:
+    """Determine list of pages out of given `pattern`.
+
+    Args:
+        pattern(str): user defined pattern
+        pagecount(int): maximum number of pages for example `5:` -> 5:pagecount
+                        not implement yet.
+    Returns:
+        list with user defined pages
+    """
+
+    # TODO: implement pagecount
+
+    def parse_comma(pattern):
+        """Pattern contains `,`"""
+        splitted = numbers(pattern.split(','))
+        if not all([isinstance(item, int) for item in splitted]):
+            return None
+        return splitted
+
+    def parse_collon(pattern):
+        """Pattern contains `:`"""
+        if len(pattern) == 1:
+            # single :
+            return []
+        splitted = pattern.split(':')
+        if len(splitted) == 1:
+            return [int(splitted[0])]
+        if len(splitted) == 2:
+            # left, right
+            try:
+                left = int(splitted[0])
+                right = int(splitted[1])
+                return list(range(left, right))
+            except ValueError:
+                return None
+        return None
+
+    def parse_single(pattern):
+        """Pattern contains no special character"""
+        try:
+            return [int(pattern)]
+        except ValueError:
+            return None
+
+    pattern = pattern.strip()
+    if not pattern:
+        return None
+    if ',' in pattern:
+        return parse_comma(pattern)
+    if ':' in pattern:
+        return parse_collon(pattern)
+    return parse_single(pattern)
+
+
+def should_skip(page: int, pages):  # pylint:disable=W0621
+    """Determine if `page` is invalid
+
+    If `pages` is None, every page is accepted.
+    If `pages` is a list, only the elements in this list are valid and return
+    False.
+
+    Args:
+        page(int): check to skip this page number
+        pages(list): list with accepted pages
+    Returns:
+        return True if `page` is in `pages` or pages is None else False
+    """
+    if pages is None:
+        return False
+    return not page in pages

@@ -69,6 +69,9 @@ from utila.logger import log
 from utila.logger import log_stacktrace
 from utila.logger import print_runtime
 from utila.logger import profile
+# pages
+from utila.pages import pages
+from utila.pages import should_skip
 # string
 from utila.string import fix_encoding
 from utila.string import forward_slash
@@ -91,9 +94,7 @@ from utila.utils import NEWLINE
 from utila.utils import SUCCESS
 from utila.utils import UTF8
 from utila.utils import flatten
-from utila.utils import pages
 from utila.utils import roundme
-from utila.utils import should_skip
 
 __version__ = '1.2.3'
 
