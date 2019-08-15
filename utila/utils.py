@@ -148,3 +148,21 @@ def numbers(items):
         except ValueError:
             result.append(None)
     return result
+
+
+def should_skip(page: int, pages):  # pylint:disable=W0621
+    """Determine if `page` is invalid
+
+    If `pages` is None, every page is accepted.
+    If `pages` is a list, only the elements in this list are valid and return
+    False.
+
+    Args:
+        page(int): check to skip this page number
+        pages(list): list with accepted pages
+    Returns:
+        return True if `page` is in `pages` or pages is None else False
+    """
+    if pages is None:
+        return False
+    return not page in pages

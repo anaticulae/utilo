@@ -15,6 +15,7 @@ from utila import fix_encoding
 from utila import flatten
 from utila import pages
 from utila import roundme
+from utila import should_skip
 
 
 @mark.parametrize('platform,given,expected', [
@@ -63,3 +64,9 @@ def test_flatten():
 def test_pages(pattern, expected):
     result = pages(pattern)
     assert result == expected
+
+
+def test_utils_should_skip():
+    assert should_skip(5, [1, 2, 3]) is True
+    assert should_skip(5, [1, 2, 3, 5]) is False
+    assert should_skip(5, None) is False
