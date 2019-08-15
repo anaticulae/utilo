@@ -10,7 +10,7 @@
 from utila.utils import numbers
 
 
-def pages(pattern: str, pagecount=None) -> list:
+def pages(pattern: str, pagecount=None) -> tuple:
     """Determine list of pages out of given `pattern`.
 
     Args:
@@ -59,10 +59,12 @@ def pages(pattern: str, pagecount=None) -> list:
     if not pattern:
         return None
     if ',' in pattern:
-        return parse_comma(pattern)
-    if ':' in pattern:
-        return parse_collon(pattern)
-    return parse_single(pattern)
+        parsed = parse_comma(pattern)
+    elif ':' in pattern:
+        parsed = parse_collon(pattern)
+    else:
+        parsed = parse_single(pattern)
+    return tuple(parsed) if parsed else None
 
 
 def should_skip(page: int, pages):  # pylint:disable=W0621

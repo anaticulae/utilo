@@ -50,7 +50,7 @@ def name():
 EXAMPLE_WITH_PAGE = """
 def work(second: str, third: str, pages: int)->str:
     # Ensure that passing pages works correctly!
-    assert pages == list(range(5,10)), pages
+    assert pages == tuple(range(5,10)), pages
     return str(pages)
 
 def name():
