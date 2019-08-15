@@ -7,7 +7,6 @@
 # be prosecuted under federal law. Its content is company confidential.
 #==============================================================================
 
-import sys
 
 SUCCESS = 0
 FAILURE = 1
@@ -20,37 +19,6 @@ INF = (1 << 31) - 1
 NDIGITS = 2
 
 ALL_PAGES = ':'
-
-
-def forward_slash(content: str):
-    """Replace every backward slash \\ with an forward slash /
-
-    Args:
-        content(str): content with backslashs
-    Returns:
-        content without backslashs
-    """
-    content = str(content).replace(r'\\', '/').replace('\\', '/')
-    return content
-
-
-def fix_encoding(msg: str):
-    """Remove invalid character to display on console
-
-    Args:
-        msg(str): message with invalid character
-    Returns:
-        message `without` invalid character"""
-
-    # ensure to have str
-    msg = str(msg)
-
-    # Convert for windows console, replace non supported chars
-    encoding = 'cp1252' if sys.platform in ('win32', 'cygwin') else 'utf-8'
-
-    # remove non valid char to avoid error on (win)-console
-    msg = msg.encode(encoding, errors='xmlcharrefreplace').decode(encoding)
-    return msg
 
 
 def roundme(value: float):

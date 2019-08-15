@@ -13,9 +13,9 @@ from enum import IntEnum
 from time import time
 from traceback import format_exc
 
+from utila.string import fix_encoding
+from utila.string import forward_slash
 from utila.utils import NEWLINE
-from utila.utils import fix_encoding
-from utila.utils import forward_slash
 
 
 class Level(IntEnum):

@@ -7,28 +7,12 @@
 # be prosecuted under federal law. Its content is company confidential.
 # =============================================================================
 
-import sys
-
 from pytest import mark
 
-from utila import fix_encoding
 from utila import flatten
 from utila import pages
 from utila import roundme
 from utila import should_skip
-
-
-@mark.parametrize('platform,given,expected', [
-    ('win32', '\x80', '&#128;'),
-    ('cygwin', '\x80', '&#128;'),
-    ('linux', '\x80', '\x80'),
-])
-def test_fix_encoding(platform, given, expected, monkeypatch):
-    """Fix encoding depending used platform"""
-    with monkeypatch.context() as context:
-        context.setattr(sys, 'platform', platform)
-        fixed = fix_encoding(given)
-    assert fixed == expected
 
 
 def test_roundme():
