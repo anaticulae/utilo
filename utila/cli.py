@@ -168,25 +168,28 @@ def create_parser(
         # set io ports to the top
         todo = io_ports + todo
 
-    for shortcut, longcut, msg, args in todo:
-        # support defining shortcut without -
-        if shortcut and not shortcut.startswith('-'):
-            shortcut = '-%s' % shortcut
-        # support defining longcut without --
-        if longcut and not longcut.startswith('--'):
-            longcut = '--%s' % longcut
+    def use_todo(parser, todo):
+        for shortcut, longcut, msg, args in todo:
+            # support defining shortcut without -
+            if shortcut and not shortcut.startswith('-'):
+                shortcut = '-%s' % shortcut
+            # support defining longcut without --
+            if longcut and not longcut.startswith('--'):
+                longcut = '--%s' % longcut
 
-        if longcut:
-            shortcuts = (shortcut, longcut) if shortcut else (longcut,)
-        else:
-            # no longcut is defined
-            shortcuts = (shortcut,)
+            if longcut:
+                shortcuts = (shortcut, longcut) if shortcut else (longcut,)
+            else:
+                # no longcut is defined
+                shortcuts = (shortcut,)
 
-        if args:
-            args['help'] = msg
-            parser.add_argument(*shortcuts, **args)
-        else:
-            parser.add_argument(*shortcuts, action='store_true', help=msg)
+            if args:
+                args['help'] = msg
+                parser.add_argument(*shortcuts, **args)
+            else:
+                parser.add_argument(*shortcuts, action='store_true', help=msg)
+
+    use_todo(parser, todo)
     return parser
 
 
