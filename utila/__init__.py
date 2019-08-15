@@ -94,7 +94,7 @@ from utila.utils import pages
 from utila.utils import roundme
 from utila.utils import should_skip
 
-__version__ = '1.2.2'
+__version__ = '1.2.3'
 
 ROOT = os.path.abspath(os.path.join(os.path.dirname(__file__), '..'))
 PACKAGENAME = 'utila'

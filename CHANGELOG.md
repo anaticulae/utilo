@@ -2,6 +2,13 @@
 
 Every noteable change is logged here.
 
+## v1.2.3
+
+### Feature
+
+* add method to test if page should be processed (9d0ffec74caa)
+* add context manager SkipCollector to skip page calculation (f513b7429d74)
+
 ## v1.2.2
 
 ### Fix
