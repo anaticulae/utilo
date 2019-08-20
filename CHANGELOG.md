@@ -2,6 +2,12 @@
 
 Every noteable change is logged here.
 
+## v1.2.5
+
+### Feature
+
+* support single value page selection to should skip function (ad004b0681e5)
+
 ## v1.2.4
 
 ### Fix
