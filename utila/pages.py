@@ -67,7 +67,7 @@ def pages(pattern: str, pagecount=None) -> tuple:
     return tuple(parsed) if parsed else None
 
 
-def should_skip(page: int, pages):  # pylint:disable=W0621
+def should_skip(page: int, pages: tuple):  # pylint:disable=W0621
     """Determine if `page` is invalid
 
     If `pages` is None, every page is accepted.
@@ -76,10 +76,12 @@ def should_skip(page: int, pages):  # pylint:disable=W0621
 
     Args:
         page(int): check to skip this page number
-        pages(list): list with accepted pages
+        pages(tuple): tuple with accepted pages, !require tuple to serialize!
     Returns:
         return True if `page` is in `pages` or pages is None else False
     """
     if pages is None:
         return False
+    if not isinstance(pages, tuple):
+        pages = (pages,)
     return not page in pages
