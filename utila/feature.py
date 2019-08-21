@@ -852,5 +852,9 @@ class File(Pattern):
 class ResultFile(File):
     producer: str = 'default'
 
+    def __init__(self, producer: str, name: str):
+        self.producer = producer
+        self.name = name
+
     def __str__(self):
         return '%s__%s.%s' % (self.producer, self.name, self.ext)

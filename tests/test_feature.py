@@ -437,3 +437,7 @@ def test_parallelize_workplan():
     # multilevel limited by required resoure
     multi_processed = parallelize_workplan(PLAN, 10)
     assert len(multi_processed) == 2, str(multi_processed)
+
+
+def test_feature_resultfile_ctor_position():
+    assert ResultFile('abc', 'def') == ResultFile(producer='abc', name='def')
