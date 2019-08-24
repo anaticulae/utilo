@@ -7,13 +7,10 @@
 # be prosecuted under federal law. Its content is company confidential.
 #==============================================================================
 
+import contextlib
 import os
+import subprocess
 import sys
-from contextlib import contextmanager
-from contextlib import suppress
-from subprocess import PIPE
-from subprocess import CompletedProcess
-from subprocess import run as _run
 
 import pytest
 
@@ -33,7 +30,11 @@ skip_longrun = pytest.mark.skipif(FASTRUN, reason=LONGRUN_REASON)
 skip_nonvirtual = pytest.mark.skipif(NON_VIRTUAL, reason=VIRTUAL_REASON)
 
 
-def run(command: str, cwd: str = None, env: dict = None) -> CompletedProcess:
+def run(
+        command: str,
+        cwd: str = None,
+        env: dict = None,
+) -> subprocess.CompletedProcess:
     """Run external process
 
     Args:
@@ -51,14 +52,14 @@ def run(command: str, cwd: str = None, env: dict = None) -> CompletedProcess:
 
     env = os.environ if env is None else env
 
-    completed = _run(
+    completed = subprocess.run(
         command,
         cwd=cwd,
         env=env,
         errors='replace',
         shell=True,
-        stderr=PIPE,
-        stdout=PIPE,
+        stderr=subprocess.PIPE,
+        stdout=subprocess.PIPE,
         universal_newlines=True,
     )
     return completed
@@ -80,19 +81,19 @@ def run_command(
         success(bool): expectation that process succed or failes
         monkeypatch: pytest patch feature
     """
-    with suppress(AttributeError):
+    with contextlib.suppress(AttributeError):
         command = command.split()
     assert callable(main), str(main)
 
     with monkeypatch.context() as context:
         # proccess is removed as first arg
         context.setattr(sys, 'argv', [process] + command)
-        with raises(SystemExit) as result:
+        with pytest.raises(SystemExit) as result:
             main()
     assert (returncode(result) == SUCCESS) == success, str(result)
 
 
-@contextmanager
+@contextlib.contextmanager
 def assert_run(command: str, cwd: str):
     completed = run(command, cwd)
     msg = '%s\n%s' % (completed.stderr, completed.stdout)
@@ -100,7 +101,7 @@ def assert_run(command: str, cwd: str):
     yield completed
 
 
-@contextmanager
+@contextlib.contextmanager
 def assert_run_fail(command: str, cwd: str):
     completed = run(command, cwd)
     msg = '%s\n%s' % (completed.stderr, completed.stdout)

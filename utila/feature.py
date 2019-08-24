@@ -203,10 +203,10 @@ def process(
         *,
         failfast: bool = False,
 ):
-    """Process the given features. The process ignores errors in sub-steps
-    and run till the end. If some error occurs, the process returns an
-    `FAILURE` after finishing. If the todo-list is empty, every single step
-    is processed.
+    """Process the given features. The process ignores errors in
+    sub-steps and run till the end. If some error occurs, the process
+    returns an `FAILURE` after finishing. If the todo-list is empty,
+    every single step is processed.
 
     Args:
         workplan(List[WorkStep]):
