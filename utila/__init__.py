@@ -76,6 +76,8 @@ from utila.pages import should_skip
 from utila.string import fix_encoding
 from utila.string import forward_slash
 # Tests
+from utila.test import FASTRUN
+from utila.test import LONGRUN
 from utila.test import assert_run
 from utila.test import assert_run_fail
 from utila.test import clean_install

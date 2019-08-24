@@ -15,8 +15,7 @@ from subprocess import PIPE
 from subprocess import CompletedProcess
 from subprocess import run as _run
 
-from pytest import mark
-from pytest import raises
+import pytest
 
 from utila.utils import SUCCESS
 
@@ -25,13 +24,13 @@ NON_VIRTUAL = VIRTUAL_ENV_KEY not in os.environ
 
 FAST = 'FAST' in os.environ.keys()
 LONGRUN = 'LONGRUN' in os.environ.keys()
-FAST_TESTS = not LONGRUN or FAST
+FASTRUN = not LONGRUN or FAST
 
 LONGRUN_REASON = 'test requires to mutch time'
 VIRTUAL_REASON = 'requires virtual environmnet'
 # pylint: disable=invalid-name
-skip_longrun = mark.skipif(FAST_TESTS, reason=LONGRUN_REASON)
-skip_nonvirtual = mark.skipif(NON_VIRTUAL, reason=VIRTUAL_REASON)
+skip_longrun = pytest.mark.skipif(FASTRUN, reason=LONGRUN_REASON)
+skip_nonvirtual = pytest.mark.skipif(NON_VIRTUAL, reason=VIRTUAL_REASON)
 
 
 def run(command: str, cwd: str = None, env: dict = None) -> CompletedProcess:
