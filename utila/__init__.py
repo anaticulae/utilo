@@ -78,6 +78,7 @@ from utila.string import forward_slash
 # Tests
 from utila.test import FASTRUN
 from utila.test import LONGRUN
+from utila.test import VIRTUAL
 from utila.test import assert_run
 from utila.test import assert_run_fail
 from utila.test import clean_install
@@ -87,6 +88,7 @@ from utila.test import run
 from utila.test import run_command
 from utila.test import skip_longrun
 from utila.test import skip_nonvirtual
+from utila.test import skip_virtual
 # Typerchecker
 from utila.typechecker import checkdatatype
 # Utils

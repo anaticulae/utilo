@@ -16,19 +16,22 @@ import pytest
 
 from utila.utils import SUCCESS
 
-VIRTUAL_ENV_KEY = 'VIRTUAL'
-NON_VIRTUAL = VIRTUAL_ENV_KEY not in os.environ
+VIRTUAL_ENVKEY = 'VIRTUAL'
+VIRTUAL = VIRTUAL_ENVKEY in os.environ
+NONVIRTUAL = not VIRTUAL
 
 FAST = 'FAST' in os.environ.keys()
 LONGRUN = 'LONGRUN' in os.environ.keys()
 FASTRUN = not LONGRUN or FAST
 
 LONGRUN_REASON = 'test requires to mutch time'
-VIRTUAL_REASON = 'requires virtual environmnet'
+VIRTUAL_REASON = 'require virtual environmnet'
+NONVIRTUAL_REASON = 'require non virtual environmnet'
+
 # pylint: disable=invalid-name
 skip_longrun = pytest.mark.skipif(FASTRUN, reason=LONGRUN_REASON)
-skip_nonvirtual = pytest.mark.skipif(NON_VIRTUAL, reason=VIRTUAL_REASON)
-
+skip_nonvirtual = pytest.mark.skipif(NONVIRTUAL, reason=VIRTUAL_REASON)
+skip_virtual = pytest.mark.skipif(VIRTUAL, reason=NONVIRTUAL_REASON)
 
 def run(
         command: str,
