@@ -2,6 +2,14 @@
 
 Every noteable change is logged here.
 
+## v1.2.6
+
+### Feature
+
+* add @skip_virtual flag to skip test running in virtual env (f85f81f092b9)
+* add FASTRUN and LONGRUN to public API (3c6c9e05b92f)
+* add positional accessible ctor to ResultFile (7a5c5ea05bf0)
+
 ## v1.2.5
 
 ### Feature
