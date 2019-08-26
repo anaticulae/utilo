@@ -33,15 +33,16 @@ skip_longrun = pytest.mark.skipif(FASTRUN, reason=LONGRUN_REASON)
 skip_nonvirtual = pytest.mark.skipif(NONVIRTUAL, reason=VIRTUAL_REASON)
 skip_virtual = pytest.mark.skipif(VIRTUAL, reason=NONVIRTUAL_REASON)
 
+
 def run(
-        command: str,
+        cmd: str,
         cwd: str = None,
         env: dict = None,
 ) -> subprocess.CompletedProcess:
     """Run external process
 
     Args:
-        command(str/[str]): command to run
+        cmd(str/[str]): command to run
         cwd(str): current working directory
         env(dict): modify environment variable for test run. If nothing is
                    passed, the global environment variable is used.
@@ -56,7 +57,7 @@ def run(
     env = os.environ if env is None else env
 
     completed = subprocess.run(
-        command,
+        cmd,
         cwd=cwd,
         env=env,
         errors='replace',
@@ -69,7 +70,7 @@ def run(
 
 
 def run_command(
-        command,
+        cmd,
         process: str,
         main: callable,
         success: bool,
@@ -78,19 +79,19 @@ def run_command(
     """Run `main` with `command`
 
     Args:
-        command([str] or str): command to run
+        cmd([str] or str): command to run
         process(str): name of executed tool
         main(callable): method to run
         success(bool): expectation that process succed or failes
         monkeypatch: pytest patch feature
     """
     with contextlib.suppress(AttributeError):
-        command = command.split()
+        cmd = cmd.split()
     assert callable(main), str(main)
 
     with monkeypatch.context() as context:
         # proccess is removed as first arg
-        context.setattr(sys, 'argv', [process] + command)
+        context.setattr(sys, 'argv', [process] + cmd)
         with pytest.raises(SystemExit) as result:
             main()
     assert (returncode(result) == SUCCESS) == success, str(result)
