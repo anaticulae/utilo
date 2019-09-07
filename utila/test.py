@@ -24,9 +24,9 @@ FAST = 'FAST' in os.environ.keys()
 LONGRUN = 'LONGRUN' in os.environ.keys()
 FASTRUN = not LONGRUN or FAST
 
-LONGRUN_REASON = 'test requires to mutch time'
-VIRTUAL_REASON = 'require virtual environmnet'
-NONVIRTUAL_REASON = 'require non virtual environmnet'
+LONGRUN_REASON = 'test requires to much time'
+VIRTUAL_REASON = 'require virtual environment'
+NONVIRTUAL_REASON = 'require non virtual environment'
 
 # pylint: disable=invalid-name
 skip_longrun = pytest.mark.skipif(FASTRUN, reason=LONGRUN_REASON)
@@ -82,7 +82,7 @@ def run_command(
         cmd([str] or str): command to run
         process(str): name of executed tool
         main(callable): method to run
-        success(bool): expectation that process succed or failes
+        success(bool): expectation that process succeed or fails
         monkeypatch: pytest patch feature
     """
     with contextlib.suppress(AttributeError):
@@ -90,7 +90,7 @@ def run_command(
     assert callable(main), str(main)
 
     with monkeypatch.context() as context:
-        # proccess is removed as first arg
+        # process is removed as first argument
         context.setattr(sys, 'argv', [process] + cmd)
         with pytest.raises(SystemExit) as result:
             main()
@@ -134,5 +134,5 @@ def install_and_run(root, package, executable=None):
 
 
 def returncode(exeception: Exception) -> int:
-    """Determine returncode raised from exit()"""
+    """Determine return code raised from exit()"""
     return int(str(exeception.value))
