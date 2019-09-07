@@ -2,6 +2,12 @@
 
 Every noteable change is logged here.
 
+## v1.2.8
+
+### Feature
+
+* add NIGHTLY and @skip_nightly to control test execution (4fdfdcc72d6a)
+
 ## v1.2.7
 
 ## v1.2.6
