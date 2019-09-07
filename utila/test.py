@@ -21,7 +21,8 @@ VIRTUAL = VIRTUAL_ENVKEY in os.environ
 NONVIRTUAL = not VIRTUAL
 
 FAST = 'FAST' in os.environ.keys()
-LONGRUN = 'LONGRUN' in os.environ.keys()
+NIGHTLY = 'NIGHTLY' in os.environ.keys()
+LONGRUN = 'LONGRUN' in os.environ.keys() or NIGHTLY
 FASTRUN = not LONGRUN or FAST
 
 LONGRUN_REASON = 'test requires to much time'
@@ -30,6 +31,7 @@ NONVIRTUAL_REASON = 'require non virtual environment'
 
 # pylint: disable=invalid-name
 skip_longrun = pytest.mark.skipif(FASTRUN, reason=LONGRUN_REASON)
+skip_nightly = pytest.mark.skipif(FASTRUN or not NIGHTLY, reason=LONGRUN_REASON)
 skip_nonvirtual = pytest.mark.skipif(NONVIRTUAL, reason=VIRTUAL_REASON)
 skip_virtual = pytest.mark.skipif(VIRTUAL, reason=NONVIRTUAL_REASON)
 
