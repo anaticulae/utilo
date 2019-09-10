@@ -10,14 +10,13 @@
 import pytest
 
 import utila
-from utila import SkipCollector
 
 
 def test_logger_skipcollector():
     to_skip = [0, 5, 10]
     skipped = []
 
-    with SkipCollector(pages=to_skip) as collector:
+    with utila.SkipCollector(pages=to_skip) as collector:
         for item in range(15):
             if not collector.skip(item):
                 skipped.append(item)
