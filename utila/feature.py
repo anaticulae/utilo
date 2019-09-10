@@ -16,25 +16,16 @@
         VERSION,
     )
 """
+import collections
+import concurrent.futures
+import contextlib
+import dataclasses
+import functools
+import glob
 import importlib
+import inspect
 import os
-from collections import defaultdict
-from concurrent.futures import ProcessPoolExecutor
-from concurrent.futures import ThreadPoolExecutor
-from contextlib import suppress
-from dataclasses import dataclass
-from functools import partial
-from glob import glob
-from inspect import signature
-# pylint:disable=ungrouped-imports
-from os import listdir
-from os import makedirs
-from os.path import exists
-from os.path import join
-from os.path import split
-from typing import Callable
-from typing import List
-from typing import Tuple
+import typing
 
 from utila.cli import MULTI_FLAG
 from utila.cli import PAGES_FLAG
@@ -65,17 +56,17 @@ INPUT = 'input'
 OUTPUT = 'output'
 HOOK = 'hook'
 
-FeatureInterface = Tuple[str, Command, callable]
+FeatureInterface = typing.Tuple[str, Command, callable]
 
-Outputs = List[str]
-Hook = Callable
+Outputs = typing.List[str]
+Hook = typing.Callable
 Name = str
-WorkStep = Tuple[Name, Hook, Outputs]
+WorkStep = typing.Tuple[Name, Hook, Outputs]
 
 
 @saveme(systemexit=True)
 def featurepack(
-        workplan: List[WorkStep],
+        workplan: typing.List[WorkStep],
         root: str,
         featurepackage: str,
         name: str,
@@ -117,15 +108,15 @@ def featurepack(
     args = parse(parser)
 
     processes = 1 if not multiprocessed else args.get(MULTI_FLAG)
-    with suppress(KeyError):
+    with contextlib.suppress(KeyError):
         del args[MULTI_FLAG]
 
     failfast = args.get('ff', False)
-    with suppress(KeyError):
+    with contextlib.suppress(KeyError):
         del args['ff']
 
     pages = parse_pages(args.get(PAGES_FLAG, ALL_PAGES))
-    with suppress(KeyError):
+    with contextlib.suppress(KeyError):
         del args[PAGES_FLAG]
 
     # evaluate the verbose flag
@@ -162,7 +153,7 @@ def featurepack(
         exit(FAILURE)
 
     # Ensure to have output folder
-    makedirs(outputpath, exist_ok=True)
+    os.makedirs(outputpath, exist_ok=True)
 
     current_todo = determine_todo(args)
     completed = process(
@@ -179,7 +170,7 @@ def featurepack(
 def callback(hook, name: str, output, pagenumbers: list):
     log('processing: %s' % name)
     # run runnable
-    runnable = partial(
+    runnable = functools.partial(
         run_hook_safely,
         hook=hook,
         name=name,
@@ -195,9 +186,9 @@ def callback(hook, name: str, output, pagenumbers: list):
 
 
 def process(
-        workplan: List[WorkStep],
+        workplan: typing.List[WorkStep],
         name: str = None,
-        todo: List = None,
+        todo: typing.List = None,
         processes: int = 1,
         pagenumbers: list = None,
         *,
@@ -214,6 +205,8 @@ def process(
         todo: list with steps to run, if no steps are None, every step is
               executed
         processes(int): maximal parallel exection steps
+        pagenumbers(list): list with processed pages
+        failfast(bool): quit after first failure
     Returns:
         SUCCESS if all features process successfully, if not FAILURE
     """
@@ -224,7 +217,11 @@ def process(
     success = True
     # TODO: how to use multiprocessing with pytest, see pytest: 38.3.1
     testrun = os.environ.get('PYTEST_PLUGINS', False)
-    executor = ThreadPoolExecutor if testrun else ProcessPoolExecutor
+
+    executor = concurrent.futures.ProcessPoolExecutor
+    if testrun:
+        executor = concurrent.futures.ThreadPoolExecutor
+
     with executor(max_workers=processes) as pool:
         for level in workplan:
             results = []
@@ -264,7 +261,7 @@ def process(
 
 
 def input_order(plan):
-    require = defaultdict(set)
+    require = collections.defaultdict(set)
     for step in plan:
         name = step['name']
         try:
@@ -320,7 +317,7 @@ def prepare_process(todo, name, processes):
     return todo
 
 
-def prepare_hooks(items: List[FeatureInterface]):
+def prepare_hooks(items: typing.List[FeatureInterface]):
     result = {}
     for item in items:
         name, _, caller = item
@@ -374,7 +371,7 @@ def run_hook_safely(
         stepoutput,
         pagenumbers,
 ) -> int:
-    sig = signature(hook)
+    sig = inspect.signature(hook)
     try:
         if PAGES_FLAG in sig.parameters:
             # optional page numbers flag
@@ -414,21 +411,24 @@ def write_result_safely(result, processstep, outputstep):
         return FAILURE
 
 
-def find_features(root: str, featurepackage: str) -> List[FeatureInterface]:
+def find_features(
+        root: str,
+        featurepackage: str,
+) -> typing.List[FeatureInterface]:
     """Locate all feautures in given path
 
     Ensure that feature methods are defined. If some feature interface is not
     implemented properly, the exection ends with FAILURE.
     """
-    featurepath = join(root, featurepackage.replace('.', '/'))
-    assert exists(root), root
-    if not exists(featurepath):
+    featurepath = os.path.join(root, featurepackage.replace('.', '/'))
+    assert os.path.exists(root), root
+    if not os.path.exists(featurepath):
         error('wrong featurepack configuration, check `featurepackage` path')
         error('featurepath %s does not exists' % featurepath)
         exit(FAILURE)
     collected = [
         item.replace('.py', '')
-        for item in listdir(featurepath)
+        for item in os.listdir(featurepath)
         if not '__init__' in item and item.endswith('.py')
     ]
     result = []
@@ -464,12 +464,15 @@ def connect_feature_interface(current, item) -> FeatureInterface:
 
 
 Name = str
-CommandLineInterface = List[Command]
+CommandLineInterface = typing.List[Command]
 Worker = callable  #pylint:disable=C0103
-Feature = Tuple[Name, CommandLineInterface, Worker]
+Feature = typing.Tuple[Name, CommandLineInterface, Worker]
 
 
-def commandline(features: List[Feature], workplan) -> List[Command]:
+def commandline(
+        features: typing.List[Feature],
+        workplan,
+) -> typing.List[Command]:
     """Build command line interface due iterating searched features
 
     Args:
@@ -501,8 +504,8 @@ def commandline(features: List[Feature], workplan) -> List[Command]:
 
 def create_step(
         name: str,
-        inputs: List[Tuple[str]],
-        output: Tuple[str],
+        inputs: typing.List[typing.Tuple[str]],
+        output: typing.Tuple[str],
 ):
     """
     step = {
@@ -514,7 +517,8 @@ def create_step(
         OUTPUT: ('butter', 'tart', 'cream'),
     }
     """
-    assert isinstance(inputs, List), '%s %s' % (type(inputs), str(inputs))
+    assert isinstance(inputs,
+                      typing.List), '%s %s' % (type(inputs), str(inputs))
     assert isinstance(output, tuple), '%s %s' % (type(output), str(output))
 
     step = {
@@ -535,7 +539,7 @@ def read_workplan(
         prefix: str = None,
         verify: bool = False,
         used_processes: int = 1,
-) -> List[WorkStep]:
+) -> typing.List[WorkStep]:
     """Parse user defined workplan
 
     Args:
@@ -596,7 +600,7 @@ def read_workplan(
         if verify_interface(call_inputs, outputs, caller) == FAILURE:
             ret += 1
             continue
-        function_call = partial(caller, *call_inputs)
+        function_call = functools.partial(caller, *call_inputs)
 
         result.append({
             NAME: name,
@@ -639,7 +643,7 @@ def prepare_variables(variables, args):
     return result
 
 
-def prepare_inputs(inputs, inspaces, outspace) -> List[str]:
+def prepare_inputs(inputs, inspaces, outspace) -> typing.List[str]:
     """Parse single and multiple file input
 
     Loacted files by defined pattern in `Workplan`. A file pattern is defined
@@ -667,8 +671,8 @@ def prepare_inputs(inputs, inspaces, outspace) -> List[str]:
             if isinstance(item, ResultFile):
                 producer = item.producer
                 filename = '%s__%s.%s' % (producer, name, ext)
-                filepath = join(inspace, filename)
-                if exists(filepath):
+                filepath = os.path.join(inspace, filename)
+                if os.path.exists(filepath):
                     result.append(filepath)
                     break  # do not double add path
                 else:
@@ -676,13 +680,13 @@ def prepare_inputs(inputs, inspaces, outspace) -> List[str]:
                     # Only on the last inspace, because the file could exists
                     # in other input folder
                     if inspace == inspaces[-1]:
-                        recursivepath = join(outspace, filename)
+                        recursivepath = os.path.join(outspace, filename)
                         info('recursive input %s' % recursivepath)
                         result.append('_%s' % recursivepath)
             elif isinstance(item, File):
                 filename = '%s.%s' % (name, ext)
-                filepath = join(inspace, filename)
-                if exists(filepath):
+                filepath = os.path.join(inspace, filename)
+                if os.path.exists(filepath):
                     result.append(filepath)
                     break  # do not double add path
                 else:
@@ -691,7 +695,7 @@ def prepare_inputs(inputs, inspaces, outspace) -> List[str]:
                     error('search location: %s' % search_location)
                     error('missing input: %s' % filepath)
             else:
-                _, filename = split(inspace)
+                _, filename = os.path.split(inspace)
                 if '.' in filename:
                     # File as a input name
                     result.append(inspace)
@@ -700,7 +704,7 @@ def prepare_inputs(inputs, inspaces, outspace) -> List[str]:
                     ext = ext.lower()
                     pattern = '%s/%s.%s' % (inspace, name, ext)
                     info('using pattern: %s' % pattern)
-                    files = glob(pattern)
+                    files = glob.glob(pattern)
                     info('%s' % str(files))
                     for finding in files:
                         log('FINDING %s' % finding)
@@ -716,7 +720,7 @@ def prepare_outputs(
         prefix: str,
         outputs: str,
         outspace: str,
-) -> List[str]:
+) -> typing.List[str]:
     """Support different output types
 
     Args:
@@ -745,7 +749,7 @@ def prepare_outputs(
 
     if ret:
         exit(FAILURE)
-    outputs = [join(outspace, item) for item in _outputs]
+    outputs = [os.path.join(outspace, item) for item in _outputs]
     return outputs
 
 
@@ -753,7 +757,7 @@ def verify_resources(inputs):
     ret = 0
     # require input files
     for path in inputs:
-        if exists(path):
+        if os.path.exists(path):
             continue
         if path[0] == '_':
             # recursive input-definition start with _. We do not check
@@ -767,7 +771,7 @@ def verify_resources(inputs):
 def verify_interface(inputs, outputs, worker):
     # check callable
     # check input parameter
-    call_parameter = signature(worker).parameters
+    call_parameter = inspect.signature(worker).parameters
     interface_error_msg = 'interface error %s != %s' % (
         list(call_parameter.keys()),
         inputs,
@@ -780,7 +784,7 @@ def verify_interface(inputs, outputs, worker):
         return FAILURE
 
     # check output parameter
-    return_parameter = str(signature(worker).return_annotation)
+    return_parameter = str(inspect.signature(worker).return_annotation)
     return_count = return_parameter.count('str')
     interface_error_msg = 'interface error %s != %s' % (
         return_parameter,
@@ -805,12 +809,12 @@ def determine_todo(args):
     return result
 
 
-@dataclass
+@dataclasses.dataclass
 class Input:
     pass
 
 
-@dataclass
+@dataclasses.dataclass
 class Value(Input):
     name: str
     typ: str
@@ -830,7 +834,7 @@ class Value(Input):
         )
 
 
-@dataclass
+@dataclasses.dataclass
 class Pattern(Input):
     name: str
     ext: str
@@ -843,12 +847,12 @@ class Pattern(Input):
         return [self.name, self.ext][index]
 
 
-@dataclass
+@dataclasses.dataclass
 class File(Pattern):
     ext: str = 'yaml'
 
 
-@dataclass
+@dataclasses.dataclass
 class ResultFile(File):
     producer: str = 'default'
 
