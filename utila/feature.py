@@ -110,7 +110,6 @@ def featurepack(
     # update logging level
     level_setup(Level(verbose))
 
-
     hooks = prepare_hooks(feature)
     workplan = read_workplan(
         workplan,
@@ -841,12 +840,12 @@ class Pattern(Input):
         return [self.name, self.ext][index]
 
 
-@dataclasses.dataclass # pylint:disable=R0903
+@dataclasses.dataclass  # pylint:disable=R0903
 class File(Pattern):
     ext: str = 'yaml'
 
 
-@dataclasses.dataclass # pylint:disable=R0903
+@dataclasses.dataclass  # pylint:disable=R0903
 class ResultFile(File):
     producer: str = 'default'
 

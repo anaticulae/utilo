@@ -7,6 +7,8 @@
 # be prosecuted under federal law. Its content is company confidential.
 # =============================================================================
 
+import contextlib
+
 from utila.utils import numbers
 
 
@@ -20,8 +22,6 @@ def pages(pattern: str, pagecount=None) -> tuple:
     Returns:
         list with user defined pages
     """
-
-    # TODO: implement pagecount
 
     def parse_comma(pattern):
         """Pattern contains `,`"""
@@ -40,12 +40,13 @@ def pages(pattern: str, pagecount=None) -> tuple:
             return [int(splitted[0])]
         if len(splitted) == 2:
             # left, right
-            try:
+            if splitted[1] == '':
+                # 50:
+                splitted[1] = pagecount
+            with contextlib.suppress(ValueError, TypeError):
                 left = int(splitted[0])
                 right = int(splitted[1])
                 return list(range(left, right))
-            except ValueError:
-                return None
         return None
 
     def parse_single(pattern):

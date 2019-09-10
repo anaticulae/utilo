@@ -14,10 +14,13 @@ from utila import should_skip
 
 EMPTY_TUPLE = tuple([])
 
+MAX_PAGES = 100
+
 
 @mark.parametrize('pattern, expected', [
     (' :  ', None),
     ('0:0', None),
+    ('50:', tuple(range(50, MAX_PAGES))),
     ('0:10', tuple(range(0, 10))),
     ('5:5', None),
     ('5:6', tuple(range(5, 6))),
@@ -31,7 +34,7 @@ EMPTY_TUPLE = tuple([])
     ('a,10', None),
 ])
 def test_pages(pattern, expected):
-    result = pages(pattern)
+    result = pages(pattern, pagecount=MAX_PAGES)
     assert result == expected, str(result)
 
 
