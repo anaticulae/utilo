@@ -41,7 +41,7 @@ def log(msg: str = '', level: Level = Level.LOGGING, end: str = NEWLINE):
         msg(str): message to log
         level(Level): define logging level which is required to print on
                       console
-        end(str): lineending
+        end(str): line ending
     Hint:
         Logging with default arguments will log a newline
     """
@@ -73,7 +73,7 @@ def error(msg: str, end: str = NEWLINE):
     """Print error-message to stderr and add [ERROR]-tag"""
     # avoid problems when using with windows console(cp1252)
     msg = fix_encoding(msg)
-    # use forward slashs
+    # use forward slash's
     msg = forward_slash(msg)
     print('[ERROR] %s' % msg, file=sys.stderr, flush=True, end=end)
 
@@ -85,7 +85,7 @@ def log_stacktrace():
 
 def print_runtime(before: int, msg: str = ''):
     """Determine runtime due the diff of current time and provided time
-    `before`. Log this timediff.
+    `before`. Log this time diff.
 
     Args:
         before(int): time recorded some time before - use time.time()
@@ -100,10 +100,10 @@ def print_runtime(before: int, msg: str = ''):
 
 @contextmanager
 def profile(msg: str = ''):
-    """Print runtime to logger to monitore performance
+    """Print runtime to logger to monitor performance
 
     Args:
-        msg(str): extend runtime message to differentiate multiple runtimes
+        msg(str): extend runtime message to differentiate multiple runtime
     """
     start = time()
     try:
@@ -116,7 +116,7 @@ def profile(msg: str = ''):
 
 
 class SkipCollector:
-    """Contenxtmanager to handle selective pages."""
+    """Context manager to handle selective pages."""
 
     def __init__(self, pages):
         """Initialize SkipCollector with pages which should not be skipped
