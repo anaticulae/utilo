@@ -83,28 +83,36 @@ def log_stacktrace():
     error(forward_slash(stack_trace))
 
 
-def print_runtime(before: int):
+def print_runtime(before: int, msg: str = ''):
     """Determine runtime due the diff of current time and provided time
     `before`. Log this timediff.
 
     Args:
         before(int): time recorded some time before - use time.time()
+        msg(str): extend runtime message to differentiate multiple invocations
     """
     time_diff = time() - before
-    log('Runtime: %.2f secs' % time_diff)
+    if msg:
+        log('Runtime(%s): %.2f secs' % (msg, time_diff))
+    else:
+        log('Runtime: %.2f secs' % time_diff)
 
 
 @contextmanager
-def profile():
-    """Print runtime to logger to monitore performance"""
+def profile(msg: str = ''):
+    """Print runtime to logger to monitore performance
+
+    Args:
+        msg(str): extend runtime message to differentiate multiple runtimes
+    """
     start = time()
     try:
         yield
     except Exception:
-        print_runtime(start)
+        print_runtime(start, msg=msg)
         raise
     else:
-        print_runtime(start)
+        print_runtime(start, msg=msg)
 
 
 class SkipCollector:

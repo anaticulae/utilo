@@ -7,6 +7,9 @@
 # be prosecuted under federal law. Its content is company confidential.
 # =============================================================================
 
+import pytest
+
+import utila
 from utila import SkipCollector
 
 
@@ -20,3 +23,12 @@ def test_logger_skipcollector():
                 skipped.append(item)
 
     assert skipped == to_skip, str(skipped)
+
+
+@pytest.mark.parametrize('message', ['', 'setup'])
+def test_logger_profile(capsys, message):
+    """Test that profiler print the `message` in combination of runtime"""
+    with utila.profile(message):
+        pass
+    stdout = capsys.readouterr().out
+    assert message in stdout, str(stdout)
