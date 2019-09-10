@@ -31,3 +31,13 @@ def test_logger_profile(capsys, message):
         pass
     stdout = capsys.readouterr().out
     assert message in stdout, str(stdout)
+
+
+def test_logger_profile_with_exception(capsys):
+    """Catch error while running profling"""
+    with pytest.raises(ValueError):
+        with utila.profile():
+            raise ValueError('some problems in invocation')
+
+    stdout = capsys.readouterr().out
+    assert 'Runtime' in stdout, str(stdout)
