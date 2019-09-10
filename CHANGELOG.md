@@ -2,6 +2,12 @@
 
 Every noteable change is logged here.
 
+## v1.3.0
+
+### Feature
+
+* add optional `msg` to differentiate runtime logs (9f38e94b3eda)
+
 ## v1.2.8
 
 ### Feature
