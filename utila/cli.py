@@ -335,6 +335,12 @@ def sources(args, *, singleinput: bool = False, verbose: bool = False):
             log('Creating: %s' % outputpath)
             os.makedirs(outputpath)
 
+    # run application in current working directory if not paths are provided
+    if not inputpaths:
+        inputpaths = [os.getcwd()]
+    if not outputpath:
+        outputpath = os.getcwd()
+
     result = [inputpaths, outputpath]
     if prefix is not False:
         result.append(prefix)

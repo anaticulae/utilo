@@ -51,31 +51,23 @@ from utila.utils import NEWLINE
 from utila.utils import SUCCESS
 from utila.utils import determine_order
 
-NAME = 'name'
-INPUT = 'input'
-OUTPUT = 'output'
-HOOK = 'hook'
-
 FeatureInterface = typing.Tuple[str, Command, callable]
 
-Outputs = typing.List[str]
-Hook = typing.Callable
-Name = str
-WorkStep = typing.Tuple[Name, Hook, Outputs]
+WorkStep = collections.namedtuple('WorkStep', 'name inputs outputs')
 
 
 @saveme(systemexit=True)
 def featurepack(
         workplan: typing.List[WorkStep],
         root: str,
+        description: str,
         featurepackage: str,
         name: str,
-        description: str,
         version: str,
         *,
         multiprocessed: bool = False,
-        singleinput: bool = False,
         pages: bool = False,
+        singleinput: bool = False,
 ) -> int:
     """Run featurepack defined in `workplan`
 
@@ -97,28 +89,17 @@ def featurepack(
     description = prepare_description(name, description, workplan)
     parser = create_parser(
         commands,
-        prog=name,
         description=description,
-        version=version,
         inputparameter=True,
         multiprocessed=multiprocessed,
         outputparameter=True,
         pages=pages,
+        prog=name,
+        version=version,
     )
     args = parse(parser)
 
-    processes = 1 if not multiprocessed else args.get(MULTI_FLAG)
-    with contextlib.suppress(KeyError):
-        del args[MULTI_FLAG]
-
-    failfast = args.get('ff', False)
-    with contextlib.suppress(KeyError):
-        del args['ff']
-
-    pages = parse_pages(args.get(PAGES_FLAG, ALL_PAGES))
-    with contextlib.suppress(KeyError):
-        del args[PAGES_FLAG]
-
+    processes, failfast, pages = evaluate_flags(args, multiprocessed)
     # evaluate the verbose flag
     inputpath, outputpath, prefix, verbose = sources(
         args,
@@ -129,11 +110,6 @@ def featurepack(
     # update logging level
     level_setup(Level(verbose))
 
-    # run application in current working directory if not paths are provided
-    if not inputpath:
-        inputpath = [os.getcwd()]
-    if not outputpath:
-        outputpath = os.getcwd()
 
     hooks = prepare_hooks(feature)
     workplan = read_workplan(
@@ -160,14 +136,30 @@ def featurepack(
         workplan,
         name,
         failfast=failfast,
-        pagenumbers=pages,
+        pages=pages,
         processes=processes,
         todo=current_todo,
     )
     return completed
 
 
-def callback(hook, name: str, output, pagenumbers: list):
+def evaluate_flags(args, multiprocessed: bool):
+    processes = 1 if not multiprocessed else args.get(MULTI_FLAG)
+    with contextlib.suppress(KeyError):
+        del args[MULTI_FLAG]
+
+    failfast = args.get('ff', False)
+    with contextlib.suppress(KeyError):
+        del args['ff']
+
+    pages = parse_pages(args.get(PAGES_FLAG, ALL_PAGES))
+    with contextlib.suppress(KeyError):
+        del args[PAGES_FLAG]
+
+    return processes, failfast, pages
+
+
+def callback(hook, name: str, output, pages: list):
     log('processing: %s' % name)
     # run runnable
     runnable = functools.partial(
@@ -175,7 +167,7 @@ def callback(hook, name: str, output, pagenumbers: list):
         hook=hook,
         name=name,
         stepoutput=output,
-        pagenumbers=pagenumbers,
+        pages=pages,
     )
     result = runnable()
     if result == FAILURE:
@@ -190,7 +182,7 @@ def process(
         name: str = None,
         todo: typing.List = None,
         processes: int = 1,
-        pagenumbers: list = None,
+        pages: list = None,
         *,
         failfast: bool = False,
 ):
@@ -215,60 +207,76 @@ def process(
     workplan = parallelize_workplan(workplan, processes)
 
     success = True
+
+    executor = select_executor()
+    with executor(max_workers=processes) as pool:
+        for level in workplan:
+            # wait that level finishes without waiting, a next level which
+            # require resource of the current may will not find the
+            # resource, cause the excution is not done.
+            results = run_level(level, todo, pool, name, pages)
+
+            # write result
+            success &= write_level_result(results, failfast=failfast)
+            if failfast and not success:
+                return FAILURE
+    return SUCCESS if success else FAILURE
+
+
+def write_level_result(results, *, failfast=False):
+    success = True
+    for result in results:
+        print('RESULT')
+        print(result)
+        completed = result.result()
+        if completed == FAILURE:
+            success = False
+            if failfast:
+                return FAILURE
+        else:
+            written = write_result_safely(*completed)
+            if written == FAILURE:
+                success = False
+                if failfast:
+                    return FAILURE
+    return success
+
+
+def run_level(level, todo, pool, runnable, pages):
+    results = []
+    for step in level:
+        # if todo is empty, nothing is selected, run every step
+        if step.name not in todo and todo:
+            log(f'skipping: {step.name}')
+            continue
+        future = pool.submit(
+            callback,
+            step.inputs,
+            runnable,
+            step.outputs,
+            pages=pages,
+        )
+        results.append(future)
+    return results
+
+
+def select_executor():
     # TODO: how to use multiprocessing with pytest, see pytest: 38.3.1
     testrun = os.environ.get('PYTEST_PLUGINS', False)
-
     executor = concurrent.futures.ProcessPoolExecutor
     if testrun:
         executor = concurrent.futures.ThreadPoolExecutor
-
-    with executor(max_workers=processes) as pool:
-        for level in workplan:
-            results = []
-            for step in level:
-                name = step[NAME]
-                # if todo is empty, nothing is selected, run every step
-                if name not in todo and todo:
-                    log('skipping: %s' % name)
-                    continue
-                # TODO: REFACTOR STEP TO NAMEDTUPLE
-                future = pool.submit(
-                    callback,
-                    step[HOOK],
-                    name,
-                    step[OUTPUT],
-                    pagenumbers=pagenumbers,
-                )
-                results.append(future)
-            # wait that level finishes
-            # without waiting, a next level which require resource of the
-            # current may will not find the resource, cause the excution is
-            # not done.
-            for result in results:
-                completed = result.result()
-                if completed == FAILURE:
-                    success = False
-                    if failfast:
-                        return FAILURE
-                else:
-                    writer, name, output = completed
-                    written = write_result_safely(writer, name, output)
-                    if written == FAILURE:
-                        if failfast:
-                            return FAILURE
-                        success = False
-    return SUCCESS if success else FAILURE
+    return executor
 
 
 def input_order(plan):
     require = collections.defaultdict(set)
     for step in plan:
-        name = step['name']
+        name = step.name
         try:
-            inputs = [str(item) for item in step['input']]
-        except KeyError:
-            hook = step['hook']
-            inputs = [str(item) for item in hook.args]
+            inputs = [str(item) for item in step.inputs.args]
+        except AttributeError:
+            inputs = [str(item) for item in step.inputs]
 
         for item in inputs:
             try:
@@ -282,12 +290,10 @@ def input_order(plan):
 
 
 def parallelize_workplan(plan, max_processes=1):
-
     order = input_order(plan)
 
-    steps = {step['name']: step for step in plan}
+    steps = {step.name: step for step in plan}
     result = []
-
     for level in order:
         level_result = []
         for item in level:
@@ -330,12 +336,12 @@ def prepare_description(name: str, description: str, workplan):
         '\nworking plan resources:\n',
     ]
     for item in workplan:
-        result.append('step:\n   %s' % item['name'])
+        result.append('step:\n   %s' % item.name)
 
         # prepare inputs
         result.append('inputs:')
         inputs = []
-        for input_ in item['input']:
+        for input_ in item.inputs:
             if isinstance(input_, Value):
                 msg = '   variable: %s, type: %s, default: %s'
                 msg = msg % (input_.name, input_.typ, str(input_.defaultvar))
@@ -351,7 +357,7 @@ def prepare_description(name: str, description: str, workplan):
         # prepare outputs
         result.append('outputs:')
         outputs = []
-        for output_ in item['output']:
+        for output_ in item.outputs:
             try:
                 fname, fending = output_
             except ValueError:
@@ -369,13 +375,13 @@ def run_hook_safely(
         hook: callable,
         name: str,
         stepoutput,
-        pagenumbers,
+        pages,
 ) -> int:
     sig = inspect.signature(hook)
     try:
         if PAGES_FLAG in sig.parameters:
             # optional page numbers flag
-            result = hook(pages=pagenumbers)
+            result = hook(pages=pages)
         else:
             result = hook()
     except Exception as msg:  # pylint: disable=broad-except
@@ -517,16 +523,9 @@ def create_step(
         OUTPUT: ('butter', 'tart', 'cream'),
     }
     """
-    assert isinstance(inputs,
-                      typing.List), '%s %s' % (type(inputs), str(inputs))
+    assert isinstance(inputs, list), '%s %s' % (type(inputs), str(inputs))
     assert isinstance(output, tuple), '%s %s' % (type(output), str(output))
-
-    step = {
-        NAME: name,
-        INPUT: inputs,
-        OUTPUT: output,
-    }
-    return step
+    return WorkStep(name, inputs, output)
 
 
 def read_workplan(
@@ -564,30 +563,30 @@ def read_workplan(
     result = []
     ret = 0
     for step in plan:
-        inputs, outputs = step[INPUT], step[OUTPUT]
-        variables = prepare_variables(variables=inputs, args=args)
+        variables = prepare_variables(variables=step.inputs, args=args)
 
         # optional pages flag is not allowed in workplan
-        if PAGES_FLAG in [item.name for item in inputs]:
-            error(str(inputs))
+        if PAGES_FLAG in [item.name for item in step.inputs]:
+            error(str(step.inputs))
             msg = 'parameter `pages` is not allowed in `workplan`, step: %s'
-            error(msg % step[NAME])
+            error(msg % step.name)
             ret += 1
             continue
 
-        call_inputs = prepare_inputs(inputs, inspace, outspace)
-        name = step[NAME]
+        call_inputs = prepare_inputs(step.inputs, inspace, outspace)
+        name = step.name
         try:
             caller = hooks[name]
         except KeyError:
             error('missing hook with name %s' % name)
             ret += 1
             continue
+
         outputs = prepare_outputs(
             process_=process_,
             stepname=name,
             prefix=prefix,
-            outputs=outputs,
+            outputs=step.outputs,
             outspace=outspace,
         )
         ret += verify_resources(call_inputs)
@@ -602,11 +601,7 @@ def read_workplan(
             continue
         function_call = functools.partial(caller, *call_inputs)
 
-        result.append({
-            NAME: name,
-            HOOK: function_call,
-            OUTPUT: outputs,
-        })
+        result.append(WorkStep(name, function_call, outputs))
 
     if ret and verify:
         exit(FAILURE)
@@ -616,8 +611,7 @@ def read_workplan(
 def determine_variables(workplan):
     result = []
     for step in workplan:
-        inputs = step[INPUT]
-        for item in inputs:
+        for item in step.inputs:
             if not isinstance(item, Value):
                 continue
             result.append(item.name)
@@ -847,12 +841,12 @@ class Pattern(Input):
         return [self.name, self.ext][index]
 
 
-@dataclasses.dataclass
+@dataclasses.dataclass # pylint:disable=R0903
 class File(Pattern):
     ext: str = 'yaml'
 
 
-@dataclasses.dataclass
+@dataclasses.dataclass # pylint:disable=R0903
 class ResultFile(File):
     producer: str = 'default'
 
