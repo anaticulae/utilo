@@ -2,6 +2,17 @@
 
 Every noteable change is logged here.
 
+## v1.4.0
+
+### Feature
+
+* add check to create_step correctly (ecf7bbe84a32)
+* add error hook to catch failures while processing (08b52639059c)
+
+### Fix
+
+* extend pages pattern to support `50:` (5427f6d52676)
+
 ## v1.3.0
 
 ### Feature
