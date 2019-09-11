@@ -28,6 +28,7 @@ Example:
     create_parser([PUSH, RELEASE])
 """
 
+import contextlib
 import os
 from argparse import ArgumentParser
 from argparse import RawDescriptionHelpFormatter
@@ -37,6 +38,8 @@ from dataclasses import field
 from utila.file import make_absolute
 from utila.logger import error
 from utila.logger import log
+from utila.pages import pages as parse_pages
+from utila.utils import ALL_PAGES
 from utila.utils import SUCCESS
 
 INVALID_COMMAND = 2
@@ -348,3 +351,19 @@ def sources(args, *, singleinput: bool = False, verbose: bool = False):
         verb = int(args[VERBOSE]) if args[VERBOSE] else 0
         result.append(verb)
     return tuple(result)
+
+
+def evaluate_flags(args, multiprocessed: bool):
+    processes = 1 if not multiprocessed else args.get(MULTI_FLAG)
+    with contextlib.suppress(KeyError):
+        del args[MULTI_FLAG]
+
+    failfast = args.get('ff', False)
+    with contextlib.suppress(KeyError):
+        del args['ff']
+
+    pages = parse_pages(args.get(PAGES_FLAG, ALL_PAGES))
+    with contextlib.suppress(KeyError):
+        del args[PAGES_FLAG]
+
+    return processes, failfast, pages

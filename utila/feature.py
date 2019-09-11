@@ -18,7 +18,6 @@
 """
 import collections
 import concurrent.futures
-import contextlib
 import dataclasses
 import functools
 import glob
@@ -28,12 +27,12 @@ import os
 import typing
 
 import utila
-from utila.cli import MULTI_FLAG
 from utila.cli import PAGES_FLAG
 from utila.cli import Command
 from utila.cli import Flag
 from utila.cli import Parameter
 from utila.cli import create_parser
+from utila.cli import evaluate_flags
 from utila.cli import parse
 from utila.cli import sources
 from utila.error import saveme
@@ -45,8 +44,6 @@ from utila.logger import info
 from utila.logger import level_setup
 from utila.logger import log
 from utila.logger import log_stacktrace
-from utila.pages import pages as parse_pages
-from utila.utils import ALL_PAGES
 from utila.utils import FAILURE
 from utila.utils import NEWLINE
 from utila.utils import SUCCESS
@@ -151,41 +148,6 @@ def featurepack(
     return completed
 
 
-def evaluate_flags(args, multiprocessed: bool):
-    processes = 1 if not multiprocessed else args.get(MULTI_FLAG)
-    with contextlib.suppress(KeyError):
-        del args[MULTI_FLAG]
-
-    failfast = args.get('ff', False)
-    with contextlib.suppress(KeyError):
-        del args['ff']
-
-    pages = parse_pages(args.get(PAGES_FLAG, ALL_PAGES))
-    with contextlib.suppress(KeyError):
-        del args[PAGES_FLAG]
-
-    return processes, failfast, pages
-
-
-def callback(hook, name: str, output, pages: list):
-    log('processing: %s' % name)
-    # run runnable
-    runnable = functools.partial(
-        run_hook_safely,
-        hook=hook,
-        name=name,
-        stepoutput=output,
-        pages=pages,
-    )
-    try:
-        result = runnable()
-        log('completed: %s' % name)
-    except Exception as exception:  # pylint:disable=broad-except
-        error('%s failed' % name)
-        result = exception
-    return [result, name, output]
-
-
 def process(
         workplan: typing.List[WorkStep],
         name: str = None,
@@ -237,6 +199,25 @@ def process(
     return status
 
 
+def run_level(level, todo, pool, runnable, pages):
+    results = []
+    for step in level:
+        # if todo is empty, nothing is selected, run every step
+        if step.name not in todo and todo:
+            log(f'skipping: {step.name}')
+            continue
+        future = pool.submit(
+            callback,
+            step.inputs,
+            runnable,
+            step.outputs,
+            pages=pages,
+        )
+        results.append(future)
+
+    return results
+
+
 def write_level_result(
         results,
         errorhook: ErrorHook = None,
@@ -262,23 +243,69 @@ def write_level_result(
     return utila.SUCCESS if success else utila.FAILURE
 
 
-def run_level(level, todo, pool, runnable, pages):
-    results = []
-    for step in level:
-        # if todo is empty, nothing is selected, run every step
-        if step.name not in todo and todo:
-            log(f'skipping: {step.name}')
-            continue
-        future = pool.submit(
-            callback,
-            step.inputs,
-            runnable,
-            step.outputs,
-            pages=pages,
-        )
-        results.append(future)
+def callback(hook, name: str, output, pages: list):
+    log('processing: %s' % name)
+    # run runnable
+    runnable = functools.partial(
+        run_hook_safely,
+        hook=hook,
+        name=name,
+        stepoutput=output,
+        pages=pages,
+    )
+    try:
+        result = runnable()
+        log('completed: %s' % name)
+    except Exception as exception:  # pylint:disable=broad-except
+        error('%s failed' % name)
+        result = exception
+    return [result, name, output]
 
-    return results
+
+def run_hook_safely(
+        hook: callable,
+        name: str,
+        stepoutput,
+        pages,
+) -> int:
+    sig = inspect.signature(hook)
+    try:
+        if PAGES_FLAG in sig.parameters:
+            # optional page numbers flag
+            result = hook(pages=pages)
+        else:
+            result = hook()
+    except Exception as msg:  # pylint: disable=broad-except
+        log_stacktrace()
+        error('while processing %s' % name)
+        error(msg)
+        raise
+
+    if isinstance(result, str):
+        result = [result]
+    # Verify result
+    if result and len(stepoutput) != len(result):
+        error('wrong return value count')
+        error('interface count %d' % len(stepoutput))
+        error('return count from method %d' % len(result))
+        raise InterfaceMismatch
+    return result
+
+
+def write_result_safely(result, processstep, outputstep):
+    call('write results')
+    try:
+        for path, content in zip(outputstep, result):
+            info('write %s' % path)
+            # write content to file.
+            file_replace(path, content)
+        return SUCCESS
+    except TypeError as msg:
+        error('while processing %s' % processstep)
+        error('wrong return value')
+        error('current return value: %s' % result)
+        error(msg)
+        return FAILURE
 
 
 def select_executor():
@@ -288,45 +315,6 @@ def select_executor():
     if testrun:
         executor = concurrent.futures.ThreadPoolExecutor
     return executor
-
-
-def input_order(plan):
-    require = collections.defaultdict(set)
-    for step in plan:
-        name = step.name
-        try:
-            inputs = [str(item) for item in step.inputs.args]
-        except AttributeError:
-            inputs = [str(item) for item in step.inputs]
-
-        for item in inputs:
-            try:
-                producer, _ = item.split('_', maxsplit=1)
-                require[name].add(producer)
-            except ValueError:
-                # for example input.pdf
-                require[name].add(item)
-    order = determine_order(require, flat=False)
-    return order
-
-
-def parallelize_workplan(plan, max_processes=1):
-    order = input_order(plan)
-
-    steps = {step.name: step for step in plan}
-    result = []
-    for level in order:
-        level_result = []
-        for item in level:
-            if len(level_result) < max_processes:
-                level_result.append(steps[item])
-            else:
-                result.append(level_result)
-                level_result = [steps[item]]
-        if level_result:
-            result.append(level_result)
-
-    return result
 
 
 def prepare_process(todo, name, processes):
@@ -390,52 +378,6 @@ def prepare_description(name: str, description: str, workplan):
         result.append('')
     result = NEWLINE.join(result)
     return description + NEWLINE + result
-
-
-def run_hook_safely(
-        hook: callable,
-        name: str,
-        stepoutput,
-        pages,
-) -> int:
-    sig = inspect.signature(hook)
-    try:
-        if PAGES_FLAG in sig.parameters:
-            # optional page numbers flag
-            result = hook(pages=pages)
-        else:
-            result = hook()
-    except Exception as msg:  # pylint: disable=broad-except
-        log_stacktrace()
-        error('while processing %s' % name)
-        error(msg)
-        raise
-
-    if isinstance(result, str):
-        result = [result]
-    # Verify result
-    if result and len(stepoutput) != len(result):
-        error('wrong return value count')
-        error('interface count %d' % len(stepoutput))
-        error('return count from method %d' % len(result))
-        raise InterfaceMismatch
-    return result
-
-
-def write_result_safely(result, processstep, outputstep):
-    call('write results')
-    try:
-        for path, content in zip(outputstep, result):
-            info('write %s' % path)
-            # write content to file.
-            file_replace(path, content)
-        return SUCCESS
-    except TypeError as msg:
-        error('while processing %s' % processstep)
-        error('wrong return value')
-        error('current return value: %s' % result)
-        error(msg)
-        return FAILURE
 
 
 def find_features(
@@ -629,6 +571,45 @@ def read_workplan(
     if ret and verify:
         exit(FAILURE)
     return result
+
+
+def parallelize_workplan(plan, max_processes=1):
+    order = input_order(plan)
+
+    steps = {step.name: step for step in plan}
+    result = []
+    for level in order:
+        level_result = []
+        for item in level:
+            if len(level_result) < max_processes:
+                level_result.append(steps[item])
+            else:
+                result.append(level_result)
+                level_result = [steps[item]]
+        if level_result:
+            result.append(level_result)
+
+    return result
+
+
+def input_order(plan):
+    require = collections.defaultdict(set)
+    for step in plan:
+        name = step.name
+        try:
+            inputs = [str(item) for item in step.inputs.args]
+        except AttributeError:
+            inputs = [str(item) for item in step.inputs]
+
+        for item in inputs:
+            try:
+                producer, _ = item.split('_', maxsplit=1)
+                require[name].add(producer)
+            except ValueError:
+                # for example input.pdf
+                require[name].add(item)
+    order = determine_order(require, flat=False)
+    return order
 
 
 def determine_variables(workplan):
@@ -826,12 +807,12 @@ def determine_todo(args):
     return result
 
 
-@dataclasses.dataclass
+@dataclasses.dataclass  # pylint:disable=R0903
 class Input:
     pass
 
 
-@dataclasses.dataclass
+@dataclasses.dataclass  # pylint:disable=R0903
 class Value(Input):
     name: str
     typ: str
