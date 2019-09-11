@@ -531,7 +531,7 @@ def commandline(
 
 def create_step(
         name: str,
-        inputs: typing.List[typing.Tuple[str]],
+        inputs: typing.List['Input'],
         output: typing.Tuple[str],
 ):
     """
@@ -545,6 +545,8 @@ def create_step(
     }
     """
     assert isinstance(inputs, list), '%s %s' % (type(inputs), str(inputs))
+    for index, item in enumerate(inputs):
+        assert isinstance(item, Input), f'{index} {item}'
     assert isinstance(output, tuple), '%s %s' % (type(output), str(output))
     return WorkStep(name, inputs, output)
 
