@@ -33,6 +33,7 @@ from utila.error import saveme
 # Feature
 from utila.feature import File
 from utila.feature import Input
+from utila.feature import InterfaceMismatch
 from utila.feature import Pattern
 from utila.feature import ResultFile
 from utila.feature import Value

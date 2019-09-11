@@ -27,6 +27,7 @@ import inspect
 import os
 import typing
 
+import utila
 from utila.cli import MULTI_FLAG
 from utila.cli import PAGES_FLAG
 from utila.cli import Command
@@ -55,6 +56,12 @@ FeatureInterface = typing.Tuple[str, Command, callable]
 
 WorkStep = collections.namedtuple('WorkStep', 'name inputs outputs')
 
+ErrorHook = typing.Tuple[str, Exception]
+
+
+class InterfaceMismatch(TypeError):
+    pass
+
 
 @saveme(systemexit=True)
 def featurepack(
@@ -64,6 +71,7 @@ def featurepack(
         featurepackage: str,
         name: str,
         version: str,
+        errorhook: ErrorHook = None,
         *,
         multiprocessed: bool = False,
         pages: bool = False,
@@ -134,6 +142,7 @@ def featurepack(
     completed = process(
         workplan,
         name,
+        errorhook=errorhook,
         failfast=failfast,
         pages=pages,
         processes=processes,
@@ -168,11 +177,12 @@ def callback(hook, name: str, output, pages: list):
         stepoutput=output,
         pages=pages,
     )
-    result = runnable()
-    if result == FAILURE:
+    try:
+        result = runnable()
+        log('completed: %s' % name)
+    except Exception as exception:  # pylint:disable=broad-except
         error('%s failed' % name)
-        return FAILURE
-    log('completed: %s' % name)
+        result = exception
     return [result, name, output]
 
 
@@ -182,6 +192,7 @@ def process(
         todo: typing.List = None,
         processes: int = 1,
         pages: list = None,
+        errorhook: ErrorHook = None,
         *,
         failfast: bool = False,
 ):
@@ -205,10 +216,9 @@ def process(
 
     workplan = parallelize_workplan(workplan, processes)
 
-    success = True
-
     executor = select_executor()
     with executor(max_workers=processes) as pool:
+        failure = 0
         for level in workplan:
             # wait that level finishes without waiting, a next level which
             # require resource of the current may will not find the
@@ -216,19 +226,30 @@ def process(
             results = run_level(level, todo, pool, name, pages)
 
             # write result
-            success &= write_level_result(results, failfast=failfast)
-            if failfast and not success:
+            failure += write_level_result(
+                results,
+                errorhook=errorhook,
+                failfast=failfast,
+            )
+            if failfast and failure:
                 return FAILURE
-    return SUCCESS if success else FAILURE
+    status = utila.FAILURE if failure else utila.SUCCESS
+    return status
 
 
-def write_level_result(results, *, failfast=False):
+def write_level_result(
+        results,
+        errorhook: ErrorHook = None,
+        *,
+        failfast=False,
+) -> int:
     success = True
     for result in results:
-        print('RESULT')
-        print(result)
         completed = result.result()
-        if completed == FAILURE:
+        result, name, _ = completed
+        if isinstance(result, Exception):
+            if errorhook:
+                errorhook(result, name)
             success = False
             if failfast:
                 return FAILURE
@@ -238,7 +259,7 @@ def write_level_result(results, *, failfast=False):
                 success = False
                 if failfast:
                     return FAILURE
-    return success
+    return utila.SUCCESS if success else utila.FAILURE
 
 
 def run_level(level, todo, pool, runnable, pages):
@@ -256,6 +277,7 @@ def run_level(level, todo, pool, runnable, pages):
             pages=pages,
         )
         results.append(future)
+
     return results
 
 
@@ -387,7 +409,7 @@ def run_hook_safely(
         log_stacktrace()
         error('while processing %s' % name)
         error(msg)
-        return FAILURE
+        raise
 
     if isinstance(result, str):
         result = [result]
@@ -396,7 +418,7 @@ def run_hook_safely(
         error('wrong return value count')
         error('interface count %d' % len(stepoutput))
         error('return count from method %d' % len(result))
-        return FAILURE
+        raise InterfaceMismatch
     return result
 
 

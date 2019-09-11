@@ -7,14 +7,17 @@
 # be prosecuted under federal law. Its content is company confidential.
 # =============================================================================
 
+import os
 import sys
 from os import makedirs
 from os.path import join
 
+import pytest
 from pytest import fixture
 from pytest import mark
 from pytest import raises
 
+import utila
 from utila import FAILURE
 from utila import SUCCESS
 from utila import create_step
@@ -388,3 +391,34 @@ def work(pdf : str, result: str, char_margin : float, char_align : float) -> str
     assert out.count('default:') == 2, str(out)
 
     assert returncode(result) == SUCCESS
+
+
+@pytest.mark.parametrize('hook, failfast', [
+    (True, False),
+    (True, True),
+    (False, False),
+    (False, True),
+])
+def test_error_hook(hook, failfast, testdir, monkeypatch):
+    """Test passing exception to error hook and without hook"""
+    import tests.examples.featurepack.withexception.withexception as exe
+    root = exe.ROOT
+    utila.file_create(os.path.join(str(testdir), 'inputs.yaml'))
+
+    def errorhook(name, exception):  # pylint:disable=W0613
+        errorhook.hooked = True
+
+    with monkeypatch.context() as context:
+        context.syspath_prepend(root)
+        if hook:
+            context.setattr(exe, 'errorhook', errorhook)
+        command = [exe.PROCESS]
+        if failfast:
+            command.append('--ff')
+        context.setattr(sys, 'argv', command)
+
+        with pytest.raises(SystemExit) as result:
+            exe.main()
+
+    assert utila.returncode(result) == utila.FAILURE
+    assert not hook or errorhook.hooked
