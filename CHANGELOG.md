@@ -2,6 +2,12 @@
 
 Every noteable change is logged here.
 
+## v1.5.0
+
+### Feature
+
+* add parameter to write linter result (551bba646901)
+
 ## v1.4.0
 
 ### Feature
