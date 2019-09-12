@@ -130,6 +130,7 @@ def create_parser(
         prog: str = '',
         *,
         inputparameter: bool = False,
+        linter: bool = False,
         multiprocessed: bool = False,
         outputparameter: bool = False,
         pages: bool = False,
@@ -154,6 +155,7 @@ def create_parser(
         multiprocessed=multiprocessed,
         pages=pages,
         prefix=prefix,
+        linter=linter,
     )
 
     parser = ArgumentParser(
@@ -196,6 +198,7 @@ def create_parser(
     return parser
 
 
+LINTER_FLAG = 'linter'
 MULTI_FLAG = 'job'
 PAGES_FLAG = 'pages'
 
@@ -206,6 +209,7 @@ def prepare_todo(
         multiprocessed: bool,
         pages: bool,
         prefix: bool,
+        linter: bool,
 ):
     if todo is None:
         todo = []
@@ -215,6 +219,13 @@ def prepare_todo(
     # twice, changing the reference is no good idea and will produce --output,
     # --input twice.
     todo = list(todo)
+
+    if linter:
+        lintercmd = Flag(
+            longcut=LINTER_FLAG,
+            message='add flag to write linter result',
+        )
+        todo.insert(0, lintercmd)
 
     if prefix:
         prefixcommand = Parameter(
@@ -366,4 +377,8 @@ def evaluate_flags(args, multiprocessed: bool):
     with contextlib.suppress(KeyError):
         del args[PAGES_FLAG]
 
-    return processes, failfast, pages
+    linter = args.get(LINTER_FLAG, False)
+    with contextlib.suppress(KeyError):
+        del args[LINTER_FLAG]
+
+    return processes, failfast, pages, linter
