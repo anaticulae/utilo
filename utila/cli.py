@@ -30,6 +30,7 @@ Example:
 
 import contextlib
 import os
+import sys
 from argparse import ArgumentParser
 from argparse import RawDescriptionHelpFormatter
 from dataclasses import dataclass
@@ -381,3 +382,20 @@ def evaluate_flags(args, multiprocessed: bool):
         del args[PAGES_FLAG]
 
     return processes, failfast, pages
+
+
+def is_userflag(flag: str):
+    """Check if `flag` is passed as user argument
+
+    Args:
+        flag(str): passed by user argument --flag or flag
+    Returns:
+        True if flag is passed in user argument else False
+    """
+    assert flag
+
+    if flag in sys.argv:
+        return True
+    if f'--{flag}' in sys.argv:
+        return True
+    return False
