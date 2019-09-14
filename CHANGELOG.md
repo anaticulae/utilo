@@ -2,6 +2,16 @@
 
 Every noteable change is logged here.
 
+## v1.5.3
+
+### Fix
+
+* fix tuple flag parameter definition (1b9fba339626)
+
+### Documentation
+
+* extend interface documentation (0a888a691efa)
+
 ## v1.5.2
 
 ### Feature
