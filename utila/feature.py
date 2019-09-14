@@ -799,7 +799,18 @@ def verify_interface(inputs, outputs, worker):
     return SUCCESS
 
 
-def determine_todo(args, flags):
+def determine_todo(args: dict, flags: list) -> typing.List[str]:
+    """Remove flags from feature todo list
+
+    Hint:
+        See feature selection approach.
+
+    Args:
+        args(dict): user defined command line arguments
+        flags(tuple/str): possible bool flag args for examle `--linter`
+    Returns:
+        args list without possible flag-args
+    """
     args = dict(args)
     del args['input']
     del args['output']
