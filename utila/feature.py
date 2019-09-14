@@ -73,7 +73,7 @@ def featurepack(
         multiprocessed: bool = False,
         pages: bool = False,
         singleinput: bool = False,
-        linter: bool = False,
+        flags: list = None,
 ) -> int:
     """Run featurepack defined in `workplan`
 
@@ -89,6 +89,7 @@ def featurepack(
     Returns:
         return SUCCESS or FAILURE
     """
+    flags = flags if flags else []
     feature = find_features(root, featurepackage)
     commands = commandline(feature, workplan)
 
@@ -96,8 +97,8 @@ def featurepack(
     parser = create_parser(
         commands,
         description=description,
+        flags=flags,
         inputparameter=True,
-        linter=linter,
         multiprocessed=multiprocessed,
         outputparameter=True,
         pages=pages,
@@ -106,7 +107,7 @@ def featurepack(
     )
     args = parse(parser)
 
-    processes, failfast, pages, _ = evaluate_flags(args, multiprocessed)
+    processes, failfast, pages = evaluate_flags(args, multiprocessed)
     # evaluate the verbose flag
     inputpath, outputpath, prefix, verbose = sources(
         args,
