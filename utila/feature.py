@@ -836,7 +836,7 @@ def determine_todo(args: dict, flags: list) -> typing.List[str]:
 
     if not any(args.values()):
         # run all features
-        result = [key for key, value in args.items()]
+        result = [key for key in args.keys()]
     else:
         # True is important!
         result = [key for key, value in args.items() if value == True]  # pylint:disable=singleton-comparison

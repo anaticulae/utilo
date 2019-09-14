@@ -9,8 +9,6 @@
 
 import os
 import sys
-from os import makedirs
-from os.path import join
 
 import pytest
 from pytest import fixture
@@ -98,20 +96,20 @@ def pack(plan, root, featurepackage):
 def featureexample(testdir):
     root = str(testdir)
     featurepackage = 'feedback.features.border'
-    feature_path = join(root, featurepackage.replace('.', '/'))
-    makedirs(feature_path)
-    file_create(join(root, '__init__.py'))
-    file_create(join(root, 'feedback/__init__.py'))
-    file_create(join(root, 'feedback/features/__init__.py'))
-    file_create(join(feature_path, '__init__.py'))
+    feature_path = os.path.join(root, featurepackage.replace('.', '/'))
+    os.makedirs(feature_path)
+    file_create(os.path.join(root, '__init__.py'))
+    file_create(os.path.join(root, 'feedback/__init__.py'))
+    file_create(os.path.join(root, 'feedback/features/__init__.py'))
+    file_create(os.path.join(feature_path, '__init__.py'))
 
     file_create(
-        join(feature_path, 'incomplete_worker.py'), """
+        os.path.join(feature_path, 'incomplete_worker.py'), """
 def work():
     return 'work'
     """)
     file_create(
-        join(feature_path, 'complete_worker.py'), """
+        os.path.join(feature_path, 'complete_worker.py'), """
 from utila import Flag
 def name():
     return 'complete_worker'
@@ -144,7 +142,7 @@ def test_featurepack_with_broken_feature(featureexample, monkeypatch):
     """Skip broken worker"""
     root, package = featureexample
     # create the broken feature
-    file_create(join(package.replace('.', '/'), 'broken_worker.py'))
+    file_create(os.path.join(package.replace('.', '/'), 'broken_worker.py'))
 
     with monkeypatch.context() as context:
         context.setattr(sys, 'argv', [PROCESS_NAME, '-i', root, '-o', root])
@@ -179,9 +177,9 @@ def test_featurepack_with_different_worker(  #pylint:disable=W0621
         expected_result,
 ):
     root, package = featureexample
-    featurepath = join(root, package.replace('.', '/'))
+    featurepath = os.path.join(root, package.replace('.', '/'))
     # create feature
-    file_create(join(
+    file_create(os.path.join(
         featurepath,
         '%s.py' % name,
     ), worker)
@@ -234,7 +232,7 @@ def commandline():
 """
 
     example = example.format(stepname=stepname, worker=worker)
-    outputpath = join(featurepath, '%s.py' % stepname)
+    outputpath = os.path.join(featurepath, '%s.py' % stepname)
     file_create(outputpath, example)
 
 
@@ -244,11 +242,11 @@ def create_example(
         stepname: str,
         worker: str,
 ):
-    featurepath = join(root, featurepackage.replace('.', '/'))
-    makedirs(featurepath)
-    file_create(join(root, '__init__.py'))
-    file_create(join(root, 'feedback/__init__.py'))
-    file_create(join(root, 'feedback/features/__init__.py'))
+    featurepath = os.path.join(root, featurepackage.replace('.', '/'))
+    os.makedirs(featurepath)
+    file_create(os.path.join(root, '__init__.py'))
+    file_create(os.path.join(root, 'feedback/__init__.py'))
+    file_create(os.path.join(root, 'feedback/features/__init__.py'))
 
     create_worker(stepname, worker, featurepath)
 
@@ -259,7 +257,7 @@ def test_feature_featurepack_workplan_pdf_parser(testdir, monkeypatch):
     root = str(testdir)
     processname = 'pdfparser'
     featurepackage = 'feedback.features'
-    featurepath = join(root, featurepackage.replace('.', '/'))
+    featurepath = os.path.join(root, featurepackage.replace('.', '/'))
     stepname = 'parser'
 
     # Define first working step
@@ -276,9 +274,9 @@ def work(pdffile : str) -> str:
             (('result'),),
         ),
     ]
-    examplepath = join(root, 'example')
-    makedirs(examplepath)
-    file_create(join(examplepath, 'test.pdf'), 'this pdf is empty')
+    examplepath = os.path.join(root, 'example')
+    os.makedirs(examplepath)
+    file_create(os.path.join(examplepath, 'test.pdf'), 'this pdf is empty')
 
     create_example(
         root,
@@ -332,7 +330,8 @@ def work(pdf : str, result: str, char_margin : float, char_align : float) -> str
                 singleinput=True,
             )
     assert returncode(result) == SUCCESS
-    written = file_read(join(root, 'parsi__path_with_value_result.yaml'))
+    written = file_read(
+        os.path.join(root, 'parsi__path_with_value_result.yaml'))
     assert written == '1.00 50.50', str(written)
 
 
@@ -341,18 +340,18 @@ def test_feature_featurepack_help_with_variable(testdir, monkeypatch, capsys):
     root = str(testdir)
     processname = 'pdfparser'
     featurepackage = 'feedback.features'
-    featurepath = join(root, featurepackage.replace('.', '/'))
+    featurepath = os.path.join(root, featurepackage.replace('.', '/'))
 
     path_with_value_worker = """
 def work(pdf : str, result: str, char_margin : float, char_align : float) -> str:
     return '%.2f %.2f' % (char_margin,char_align)
 """
-    makedirs(featurepath)
+    os.makedirs(featurepath)
 
     # make directories to packages
-    file_create(join(root, '__init__.py'), '')
-    file_create(join(root, 'feedback/__init__.py'), '')
-    file_create(join(root, 'feedback/features/__init__.py'), '')
+    file_create(os.path.join(root, '__init__.py'), '')
+    file_create(os.path.join(root, 'feedback/__init__.py'), '')
+    file_create(os.path.join(root, 'feedback/features/__init__.py'), '')
 
     create_worker('path_with_value', path_with_value_worker, featurepath)
     workplan = [(create_step(
