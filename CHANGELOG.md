@@ -2,6 +2,16 @@
 
 Every noteable change is logged here.
 
+## v1.5.2
+
+### Feature
+
+* add method to check if user flag is set (d1fabd9259c4)
+
+### Fix
+
+* fix todo collector approach (119f563e7a97)
+
 ## v1.5.1
 
 ### Feature
