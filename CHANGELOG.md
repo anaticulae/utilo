@@ -2,6 +2,12 @@
 
 Every noteable change is logged here.
 
+## v1.5.1
+
+### Feature
+
+* replace linter with general flag approach (4f2d77eebc87)
+
 ## v1.5.0
 
 ### Feature
