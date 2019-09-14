@@ -812,7 +812,7 @@ def determine_todo(args, flags):
         # to remove all external flags.
         for item in flags:
             try:
-                flag, _ = flags
+                flag, _ = item
             except ValueError:
                 flag = item
             flag = userflag_to_arg(flag)
