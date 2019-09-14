@@ -9,6 +9,7 @@
 import os
 import sys
 
+import pytest
 from pytest import fixture
 from pytest import mark
 from pytest import raises
@@ -24,6 +25,7 @@ from utila import forward_slash
 from utila import parse
 from utila import returncode
 from utila import sources
+from utila import userflag_to_arg
 from utila.cli import create_parser
 from utila.test import run
 from utila.test import skip_nonvirtual
@@ -322,3 +324,9 @@ def test_cli_singlefile_input(testdir, monkeypatch, singlefile):
                 singleinput=False,
             )
         assert returncode(result) == INVALID_COMMAND
+
+
+@pytest.mark.parametrize('flag', ['--iamflag', 'iamflag'])
+def test_cli_userflag_to_arg(flag):
+    parsed = userflag_to_arg(flag)
+    assert parsed == 'iamflag', str(parsed)

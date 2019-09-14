@@ -18,6 +18,7 @@
 """
 import collections
 import concurrent.futures
+import contextlib
 import dataclasses
 import functools
 import glob
@@ -35,6 +36,7 @@ from utila.cli import create_parser
 from utila.cli import evaluate_flags
 from utila.cli import parse
 from utila.cli import sources
+from utila.cli import userflag_to_arg
 from utila.error import saveme
 from utila.file import file_replace
 from utila.logger import Level
@@ -138,7 +140,7 @@ def featurepack(
     # Ensure to have output folder
     os.makedirs(outputpath, exist_ok=True)
 
-    current_todo = determine_todo(args)
+    current_todo = determine_todo(args, flags)
     completed = process(
         workplan,
         name,
@@ -797,10 +799,30 @@ def verify_interface(inputs, outputs, worker):
     return SUCCESS
 
 
-def determine_todo(args):
+def determine_todo(args, flags):
     args = dict(args)
     del args['input']
     del args['output']
+
+    def remove_bool_flags(cli_args, flags):
+        # We have to remove all flags, which are not possible to do flags.
+        # The to do mechanism run all features if no to do flag is passed.
+        # If one flag is left, which is not releated to todo flag like
+        # `--linter_writing` every todo-job is skipped, therefore we have
+        # to remove all external flags.
+        for item in flags:
+            try:
+                flag, _ = flags
+            except ValueError:
+                flag = item
+            flag = userflag_to_arg(flag)
+            with contextlib.suppress(KeyError):
+                # remove present user flags.
+                del cli_args[flag]
+        return cli_args
+
+    args = remove_bool_flags(args, flags)
+
     if not any(args.values()):
         # run all features
         result = [key for key, value in args.items()]

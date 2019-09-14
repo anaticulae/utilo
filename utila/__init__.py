@@ -23,6 +23,7 @@ from utila.cli import RequiredCommand
 from utila.cli import is_userflag
 from utila.cli import parse
 from utila.cli import sources
+from utila.cli import userflag_to_arg
 # Time
 from utila.datetime import current
 from utila.datetime import timedate

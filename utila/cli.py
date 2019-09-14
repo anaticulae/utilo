@@ -399,3 +399,8 @@ def is_userflag(flag: str):
     if f'--{flag}' in sys.argv:
         return True
     return False
+
+
+def userflag_to_arg(flag: str):
+    flag = flag.strip()
+    return flag.split('--')[-1]
