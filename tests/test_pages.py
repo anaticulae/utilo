@@ -15,6 +15,7 @@ import utila
 
 MAX_PAGES = 100
 
+MinimalPage = collections.namedtuple('MinimalPage', 'page')
 
 
 @pytest.mark.parametrize('pattern, expected', [
@@ -42,3 +43,24 @@ def test_pages_should_skip():
     assert utila.should_skip(5, (1, 2, 3)) is True
     assert utila.should_skip(5, (1, 2, 3, 5)) is False
     assert utila.should_skip(5, None) is False
+
+
+@pytest.fixture
+def minimal_pages():
+    pages = [MinimalPage(0), MinimalPage(1), MinimalPage(2), MinimalPage(4)]
+    return pages
+
+
+def test_pages_select_page(minimal_pages):  # pylint:disable=W0621
+    assert utila.select_page(minimal_pages, 4) == MinimalPage(4)
+
+
+def test_pages_select_page_invalid(minimal_pages):  # pylint:disable=W0621
+    with pytest.raises(KeyError):
+        utila.select_page(minimal_pages, 10)
+
+
+def test_pages_select_page_duplicated_source():
+    pages = [MinimalPage(0), MinimalPage(0), MinimalPage(0), MinimalPage(4)]
+    with pytest.raises(ValueError):
+        utila.select_page(pages, 0)

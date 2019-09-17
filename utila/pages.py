@@ -85,3 +85,25 @@ def should_skip(page: int, pages: tuple):  # pylint:disable=W0621
     if not isinstance(pages, tuple):
         pages = (pages,)
     return not page in pages
+
+
+def select_page(items, pagenumber: int):
+    """Select item depending on page-attribut of the item.
+
+    Args:
+        items(collection): content which contains the pages
+        pagenumber(int): page-attribute to select from `items`
+    Returns:
+        page with page-attribute matches with `pagenumber`
+    Raises:
+        ValuesError: if items contains duplicated page number
+        KeyError: if `pagenumber` is not present in collection
+    """
+
+
+    if not isinstance(items, dict):
+        before = len(items)
+        items = {item.page: item for item in items}
+        if len(items) != before:
+            raise ValueError('duplicated page attribute')
+    return items[pagenumber]

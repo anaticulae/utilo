@@ -79,6 +79,7 @@ from utila.logger import print_runtime
 from utila.logger import profile
 # pages
 from utila.pages import pages
+from utila.pages import select_page
 from utila.pages import should_skip
 # string
 from utila.string import fix_encoding
