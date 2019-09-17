@@ -54,6 +54,7 @@ from utila.file import file_read
 from utila.file import file_remove
 from utila.file import file_replace
 from utila.file import from_raw_or_path
+from utila.file import make_absolute
 from utila.file import make_relative
 from utila.file import make_single
 from utila.file import tmp
