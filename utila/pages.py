@@ -100,7 +100,6 @@ def select_page(items, pagenumber: int):
         KeyError: if `pagenumber` is not present in collection
     """
 
-
     if not isinstance(items, dict):
         before = len(items)
         items = {item.page: item for item in items}

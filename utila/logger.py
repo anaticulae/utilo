@@ -7,19 +7,19 @@
 # be prosecuted under federal law. Its content is company confidential.
 #==============================================================================
 
+import contextlib
+import enum
 import os
 import sys
-from contextlib import contextmanager
-from enum import IntEnum
-from time import time
-from traceback import format_exc
+import time
+import traceback
 
 from utila.string import fix_encoding
 from utila.string import forward_slash
 from utila.utils import NEWLINE
 
 
-class Level(IntEnum):
+class Level(enum.IntEnum):
     LOGGING = 0
     CALLS = 1
     INFORMATION = 2
@@ -31,7 +31,7 @@ LEVEL = Level.LOGGING
 
 
 def level_setup(level: Level):
-    global LEVEL
+    global LEVEL  # pylint:disable=global-statement
     LEVEL = level
 
 
@@ -80,7 +80,7 @@ def error(msg: str, end: str = NEWLINE):
 
 
 def log_stacktrace():
-    stack_trace = format_exc()
+    stack_trace = traceback.format_exc()
     error(forward_slash(stack_trace))
 
 
@@ -92,11 +92,12 @@ def print_runtime(before: int, msg: str = ''):
         before(int): time recorded some time before - use time.time()
         msg(str): extend runtime message to differentiate multiple invocations
     """
-    time_diff = time() - before
+    time_diff = time.time() - before
     if msg:
         log('Runtime(%s): %.2f secs' % (msg, time_diff))
     else:
         log('Runtime: %.2f secs' % time_diff)
+
 
 def print_env():
     """Log environment variables as a table.
@@ -108,14 +109,14 @@ def print_env():
         info('{:<40}{}'.format(key, value))
 
 
-@contextmanager
+@contextlib.contextmanager
 def profile(msg: str = ''):
     """Print runtime to logger to monitor performance
 
     Args:
         msg(str): extend runtime message to differentiate multiple runtime
     """
-    start = time()
+    start = time.time()
     try:
         yield
     except Exception:
@@ -154,5 +155,5 @@ class SkipCollector:
     def __enter__(self):
         return self
 
-    def __exit__(self, exc_type, exc_value, traceback):
+    def __exit__(self, exc_type, exc_value, traceback):  # pylint:disable=W0621
         self.log()
