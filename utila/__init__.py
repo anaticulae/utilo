@@ -75,6 +75,7 @@ from utila.logger import info
 from utila.logger import level_setup
 from utila.logger import log
 from utila.logger import log_stacktrace
+from utila.logger import print_env
 from utila.logger import print_runtime
 from utila.logger import profile
 # pages

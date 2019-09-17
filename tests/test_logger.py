@@ -41,3 +41,11 @@ def test_logger_profile_with_exception(capsys):
 
     stdout = capsys.readouterr().out
     assert 'Runtime' in stdout, str(stdout)
+
+
+def test_logger_print_env(capsys, monkeypatch):
+    with monkeypatch.context() as context:
+        context.setattr('utila.logger.LEVEL', utila.Level.INFORMATION)
+        utila.print_env()
+    stdout = capsys.readouterr().out
+    assert len(stdout) > 500, str(stdout)

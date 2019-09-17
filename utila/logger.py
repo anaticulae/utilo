@@ -7,6 +7,7 @@
 # be prosecuted under federal law. Its content is company confidential.
 #==============================================================================
 
+import os
 import sys
 from contextlib import contextmanager
 from enum import IntEnum
@@ -96,6 +97,15 @@ def print_runtime(before: int, msg: str = ''):
         log('Runtime(%s): %.2f secs' % (msg, time_diff))
     else:
         log('Runtime: %.2f secs' % time_diff)
+
+def print_env():
+    """Log environment variables as a table.
+
+    Hint:
+        Log level higher equal than `INFORMATION` is required
+    """
+    for key, value in os.environ.items():
+        info('{:<40}{}'.format(key, value))
 
 
 @contextmanager
