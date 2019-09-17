@@ -248,6 +248,65 @@ def make_absolute(path: str, cwd=None):
     return path
 
 
+def make_relative(path: str, root: str = None) -> str:
+    """Cut leading `root` from `path`
+
+    Hint:
+        Convert path to forwards slashs
+
+    Examples:
+        'C:/folder/names/test.pdf',
+        'C:/folder/',
+        'names/test.pdf',
+
+        'resources\\main\\examples',
+        'resources',
+        'main/examples',
+
+    See:
+        os.path.relpath
+    """
+    if root is None:
+        root = os.getcwd()
+    root = forward_slash(root)
+    path = forward_slash(path)
+
+    path = path.replace(root, '')
+    if path[0] == '/':
+        path = path[1:]
+
+    return path
+
+
+def make_single(path: str, replacement='_') -> str:
+    """Convert path sequence to single str which can be used as folder name.
+
+    Sometimes it is handy to shrink the path level of a folder
+    hierarchie into a single flat list. This method enables to convert
+    this path into a single name which can be used to reach this goal.
+
+    Examples:
+        C:/folder/names/test.pdf        C_folder_names_test.pdf
+        resources\\main\\examples       resources_main_examples
+
+    Args:
+        path(str): conventional path
+        replacement(str): char which replace detected pattern
+    Returns:
+        converted single path
+    """
+    path = str(path)
+    finder = [
+        ':/',
+        ':\\',
+        '/',
+        '\\',
+    ]
+    for pattern in finder:
+        path = path.replace(pattern, replacement)
+    return path
+
+
 def assert_file(files, filetype: str):
     """Ensure that the given `files` have the correct `filetype`
 

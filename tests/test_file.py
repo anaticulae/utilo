@@ -6,7 +6,6 @@
 # use or distribution is an offensive act against international law and may
 # be prosecuted under federal law. Its content is company confidential.
 #==============================================================================
-
 import os
 import shutil
 from os import listdir
@@ -14,9 +13,11 @@ from os import makedirs
 from os.path import exists
 from os.path import join
 
+import pytest
 from pytest import fixture
 from pytest import raises
 
+import utila
 from utila import ROOT
 from utila import assert_file
 from utila import assert_html
@@ -242,3 +243,18 @@ def prepare_example(directory):
         file_create(item, item)
 
     return folder
+
+
+@pytest.mark.parametrize('path, expected', [
+    (
+        'C:/folder/names/test.pdf',
+        'C_folder_names_test.pdf',
+    ),
+    (
+        'resources\\main\\examples',
+        'resources_main_examples',
+    ),
+])
+def test_file_make_single(path, expected):
+    converted = utila.make_single(path)
+    assert converted == expected
