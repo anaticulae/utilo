@@ -18,7 +18,6 @@ def pages(pattern: str, pagecount=None) -> tuple:
     Args:
         pattern(str): user defined pattern
         pagecount(int): maximum number of pages for example `5:` -> 5:pagecount
-                        not implement yet.
     Returns:
         list with user defined pages
     """
@@ -69,7 +68,7 @@ def pages(pattern: str, pagecount=None) -> tuple:
 
 
 def should_skip(page: int, pages: tuple):  # pylint:disable=W0621
-    """Determine if `page` is invalid
+    """Determine if `page` is invalid.
 
     If `pages` is None, every page is accepted.
     If `pages` is a list, only the elements in this list are valid and return

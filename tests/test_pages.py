@@ -7,17 +7,17 @@
 # be prosecuted under federal law. Its content is company confidential.
 # =============================================================================
 
-from pytest import mark
+import collections
 
-from utila import pages
-from utila import should_skip
+import pytest
 
-EMPTY_TUPLE = tuple([])
+import utila
 
 MAX_PAGES = 100
 
 
-@mark.parametrize('pattern, expected', [
+
+@pytest.mark.parametrize('pattern, expected', [
     (' :  ', None),
     ('0:0', None),
     ('50:', tuple(range(50, MAX_PAGES))),
@@ -34,11 +34,11 @@ MAX_PAGES = 100
     ('a,10', None),
 ])
 def test_pages(pattern, expected):
-    result = pages(pattern, pagecount=MAX_PAGES)
+    result = utila.pages(pattern, pagecount=MAX_PAGES)
     assert result == expected, str(result)
 
 
-def test_utils_should_skip():
-    assert should_skip(5, (1, 2, 3)) is True
-    assert should_skip(5, (1, 2, 3, 5)) is False
-    assert should_skip(5, None) is False
+def test_pages_should_skip():
+    assert utila.should_skip(5, (1, 2, 3)) is True
+    assert utila.should_skip(5, (1, 2, 3, 5)) is False
+    assert utila.should_skip(5, None) is False
