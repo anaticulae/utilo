@@ -22,6 +22,7 @@ from os.path import split
 from random import randrange
 
 from utila.logger import error
+from utila.string import forward_slash
 from utila.utils import FAILURE
 from utila.utils import NEWLINE
 from utila.utils import TMP

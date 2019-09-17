@@ -258,3 +258,20 @@ def prepare_example(directory):
 def test_file_make_single(path, expected):
     converted = utila.make_single(path)
     assert converted == expected
+
+
+@pytest.mark.parametrize('path, root, expected', [
+    (
+        'C:/folder/names/test.pdf',
+        'C:/folder/',
+        'names/test.pdf',
+    ),
+    (
+        'resources\\main\\examples',
+        'resources',
+        'main/examples',
+    ),
+])
+def test_file_make_relative(path, root, expected):
+    converted = utila.make_relative(path, root=root)
+    assert converted == expected
