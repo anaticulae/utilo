@@ -2,6 +2,17 @@
 
 Every noteable change is logged here.
 
+## v1.6.0
+
+### Feature
+
+* add method to print environment variables (d535d16494f7)
+* add method to select special page out of pages collection (51a6dba0eae6)
+* add method to stable remove duplicated items from collection (990abdc188ac)
+* add method to create absolute path to public API (7374f26491e8)
+* add method to cut common leading sequence of two paths (5395cbd7f935)
+* add method to convert path into single fileable peace of str (b7040b70ab7a)
+
 ## v1.5.3
 
 ### Fix
