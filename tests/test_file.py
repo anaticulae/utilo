@@ -248,7 +248,7 @@ def prepare_example(directory):
 @pytest.mark.parametrize('path, expected', [
     (
         'C:/folder/names/test.pdf',
-        'C_folder_names_test.pdf',
+        'C_folder_names_test_pdf',
     ),
     (
         'resources\\main\\examples',

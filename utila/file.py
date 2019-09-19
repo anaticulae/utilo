@@ -302,6 +302,7 @@ def make_single(path: str, replacement='_') -> str:
         ':\\',
         '/',
         '\\',
+        '.',
     ]
     for pattern in finder:
         path = path.replace(pattern, replacement)
