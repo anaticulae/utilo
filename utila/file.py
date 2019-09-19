@@ -347,6 +347,7 @@ def assert_json(files):
     """Ensure that all given `files` are `json` files"""
     assert_file(files, 'json')
 
+
 def yaml(filename: str):
     """Add file yaml extention if required.
 
@@ -355,7 +356,7 @@ def yaml(filename: str):
     Returns
         filename with .yaml ending
     """
-    assert not ('/' in filename or '\\' in filename), f'bad filename {filename}.'
+    assert not ('/' in filename or '\\' in filename), f'bad filename {filename}'
     if not filename.endswith('.yaml'):
         filename = f'{filename}.yaml'
     return filename
