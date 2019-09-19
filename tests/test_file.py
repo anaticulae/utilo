@@ -275,3 +275,18 @@ def test_file_make_single(path, expected):
 def test_file_make_relative(path, root, expected):
     converted = utila.make_relative(path, root=root)
     assert converted == expected
+
+
+@pytest.mark.parametrize('filename', [
+    'example.yaml',
+    'example',
+])
+def test_file_yaml(filename):
+    yaml_file = utila.yaml(filename)
+    assert yaml_file == 'example.yaml'
+
+
+def test_file_yaml_path_given():
+    path = 'C:\\usr\\dev\\example.yaml'
+    with pytest.raises(AssertionError):
+        utila.yaml(path)
