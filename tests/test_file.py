@@ -260,6 +260,15 @@ def test_file_make_single(path, expected):
     assert converted == expected
 
 
+def test_file_make_single_shorten():
+    path = 'C:/helmut/this/is/a/very/long/folder/ending.txt'
+    expected_length = 20
+    shorten = utila.make_single(path, length=expected_length)
+
+    assert len(shorten) == expected_length, str(shorten)
+    assert shorten.endswith('folder_ending_txt'), str(shorten)
+
+
 @pytest.mark.parametrize('path, root, expected', [
     (
         'C:/folder/names/test.pdf',

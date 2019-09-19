@@ -279,7 +279,7 @@ def make_relative(path: str, root: str = None) -> str:
     return path
 
 
-def make_single(path: str, replacement='_') -> str:
+def make_single(path: str, replacement='_', length: int = 40) -> str:
     """Convert path sequence to single str which can be used as folder name.
 
     Sometimes it is handy to shrink the path level of a folder
@@ -287,12 +287,15 @@ def make_single(path: str, replacement='_') -> str:
     this path into a single name which can be used to reach this goal.
 
     Examples:
-        C:/folder/names/test.pdf        C_folder_names_test.pdf
+        C:/folder/names/test.pdf        C_folder_names_test_pdf
         resources\\main\\examples       resources_main_examples
 
     Args:
         path(str): conventional path
         replacement(str): char which replace detected pattern
+        length(int): limit result length - count from right to left, to
+                     use this if you require only short subset of
+                     single-result.
     Returns:
         converted single path
     """
@@ -306,7 +309,7 @@ def make_single(path: str, replacement='_') -> str:
     ]
     for pattern in finder:
         path = path.replace(pattern, replacement)
-    return path
+    return path[-length:]
 
 
 def assert_file(files, filetype: str):
