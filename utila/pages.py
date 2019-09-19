@@ -88,6 +88,7 @@ def should_skip(page: int, pages: tuple):  # pylint:disable=W0621
 
 
 def select_page(items, pagenumber: int):
+    # TODO: RENAME `pagenumber` to page:?
     """Select item depending on page-attribut of the item.
 
     Args:
