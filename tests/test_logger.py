@@ -49,3 +49,10 @@ def test_logger_print_env(capsys, monkeypatch):
         utila.print_env()
     stdout = capsys.readouterr().out
     assert len(stdout) > 500, str(stdout)
+
+
+def test_logger_format_completed():
+    completed = utila.run('pingosuperdumpa --help')
+    formatted = utila.format_completed(completed)
+    assert len(formatted) > 150, str(formatted)
+    assert 'returncode: 1' in formatted, str(formatted)
