@@ -7,6 +7,7 @@
 # be prosecuted under federal law. Its content is company confidential.
 # =============================================================================
 
+import re
 import sys
 
 
@@ -43,3 +44,8 @@ def fix_encoding(msg: str):
     # remove non valid char to avoid error on (win)-console
     msg = msg.encode(encoding, errors='xmlcharrefreplace').decode(encoding)
     return msg
+
+def extract_match(matched: re.Match) -> str:
+    """Extract content out of `re.Match`."""
+    assert isinstance(matched, re.Match), type(matched)
+    return matched.string[matched.span()[0]:matched.span()[1]]

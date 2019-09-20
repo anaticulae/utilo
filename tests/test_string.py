@@ -43,3 +43,14 @@ def test_string_forward_slash_do_not_replace_newline():
 def test_string_forward_slash_replace_backslash(string, expected):
     replaced = utila.forward_slash(string)
     assert replaced == expected
+
+
+def test_string_extract_match():
+    content = 'hallo 123 hallo'
+    pattern = r'\d+'
+
+    matched = re.finditer(pattern, content)
+    first_item = list(matched)[0]
+
+    extracted = utila.extract_match(first_item)
+    assert extracted == '123', str(extracted)

@@ -85,6 +85,7 @@ from utila.pages import pages
 from utila.pages import select_page
 from utila.pages import should_skip
 # string
+from utila.string import extract_match
 from utila.string import fix_encoding
 from utila.string import forward_slash
 # Tests

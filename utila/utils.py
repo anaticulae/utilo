@@ -7,6 +7,8 @@
 # be prosecuted under federal law. Its content is company confidential.
 #==============================================================================
 
+import re
+
 SUCCESS = 0
 FAILURE = 1
 
