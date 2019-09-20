@@ -92,8 +92,10 @@ from utila.test import FASTRUN
 from utila.test import LONGRUN
 from utila.test import NIGHTLY
 from utila.test import VIRTUAL
+from utila.test import assert_failure
 from utila.test import assert_run
 from utila.test import assert_run_fail
+from utila.test import assert_success
 from utila.test import clean_install
 from utila.test import install_and_run
 from utila.test import returncode

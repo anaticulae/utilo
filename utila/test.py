@@ -14,6 +14,7 @@ import sys
 
 import pytest
 
+import utila.logger
 from utila.utils import SUCCESS
 
 VIRTUAL_ENVKEY = 'VIRTUAL'
@@ -138,3 +139,17 @@ def install_and_run(root, package, executable=None):
 def returncode(exeception: Exception) -> int:
     """Determine return code raised from exit()"""
     return int(str(exeception.value))
+
+
+def assert_success(process: subprocess.CompletedProcess):
+    """Ensure that `process` completed correctly, if not a formated
+    information is logged"""
+    assert process, str(process)
+    assert process.returncode == utila.SUCCESS, utila.format_completed(process)
+
+
+def assert_failure(process: subprocess.CompletedProcess):
+    """Ensure that `process` fails. If process completed correctly, a
+    formated information is logged."""
+    assert process, str(process)
+    assert process.returncode != utila.SUCCESS, utila.format_completed(process)

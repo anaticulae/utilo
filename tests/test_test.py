@@ -7,6 +7,9 @@
 # be prosecuted under federal law. Its content is company confidential.
 # =============================================================================
 
+import pytest
+
+import utila
 from utila import FAILURE
 from utila import PACKAGENAME
 from utila import ROOT
@@ -42,3 +45,25 @@ def test_test_run_command(monkeypatch):
         exit(SUCCESS)
 
     run_command('--number 10', 'main', main, True, monkeypatch)
+
+
+def test_test_assert_success():
+    completed = utila.run('python --help')
+    utila.assert_success(completed)
+
+
+def test_test_assert_success_failed():
+    completed = utila.run('python --helpsambadamba')
+    with pytest.raises(AssertionError):
+        utila.assert_success(completed)
+
+
+def test_test_assert_failure():
+    completed = utila.run('python --helpsambadamba')
+    utila.assert_failure(completed)
+
+
+def test_test_assert_failure_failed():
+    completed = utila.run('python --help')
+    with pytest.raises(AssertionError):
+        utila.assert_failure(completed)
