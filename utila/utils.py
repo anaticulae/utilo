@@ -21,7 +21,7 @@ ALL_PAGES = ':'
 
 
 def roundme(value: float):
-    """Round value to `NDGITS`=2"""
+    """Round value to `NDIGITS`=2"""
     return round(value, NDIGITS)
 
 
@@ -46,7 +46,7 @@ def determine_order(requirements, flat=True):
             todo.remove(item)
             level.append(item)
         result.append(level)
-        assert len(todo) != before, 'zyclic definition of workplan'
+        assert len(todo) != before, 'cyclic definition of workplan'
     if flat:
         result = flatten(result)
     return result

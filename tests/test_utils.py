@@ -7,12 +7,11 @@
 # be prosecuted under federal law. Its content is company confidential.
 # =============================================================================
 
-from utila import flatten
-from utila import roundme
+import utila
 
 
 def test_roundme():
-    rounded = roundme(2.3333)
+    rounded = utila.roundme(2.3333)
     assert rounded == 2.33
 
 
@@ -22,5 +21,5 @@ def test_flatten():
         [1, 2],
         [1, 2, 3, 4],
     ]
-    flat = flatten(todo)
+    flat = utila.flatten(todo)
     assert len(flat) == 7, str(flat)

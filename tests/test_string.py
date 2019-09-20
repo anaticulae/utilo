@@ -7,17 +7,15 @@
 # be prosecuted under federal law. Its content is company confidential.
 # =============================================================================
 
+import re
 import sys
 
-from pytest import mark
-from pytest import param
+import pytest
 
-from utila import NEWLINE
-from utila import fix_encoding
-from utila import forward_slash
+import utila
 
 
-@mark.parametrize('platform,given,expected', [
+@pytest.mark.parametrize('platform,given,expected', [
     ('win32', '\x80', '&#128;'),
     ('cygwin', '\x80', '&#128;'),
     ('linux', '\x80', '\x80'),
@@ -26,22 +24,22 @@ def test_fix_encoding(platform, given, expected, monkeypatch):
     """Fix encoding depending used platform"""
     with monkeypatch.context() as context:
         context.setattr(sys, 'platform', platform)
-        fixed = fix_encoding(given)
+        fixed = utila.fix_encoding(given)
     assert fixed == expected
 
 
 def test_string_forward_slash_do_not_replace_newline():
     text_with_newline = r'Hello\n\nHello' + '\n'
-    forwarded = forward_slash(text_with_newline)
+    forwarded = utila.forward_slash(text_with_newline)
     assert forwarded == text_with_newline
 
 
-@mark.parametrize('string, expected', [
-    param(r'\wello\dister', r'/wello/dister', id='replace backslash'),
-    param(r'\n', r'\n', id='do not replace raw newline'),
-    param('\n', '\n', id='do not replace newline'),
-    param('\\\n', '/\n', id='replace backslash before newline'),
+@pytest.mark.parametrize('string, expected', [
+    pytest.param(r'\wello\dister', r'/wello/dister', id='replace backslash'),
+    pytest.param(r'\n', r'\n', id='do not replace raw newline'),
+    pytest.param('\n', '\n', id='do not replace newline'),
+    pytest.param('\\\n', '/\n', id='replace backslash before newline'),
 ])
 def test_string_forward_slash_replace_backslash(string, expected):
-    replaced = forward_slash(string)
+    replaced = utila.forward_slash(string)
     assert replaced == expected
