@@ -2,6 +2,21 @@
 
 Every noteable change is logged here.
 
+## v1.7.0
+
+### Feature
+
+* add method to extract str out of re.Match (e0d3a6c05588)
+* add method to check that process completed correctly/with failure (823a37125dc2)
+* add method to format result of `CompletedProcess` (13e1724c1e7c)
+* add option to shorten name of make_single (117a3d7ccef3)
+* include replacing dot of filename in make_single (1eac24567cd0)
+* add method to ensure that filename ends with yaml extension (dd41fc515a08)
+
+### Documentation
+
+* add todo for later breaking interface change (81c58ec4d6c1)
+
 ## v1.6.0
 
 ### Feature
