@@ -166,7 +166,7 @@ class SkipCollector:
 
     def skip(self, page):
         if self.pages and page not in self.pages:
-            self.data.append(str(page))
+            self.data.append(page)
             return True
         self.log()
         return False
@@ -174,8 +174,8 @@ class SkipCollector:
     def log(self):
         """Print current state of skipped items and reset this state"""
         if self.data:
-            msg = ', '.join(self.data)
-            debug('skip: %s' % msg)
+            msg = ', '.join([str(item) for item in self.data])
+            debug(f'skip: {msg}')
         self.data = []
 
     def __enter__(self):
