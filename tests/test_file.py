@@ -198,7 +198,16 @@ def test_file_copy_content_directory_to_directory(testdir):
     assert len(listdir(goal)) == 3, listdir(goal)
 
 
-def test_file_copy_content_access_error(testdir, monkeypatch, capsys):
+@pytest.mark.parametrize('skip_overwrite', [
+    True,
+    False,
+])
+def test_file_copy_content_access_error(
+        skip_overwrite,
+        testdir,
+        monkeypatch,
+        capsys,
+):
     """Copy file to path which exists and is not overwriteable like an open
     pdf file.
 
@@ -206,25 +215,44 @@ def test_file_copy_content_access_error(testdir, monkeypatch, capsys):
     directories contains a file named `single.pdf`. Using
     copy_content(source, sink) should raises an error, cause the sink pdf is
     locked by an pdf reader for example.
+
+    Args:
+        skip_overwrite: if True, the copy process which raises OSError is not
+                        reached and therefore no SystemExit is raised.
+
+    TODO: refactor/simplify with: file_lock/file_unlock
     """
     root = str(testdir)
-    source = join(root, 'source')
-    sink = join(root, 'sink')
+    source = os.path.join(root, 'source')
+    sink = os.path.join(root, 'sink')
 
     for item in [source, sink]:
         makedirs(item)
-        pdf = join(item, 'single.pdf')
-        file_create(pdf)
+        pdf = os.path.join(item, 'single.pdf')
+        utila.file_create(pdf)
+    notdouble = os.path.join(source, 'not_double.pdf')
+    utila.file_create(notdouble)
 
     def copy(source, dest):
+        if source == notdouble:
+            # notdouble is not locked, therefore no error is raised
+            return
         raise OSError()
 
     with monkeypatch.context() as context:
         context.setattr(shutil, 'copy', copy)
+
+        if skip_overwrite:
+            utila.copy_content(source, sink, skip_overwrite=True)
+            return
+
         with raises(SystemExit):
-            copy_content(source, sink)
-    out, err = capsys.readouterr()
-    assert 'single.pdf' in err, (out + err)
+            utila.copy_content(
+                source,
+                sink,
+            )
+        out, err = capsys.readouterr()
+        assert 'single.pdf' in err, (out + err)
 
 
 def prepare_example(directory):

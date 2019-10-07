@@ -161,13 +161,21 @@ def isfilepath(path: str):
     return '.' in base
 
 
-def copy_content(source: str, destination: str, recursive: bool = False):
+def copy_content(
+        source: str,
+        destination: str,
+        recursive: bool = False,
+        skip_overwrite: bool = False,
+):
     """Copy the content from `source` to `destination` folder. If `desitination`
     folder does not exists, it will be created.
 
     Hint:
         Why not using shutil.copytree?: Copy tree expect that destination does
         not exists, but we need this.
+
+    Args:
+        skip_overwrite(bool): if file exists and is not changed, do nothing
     """
     assert exists(source), str(source)
     if isfile(source):
@@ -188,6 +196,9 @@ def copy_content(source: str, destination: str, recursive: bool = False):
         if isfile(source_):
             # copy files
             try:
+                if skip_overwrite:
+                    if os.path.exists(dest_) and file_compare(source_, dest_):
+                        continue
                 shutil.copy(source_, dest_)
             except OSError:
                 error('could not overwrite: %s' % dest_)
