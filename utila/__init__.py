@@ -51,6 +51,7 @@ from utila.file import assert_json
 from utila.file import assert_yaml
 from utila.file import copy_content
 from utila.file import file_append
+from utila.file import file_compare
 from utila.file import file_create
 from utila.file import file_read
 from utila.file import file_remove

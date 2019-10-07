@@ -299,3 +299,33 @@ def test_file_yaml_path_given():
     path = 'C:\\usr\\dev\\example.yaml'
     with pytest.raises(AssertionError):
         utila.yaml(path)
+
+
+@pytest.mark.parametrize('first_content, second_content, expected_result', [
+    ('', '', True),
+    ('A', '', False),
+    ('', 'This is content', False),
+    ('We are equal!\nRealy!', 'We are equal!\nRealy!', True),
+])
+def test_file_compare(first_content, second_content, expected_result, testdir):
+    root = str(testdir)
+
+    first = os.path.join(root, 'first')
+    second = os.path.join(root, 'second')
+
+    utila.file_create(first, first_content)
+    utila.file_create(second, second_content)
+
+    equals = utila.file_compare(first, second)
+
+    assert equals == expected_result
+
+
+def test_file_compare_not_exists():
+    first = '/c/data/abc.text'
+    second = __file__
+    equals = utila.file_compare(first, second)
+    assert equals is False
+
+    equals = utila.file_compare(second, first)
+    assert equals is False

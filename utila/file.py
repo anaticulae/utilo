@@ -128,6 +128,28 @@ def file_replace(path: str, content: str):
         fp.write(content)
 
 
+def file_compare(first: str, second: str):
+    """Compare the content of `first` and `second`
+
+    If least one file not exists, there are not eqaul
+
+    Args:
+        first(str): path to first file
+        second(str): path to second file
+    Returns:
+        True if paths exists and hashed content is equal else False
+    """
+    if not os.path.isfile(first):
+        return False
+    if not os.path.isfile(second):
+        return False
+
+    first = hash(file_read(first))
+    second = hash(file_read(second))
+
+    return first == second
+
+
 def isfilepath(path: str):
     assert path, path
     if exists(path):
