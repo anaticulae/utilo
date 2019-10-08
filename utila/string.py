@@ -45,6 +45,7 @@ def fix_encoding(msg: str):
     msg = msg.encode(encoding, errors='xmlcharrefreplace').decode(encoding)
     return msg
 
+
 def extract_match(matched: re.Match) -> str:
     """Extract content out of `re.Match`."""
     assert isinstance(matched, re.Match), type(matched)
