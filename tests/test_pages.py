@@ -56,11 +56,16 @@ def test_pages_select_page(minimal_pages):  # pylint:disable=W0621
 
 
 def test_pages_select_page_invalid(minimal_pages):  # pylint:disable=W0621
-    with pytest.raises(KeyError):
-        utila.select_page(minimal_pages, 10)
+    none = utila.select_page(minimal_pages, 10)
+    assert none is None, none
 
 
 def test_pages_select_page_duplicated_source():
     pages = [MinimalPage(0), MinimalPage(0), MinimalPage(0), MinimalPage(4)]
     with pytest.raises(ValueError):
         utila.select_page(pages, 0)
+
+
+def test_page_select_page_none():
+    with pytest.raises(ValueError):
+        utila.select_page(None, 0)
