@@ -56,3 +56,46 @@ def test_logger_format_completed():
     formatted = utila.format_completed(completed)
     assert len(formatted) > 150, str(formatted)
     assert 'returncode: 1' in formatted, str(formatted)
+
+
+@utila.log_args
+def add(x, y, z):  # pylint:disable=C0103
+    return x + y + z
+
+
+@pytest.mark.parametrize('level, expected_log', [
+    pytest.param(
+        utila.Level.LOGGING,
+        [''],
+        id='no_logging',
+    ),
+    pytest.param(
+        utila.Level.INFORMATION,
+        ['x', 'y', 'y', '1', '2', '3'],
+        id='logging info',
+    ),
+    pytest.param(
+        utila.Level.CALLS,
+        ['x', 'y', 'z', '1', '2', '3'],
+        id='logging calls',
+    ),
+])
+def test_logger_log_args(level, expected_log, capsys, monkeypatch):
+    with monkeypatch.context() as context:
+        context.setattr('utila.logger.LEVEL', level)
+        add(1, 2, 3)
+
+    captured = capsys.readouterr().out
+
+    for item in expected_log:
+        assert item in captured, captured
+
+    # ensure that no_logging does not log anything
+    assert len(''.join(expected_log)) <= len(captured.strip())
+
+
+def test_logger_log_args_loglevel_to_low(capsys):
+    add(1, 2, 3)
+
+    captured = capsys.readouterr().out.strip()
+    assert not captured, str(captured)

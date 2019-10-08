@@ -9,6 +9,8 @@
 
 import contextlib
 import enum
+import functools
+import inspect
 import os
 import subprocess
 import sys
@@ -83,6 +85,32 @@ def error(msg: str, end: str = NEWLINE):
 def log_stacktrace():
     stack_trace = traceback.format_exc()
     error(forward_slash(stack_trace))
+
+
+def log_args(func):
+    """Decorator to write passed arguments to function call. Log if
+    logging `LEVEL` is higher equal than Level.CALLS.
+
+    Args:
+        func(callable): function to log name and input args
+    Returns:
+        wrapped function
+    """
+    MIN_LEVEL = Level.CALLS  # pylint:disable=C0103
+
+    @functools.wraps(func)
+    def wrapper(*args, **kwargs):
+        if LEVEL >= MIN_LEVEL:
+            signature = inspect.signature(func)
+            parameter = list(signature.parameters.items())
+            log(msg=f'call({func.__qualname__}) with:', level=MIN_LEVEL)
+            for para, content in zip(parameter, args):
+                content = str(content)[0:150]
+                log(msg=f'  {para[0]}: {content}', level=MIN_LEVEL)
+            log('', level=MIN_LEVEL)
+        return func(*args, **kwargs)
+
+    return wrapper
 
 
 def print_runtime(before: int, msg: str = ''):
