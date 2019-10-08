@@ -153,8 +153,8 @@ def file_compare(first: str, second: str):
     if not os.path.isfile(second):
         return False
 
-    first = hash(file_read(first))
-    second = hash(file_read(second))
+    first = hash(file_read_binary(first))
+    second = hash(file_read_binary(second))
 
     return first == second
 

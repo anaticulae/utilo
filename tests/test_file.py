@@ -349,6 +349,17 @@ def test_file_compare(first_content, second_content, expected_result, testdir):
     assert equals == expected_result
 
 
+def test_file_compare_binary_file(testdir):
+    root = str(testdir)
+    utf32 = os.path.join(root, 'example.utf32')
+
+    with open(utf32, mode='w', encoding='utf32') as fp:
+        fp.write('\u1234')
+
+    equal = utila.file_compare(utf32, __file__)
+    assert not equal
+
+
 def test_file_compare_not_exists():
     first = '/c/data/abc.text'
     second = __file__
