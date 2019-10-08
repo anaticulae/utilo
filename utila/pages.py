@@ -87,16 +87,15 @@ def should_skip(page: int, pages: tuple):  # pylint:disable=W0621
     return not page in pages
 
 
-def select_page(items, pagenumber: int, default=None):
-    # TODO: RENAME `pagenumber` to page:?
-    """Select item depending on page-attribut of the item.
+def select_page(items, page: int, default=None):
+    """Select item depending on `page`-attribute of the item.
 
     Args:
         items(collection): content which contains the pages
-        pagenumber(int): page-attribute to select from `items`
+        page(int): page-attribute to select from `items`
         default: returned if `pagenumber` does not exists
     Returns:
-        page with page-attribute matches with `pagenumber`
+        page with page-attribute matches with `page`
     Raises:
         ValueError: if items contains duplicated page number
         ValueError: if no items are passed
@@ -109,6 +108,6 @@ def select_page(items, pagenumber: int, default=None):
         if len(items) != before:
             raise ValueError('duplicated page attribute')
     try:
-        return items[pagenumber]
+        return items[page]
     except KeyError:
         return default
