@@ -2,6 +2,19 @@
 
 Every noteable change is logged here.
 
+## v1.8.0
+
+### Feature
+
+* add method to log input of function calls (8e6505ba3511)
+* add method to lock, unlock and check lock protection. (51d8e9fe6bdd)
+* add parameter skip_overwrite (4621a907c8c5)
+* add method to compare content of two files (9e1d266d6d41)
+
+### Documentation
+
+* add first draft of RP 1.8.0 (4a03469e3595)
+
 ## v1.7.0
 
 ### Feature
