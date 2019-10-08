@@ -2,6 +2,16 @@
 
 Every noteable change is logged here.
 
+## v1.8.1
+
+### Feature
+
+* add method to read binary files (b84f34a9fd26)
+
+### Fix
+
+* support comparing non utf8 files (4d1e46167999)
+
 ## v1.8.0
 
 ### Feature
