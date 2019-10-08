@@ -9,6 +9,7 @@
 
 import os
 import shutil
+import stat
 # pylint:disable=ungrouped-imports
 from os import listdir
 from os import makedirs
@@ -148,6 +149,46 @@ def file_compare(first: str, second: str):
     second = hash(file_read(second))
 
     return first == second
+
+
+def file_lock(path: str):
+    """Protect file `path` with write protection.
+
+    Before locking check that file exists and no lock is already set. If file
+    not exists or a file lock is already set, `AssertError` is raised.
+
+    Args:
+        path(str): path to protect
+    Raises:
+        AssertionError
+    """
+    # set read only
+    assert os.path.exists(path), f'{path} does not exists'
+    assert not file_islocked(path), 'file is already locked'
+    os.chmod(path, mode=stat.S_IREAD)
+
+
+def file_unlock(path: str):
+    """Remove write protection of file `path`.
+
+    Before unlock check that file exists and lock protection is set. If
+    file not exists or a file lock is not set, `AssertError` is raised.
+
+    Args:
+        path(str): path to unprotect
+    Raises:
+        AssertionError
+    """
+    assert os.path.exists(path), f'{path} does not exists'
+    assert file_islocked(path), 'file is not locked'
+    os.chmod(path, mode=stat.S_IWRITE)
+
+
+def file_islocked(path: str):
+    """Check if write protection is set. If `path` does not exists,
+    AssertionError is raised."""
+    assert os.path.exists(path), f'{path} does not exists'
+    return not os.access(path, os.W_OK)
 
 
 def isfilepath(path: str):

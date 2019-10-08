@@ -357,3 +357,26 @@ def test_file_compare_not_exists():
 
     equals = utila.file_compare(second, first)
     assert equals is False
+
+
+def test_file_lock(testdir):
+    root = str(testdir)
+    first = os.path.join(root, 'locked.abc')
+
+    utila.file_create(first, 'file to lock')
+
+    assert utila.file_islocked(first) is False
+
+    utila.file_lock(first)
+    assert utila.file_islocked(first) is True
+
+    # test write protection
+    with pytest.raises(OSError):
+        utila.file_remove(first)
+    assert os.path.exists(first)
+
+    utila.file_unlock(first)
+    assert utila.file_islocked(first) is False
+
+    utila.file_remove(first)
+    assert not os.path.exists(first), 'write protection is already there'

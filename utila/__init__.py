@@ -53,9 +53,12 @@ from utila.file import copy_content
 from utila.file import file_append
 from utila.file import file_compare
 from utila.file import file_create
+from utila.file import file_islocked
+from utila.file import file_lock
 from utila.file import file_read
 from utila.file import file_remove
 from utila.file import file_replace
+from utila.file import file_unlock
 from utila.file import from_raw_or_path
 from utila.file import make_absolute
 from utila.file import make_relative
