@@ -102,6 +102,14 @@ def file_read(path: str):
         return fp.read()
 
 
+def file_read_binary(path: str) -> bytes:
+    """Read binary file content"""
+    assert exists(path), path
+    with open(path, mode='rb') as fp:
+        content = fp.read()
+    return content
+
+
 def file_remove(path: str):
     assert exists(path), path
     assert isfile(path), path

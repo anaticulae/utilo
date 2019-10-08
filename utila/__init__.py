@@ -56,6 +56,7 @@ from utila.file import file_create
 from utila.file import file_islocked
 from utila.file import file_lock
 from utila.file import file_read
+from utila.file import file_read_binary
 from utila.file import file_remove
 from utila.file import file_replace
 from utila.file import file_unlock
