@@ -394,6 +394,30 @@ def make_single(path: str, replacement='_', length: int = 40) -> str:
     return path[-length:]
 
 
+def make_package(path: str, root: str = None) -> str:
+    """Covert file path to pythonic package path.
+
+    Args:
+        path(str): file or directory path
+        root(str): make `path` relative to `root`
+    Returns:
+        pythonic package path
+
+    Examples:
+        /groupme/words/helmut.py         groupme.words.helmut
+        groupme\\words\\helmut.py        groupme.words.helmut
+    """
+    path = str(path)  # work with pytest path
+    assert len(path) > 0, 'empty path' # pylint:disable=len-as-condition
+    if root is not None:
+        root = str(root)
+        path = make_relative(path, root=root)
+    path = forward_slash(path, save_newline=False)
+    path = path.replace('.py', '')
+    path = path.replace('/', '.')
+    return path
+
+
 def assert_file(files, filetype: str):
     """Ensure that the given `files` have the correct `filetype`
 

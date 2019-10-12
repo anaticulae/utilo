@@ -62,6 +62,7 @@ from utila.file import file_replace
 from utila.file import file_unlock
 from utila.file import from_raw_or_path
 from utila.file import make_absolute
+from utila.file import make_package
 from utila.file import make_relative
 from utila.file import make_single
 from utila.file import tmp

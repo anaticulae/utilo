@@ -391,3 +391,23 @@ def test_file_lock(testdir):
 
     utila.file_remove(first)
     assert not os.path.exists(first), 'write protection is already there'
+
+
+@pytest.mark.parametrize('path, expected', [
+    ('www/helmut/test.py', 'www.helmut.test'),
+    ('www\\helmut\\test.py', 'www.helmut.test'),
+    ('abc\\www\\nbc', 'abc.www.nbc'),
+])
+def test_file_make_package(path, expected):
+    result = utila.make_package(path)
+
+    assert result == expected, str(result)
+
+
+def test_file_make_package_root():
+    path = 'www/helmut/test.py'
+    expected = 'helmut.test'
+
+    result = utila.make_package(path, root='www')
+
+    assert result == expected, str(result)
