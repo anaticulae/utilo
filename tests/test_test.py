@@ -67,3 +67,12 @@ def test_test_assert_failure_failed():
     completed = utila.run('python --help')
     with pytest.raises(AssertionError):
         utila.assert_failure(completed)
+
+
+def test_test_log_raw(capsys):
+    content = 'Hello\nHello\nHello'
+
+    with pytest.raises(AssertionError):
+        assert len(content) > 1000, utila.log_raw(content)
+
+    assert content in capsys.readouterr().out

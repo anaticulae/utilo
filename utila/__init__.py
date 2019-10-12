@@ -105,6 +105,7 @@ from utila.test import assert_run_fail
 from utila.test import assert_success
 from utila.test import clean_install
 from utila.test import install_and_run
+from utila.test import log_raw
 from utila.test import returncode
 from utila.test import run
 from utila.test import run_command

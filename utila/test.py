@@ -15,6 +15,7 @@ import sys
 import pytest
 
 import utila.logger
+from utila.string import fix_encoding
 from utila.utils import SUCCESS
 
 VIRTUAL_ENVKEY = 'VIRTUAL'
@@ -153,3 +154,17 @@ def assert_failure(process: subprocess.CompletedProcess):
     formated information is logged."""
     assert process, str(process)
     assert process.returncode != utila.SUCCESS, utila.format_completed(process)
+
+
+def log_raw(content: str):
+    """Print `content` which raises an AssertError. Fix encoding if
+    non-utf8 character are printed.
+
+    Hint: Avoid using print() to reduse finding 'print' when searching
+    in code base.
+
+    Example:
+        asssert len(abc) > 100, utila.log_raw(abc)
+    """
+    content = fix_encoding(content)
+    print(content)
