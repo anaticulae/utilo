@@ -11,19 +11,24 @@ import re
 import sys
 
 
-def forward_slash(content: str):
-    """Replace every backward slash \\ with an forward slash /
+def forward_slash(content: str, save_newline: bool = True):
+    """Replace every backward slash \\ with an forward slash /.
 
     Args:
         content(str): content with backslashs
+        save_newline(bool): if True, do not convert \n to /n
     Returns:
         content without backslashs
     """
     # TODO: LEARN MORE ABOUT REGEX
     safety_token = '_1337THISISSECRET1337_'
-    content = content.replace(r'\n', safety_token)
+    if save_newline:
+        content = content.replace(r'\n', safety_token)
+
     content = str(content).replace(r'\\', '/').replace('\\', '/')
-    content = content.replace(safety_token, r'\n')
+
+    if save_newline:
+        content = content.replace(safety_token, r'\n')
     return content
 
 
