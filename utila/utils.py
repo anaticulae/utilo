@@ -7,7 +7,8 @@
 # be prosecuted under federal law. Its content is company confidential.
 #==============================================================================
 
-import re
+import contextlib
+import os
 
 SUCCESS = 0
 FAILURE = 1
@@ -62,3 +63,30 @@ def numbers(items):
         except ValueError:
             result.append(None)
     return result
+
+
+@contextlib.contextmanager
+def chdir(path: str):
+    """Contextmanager to change current working directory. Exceptions
+    which where raised during accessing contextmanager are re-raised after
+    changing current working directroy back to orgin.
+
+    Args:
+        path(str): path to change current working directory
+
+    Example:
+        with utila.chdir(path):
+            pass
+    """
+    assert os.path.exists(path)
+
+    before = os.getcwd()
+
+    os.chdir(path)
+    try:
+        yield
+    except Exception:
+        os.chdir(before)
+        raise
+    else:
+        os.chdir(before)

@@ -120,6 +120,7 @@ from utila.utils import INF
 from utila.utils import NEWLINE
 from utila.utils import SUCCESS
 from utila.utils import UTF8
+from utila.utils import chdir
 from utila.utils import flatten
 from utila.utils import roundme
 
