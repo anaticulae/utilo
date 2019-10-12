@@ -7,6 +7,9 @@
 # be prosecuted under federal law. Its content is company confidential.
 # =============================================================================
 
+import pytest
+
+import tests.examples.workplan.multistep
 import utila
 import utila.feature
 
@@ -62,3 +65,21 @@ def test_parallelize_workplan():
 def test_feature_resultfile_ctor_position():
     expected = utila.ResultFile(producer='abc', name='def')
     assert utila.ResultFile('abc', 'def') == expected
+
+
+@pytest.mark.xfail(reson='problem in multi processing example')
+def test_parallelize_workplan_multiprocessing():
+    """Test to ensure that parallelizing works with multi resource
+    environment. This is an old example wich fails before"""
+    example = tests.examples.workplan.multistep.WORKPLAN
+    root = tests.examples.workplan.multistep.ROOT
+
+    parallelized = utila.parallelize_workplan(
+        example,
+        root=root,
+        max_processes=20,
+    )
+
+    assert len(parallelized) == 2, utila.log_raw(parallelized)
+    assert len(parallelized[0]) == 5, utila.log_raw(parallelized[0])
+    assert len(parallelized[1]) == 1, utila.log_raw(parallelized[1])
