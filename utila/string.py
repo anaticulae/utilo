@@ -25,7 +25,7 @@ def forward_slash(content: str, save_newline: bool = True):
     if save_newline:
         content = content.replace(r'\n', safety_token)
 
-    content = str(content).replace(r'\\', '/').replace('\\', '/')
+    content = content.replace(r'\\', '/').replace('\\', '/')
 
     if save_newline:
         content = content.replace(safety_token, r'\n')
