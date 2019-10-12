@@ -214,7 +214,7 @@ def run_level(level, todo, pool, runnable, pages):
         future = pool.submit(
             callback,
             step.inputs,
-            runnable,
+            step.name,
             step.outputs,
             pages=pages,
         )

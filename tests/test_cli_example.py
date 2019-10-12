@@ -29,7 +29,7 @@ from utila.utils import SUCCESS
 
 WORKPLAN = [
     create_step(
-        'cli_example',
+        'first_cli_step',
         [
             File('first'),
             File('second', 'html'),
@@ -44,7 +44,7 @@ def work(first: str, second: str, third: str)->str:
     return first
 
 def name():
-    return 'cli_example'
+    return 'first_cli_step'
 """
 
 EXAMPLE_WITH_PAGE = """
@@ -201,6 +201,19 @@ def test_cli_example_all(testdir, monkeypatch, capsys, command):
     assert not err, str(err)
 
     assert returncode(result) == SUCCESS, str(result)
+
+
+def test_cli_print_processing_step(testdir, monkeypatch, capsys):
+    """Ensure that processing: process_step is printed when running
+    working step."""
+    root, _ = cli_example(testdir)
+
+    with run_cli(root, monkeypatch, '--all -VVV') as result:
+        out = capsys.readouterr().out
+
+    assert returncode(result) == SUCCESS, str(result)
+    assert len(out) > 100
+    assert 'processing: first_cli_step' in out, print(out)
 
 
 @mark.parametrize(
