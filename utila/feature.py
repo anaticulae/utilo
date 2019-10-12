@@ -214,8 +214,8 @@ def run_level(level, todo, pool, runnable, pages):
         future = pool.submit(
             callback,
             step.inputs,
-            step.name,
-            step.outputs,
+            stepname=step.name,
+            output=step.outputs,
             pages=pages,
         )
         results.append(future)
@@ -248,23 +248,30 @@ def write_level_result(
     return utila.SUCCESS if success else utila.FAILURE
 
 
-def callback(hook, name: str, output, pages: list):
-    log('processing: %s' % name)
+def callback(hook, stepname: str, output, pages: list):
+    """
+    Args:
+        hook:
+        stepname(str): name of working step
+        output(str): path to write step output
+        pages(list): list with pages to processed
+    """
+    log(f'processing: {stepname}')
     # run runnable
     runnable = functools.partial(
         run_hook_safely,
         hook=hook,
-        name=name,
+        name=stepname,
         stepoutput=output,
         pages=pages,
     )
     try:
         result = runnable()
-        log('completed: %s' % name)
+        log(f'completed: {stepname}')
     except Exception as exception:  # pylint:disable=broad-except
-        error('%s failed' % name)
+        error(f'failed: {stepname}')
         result = exception
-    return [result, name, output]
+    return [result, stepname, output]
 
 
 def run_hook_safely(
