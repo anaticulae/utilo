@@ -181,7 +181,11 @@ def process(
     """
     todo = prepare_process(todo, name, processes)
 
-    workplan = parallelize_workplan(workplan, processes)
+    workplan = parallelize_workplan(
+        workplan,
+        root=name,
+        max_processes=processes,
+    )
 
     executor = select_executor()
     with executor(max_workers=processes) as pool:
