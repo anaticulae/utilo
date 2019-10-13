@@ -7,7 +7,10 @@
 # be prosecuted under federal law. Its content is company confidential.
 # =============================================================================
 
+import pytest
+
 import tests.examples.workplan.multistep
+import tests.examples.workplan.resources
 import utila
 import utila.feature
 
@@ -125,3 +128,21 @@ def test_parallelize_workplan_multiprocessing():
     assert len(parallelized) == 2, utila.log_raw(parallelized)
     assert len(parallelized[0]) == 5, utila.log_raw(parallelized[0])
     assert len(parallelized[1]) == 1, utila.log_raw(parallelized[1])
+
+
+@pytest.mark.parametrize('max_processes, expected_steps', [
+    (6, 1),
+    (1, 6),
+    (3, 2),
+])
+def test_parallelize_workplan_pdf_resources(max_processes, expected_steps):
+    """Ensure that parallelizing workplan with resources as input works"""
+    example = tests.examples.workplan.resources.WORKPLAN
+    root = tests.examples.workplan.resources.ROOT
+
+    workplan = utila.parallelize_workplan(
+        example,
+        root=root,
+        max_processes=max_processes,
+    )
+    assert len(workplan) == expected_steps, utila.log_raw(workplan)
