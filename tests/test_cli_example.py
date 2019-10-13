@@ -17,6 +17,7 @@ from os.path import join
 from pytest import mark
 from pytest import raises
 
+import utila
 from utila import FAILURE
 from utila import File
 from utila import create_step
@@ -213,7 +214,7 @@ def test_cli_print_processing_step(testdir, monkeypatch, capsys):
 
     assert returncode(result) == SUCCESS, str(result)
     assert len(out) > 100
-    assert 'processing: first_cli_step' in out, print(out)
+    assert 'processing: first_cli_step' in out, utila.log_raw(out)
 
 
 @mark.parametrize(
