@@ -2,6 +2,27 @@
 
 Every noteable change is logged here.
 
+## v1.9.0
+
+### Feature
+
+* add make_package to convert file path to python package path (5f9848afbdff)
+* add option to avoid converting \n in forward_slash (af6e2dbe8257)
+* add method log_raw to print assertion error (9a2dee821fed)
+* add context manager to change current working directory (ce27a0638256)
+* return default value if page does not exists (c08b89fbff2b)
+
+### Fix
+
+* support multi-core environment (cc45221cc9f4)
+* fail if given data is not path (acdc9921ed3f)
+* log correct process step name (501c08686354)
+
+### Documentation
+
+* extend release plan 1.9.0 (36999a3e6445)
+* add release plan 1.9.0 (9f65a09fec71)
+
 ## v1.8.1
 
 ### Feature
