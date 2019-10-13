@@ -7,8 +7,6 @@
 # be prosecuted under federal law. Its content is company confidential.
 # =============================================================================
 
-import pytest
-
 import tests.examples.workplan.multistep
 import utila
 import utila.feature
@@ -43,23 +41,68 @@ PLAN = [
         ],
         ('result',),
     ),
+    utila.create_step(
+        'fourth',
+        [
+            utila.ResultFile(producer='A', name='a'),
+            utila.ResultFile(producer='A', name='b'),
+            utila.ResultFile(producer='A', name='c'),
+        ],
+        ('result',),
+    ),
+    utila.create_step(
+        'fifth',
+        [
+            utila.ResultFile(producer='A', name='a'),
+            utila.ResultFile(producer='A', name='b'),
+            utila.ResultFile(producer='A', name='c'),
+        ],
+        ('result',),
+    ),
 ]
 
 
 def test_parallelize_workplan_order():
-    # 2 level's
-    order = utila.feature.input_order(PLAN)
-    assert len(order) == 2, str(order)
+    # 3 level's
+    process_and_separator = f'{PROCESS}{utila.feature.REQUIREMENT_SEPARATOR}'
+    order = utila.feature.input_order(PLAN, root=PROCESS)
+    expected = [
+        [
+            f'{process_and_separator}fifth',
+            f'{process_and_separator}first',
+            f'{process_and_separator}fourth',
+        ],
+        [f'{process_and_separator}third'],
+        [f'{process_and_separator}second'],
+    ]
+    assert len(order) == 3, utila.log_raw(order)
+    assert order == expected, utila.log_raw(order)
 
 
 def test_parallelize_workplan():
     # 3 level
-    single_processed = utila.parallelize_workplan(PLAN, 1)
-    assert len(single_processed) == 3, str(single_processed)
+    single_processed = utila.parallelize_workplan(
+        PLAN,
+        root=PROCESS,
+        max_processes=1,
+    )
+    assert len(single_processed) == 5, str(single_processed)
 
     # multilevel limited by required resoure
-    multi_processed = utila.parallelize_workplan(PLAN, 10)
-    assert len(multi_processed) == 2, str(multi_processed)
+    multi_processed = utila.parallelize_workplan(
+        PLAN,
+        root=PROCESS,
+        max_processes=10,
+    )
+    assert len(multi_processed) == 3, str(multi_processed)
+
+    # multilevel limited by required resoure and limited by cores
+    multi_processed = utila.parallelize_workplan(
+        PLAN,
+        root=PROCESS,
+        max_processes=2,
+    )
+    assert len(multi_processed) == 4, str(multi_processed)
 
 
 def test_feature_resultfile_ctor_position():
@@ -67,10 +110,9 @@ def test_feature_resultfile_ctor_position():
     assert utila.ResultFile('abc', 'def') == expected
 
 
-@pytest.mark.xfail(reson='problem in multi processing example')
 def test_parallelize_workplan_multiprocessing():
     """Test to ensure that parallelizing works with multi resource
-    environment. This is an old example wich fails before"""
+    environment. This is an old example wich failed before."""
     example = tests.examples.workplan.multistep.WORKPLAN
     root = tests.examples.workplan.multistep.ROOT
 

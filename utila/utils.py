@@ -44,10 +44,17 @@ def determine_order(requirements, flat=True):
         level = []
         before = len(todo)
         for item in todo[:]:
-            if any([current in todo for current in requirements[item]]):
+            isparent = any([
+                # check that item is not required by other resources
+                current in todo or current in level
+                for current in requirements[item]
+            ])
+            if isparent:
                 continue
             todo.remove(item)
             level.append(item)
+        # ensure that there is no multi option level
+        level = sorted(level)
         result.append(level)
         assert len(todo) != before, 'cyclic definition of workplan'
     if flat:

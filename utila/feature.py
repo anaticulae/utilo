@@ -585,11 +585,16 @@ def read_workplan(
     return result
 
 
-def parallelize_workplan(plan, max_processes=1):
-    order = input_order(plan)
-
-    steps = {step.name: step for step in plan}
+def parallelize_workplan(
+        plan,
+        root,
+        *,
+        max_processes=1,
+):
+    order = input_order(plan, root)
+    steps = {f'{root}{REQUIREMENT_SEPARATOR}{step.name}': step for step in plan}
     result = []
+
     for level in order:
         level_result = []
         for item in level:
@@ -600,14 +605,16 @@ def parallelize_workplan(plan, max_processes=1):
                 level_result = [steps[item]]
         if level_result:
             result.append(level_result)
-
     return result
 
 
-def input_order(plan):
+REQUIREMENT_SEPARATOR = ':'
+
+
+def input_order(plan, root):
     require = collections.defaultdict(set)
     for step in plan:
-        name = step.name
+        name = f'{root}{REQUIREMENT_SEPARATOR}{step.name}'
         try:
             inputs = [str(item) for item in step.inputs.args]
         except AttributeError:
@@ -615,8 +622,13 @@ def input_order(plan):
 
         for item in inputs:
             try:
-                producer, _ = item.split('_', maxsplit=1)
-                require[name].add(producer)
+                item = item.replace('.yaml', '')
+                producer, file_ = item.split('__', maxsplit=1)
+                if '_' in file_:
+                    step, _ = file_.split('_', maxsplit=1)
+                else:
+                    step = file_
+                require[name].add(f'{producer}{REQUIREMENT_SEPARATOR}{step}')
             except ValueError:
                 # for example input.pdf
                 require[name].add(item)

@@ -408,7 +408,7 @@ def make_package(path: str, root: str = None) -> str:
         groupme\\words\\helmut.py        groupme.words.helmut
     """
     path = str(path)  # work with pytest path
-    assert len(path) > 0, 'empty path' # pylint:disable=len-as-condition
+    assert len(path) > 0, 'empty path'  # pylint:disable=len-as-condition
     if root is not None:
         root = str(root)
         path = make_relative(path, root=root)
