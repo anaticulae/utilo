@@ -2,6 +2,12 @@
 
 Every noteable change is logged here.
 
+## v1.9.1
+
+### Fix
+
+* fix passing correct process name (c473e6565b67)
+
 ## v1.9.0
 
 ### Feature
