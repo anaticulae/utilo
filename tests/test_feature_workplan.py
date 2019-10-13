@@ -9,6 +9,7 @@
 
 import pytest
 
+import tests.examples.workplan.groupme
 import tests.examples.workplan.multistep
 import tests.examples.workplan.resources
 import utila
@@ -146,3 +147,24 @@ def test_parallelize_workplan_pdf_resources(max_processes, expected_steps):
         max_processes=max_processes,
     )
     assert len(workplan) == expected_steps, utila.log_raw(workplan)
+
+
+def test_parallelize_workplan_groupme():
+    """Ensure that parallelizing workplan with resources as input works"""
+    example = tests.examples.workplan.groupme.WORKPLAN
+    root = tests.examples.workplan.groupme.ROOT
+
+    expected = [
+        ['chapter', 'pagenumbers', 'toc'],
+        ['footer'],
+    ]
+
+    workplan = utila.parallelize_workplan(
+        example,
+        root=root,
+        max_processes=4,
+    )
+    assert len(workplan) == 2, utila.log_raw(workplan)
+
+    workplan = [[item.name for item in step] for step in workplan]
+    assert workplan == expected, utila.log_raw(workplan)
