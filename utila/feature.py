@@ -626,6 +626,20 @@ def input_order(plan, root):
         except AttributeError:
             inputs = [str(item) for item in step.inputs]
 
+        def remove_common_path(inputs):
+            """Remove common path, which is equal for every inputs but
+            destroy the required file analysis in `determine_order`.
+
+            'C:\\restruct\\rawmaker__text_positions.yaml',
+            'C:\\restruct\\groupme__pagenumbers_pagenumbers.yaml'
+
+            'rawmaker__text_positions.yaml',
+            'groupme__pagenumbers_pagenumbers.yaml'
+            """
+            inputs = [os.path.split(item)[1] for item in inputs]
+            return inputs
+
+        inputs = remove_common_path(inputs)
         for item in inputs:
             try:
                 item = item.replace('.yaml', '')

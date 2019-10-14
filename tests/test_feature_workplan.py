@@ -168,3 +168,13 @@ def test_parallelize_workplan_groupme():
 
     workplan = [[item.name for item in step] for step in workplan]
     assert workplan == expected, utila.log_raw(workplan)
+
+
+def test_feature_input_order():
+    """Test to remove common path's for correct requirement determination."""
+    plan_with_path = tests.examples.workplan.groupme.PLAN_WITH_PATH
+    root = tests.examples.workplan.groupme.ROOT
+    order = utila.feature.input_order(plan_with_path, root)
+    assert len(order) == 2, utila.log_raw(order)
+    assert len(order[0]) == 3, utila.log_raw(order)
+    assert len(order[1]) == 1, utila.log_raw(order)
