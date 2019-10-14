@@ -620,6 +620,8 @@ def input_order(plan, root):
     for step in plan:
         name = f'{root}{REQUIREMENT_SEPARATOR}{step.name}'
         try:
+            # TODO: ADD MORE DOCS HERE
+            # determine args out of  partial.method?
             inputs = [str(item) for item in step.inputs.args]
         except AttributeError:
             inputs = [str(item) for item in step.inputs]
