@@ -2,6 +2,12 @@
 
 Every noteable change is logged here.
 
+## v1.9.2
+
+### Fix
+
+* fix determining correct step dependencies (c77b41d09f11)
+
 ## v1.9.1
 
 ### Fix

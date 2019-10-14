@@ -126,7 +126,7 @@ from utila.utils import chdir
 from utila.utils import flatten
 from utila.utils import roundme
 
-__version__ = '1.9.1'
+__version__ = '1.9.2'
 
 ROOT = os.path.abspath(os.path.join(os.path.dirname(__file__), '..'))
 PACKAGENAME = 'utila'
