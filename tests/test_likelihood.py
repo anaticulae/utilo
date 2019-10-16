@@ -6,13 +6,20 @@
 # use or distribution is an offensive act against international law and may
 # be prosecuted under federal law. Its content is company confidential.
 # =============================================================================
+"""Test likelihood methods:
 
+    - maxi
+    - mini
+    - uniform_result
+
+"""
 import pytest
 
 import utila
 
 
 def test_likelihood_uniform_result_list():
+    """Determine uniformed occurence of item in `list` collection."""
     items = [10, 20, 20, 50]
 
     result = utila.uniform_result(items)
@@ -22,6 +29,7 @@ def test_likelihood_uniform_result_list():
 
 
 def test_likelihood_uniform_result_dict():
+    """Determine uniformed occurence of item in `dict` collection."""
     items = {
         'A': 100,
         'B': 20,
@@ -34,8 +42,8 @@ def test_likelihood_uniform_result_dict():
         'C': 0.1,
         'D': 0.3,
     }
-    result = utila.uniform_result(items)
 
+    result = utila.uniform_result(items)
     assert result == expected
 
 
@@ -48,6 +56,8 @@ def test_likelihood_uniform_result_dict():
     },
 ])
 def test_likelihood_uniform_result_none(items):
+    """Run uniformation with expected empty result, because input has no
+    numbers."""
     result = utila.uniform_result(items)
     assert result is None
 
@@ -73,6 +83,8 @@ def test_likelihood_uniform_result_none(items):
     }, None),
 ])
 def test_likelihood_maxi(items, expected):
+    """Test to extract maximized feature for `list` and `dict` example.
+    If there are more than one minimal items, all are returned."""
     maximized = utila.maxi(items)
     assert maximized == expected
 
@@ -94,5 +106,7 @@ def test_likelihood_maxi(items, expected):
     ),
 ])
 def test_likelihood_mini(items, expected):
+    """Test to extract minimized feature for `list` and `dict` example.
+    If there are more than one minimal items, all are returned."""
     minimized = utila.mini(items)
     assert minimized == expected
