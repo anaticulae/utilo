@@ -6,10 +6,9 @@
 # use or distribution is an offensive act against international law and may
 # be prosecuted under federal law. Its content is company confidential.
 #==============================================================================
-"""
-This module provides helper methods to create a command line parser tool.
-The purpose of this module is to write less code and use less time in
-maintaining the interface.
+"""This module provides helper methods to create a command line parser
+tool. The purpose of this module is to write less code and use less time
+in maintaining the interface.
 
 Example:
     PUSH = Command('-p', '--publish', 'Push release to repository')

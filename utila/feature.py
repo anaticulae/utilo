@@ -6,7 +6,7 @@
 # use or distribution is an offensive act against international law and may
 # be prosecuted under federal law. Its content is company confidential.
 # =============================================================================
-"""How to use a featurepack:
+"""How to use a featurepack
 
     completed = featurepack(
         WORKPLAN,

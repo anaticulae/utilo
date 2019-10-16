@@ -252,8 +252,17 @@ def create_example(
 
 
 def test_feature_featurepack_workplan_pdf_parser(testdir, monkeypatch):
-    """Test featurepack with multiple input via *.PDF"""
-    # TODO: Clean up test creating process
+    """Test featurepack with multiple input via `*.PDF`
+
+    Create worker which detect resource by *.PDF-Filepattern and accept
+    some parameter for configuration.
+
+    Worker structure:
+        - parser(*.pdf)
+        - path_with_value(*.pdf, pdfparser_result, char_margin, char_align)
+
+    TODO: This example is very dirty and must be reworked.
+    """
     root = str(testdir)
     processname = 'pdfparser'
     featurepackage = 'feedback.features'
