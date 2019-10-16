@@ -12,10 +12,12 @@ Welcome to write it once
 
   pages/todo
 
+  releases/readme
+
 Modules
 --------------------
 .. toctree::
-   :maxdepth: 5
+   :maxdepth: 4
 
    .tmp/modules
 
