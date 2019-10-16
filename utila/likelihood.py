@@ -7,29 +7,84 @@
 # be prosecuted under federal law. Its content is company confidential.
 # =============================================================================
 
-from typing import Dict
-from typing import List
-from typing import Tuple
+import utila
 
 
-def uniform_result(items) -> List[float]:
-    # List[Item, Selector]
-    # likelihood = Selector / Item
-    max_features = sum([feature for _, feature in items])
-    if max_features == 0:
-        # no potential toc in document
-        return [0.0 for _ in items]
-    result = [feature / max_features for (_, feature) in items]
-    # round to 2 digits
-    result = [round(item, 2) for item in result]
+def uniform_result(items):
+    """Determine ?relatively likelihood? of a collection
+
+    Args:
+        items(list/dict): collection with occurrence of position in collection
+    Returns:
+        collect with relative likelihood of occurrence
+    """
+    if isinstance(items, dict):
+        return _uniform_dict(items)
+    return _uniform_list(items)
+
+
+def maxi(items):
+    """Determine the maximized likelihood of an uniformed collection
+
+    Args:
+        items(list/dict): data for determining uniformed data
+    Returns:
+        element(s) with maximized likelihood
+    """
+    return _max_mini(items, method=max)
+
+
+def mini(items):
+    """Determine the minimized likelihood of an uniformed collection
+
+    Args:
+        items(list/dict): data for determining uniformed data
+    Returns:
+        element(s) with minimized likelihood
+    """
+    return _max_mini(items, method=min)
+
+
+def _uniform_list(items):
+    assert isinstance(items, list), type(items)
+    assert all([isinstance(item, (int, float)) for item in items])
+
+    features = sum(items)
+    if not features:
+        return None
+    result = [item / features for item in items]
+    result = [utila.roundme(item) for item in result]
     return result
 
 
-def uniform_result_with_items(items: Dict[str, int],
-                             ) -> List[Tuple[str, float]]:
-    common = sum(items.values())
-    result = [(
-        size,
-        round(occurence / common, 2),
-    ) for size, occurence in items.items()]
+def _uniform_dict(items: dict) -> dict:
+    values = list(items.values())
+    uniformed = _uniform_list(values)
+    if uniformed is None:
+        return None
+
+    result = {key: value for key, value in zip(items.keys(), uniformed)}
     return result
+
+
+def _max_mini(items, method=max):
+    uniformed = uniform_result(items)
+    if uniformed is None:
+        return None
+
+    if isinstance(items, dict):
+        finding = method(uniformed.values())
+        selected = {
+            value: occurence
+            for value, occurence in uniformed.items()
+            if occurence == finding
+        }
+    else:
+        finding = method(uniformed)
+        selected = [
+            value for value, occurence in zip(items, uniformed)
+            if occurence == finding
+        ]
+    if len(selected) == 1 and isinstance(selected, list):
+        return selected[0]
+    return selected

@@ -70,8 +70,9 @@ from utila.file import tmpfile
 from utila.file import tmpname
 from utila.file import yaml
 # likelihood
+from utila.likelihood import maxi
+from utila.likelihood import mini
 from utila.likelihood import uniform_result
-from utila.likelihood import uniform_result_with_items
 # Logging
 from utila.logger import Level
 from utila.logger import SkipCollector
