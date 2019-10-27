@@ -23,9 +23,16 @@ NDIGITS = 2
 ALL_PAGES = ':'
 
 
-def roundme(value: float):
-    """Round value to `NDIGITS`=2"""
-    return round(value, NDIGITS)
+def roundme(value: float, digits: int = NDIGITS) -> float:
+    """Round `value` to `NDIGITS`=2
+
+    Args:
+        value(float): value to round
+        digits(int): amout of numbers after dot
+    Returns:
+        rounded `value`
+    """
+    return round(value, digits)
 
 
 def flatten(lists):
