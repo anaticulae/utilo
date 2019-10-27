@@ -29,6 +29,23 @@ def test_flatten():
     assert len(flat) == 7, str(flat)
 
 
+def test_select():
+    todo = [10, 'abc', 10.5]
+    assert len(utila.select(todo, int)) == 1
+    assert len(utila.select(todo, str)) == 1
+    assert not utila.select(todo, dict)
+
+    class A:  # pylint:disable=C0103
+        pass
+
+    class B(A):  # pylint:disable=C0103
+        pass
+
+    todo = [A(), B(), A()]
+    assert len(utila.select(todo, A)) == 3
+    assert len(utila.select(todo, B)) == 1
+
+
 def test_chdir(testdir):
     """Test to change working directory given path. Ensure that
     exceptions are handled correctly."""

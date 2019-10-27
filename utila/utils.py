@@ -36,6 +36,22 @@ def flatten(lists):
     return result
 
 
+def select(items, selector):
+    """Select items which are instance of `selector`
+
+    Args:
+        items(collection): data to filter
+        selector(class): `type` of selected instance
+    Returns:
+        filtered collection which does not effect `items` collection
+    """
+    if isinstance(items, dict):
+        items = items.values()
+    selected = [item for item in items if isinstance(item, selector)]
+
+    return selected
+
+
 def determine_order(requirements, flat=True):
     requirements = dict(requirements)
     todo = list(requirements.keys())

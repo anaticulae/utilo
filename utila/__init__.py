@@ -126,6 +126,7 @@ from utila.utils import UTF8
 from utila.utils import chdir
 from utila.utils import flatten
 from utila.utils import roundme
+from utila.utils import select
 
 __version__ = '1.9.2'
 
