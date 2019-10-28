@@ -8,6 +8,7 @@
 #==============================================================================
 
 import os
+import re
 import shutil
 import stat
 # pylint:disable=ungrouped-imports
@@ -213,21 +214,27 @@ def isfilepath(path: str):
 def copy_content(
         source: str,
         destination: str,
+        pattern: str = None,
         recursive: bool = False,
         skip_overwrite: bool = False,
 ):
-    """Copy the content from `source` to `destination` folder. If `desitination`
-    folder does not exists, it will be created.
+    """Copy the content from `source` to `destination` folder. If
+    `desitination` folder does not exists, it will be created.
 
     Hint:
-        Why not using shutil.copytree?: Copy tree expect that destination does
-        not exists, but we need this.
+        Why not using shutil.copytree?: Copy tree expect that
+        destination does not exists, but we need this.
 
     Args:
-        skip_overwrite(bool): if file exists and is not changed, do nothing
+        pattern(str): accept files which matches this pattern, if None
+                      all files matches.
+        skip_overwrite(bool): if file exists and is not changed, do
+                              nothing.
     """
     assert exists(source), str(source)
     if isfile(source):
+        if not matches(source, pattern):
+            return
         content = file_read(source)
         if not isfilepath(destination):
             makedirs(destination, exist_ok=True)
@@ -242,6 +249,8 @@ def copy_content(
     for item in listdir(source):
         source_ = join(source, item)
         dest_ = join(destination, item)
+        if not matches(source_, pattern):
+            continue
         if isfile(source_):
             # copy files
             try:
@@ -256,7 +265,21 @@ def copy_content(
             # 'copy' folder
             makedirs(dest_)
             if recursive:
-                copy_content(source_, dest_, recursive=True)
+                copy_content(
+                    source_,
+                    dest_,
+                    pattern=pattern,
+                    recursive=True,
+                )
+
+
+def matches(path: str, pattern: str) -> bool:
+    if pattern is None:
+        return True
+    # path = forward_slash(path, save_newline=False)
+    pattern = f'{pattern}$'
+    searched = re.search(pattern, path)
+    return searched is not None
 
 
 def from_raw_or_path(content: str, ftype: str = 'yaml'):

@@ -151,6 +151,31 @@ def test_file_copy_content_recursive_false(testdir, content_folder):  #pylint:di
     assert exists(join(goal, 'abc'))
 
 
+@pytest.mark.parametrize(
+    'pattern, expected',
+    [
+        (r'\.txt', 3),
+        (r'\.pdf', 0),
+        (None, 4),
+    ],
+    ids=['txt', 'pdf', 'None'],
+)
+def test_file_copy_content_pattern(
+        pattern,
+        expected,
+        testdir,
+        content_folder,
+):  # pylint:disable=W0621
+    source = content_folder
+    file_create(os.path.join(source, 'hallotxt'))
+
+    root = str(testdir)
+
+    utila.copy_content(source, root, pattern=pattern, recursive=True)
+    files = [item for item in os.listdir(root) if utila.isfilepath(item)]
+    assert len(files) == expected, root
+
+
 def test_file_replace_file(testdir):
     path = join(str(testdir), 'file.txt')
     assert not exists(path)
