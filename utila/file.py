@@ -6,22 +6,12 @@
 # use or distribution is an offensive act against international law and may
 # be prosecuted under federal law. Its content is company confidential.
 #==============================================================================
+
 import glob
 import os
-import re
+import random
 import shutil
 import stat
-# pylint:disable=ungrouped-imports
-from os import listdir
-from os import makedirs
-from os import remove
-from os.path import basename
-from os.path import exists
-from os.path import isabs
-from os.path import isfile
-from os.path import join
-from os.path import split
-from random import randrange
 
 from utila.logger import error
 from utila.string import forward_slash
@@ -48,17 +38,16 @@ def tmp(root) -> str:
     Returns:
         path to temporary folder
     """
-    assert root
-
+    assert root, str(root)
     try:
         # redirect temp folder to central folder, defined in `SHARED_TEMP`.
         # we need control about temp folder. Temp folder must not exist in
         # site-packages, so `SHARED_TEMP` is required.
-        _, projectname = split(root)
-        path = join(os.environ[SHARED_TEMP], projectname)
+        _, projectname = os.path.split(root)
+        path = os.path.join(os.environ[SHARED_TEMP], projectname)
     except KeyError:
-        path = join(root, TMP)
-    makedirs(path, exist_ok=True)
+        path = os.path.join(root, TMP)
+    os.makedirs(path, exist_ok=True)
     return path
 
 
@@ -74,8 +63,8 @@ def file_append(path: str, content: str, create: bool = False):
         If file not exists and create == False, an assertion is fired.
     """
     if not create:
-        assert exists(path)
-    if not exists(path):
+        assert os.path.exists(path)
+    if not os.path.exists(path):
         file_create(path, content)
     else:
         with open(path, mode='a', newline=NEWLINE, encoding=UTF8) as fp:
@@ -93,29 +82,29 @@ def file_create(path: str, content: str = ''):
         If file exists, an assertion is raised.
     """
 
-    assert not exists(path), 'File already exists: %s' % path
+    assert not os.path.exists(path), 'File already exists: %s' % path
     with open(path, mode='w', newline=NEWLINE, encoding=UTF8) as fp:
         fp.write(content)
 
 
 def file_read(path: str):
-    assert exists(path), path
+    assert os.path.exists(path), path
     with open(path, mode='r', newline=NEWLINE, encoding=UTF8) as fp:
         return fp.read()
 
 
 def file_read_binary(path: str) -> bytes:
     """Read binary file content"""
-    assert exists(path), path
+    assert os.path.exists(path), path
     with open(path, mode='rb') as fp:
         content = fp.read()
     return content
 
 
 def file_remove(path: str):
-    assert exists(path), path
-    assert isfile(path), path
-    remove(path)
+    assert os.path.exists(path), path
+    assert os.path.isfile(path), path
+    os.remove(path)
 
 
 def file_replace(path: str, content: str):
@@ -128,7 +117,7 @@ def file_replace(path: str, content: str):
         path(str): path to file
         content(str): content to write
     """
-    if not exists(path):
+    if not os.path.exists(path):
         file_create(path, content)
         return
     current_content = file_read(path)
@@ -219,9 +208,9 @@ def file_copy(
 
 def isfilepath(path: str):
     assert path, path
-    if exists(path):
-        return isfile(path)
-    base = basename(path)
+    if os.path.exists(path):
+        return os.path.isfile(path)
+    base = os.path.basename(path)
     if base[0] == '.':
         # .tmp
         return False
@@ -248,9 +237,9 @@ def copy_content(
         skip_overwrite(bool): if file exists and is not changed, do
                               nothing.
     """
-    if isfile(source):
+    if os.path.isfile(source):
         if not isfilepath(destination):
-            destination = join(destination, basename(source))
+            destination = os.path.join(destination, os.path.basename(source))
         file_copy(
             source,
             destination,
@@ -268,7 +257,7 @@ def copy_content(
     for item in selected:
         source_ = os.path.join(source, item)
         dest_ = os.path.join(destination, item)
-        if isfile(source_):
+        if os.path.isfile(source_):
             file_copy(source_, dest_, skip_overwrite=skip_overwrite)
         else:
             os.makedirs(dest_, exist_ok=True)
@@ -287,11 +276,11 @@ def from_raw_or_path(content: str, ftype: str = 'yaml'):
         loaded content or raw passed content
     """
     assert isinstance(content, str), 'Require `str` %s' % type(content)
-    if content.endswith('.%s' % ftype) and not exists(content):
+    if content.endswith('.%s' % ftype) and not os.path.exists(content):
         raise ValueError('File does not exists: %s' % content)
 
     # filepath must not have any linebreaks
-    if len(content.splitlines()) == 1 and isfile(content):
+    if len(content.splitlines()) == 1 and os.path.isfile(content):
         content = file_read(content)
     return content
 
@@ -307,7 +296,7 @@ def tmpname(width: int = MAX_NUMBER) -> str:
     assert width
     max_test_number = 10**width
 
-    return str(randrange(max_test_number)).zfill(width)
+    return str(random.randrange(max_test_number)).zfill(width)
 
 
 def tmpfile(root):
@@ -316,12 +305,12 @@ def tmpfile(root):
     Returns:
         filepath(str): to tempfile in TEMP_FOLDER
     """
-    assert exists(root)
+    assert os.path.exists(root)
     tmppath = tmp(root)
 
     name = 'tmp%s' % tmpname()
-    path = join(tmppath, name)
-    if exists(path):
+    path = os.path.join(tmppath, name)
+    if os.path.exists(path):
         # try again to find unused temp file
         return tmpfile(root)
     return path
@@ -340,9 +329,9 @@ def make_absolute(path: str, cwd=None):
     if cwd is None:
         cwd = os.getcwd()
 
-    if not isabs(path):
+    if not os.path.isabs(path):
         # Make path absolute
-        path = join(cwd, path)
+        path = os.path.join(cwd, path)
     return path
 
 
