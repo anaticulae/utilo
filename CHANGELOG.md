@@ -2,6 +2,27 @@
 
 Every noteable change is logged here.
 
+## v1.10.0
+
+### Feature
+
+* print path which is not able to change to (3d813b94f4e3)
+* add `pattern` to filter copy content (bfa67620cc78)
+* add method to check if path is file to public API (1e383c91f600)
+* extend roundme to define amount of numbers after dot (69b669ffae9d)
+* add method to filter collection by data type (70344f8a1850)
+* give likelihood computation a new order (6fe393065709)
+
+### Fix
+
+* enable multi processing tests (4c7eec0faefc)
+
+### Documentation
+
+* extend documentation of likelihood test (1fba1f0cdd6b)
+* improve docs for using in Sphinx documentation (07d996a48b40)
+* add anchor point for planning upcoming releases (fbb266806f2c)
+
 ## v1.9.2
 
 ### Fix
