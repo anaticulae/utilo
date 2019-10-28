@@ -152,16 +152,27 @@ def test_file_copy_content_recursive_false(testdir, content_folder):  #pylint:di
 
 
 @pytest.mark.parametrize(
-    'pattern, expected',
+    'pattern, recursive, expected',
     [
-        (r'\.txt', 3),
-        (r'\.pdf', 0),
-        (None, 4),
+        ('*.txt', True, 3),
+        ('*.txt', False, 3),
+        (r'*.pdf', True, 0),
+        (r'*.pdf', False, 0),
+        (None, True, 4),
+        (None, False, 4),
     ],
-    ids=['txt', 'pdf', 'None'],
+    ids=[
+        'txt_recursive',
+        'txt',
+        'pdf',
+        'pdf_recursive',
+        'None',
+        'None_recursive',
+    ],
 )
 def test_file_copy_content_pattern(
         pattern,
+        recursive,
         expected,
         testdir,
         content_folder,
@@ -171,7 +182,7 @@ def test_file_copy_content_pattern(
 
     root = str(testdir)
 
-    utila.copy_content(source, root, pattern=pattern, recursive=True)
+    utila.copy_content(source, root, pattern=pattern, recursive=recursive)
     files = [item for item in os.listdir(root) if utila.isfilepath(item)]
     assert len(files) == expected, root
 

@@ -6,7 +6,7 @@
 # use or distribution is an offensive act against international law and may
 # be prosecuted under federal law. Its content is company confidential.
 #==============================================================================
-
+import glob
 import os
 import re
 import shutil
@@ -29,6 +29,7 @@ from utila.utils import FAILURE
 from utila.utils import NEWLINE
 from utila.utils import TMP
 from utila.utils import UTF8
+from utila.utils import chdir
 
 # width of tempfile name
 MAX_NUMBER = 20
@@ -200,6 +201,22 @@ def file_islocked(path: str):
     return not os.access(path, os.W_OK)
 
 
+def file_copy(
+        source: str,
+        destination: str,
+        skip_overwrite: bool = True,
+):
+    try:
+        if skip_overwrite and file_compare(source, destination):
+            return
+        parent, _ = os.path.split(destination)
+        os.makedirs(parent, exist_ok=True)
+        shutil.copy(source, destination)
+    except OSError:
+        error(f'could not overwrite: {destination}')
+        exit(FAILURE)
+
+
 def isfilepath(path: str):
     assert path, path
     if exists(path):
@@ -231,55 +248,30 @@ def copy_content(
         skip_overwrite(bool): if file exists and is not changed, do
                               nothing.
     """
-    assert exists(source), str(source)
     if isfile(source):
-        if not matches(source, pattern):
-            return
-        content = file_read(source)
         if not isfilepath(destination):
-            makedirs(destination, exist_ok=True)
             destination = join(destination, basename(source))
-
-        # ensure that parent directories exists
-        makedirs(split(destination)[0], exist_ok=True)
-        file_create(destination, content)
+        file_copy(
+            source,
+            destination,
+            skip_overwrite=skip_overwrite,
+        )
         return
 
-    makedirs(destination, exist_ok=True)
-    for item in listdir(source):
-        source_ = join(source, item)
-        dest_ = join(destination, item)
-        if not matches(source_, pattern):
-            continue
-        if isfile(source_):
-            # copy files
-            try:
-                if skip_overwrite:
-                    if os.path.exists(dest_) and file_compare(source_, dest_):
-                        continue
-                shutil.copy(source_, dest_)
-            except OSError:
-                error('could not overwrite: %s' % dest_)
-                exit(FAILURE)
-        else:
-            # 'copy' folder
-            makedirs(dest_)
-            if recursive:
-                copy_content(
-                    source_,
-                    dest_,
-                    pattern=pattern,
-                    recursive=True,
-                )
-
-
-def matches(path: str, pattern: str) -> bool:
     if pattern is None:
-        return True
-    # path = forward_slash(path, save_newline=False)
-    pattern = f'{pattern}$'
-    searched = re.search(pattern, path)
-    return searched is not None
+        pattern = '*'
+    pattern = f'**/{pattern}' if recursive else pattern
+
+    with chdir(source):
+        selected = list(glob.glob(pattern, recursive=recursive))
+
+    for item in selected:
+        source_ = os.path.join(source, item)
+        dest_ = os.path.join(destination, item)
+        if isfile(source_):
+            file_copy(source_, dest_, skip_overwrite=skip_overwrite)
+        else:
+            os.makedirs(dest_, exist_ok=True)
 
 
 def from_raw_or_path(content: str, ftype: str = 'yaml'):
