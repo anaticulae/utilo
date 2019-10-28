@@ -6,9 +6,97 @@
 # use or distribution is an offensive act against international law and may
 # be prosecuted under federal law. Its content is company confidential.
 # =============================================================================
+import math
+
+from utila.utils import flatten
 
 
-def determine_cluster(todo, classificator):
+def common_items(collected, max_difference: float = 10.0, min_elements=2):
+    """Cluster items due `same_area_cluster`
+
+    Args:
+        collected:
+        [
+            [(bounds,item), (bounds,item), (bounds,item)],
+            [(bounds,item), (bounds,item)]
+            [(bounds,item), (bounds,item), (bounds,item), (bounds,item)]
+        ]
+        max_difference(float): upper bound of differences which is accepted
+                               by classificator as same item.
+    """
+    flat = flatten(collected)
+    assert all([isinstance(item, tuple) for item in flat]), flat
+
+    clusters = same_area_cluster(
+        flat,
+        max_difference=max_difference,
+        min_elements=min_elements,
+    )
+    result = [page_from_cluster(cluster, collected) for cluster in clusters]
+    return result
+
+
+def page_from_cluster(cluster, collected):
+    result = []
+    for pagecount, content in enumerate(collected):
+        result.extend([(
+            pagecount,
+            test,
+        ) for test in content if test in cluster])
+    return result
+
+
+def three_side_equal_cluster(todo):
+
+    def classificator(candidat, clusteritem):
+
+        def matcher(candidat, clusteritem):
+            candidat_pos, _ = candidat
+            cluster_pos, _ = clusteritem
+
+            eqaul = sum([
+                abs(first - second) < 0.001  # float difference is allowed
+                for (first, second) in zip(candidat_pos, cluster_pos)
+            ])
+            return eqaul >= 3
+
+        return matcher(candidat, clusteritem)
+
+    return determine_cluster(todo, classificator, min_elements=2)
+
+def same_area_cluster(
+        todo,
+        max_difference: float = 10.0,
+        min_elements: int = 2,
+):
+
+    def classificator(candidat, clusteritem, max_difference=max_difference):
+
+        def distance(x0, y0, x1, y1):
+            return math.sqrt(pow((x1 - x0), 2) + pow((y1 - y0), 2))
+
+        def matcher(candidat, clusteritem):
+            testbox, _ = candidat
+            goalbox, _ = clusteritem
+            equality = distance(
+                testbox[2],
+                testbox[3],
+                goalbox[2],
+                goalbox[3],
+            ) + distance(
+                testbox[0],
+                testbox[1],
+                goalbox[0],
+                goalbox[1],
+            )
+            return equality <= max_difference
+
+        return matcher(candidat, clusteritem)
+
+    return determine_cluster(todo, classificator, min_elements=min_elements)
+
+
+def determine_cluster(todo, classificator, min_elements=2):
     if not todo:
         return []
 
@@ -45,72 +133,13 @@ def determine_cluster(todo, classificator):
     before = set()
     while True:
         result = clusterme(result)
+        if len(result) == 1:
+            # all elements are in the same group
+            break
         hashid = hash(str(result))
         if hashid in before:
             break
         before.add(hashid)
-
     # A cluster must have at least 2 items
-    clusters = [item for item in result if len(item) > 1]
+    clusters = [item for item in result if len(item) >= min_elements]
     return clusters
-
-
-# EXAMPLES:
-
-
-def three_side_equal_cluster(todo):
-
-    def classificator(candidat, clusteritem):
-
-        def matcher(candidat, clusteritem):
-            candidat_pos, _ = candidat
-            cluster_pos, _ = clusteritem
-
-            eqaul = sum([
-                abs(first - second) < 0.001  # float difference is allowed
-                for (first, second) in zip(candidat_pos, cluster_pos)
-            ])
-            return eqaul >= 3
-
-        return matcher(candidat, clusteritem)
-
-    return determine_cluster(todo, classificator)
-
-
-def same_area_cluster(todo, max_difference=10.0):
-
-    def classificator(candidat, clusteritem, max_difference=max_difference):
-        assert max_difference >= 0.0
-
-        from math import sqrt
-
-        def distance(x0, y0, x1, y1):
-            return sqrt(pow((x0 - x1), 2) + pow((y0 - y1), 2))
-
-        def matcher(candidat, clusteritem):
-            testbox, _ = candidat
-            goalbox, _ = clusteritem
-            equality = distance(
-                # testbox.x_bottom,
-                testbox[0],
-                # testbox.y_bottom,
-                testbox[1],
-                # goalbox.x_bottom,
-                goalbox[0],
-                # goalbox.y_bottom,
-                goalbox[1],
-            ) + distance(
-                # testbox.x_top,
-                testbox[2],
-                # testbox.y_top,
-                testbox[3],
-                # goalbox.x_top,
-                testbox[2],
-                # goalbox.y_top,
-                testbox[3],
-            )
-            return equality <= max_difference
-
-        return matcher(candidat, clusteritem)
-
-    return determine_cluster(todo, classificator)

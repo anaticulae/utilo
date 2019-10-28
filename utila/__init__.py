@@ -11,6 +11,7 @@ import os
 
 # Public API:
 # Classificator
+from utila.classificator import common_items
 from utila.classificator import determine_cluster
 from utila.classificator import same_area_cluster
 from utila.classificator import three_side_equal_cluster
