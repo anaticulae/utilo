@@ -94,8 +94,12 @@ def test_logger_log_args(level, expected_log, capsys, monkeypatch):
     assert len(''.join(expected_log)) <= len(captured.strip())
 
 
-def test_logger_log_args_loglevel_to_low(capsys):
-    add(1, 2, 3)
+def test_logger_log_args_loglevel_to_low(capsys, monkeypatch):
+    """Set `LEVEL` to `LOGGING` to avoid any output"""
+    with monkeypatch.context() as context:
+        level = utila.Level.LOGGING
+        context.setattr('utila.logger.LEVEL', level)
+        add(1, 2, 3)
 
     captured = capsys.readouterr().out.strip()
     assert not captured, str(captured)
