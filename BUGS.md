@@ -1,5 +1,8 @@
-# Bugs
+bugs
+====
 
-## open
+open
+----
 
-## closed
+closed
+------

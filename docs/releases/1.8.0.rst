@@ -1,13 +1,16 @@
-# PR 1.8.0
+RP 1.8.0
+========
 
-## Logging
+Logging
+-------
 
 * [x] add decorator to log method input
 
-## File
+File
+----
 
 * [x] copy: add option to skip locked files - do not throw exception if
-unchanged file can not be overwritten.
+  unchanged file can not be overwritten.
 
 * [x] create: add option to set write lock to avoid overwriting generated
-test data.
+  test data.

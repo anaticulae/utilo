@@ -1,6 +1,8 @@
-# PR 1.10.0
+RP 1.10.0
+=========
 
-## Likelihood
+Likelihood
+----------
 
 * [x] remove item from uniform_result
 
@@ -8,10 +10,12 @@
 
 * [x] update classificator with upgrade code from `hey`
 
-## File
+File
+----
 
 * [x] use regex pattern to filter copy item in `copy_content`
 
-## Utils
+Utils
+-----
 
 * [x] add method to select type of iterable

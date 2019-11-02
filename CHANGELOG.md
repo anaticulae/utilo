@@ -1,4 +1,4 @@
-# Changelog
+# changelog
 
 Every noteable change is logged here.
 

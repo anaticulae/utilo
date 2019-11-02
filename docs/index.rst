@@ -1,5 +1,5 @@
 Welcome to write it once
-=================================
+========================
 
 .. toctree::
   :maxdepth: 1
@@ -12,12 +12,12 @@ Welcome to write it once
 
   pages/todo
 
-  releases/readme
+  releases/releases
 
 Modules
 --------------------
 .. toctree::
-   :maxdepth: 4
+   :maxdepth: 2
 
    .tmp/modules
 

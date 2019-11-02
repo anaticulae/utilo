@@ -1,40 +1,47 @@
-# PR 1.9.0
+RP 1.9.0
+========
 
-## Pages
+Pages
+-----
 
 * [x] change default behavior of pages selector to return default value
-instead of throwing KeyError.
+  instead of throwing KeyError.
 
 * [x] rename page selector parameter
 
-## Feature
+Feature
+-------
 
 * [x] fix paralyzing workplan steps: see sections multi step example
 
 * [x] fix printing correct working step. In current state, program name is
-printed.
+  printed.
 
-## File
+File
+----
 
 * [x] add method 'make_package' to convert file path to python package path
 
-## Test
+Test
+----
 
 * [x] add method 'utila.raw()' to hide:
 
-    ```[python]
+.. code-block:: python
+
     assert len(abc)>2, print(abc)
-    ```
 
-    ```[python]
+
+.. code-block:: python
+
     assert len(abc)>2, utila.log_raw(abc)
-    ```
 
-## Utils
+Utils
+-----
 
 * [x] add context manager to chdir and change back after
 
-    ```[python]
-    width utila.chdir(path):
-        execute..
-    ```
+.. code-block:: python
+
+    with utila.chdir(path):
+       # execute..
