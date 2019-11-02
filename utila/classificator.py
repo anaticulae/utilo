@@ -11,18 +11,27 @@ import math
 from utila.utils import flatten
 
 
-def common_items(collected, max_difference: float = 10.0, min_elements=2):
-    """Cluster items due `same_area_cluster`
+def common_items(
+        collected: list,
+        max_difference: float = 10.0,
+        min_elements=2,
+) -> list:
+    """Cluster items due `same_area_cluster`.
 
     Args:
-        collected:
-        [
-            [(bounds,item), (bounds,item), (bounds,item)],
-            [(bounds,item), (bounds,item)]
-            [(bounds,item), (bounds,item), (bounds,item), (bounds,item)]
-        ]
+        collected: items to cluster
         max_difference(float): upper bound of differences which is accepted
                                by classificator as same item.
+        min_elements(int): smallest accepted cluster
+    Returns:
+        list of filtered cluster
+
+    Example:
+        [
+            [(bounds,item), (bounds,item), (bounds,item)],
+            [(bounds,item), (bounds,item)],
+            [(bounds,item), (bounds,item), (bounds,item), (bounds,item)],
+        ]
     """
     flat = flatten(collected)
     assert all([isinstance(item, tuple) for item in flat]), flat
