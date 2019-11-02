@@ -128,7 +128,7 @@ def file_replace(path: str, content: str):
         fp.write(content)
 
 
-def file_compare(first: str, second: str):
+def file_compare(first: str, second: str) -> bool:
     """Compare the content of `first` and `second`
 
     If least one file not exists, there are not eqaul
@@ -136,8 +136,9 @@ def file_compare(first: str, second: str):
     Args:
         first(str): path to first file
         second(str): path to second file
+
     Returns:
-        True if paths exists and hashed content is equal else False
+        True if paths exists and hashed content is equal else False.
     """
     if not os.path.isfile(first):
         return False
@@ -221,6 +222,7 @@ def copy_content(
         source: str,
         destination: str,
         pattern: str = None,
+        *,
         recursive: bool = False,
         skip_overwrite: bool = False,
 ):
@@ -232,8 +234,11 @@ def copy_content(
         destination does not exists, but we need this.
 
     Args:
+        source(str): file or directory to copy
+        destination(str): directory to copy source item(s)
         pattern(str): accept files which matches this pattern, if None
                       all files matches.
+        recursive(bool): if True, copy child folder
         skip_overwrite(bool): if file exists and is not changed, do
                               nothing.
     """
@@ -263,7 +268,7 @@ def copy_content(
             os.makedirs(dest_, exist_ok=True)
 
 
-def from_raw_or_path(content: str, ftype: str = 'yaml'):
+def from_raw_or_path(content: str, ftype: str = 'yaml') -> str:
     """Provide raw content from file or pass content
 
     This method enables the interface to get content from filepath or use
@@ -274,6 +279,8 @@ def from_raw_or_path(content: str, ftype: str = 'yaml'):
         ftype(str): file type which is checked
     Returns:
         loaded content or raw passed content
+    Raises:
+        ValueError: if `content` path not exists
     """
     assert isinstance(content, str), 'Require `str` %s' % type(content)
     if content.endswith('.%s' % ftype) and not os.path.exists(content):
@@ -316,7 +323,7 @@ def tmpfile(root):
     return path
 
 
-def make_absolute(path: str, cwd=None):
+def make_absolute(path: str, cwd=None) -> str:
     """Covert path to absolute. If path is already absolute, do nothing
 
     Args:
@@ -324,7 +331,7 @@ def make_absolute(path: str, cwd=None):
         cwd(str): current working directory. If nothing is passed,
                   os.getcwd is used.
     Returns:
-        absolute path
+        absolute path belong to current working directory
     """
     if cwd is None:
         cwd = os.getcwd()
@@ -426,10 +433,10 @@ def assert_file(files, filetype: str):
     """Ensure that the given `files` have the correct `filetype`
 
     Args:
-        List[str]: list with files
+        files(list): list with files
         filetype(str): filetype without leading dot
-    Returns:
-        raises assertion when passing invalid files
+    Raises:
+        AssertionError: when passing invalid files
     """
     # support passing single str
     files = [files] if isinstance(files, str) else files
@@ -458,12 +465,12 @@ def assert_json(files):
     assert_file(files, 'json')
 
 
-def yaml(filename: str):
-    """Add file yaml extention if required.
+def yaml(filename: str) -> str:
+    """Add `yaml` file extention if required.
 
     Args:
-        filename(str):
-    Returns
+        filename(str): add `yaml` file ending if not ends with
+    Returns:
         filename with .yaml ending
     """
     assert not ('/' in filename or '\\' in filename), f'bad filename {filename}'

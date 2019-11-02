@@ -64,6 +64,7 @@ def three_side_equal_cluster(todo):
 
     return determine_cluster(todo, classificator, min_elements=2)
 
+
 def same_area_cluster(
         todo,
         max_difference: float = 10.0,
