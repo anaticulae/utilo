@@ -2,3 +2,16 @@
 
 RP 1.11.0
 =========
+
+
+Maintainance
+------------
+
+* [ ] refactor class names to avoid collision on `Content` etc.
+
+Utils
+-----
+
+* [ ] check that chdir does not try to change to file location
+
+* [ ] add should_skip(start, end, pages) to support range of pages
