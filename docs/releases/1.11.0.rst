@@ -14,4 +14,4 @@ Utils
 
 * [x] check that chdir does not try to change to file location
 
-* [ ] add should_skip(start, end, pages) to support range of pages
+* [x] add should_skip(start, end, pages) to support range of pages

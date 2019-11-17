@@ -8,6 +8,7 @@
 # =============================================================================
 
 import contextlib
+import typing
 
 from utila.utils import numbers
 
@@ -67,7 +68,10 @@ def pages(pattern: str, pagecount=None) -> tuple:
     return tuple(parsed) if parsed else None
 
 
-def should_skip(page: int, pages: tuple):  # pylint:disable=W0621
+PageNumbers = typing.TypeVar('PageNumbers', int, tuple)
+
+
+def should_skip(page: PageNumbers, pages: tuple) -> bool:  # pylint:disable=W0621
     """Determine if `page` is invalid.
 
     If `pages` is None, every page is accepted.
@@ -84,6 +88,11 @@ def should_skip(page: int, pages: tuple):  # pylint:disable=W0621
         return False
     if not isinstance(pages, tuple):
         pages = (pages,)
+    # support multiple pages
+    if isinstance(page, tuple):
+        # ensure that all (page..) are in range
+        start, end = page
+        return any([should_skip(pp, pages) for pp in range(start, end + 1)])
     return not page in pages
 
 
