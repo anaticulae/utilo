@@ -9,6 +9,7 @@
 
 import contextlib
 import os
+import typing
 
 SUCCESS = 0
 FAILURE = 1
@@ -94,16 +95,20 @@ def numbers(items):
             result.append(None)
     return result
 
-
 @contextlib.contextmanager
-def chdir(path: str):
+def chdir(path: str) -> typing.NoReturn:
     """Contextmanager to change current working directory. Exceptions
-    which where raised during accessing contextmanager are re-raised after
-    changing current working directroy back to orgin.
+    which where raised during accessing contextmanager are re-raised
+    after changing current working directroy back to orgin.
 
     Args:
         path(str): path to change current working directory
-
+    Yields:
+        NoReturn: to run command in `path`
+    Raises:
+        Exception: if Exception occurrs while running contextmanager,
+        the current working directory is changed back to location
+        `before` and the occurred excetion is re raised after.
     Example:
         with utila.chdir(path):
             pass
