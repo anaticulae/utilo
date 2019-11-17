@@ -6,6 +6,7 @@
 # use or distribution is an offensive act against international law and may
 # be prosecuted under federal law. Its content is company confidential.
 #==============================================================================
+import typing
 from contextlib import contextmanager
 
 from utila.logger import error
@@ -15,15 +16,17 @@ from utila.utils import FAILURE
 
 
 @contextmanager
-def handle_error(*exceptions, code=FAILURE):
-    """Catch given `exceptions` and print there message to `stderr`. Exit
-    system with given `code`.
+def handle_error(*exceptions: typing.Tuple, code: int = FAILURE):
+    """Catch given `exceptions` and print there message to `stderr`.
+    Exit system with given `code`.
 
     Args:
-        exeception(iterable): of exception, which are handle by this context
+        exceptions(iterable): of exception, which are handle by this context
         code(int): returned error-code
+    Yields:
+        NoReturn: run context which can raise Exception
     Raises:
-        SystemExitExecetion if given `exceptions` is raised while executing
+        SystemExit: if given `exceptions` is raised while executing
         contextmanager.
     """
     try:
@@ -36,14 +39,14 @@ def handle_error(*exceptions, code=FAILURE):
 CANCELLED_BY_USER = 130
 
 
-def saveme(func=None, *, systemexit=True):
+def saveme(func=None, *, systemexit=True) -> callable:
     """Protect against KeyboardInterrupt and beautify Exceptions
 
     Args:
+        func(callable): function which is invoked savely
         systemexit(bool): return exit value of quit with SystemExit
-        user_function(callable): function which is invoked savely
     Returns:
-        function-wrapper
+        decorated function
     """
 
     def decorating_function(user_function):

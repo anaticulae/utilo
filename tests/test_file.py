@@ -234,9 +234,9 @@ def test_file_copy_content_access_error(
     copy_content(source, sink) should raises an error, cause the sink pdf is
     locked by an pdf reader for example.
 
-    Args:
-        skip_overwrite: if True, the copy process which raises OSError is not
-                        reached and therefore no SystemExit is raised.
+    skip_overwrite: if True, the copy process which raises OSError is
+                    not reached and therefore no SystemExit is raised.
+    monkeypatch: patch copy command to introduce overwrite error
 
     TODO: refactor/simplify with: file_lock/file_unlock
     """

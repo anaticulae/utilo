@@ -145,10 +145,7 @@ Runner = create_runner()  # pylint:disable=C0103
 def run_cli(root, monkeypatch, cmdline, runner=Runner):
     """Run test command line interface
 
-    Args:
-        root(str):
-        monkeypatch:
-        cmdline(str/[str]): commands to execute
+    cmdline(str/[str]): commands to execute
     """
     cmdline = cmdline.split()
     with monkeypatch.context() as context:
@@ -277,7 +274,7 @@ def test_cli_multiple_input_with_double_input(
     assert returncode(result) == SUCCESS, str(result) + str(out) + str(err)
 
 
-MultiRunner = create_runner(multiprocessed=True)
+MULTI_RUNNER = create_runner(multiprocessed=True)
 
 
 @mark.parametrize(
@@ -297,7 +294,7 @@ def test_cli_multiple_jobs(
     root = str(testdir)
 
     cmd = '-j %d --all' % jobs
-    with run_cli(root, monkeypatch, cmd, MultiRunner) as result:
+    with run_cli(root, monkeypatch, cmd, MULTI_RUNNER) as result:
         out, err = capsys.readouterr()
     error_message = '%s\n%s\n%s' % (result, out, err)
     assert returncode(result) == SUCCESS, str(error_message)
