@@ -108,7 +108,7 @@ def chdir(path: str):
         with utila.chdir(path):
             pass
     """
-    assert os.path.exists(path), str(path)
+    assert os.path.exists(path) and not os.path.isfile(path), str(path)
 
     before = os.getcwd()
 

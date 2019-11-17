@@ -72,3 +72,16 @@ def test_chdir(testdir):
 
     # check going back to preview working directory
     assert str(os.getcwd()) == root
+
+
+def test_chdir_to_filepath(testdir):
+    """Test to change to a file location with contextmanager."""
+    root = str(testdir)
+
+    filepath = os.path.join(root, 'hello')
+    utila.file_create(filepath)
+
+    assert os.path.exists(filepath)
+    with pytest.raises(AssertionError):
+        with utila.chdir(filepath):
+            pass
