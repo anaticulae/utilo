@@ -35,7 +35,7 @@ MinimalPage = collections.namedtuple('MinimalPage', 'page')
     ('a,10', None),
 ])
 def test_pages(pattern, expected):
-    result = utila.pages(pattern, pagecount=MAX_PAGES)
+    result = utila.parse_pages(pattern, pagecount=MAX_PAGES)
     assert result == expected, str(result)
 
 

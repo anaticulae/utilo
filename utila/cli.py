@@ -38,7 +38,7 @@ from dataclasses import field
 from utila.file import make_absolute
 from utila.logger import error
 from utila.logger import log
-from utila.pages import pages as parse_pages
+from utila.pages import parse_pages
 from utila.utils import ALL_PAGES
 from utila.utils import SUCCESS
 

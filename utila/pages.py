@@ -13,7 +13,7 @@ import typing
 from utila.utils import numbers
 
 
-def pages(pattern: str, pagecount=None) -> tuple:
+def parse_pages(pattern: str, pagecount=None) -> tuple:  # pylint:disable=too-complex
     """Determine list of pages out of given `pattern`.
 
     Args:
