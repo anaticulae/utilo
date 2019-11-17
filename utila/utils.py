@@ -95,6 +95,7 @@ def numbers(items):
             result.append(None)
     return result
 
+
 @contextlib.contextmanager
 def chdir(path: str) -> typing.NoReturn:
     """Contextmanager to change current working directory. Exceptions

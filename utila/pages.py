@@ -96,13 +96,21 @@ def should_skip(page: PageNumbers, pages: tuple) -> bool:  # pylint:disable=W062
     return not page in pages
 
 
-def select_page(items, page: int, default=None):
+PageContent = typing.TypeVar('PageContent', typing.List, typing.Dict)
+
+
+def select_page(
+        items: PageContent,
+        page: int,
+        default: typing.Any = None,
+) -> typing.Any:
     """Select item depending on `page`-attribute of the item.
 
     Args:
         items(collection): content which contains the pages
         page(int): page-attribute to select from `items`
-        default: returned if `pagenumber` does not exists
+        default: returned if `page` does not exists
+
     Returns:
         page with page-attribute matches with `page`
     Raises:
