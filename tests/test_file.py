@@ -8,44 +8,26 @@
 #==============================================================================
 import os
 import shutil
-from os import listdir
-from os import makedirs
-from os.path import exists
-from os.path import join
 
 import pytest
-from pytest import fixture
-from pytest import raises
 
 import utila
-from utila import ROOT
-from utila import assert_file
-from utila import assert_html
-from utila import copy_content
-from utila import file_append
-from utila import file_create
-from utila import file_read
-from utila import file_replace
-from utila import from_raw_or_path
-from utila import tmp
-from utila import tmpfile
-from utila import tmpname
-from utila.file import SHARED_TEMP
+import utila.file
 
 
 def test_file_append_assert(tmpdir):
-    first = join(tmpdir, 'abc.txt')
-    with raises(AssertionError):
-        file_append(first, '')
+    first = os.path.join(tmpdir, 'abc.txt')
+    with pytest.raises(AssertionError):
+        utila.file_append(first, '')
 
 
 def test_file_append_create(tmpdir):
-    first = join(tmpdir, 'abc.txt')
-    file_append(first, 'BBB', create=True)
-    assert exists(first)
+    first = os.path.join(tmpdir, 'abc.txt')
+    utila.file_append(first, 'BBB', create=True)
+    assert os.path.exists(first)
 
-    file_append(first, 'AAA', create=True)
-    content = file_read(first)
+    utila.file_append(first, 'AAA', create=True)
+    content = utila.file_read(first)
     assert 'AAA' in content
 
 
@@ -56,39 +38,39 @@ def test_file_from_path_or_raw(tmpdir):
         load and write
     """
 
-    path = join(tmpdir, 'example.yaml')
+    path = os.path.join(tmpdir, 'example.yaml')
 
-    file_create(path, content)
+    utila.file_create(path, content)
 
-    from_path = from_raw_or_path(path)
-    from_raw = from_raw_or_path(content)
+    from_path = utila.from_raw_or_path(path)
+    from_raw = utila.from_raw_or_path(content)
 
     assert from_raw == content
     assert from_path == from_raw
 
-    with raises(ValueError):
-        from_raw_or_path('/c/test.yaml')
+    with pytest.raises(ValueError):
+        utila.from_raw_or_path('/c/test.yaml')
 
 
 def test_file_tmpname():
-    name = tmpname(width=15)
+    name = utila.tmpname(width=15)
     assert len(name) == 15, name
 
-    name = tmpname(width=20)
+    name = utila.tmpname(width=20)
     assert len(name) == 20, name
 
 
 def test_file_tmpfile(tmpdir):
-    random_path = tmpfile(tmpdir)
-    assert not exists(random_path), random_path
+    random_path = utila.tmpfile(tmpdir)
+    assert not os.path.exists(random_path), random_path
 
 
 def test_file_tmp_redirect(testdir, monkeypatch):
     """Redirect tmp-path with KIWI_TEMPBASE environ variable"""
     with monkeypatch.context() as context:
-        context.setattr(os, 'environ', {SHARED_TEMP: str(testdir)})
-        temp = tmp(ROOT)
-        assert exists(temp), temp
+        context.setattr(os, 'environ', {utila.file.SHARED_TEMP: str(testdir)})
+        temp = utila.tmp(utila.ROOT)
+        assert os.path.exists(temp), temp
 
 
 def test_file_tmp_without_shared_temp(testdir, monkeypatch):
@@ -96,7 +78,7 @@ def test_file_tmp_without_shared_temp(testdir, monkeypatch):
     with monkeypatch.context() as context:
         # unset SHARED_TEMP
         context.setattr(os, 'environ', {})
-        without_redirect = tmp(ROOT)
+        without_redirect = utila.tmp(utila.ROOT)
         assert without_redirect.endswith('.tmp'), without_redirect
 
 
@@ -106,49 +88,49 @@ def test_file_assert_html_files():
         'test/www.html',
         'test/elfe.html',
     ]
-    assert_html(files)
+    utila.assert_html(files)
 
-    with raises(AssertionError):
-        assert_file(files, '.txt')
+    with pytest.raises(AssertionError):
+        utila.assert_file(files, '.txt')
 
 
-@fixture
+@pytest.fixture
 def content_folder(tmpdir):
     root = str(tmpdir)
-    file_create(join(root, 'test.txt'))
-    file_create(join(root, 'abc.txt'))
-    file_create(join(root, 'www.txt'))
+    utila.file_create(os.path.join(root, 'test.txt'))
+    utila.file_create(os.path.join(root, 'abc.txt'))
+    utila.file_create(os.path.join(root, 'www.txt'))
 
-    makedirs(join(root, 'abc', 'def', 'ghi', 'jklm'))
-    file_create(join(root, 'abc/def/ghi/www.txt'))
-    file_create(join(root, 'abc/def/ghi/jklm/ggg.txt'))
+    os.makedirs(os.path.join(root, 'abc', 'def', 'ghi', 'jklm'))
+    utila.file_create(os.path.join(root, 'abc/def/ghi/www.txt'))
+    utila.file_create(os.path.join(root, 'abc/def/ghi/jklm/ggg.txt'))
     return root
 
 
 def test_file_copy_content_recursive(testdir, content_folder):  #pylint:disable=W0621
     """Test to copy `content_folder` recursive"""
     goal = str(testdir)
-    copy_content(content_folder, goal, recursive=True)
+    utila.copy_content(content_folder, goal, recursive=True)
 
-    assert exists(join(goal, 'test.txt'))
-    assert exists(join(goal, 'abc.txt'))
-    assert exists(join(goal, 'www.txt'))
+    assert os.path.exists(os.path.join(goal, 'test.txt'))
+    assert os.path.exists(os.path.join(goal, 'abc.txt'))
+    assert os.path.exists(os.path.join(goal, 'www.txt'))
 
-    assert exists(join(goal, 'abc/def/ghi/jklm'))
-    assert exists(join(goal, 'abc/def/ghi/www.txt'))
-    assert exists(join(goal, 'abc/def/ghi/jklm/ggg.txt'))
+    assert os.path.exists(os.path.join(goal, 'abc/def/ghi/jklm'))
+    assert os.path.exists(os.path.join(goal, 'abc/def/ghi/www.txt'))
+    assert os.path.exists(os.path.join(goal, 'abc/def/ghi/jklm/ggg.txt'))
 
 
 def test_file_copy_content_recursive_false(testdir, content_folder):  #pylint:disable=W0621
     """Test to copy `content_folder` non recursive"""
     goal = str(testdir)
-    copy_content(content_folder, goal, recursive=False)
+    utila.copy_content(content_folder, goal, recursive=False)
 
-    assert exists(join(goal, 'test.txt'))
-    assert exists(join(goal, 'abc.txt'))
-    assert exists(join(goal, 'www.txt'))
+    assert os.path.exists(os.path.join(goal, 'test.txt'))
+    assert os.path.exists(os.path.join(goal, 'abc.txt'))
+    assert os.path.exists(os.path.join(goal, 'www.txt'))
 
-    assert exists(join(goal, 'abc'))
+    assert os.path.exists(os.path.join(goal, 'abc'))
 
 
 @pytest.mark.parametrize(
@@ -178,7 +160,7 @@ def test_file_copy_content_pattern(
         content_folder,
 ):  # pylint:disable=W0621
     source = content_folder
-    file_create(os.path.join(source, 'hallotxt'))
+    utila.file_create(os.path.join(source, 'hallotxt'))
 
     root = str(testdir)
 
@@ -188,50 +170,50 @@ def test_file_copy_content_pattern(
 
 
 def test_file_replace_file(testdir):
-    path = join(str(testdir), 'file.txt')
-    assert not exists(path)
+    path = os.path.join(str(testdir), 'file.txt')
+    assert not os.path.exists(path)
 
-    file_replace(path, 'Content')
-    assert exists(path)
-    file_replace(path, 'NewContent')
+    utila.file_replace(path, 'Content')
+    assert os.path.exists(path)
+    utila.file_replace(path, 'NewContent')
 
-    content = file_read(path)
+    content = utila.file_read(path)
     assert content == 'NewContent'
 
     # no changes in file
-    file_replace(path, 'NewContent')
-    content = file_read(path)
+    utila.file_replace(path, 'NewContent')
+    content = utila.file_read(path)
     assert content == 'NewContent'
 
 
 def test_file_copy_content_file_to_directory(testdir):
     testdir = str(testdir)
     filename = 'abc.txt'
-    file_create(filename)
-    destination = join(testdir, 'destination')
-    copy_content(filename, destination)
+    utila.file_create(filename)
+    destination = os.path.join(testdir, 'destination')
+    utila.copy_content(filename, destination)
 
-    assert exists(join(destination, filename))
+    assert os.path.exists(os.path.join(destination, filename))
 
 
 def test_file_copy_content_file_to_file(testdir):
     testdir = str(testdir)
     filename = 'abc.txt'
-    file_create(filename)
-    destination = join(testdir, 'cba.txt')
-    copy_content(filename, destination)
+    utila.file_create(filename)
+    destination = os.path.join(testdir, 'cba.txt')
+    utila.copy_content(filename, destination)
 
-    assert exists(destination)
+    assert os.path.exists(destination)
 
 
 def test_file_copy_content_directory_to_directory(testdir):
     testdir = str(testdir)
     folder = prepare_example(testdir)
 
-    goal = join(testdir, 'goal')
-    copy_content(folder, goal)
+    goal = os.path.join(testdir, 'goal')
+    utila.copy_content(folder, goal)
 
-    assert len(listdir(goal)) == 3, listdir(goal)
+    assert len(os.listdir(goal)) == 3, os.listdir(goal)
 
 
 @pytest.mark.parametrize('skip_overwrite', [
@@ -263,7 +245,7 @@ def test_file_copy_content_access_error(
     sink = os.path.join(root, 'sink')
 
     for item in [source, sink]:
-        makedirs(item)
+        os.makedirs(item)
         pdf = os.path.join(item, 'single.pdf')
         utila.file_create(pdf)
     notdouble = os.path.join(source, 'not_double.pdf')
@@ -282,7 +264,7 @@ def test_file_copy_content_access_error(
             utila.copy_content(source, sink, skip_overwrite=True)
             return
 
-        with raises(SystemExit):
+        with pytest.raises(SystemExit):
             utila.copy_content(
                 source,
                 sink,
@@ -292,19 +274,19 @@ def test_file_copy_content_access_error(
 
 
 def prepare_example(directory):
-    folder = join(directory, 'first')
+    folder = os.path.join(directory, 'first')
 
-    folder_abc = join(folder, 'abc.txt')
-    folder_def = join(folder, 'def.txt')
-    folder_ghi = join(folder, 'ghi.txt')
+    folder_abc = os.path.join(folder, 'abc.txt')
+    folder_def = os.path.join(folder, 'def.txt')
+    folder_ghi = os.path.join(folder, 'ghi.txt')
 
-    makedirs(folder)
+    os.makedirs(folder)
     for item in [
             folder_abc,
             folder_def,
             folder_ghi,
     ]:
-        file_create(item, item)
+        utila.file_create(item, item)
 
     return folder
 
