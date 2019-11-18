@@ -6,8 +6,8 @@
 # use or distribution is an offensive act against international law and may
 # be prosecuted under federal law. Its content is company confidential.
 #==============================================================================
+import contextlib
 import typing
-from contextlib import contextmanager
 
 from utila.logger import error
 from utila.logger import log
@@ -15,7 +15,7 @@ from utila.logger import log_stacktrace
 from utila.utils import FAILURE
 
 
-@contextmanager
+@contextlib.contextmanager
 def handle_error(*exceptions: typing.Tuple, code: int = FAILURE):
     """Catch given `exceptions` and print there message to `stderr`.
     Exit system with given `code`.

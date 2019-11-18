@@ -7,15 +7,14 @@
 # be prosecuted under federal law. Its content is company confidential.
 # =============================================================================
 
-from functools import wraps
-from inspect import Signature
-from inspect import signature
+import functools
+import inspect
 
 from utila.logger import error
 
 
 def checkdatatype(func):
-    """Decorator to ensure that passed data matches with defined datatype
+    """Decorator to ensure that passed data matches with defined datatype.
 
     Args:
         func(callable): function to ensure correct data input
@@ -23,9 +22,9 @@ def checkdatatype(func):
         ensured callable
     """
 
-    @wraps(func)
+    @functools.wraps(func)
     def wrapper(*args, **kwargs):
-        parameter = list(signature(func).parameters.items())
+        parameter = list(inspect.signature(func).parameters.items())
         parameter = [(name, item.annotation) for (name, item) in parameter]
 
         msg = 'parameter: %s, expected: %r, current %r:'
@@ -33,7 +32,7 @@ def checkdatatype(func):
         for current, (name, expected) in zip(args, parameter):
             if isinstance(current, expected):
                 continue
-            if expected is Signature.empty:
+            if expected is inspect.Signature.empty:
                 continue
             errors.append((msg % (name, expected, type(current))))
             errors.append(str(current))

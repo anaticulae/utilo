@@ -27,13 +27,11 @@ Example:
     create_parser([PUSH, RELEASE])
 """
 
+import argparse
 import contextlib
+import dataclasses
 import os
 import sys
-from argparse import ArgumentParser
-from argparse import RawDescriptionHelpFormatter
-from dataclasses import dataclass
-from dataclasses import field
 
 from utila.file import make_absolute
 from utila.logger import error
@@ -47,21 +45,21 @@ INVALID_COMMAND = 2
 See posix standard."""
 
 
-@dataclass
+@dataclasses.dataclass
 class Command:
     """Basic class for creation further `Flag`'s or `Parameter`."""
     shortcut: str = ''
     longcut: str = ''
     message: str = ''
     """message to display when invoking --help"""
-    args: dict = field(default_factory=dict)
+    args: dict = dataclasses.field(default_factory=dict)
 
     def __iter__(self):
         for item in [self.shortcut, self.longcut, self.message, self.args]:
             yield item
 
 
-@dataclass
+@dataclasses.dataclass
 class Flag(Command):
     """A Flag is only on or off.
 
@@ -70,7 +68,7 @@ class Flag(Command):
     """
 
 
-@dataclass
+@dataclasses.dataclass
 class Parameter(Command):
     """A Parameter needs data as a second argument
 
@@ -83,7 +81,7 @@ class Parameter(Command):
         self.args['dest'] = self.longcut
 
 
-@dataclass
+@dataclasses.dataclass
 class Number(Parameter):
 
     default: int = 1
@@ -97,7 +95,7 @@ class Number(Parameter):
         self.args['type'] = type(self.default)
 
 
-@dataclass
+@dataclasses.dataclass
 class RequiredCommand(Command):
 
     def __post_init__(self):
@@ -158,9 +156,9 @@ def create_parser(
         flags=flags,
     )
 
-    parser = ArgumentParser(
+    parser = argparse.ArgumentParser(
         description=description,
-        formatter_class=RawDescriptionHelpFormatter,
+        formatter_class=argparse.RawDescriptionHelpFormatter,
         prog=prog,
     )
 
@@ -288,7 +286,7 @@ def create_io_ports(infile: bool = False, outfile: bool = False):
     return todo
 
 
-def parse(parser: ArgumentParser):
+def parse(parser: argparse.ArgumentParser):
     """Parse arguments from sys-args and return the result as dictonary."""
     args = vars(parser.parse_args())
     if 'version' in args and args['version']:
