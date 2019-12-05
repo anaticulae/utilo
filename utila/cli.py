@@ -111,12 +111,12 @@ COMMANDS = [
             'action': 'count',
         },
         longcut=VERBOSE,
-        message='define how verbose logging is',
+        message='define verbose level of logging',
         shortcut='V',
     ),
     Flag(
         longcut='ff',
-        message='failfast: quit after this first error',
+        message='failfast: quit after the first error',
     )
 ]
 
@@ -163,7 +163,7 @@ def create_parser(
     )
 
     if version:
-        todo.append(Flag('-v', 'version', 'Show version and exit.'))
+        todo.append(Flag('-v', 'version', 'show version and exit.'))
         parser.__version = version
 
     io_ports = create_io_ports(inputparameter, outputparameter)
@@ -266,7 +266,7 @@ def create_io_ports(infile: bool = False, outfile: bool = False):
     if infile:
         input_command = Command(
             shortcut='i',
-            message='Read input data from path',
+            message='read input data from path',
             args={
                 'dest': 'input',
                 'action': 'append'  # support multiple -i
@@ -277,7 +277,7 @@ def create_io_ports(infile: bool = False, outfile: bool = False):
     if outfile:
         output_command = Command(
             shortcut='o',
-            message='Write output to path',
+            message='write output to path',
             args={
                 'dest': 'output',
             },

@@ -14,7 +14,7 @@ def make_unique(items) -> typing.List[str]:
     """Convert collection where every element exists only once.
 
     Hint:
-        stable algorithm which hold the previous order
+        stable algorithm which holds the previous order
     """
     result = []
     for item in items:
