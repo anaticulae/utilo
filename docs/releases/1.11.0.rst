@@ -3,7 +3,6 @@
 RP 1.11.0
 =========
 
-
 Maintainance
 ------------
 
@@ -15,3 +14,17 @@ Utils
 * [x] check that chdir does not try to change to file location
 
 * [x] add should_skip(start, end, pages) to support range of pages
+
+File
+----
+
+* [ ] support to copy single files
+
+Cmd
+---
+
+* [ ] fix fast fail command: set disabled as default
+
+* [ ] sort commands alphabetically
+
+* [ ] make fail fast and verbose optional via parameter
