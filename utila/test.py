@@ -79,7 +79,7 @@ def run_command(
         main: callable,
         success: bool,
         monkeypatch,
-):
+)->int:
     """Run `main` with `command`
 
     Args:
@@ -98,7 +98,9 @@ def run_command(
         context.setattr(sys, 'argv', [process] + cmd)
         with pytest.raises(SystemExit) as result:
             main()
-    assert (returncode(result) == SUCCESS) == success, str(result)
+    code = returncode(result)
+    assert (code == SUCCESS) == success, str(result)
+    return code
 
 
 @contextlib.contextmanager
