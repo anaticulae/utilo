@@ -46,12 +46,12 @@ def run(
     """Run external process
 
     Args:
-        cmd(str/[str]): command to run
+        cmd(str): command to run
         cwd(str): current working directory
         env(dict): modify environment variable for test run. If nothing is
                    passed, the global environment variable is used.
     Returns:
-        return completed process
+        Completed process.
     """
     cwd = cwd if cwd else os.getcwd()
     assert os.path.exists(cwd)
@@ -74,7 +74,7 @@ def run(
 
 
 def run_command(
-        cmd,
+        cmd: str,
         process: str,
         main: callable,
         success: bool,
@@ -83,11 +83,13 @@ def run_command(
     """Run `main` with `command`
 
     Args:
-        cmd([str] or str): command to run
+        cmd(str): command to run
         process(str): name of executed tool
         main(callable): method to run
-        success(bool): expectation that process succeed or fails
-        monkeypatch: pytest patch feature
+        success(bool): expectation that process succeeds or fails
+        monkeypatch(fixture): pytest patch feature
+    Returns:
+        Return code of completed process.
     """
     with contextlib.suppress(AttributeError):
         cmd = cmd.split()
