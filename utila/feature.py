@@ -78,7 +78,7 @@ def featurepack(
         pages: bool = False,
         singleinput: bool = False,
         verboseflag: bool = True,
-
+        prefixflag: bool = True,
 ) -> int:
     """Run featurepack defined in `workplan`
 
@@ -111,6 +111,7 @@ def featurepack(
         prog=name,
         verboseflag=verboseflag,
         version=version,
+        prefix=prefixflag,
     )
     args = parse(parser)
 

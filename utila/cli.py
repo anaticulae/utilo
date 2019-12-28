@@ -106,7 +106,7 @@ class RequiredCommand(Command):
 VERBOSE = 'verbose'
 
 
-def create_parser( # pylint:disable=R1260
+def create_parser(  # pylint:disable=R1260
         todo: list = None,
         version=None,
         description: str = '',
@@ -118,7 +118,7 @@ def create_parser( # pylint:disable=R1260
         multiprocessed: bool = False,
         outputparameter: bool = False,
         pages: bool = False,
-        prefix: bool = True,
+        prefix: bool = False,
         verboseflag: bool = False,
 ) -> argparse.ArgumentParser:
     """Create parser out of defined dictonary with command-line-definiton.
@@ -188,7 +188,6 @@ def create_parser( # pylint:disable=R1260
                 parser.add_argument(*shortcuts, action='store_true', help=msg)
 
     use_todo(parser, todo)
-
 
     return parser
 
@@ -274,6 +273,7 @@ def prepare_todo(
             ))
     todo = sort(todo)
     return todo
+
 
 def sort(items):
     sorter = lambda item: item.shortcut.lower()\
