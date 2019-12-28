@@ -18,6 +18,7 @@ from utila import INVALID_COMMAND
 from utila import ROOT
 from utila import SUCCESS
 from utila import Flag
+from utila import Number
 from utila import Parameter
 from utila import file_append
 from utila import file_create
@@ -27,6 +28,7 @@ from utila import returncode
 from utila import sources
 from utila import userflag_to_arg
 from utila.cli import create_parser
+from utila.cli import sort
 from utila.test import run
 from utila.test import skip_nonvirtual
 
@@ -330,3 +332,64 @@ def test_cli_singlefile_input(testdir, monkeypatch, singlefile):
 def test_cli_userflag_to_arg(flag):
     parsed = userflag_to_arg(flag)
     assert parsed == 'iamflag', str(parsed)
+
+
+def test_cli_sort_parameter():
+    parameter = [
+        Parameter(
+            shortcut='',
+            longcut='pages',
+            message='run computation on given pages',
+            args={
+                'dest': 'pages',
+                'default': ':'
+            },
+        ),
+        Number(
+            shortcut='j',
+            longcut='',
+            message='select number of used jobs',
+            args={
+                'dest': 'job',
+                'default': 1,
+                'type': int
+            },
+            default=1,
+        ),
+        Parameter(
+            shortcut='',
+            longcut='prefix',
+            message='add prefix to separate different output files',
+            args={'dest': 'prefix'},
+        ),
+        Flag(
+            shortcut='',
+            longcut='brokenworker',
+            message='export brokenworker',
+            args={},
+        ),
+        Flag(
+            shortcut='',
+            longcut='all',
+            message='',
+            args={},
+        ),
+        Flag(
+            shortcut='V',
+            longcut='verbose',
+            message='define verbose level of logging',
+            args={'action': 'count'},
+        ),
+        Flag(
+            shortcut='',
+            longcut='ff',
+            message='failfast: quit after the first error',
+            args={},
+        ),
+    ]
+    result = sort(parameter)
+    items = [
+        item.longcut.lower() if item.longcut else item.shortcut.lower()
+        for item in result
+    ]
+    assert sorted(items) == items, 'is not sorted correctly'

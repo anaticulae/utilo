@@ -23,8 +23,8 @@ File
 Cmd
 ---
 
-* [ ] fix fast fail command: set disabled as default
+* [x] fix fast fail command: set disabled as default
 
-* [ ] sort commands alphabetically
+* [x] sort commands alphabetically
 
 * [x] make fail fast and verbose optional via parameter

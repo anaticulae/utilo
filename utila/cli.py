@@ -272,7 +272,15 @@ def prepare_todo(
                 longcut='ff',
                 message='failfast: quit after the first error',
             ))
+    todo = sort(todo)
     return todo
+
+def sort(items):
+    sorter = lambda item: item.shortcut.lower()\
+                          if item.shortcut\
+                          else item.longcut.lower()
+    result = sorted(items, key=sorter)
+    return result
 
 
 def create_io_ports(infile: bool = False, outfile: bool = False):
