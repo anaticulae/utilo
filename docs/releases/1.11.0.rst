@@ -27,4 +27,4 @@ Cmd
 
 * [ ] sort commands alphabetically
 
-* [ ] make fail fast and verbose optional via parameter
+* [x] make fail fast and verbose optional via parameter

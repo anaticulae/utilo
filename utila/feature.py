@@ -72,10 +72,13 @@ def featurepack(
         version: str,
         errorhook: ErrorHook = None,
         *,
+        failfastflag: bool = True,
+        flags: list = None,
         multiprocessed: bool = False,
         pages: bool = False,
         singleinput: bool = False,
-        flags: list = None,
+        verboseflag: bool = True,
+
 ) -> int:
     """Run featurepack defined in `workplan`
 
@@ -99,12 +102,14 @@ def featurepack(
     parser = create_parser(
         commands,
         description=description,
+        failfastflag=failfastflag,
         flags=flags,
         inputparameter=True,
         multiprocessed=multiprocessed,
         outputparameter=True,
         pages=pages,
         prog=name,
+        verboseflag=verboseflag,
         version=version,
     )
     args = parse(parser)

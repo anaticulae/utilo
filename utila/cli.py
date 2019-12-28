@@ -105,55 +105,50 @@ class RequiredCommand(Command):
 
 VERBOSE = 'verbose'
 
-COMMANDS = [
-    Flag(
-        args={
-            'action': 'count',
-        },
-        longcut=VERBOSE,
-        message='define verbose level of logging',
-        shortcut='V',
-    ),
-    Flag(
-        longcut='ff',
-        message='failfast: quit after the first error',
-    )
-]
 
-
-def create_parser(
+def create_parser( # pylint:disable=R1260
         todo: list = None,
         version=None,
         description: str = '',
         prog: str = '',
         *,
+        failfastflag: bool = True,
         flags: list = None,
         inputparameter: bool = False,
         multiprocessed: bool = False,
         outputparameter: bool = False,
         pages: bool = False,
         prefix: bool = True,
-):
+        verboseflag: bool = True,
+) -> argparse.ArgumentParser:
     """Create parser out of defined dictonary with command-line-definiton.
 
     Args:
-        todo(list): extend default parser with todo list
-        version(str): current version of parser applicatin
+        description(str): description text of --help invocation
+        failfastflag(bool): if True --ff option is added to parser
+        flags(list): list of `Command`s to add
         inputparameter(bool): if true, default input parameter is active
+        multiprocessed(bool): add parameter to use more than one processor
         outputparameter(bool): if true, default output parameter is active
+        pages(bool): add --pages flag to select processed pages
         prefix(bool): if true, default prefix is active
         prog(str): name of application `prog --help`
-        description(str): description text of --help invocation
-
+        todo(list): extend default parser with todo list
+        verboseflag(bool): if True add option to control verbosity of logging
+        version(str): current version of parser applicatin
     Returns:
         created argparser
     """
+    flags = flags[:] if flags is not None else []
+
     todo = prepare_todo(
         todo,
+        failfastflag=failfastflag,
+        flags=flags,
         multiprocessed=multiprocessed,
         pages=pages,
         prefix=prefix,
-        flags=flags,
+        verboseflag=verboseflag,
     )
 
     parser = argparse.ArgumentParser(
@@ -193,6 +188,8 @@ def create_parser(
                 parser.add_argument(*shortcuts, action='store_true', help=msg)
 
     use_todo(parser, todo)
+
+
     return parser
 
 
@@ -204,6 +201,8 @@ def prepare_todo(
         todo,
         *,
         multiprocessed: bool,
+        verboseflag: bool,
+        failfastflag: bool,
         pages: bool,
         prefix: bool,
         flags: list = None,
@@ -256,8 +255,23 @@ def prepare_todo(
         )
         todo.insert(0, page)
 
-    todo.extend(COMMANDS)
+    if verboseflag:
+        todo.append(
+            Flag(
+                args={
+                    'action': 'count',
+                },
+                longcut=VERBOSE,
+                message='define verbose level of logging',
+                shortcut='V',
+            ))
 
+    if failfastflag:
+        todo.append(
+            Flag(
+                longcut='ff',
+                message='failfast: quit after the first error',
+            ))
     return todo
 
 
@@ -360,7 +374,10 @@ def sources(args, *, singleinput: bool = False, verbose: bool = False):
     if prefix is not False:
         result.append(prefix)
     if verbose:
-        verb = int(args[VERBOSE]) if args[VERBOSE] else 0
+        try:
+            verb = int(args[VERBOSE])
+        except (KeyError, TypeError):
+            verb = 0
         result.append(verb)
     return tuple(result)
 
