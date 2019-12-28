@@ -11,7 +11,7 @@ import re
 import sys
 
 
-def forward_slash(content: str, save_newline: bool = True):
+def forward_slash(content: str, save_newline: bool = True) -> str:
     """Replace every backward slash \\ with an forward slash /.
 
     Args:
@@ -32,7 +32,7 @@ def forward_slash(content: str, save_newline: bool = True):
     return content
 
 
-def fix_encoding(msg: str):
+def fix_encoding(msg: str) -> str:
     """Remove invalid character to display on console
 
     Args:

@@ -44,7 +44,7 @@ def flatten(lists):
     return result
 
 
-def select(items, selector):
+def select(items, selector) -> list:
     """Select items which are instance of `selector`
 
     Args:
@@ -56,7 +56,6 @@ def select(items, selector):
     if isinstance(items, dict):
         items = items.values()
     selected = [item for item in items if isinstance(item, selector)]
-
     return selected
 
 

@@ -13,7 +13,7 @@ import inspect
 from utila.logger import error
 
 
-def checkdatatype(func):
+def checkdatatype(func) -> callable:
     """Decorator to ensure that passed data matches with defined datatype.
 
     Args:
