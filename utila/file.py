@@ -196,6 +196,16 @@ def file_copy(
         destination: str,
         skip_overwrite: bool = True,
 ):
+    """Copy a single `source` file to `destination` file or folder.
+
+    Args:
+        source(str): path to existing source file
+        destination(str): a folder or a file to copy
+        skip_overwrite(bool): if True an existing equal file is not
+                              touched. Last modification date stays
+                              equal.
+    """
+    assert os.path.exists(source), f'"{source}" does not exists'
     try:
         if skip_overwrite and file_compare(source, destination):
             return
@@ -207,7 +217,8 @@ def file_copy(
         exit(FAILURE)
 
 
-def isfilepath(path: str):
+def isfilepath(path: str) -> bool:
+    """Check that given `path` is a file path."""
     assert path, path
     if os.path.exists(path):
         return os.path.isfile(path)
@@ -227,7 +238,7 @@ def copy_content(
         skip_overwrite: bool = False,
 ):
     """Copy the content from `source` to `destination` folder. If
-    `desitination` folder does not exists, it will be created.
+    `destination` folder does not exists, it will be created.
 
     Hint:
         Why not using shutil.copytree?: Copy tree expect that

@@ -79,7 +79,7 @@ def run_command(
         main: callable,
         success: bool,
         monkeypatch,
-)->int:
+) -> int:
     """Run `main` with `command`
 
     Args:
