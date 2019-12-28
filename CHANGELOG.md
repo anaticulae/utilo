@@ -2,6 +2,34 @@
 
 Every noteable change is logged here.
 
+## v1.11.0
+
+### Feature
+
+* disable prefix flag as default (18d5937e67f1)
+* disable verbose flag as default (22fc646ca992)
+* disable --ff as default (10295e6d93ae)
+* sort parameter alphabetically (bd17c54230dc)
+* extend public API (a631bcb7cda6)
+* add parameter to make parser creation more configuration able (a2fefc90f537)
+* add return code to `run_command` (ed2566c1e65f)
+* extend interface documentation (878c40743938)
+* extend should_skip to support check of multiple pages in one (604ef943e940)
+* add check to avoid changing with chdir to path location (be9bdb28e272)
+
+### Fix
+
+* remove malformed long cut (5e65bdc1da15)
+* fix spelling error (67523fbe8b67)
+
+### Documentation
+
+* extend interface documentation (800c61cb8e52)
+* extend interface documentation (3b1a215391c1)
+* improve interface documentation (463c2e4de682)
+* extend interface documentation (eee4e5f6e2ec)
+* fix interface documentation (ad6f001edc7e)
+
 ## v1.10.0
 
 ### Feature
