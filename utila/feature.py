@@ -487,7 +487,7 @@ def commandline(
         result.append(Parameter(longcut=item))
 
     # run all workplan feature
-    result.append(Flag('--all'))
+    result.append(Flag(longcut='all'))
 
     return result
 
