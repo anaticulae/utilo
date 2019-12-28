@@ -119,7 +119,7 @@ def create_parser( # pylint:disable=R1260
         outputparameter: bool = False,
         pages: bool = False,
         prefix: bool = True,
-        verboseflag: bool = True,
+        verboseflag: bool = False,
 ) -> argparse.ArgumentParser:
     """Create parser out of defined dictonary with command-line-definiton.
 

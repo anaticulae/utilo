@@ -45,6 +45,7 @@ def test_cli_parse_args(monkeypatch):
         prog='parser',
         todo=todo,
         failfastflag=True,
+        verboseflag=True,
     )
 
     argv = ['parser', '--alls', '"hallo this is helmut"', '--nothing', 'aaa']
