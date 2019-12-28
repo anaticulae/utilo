@@ -112,7 +112,7 @@ def create_parser( # pylint:disable=R1260
         description: str = '',
         prog: str = '',
         *,
-        failfastflag: bool = True,
+        failfastflag: bool = False,
         flags: list = None,
         inputparameter: bool = False,
         multiprocessed: bool = False,
