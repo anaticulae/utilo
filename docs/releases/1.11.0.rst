@@ -30,3 +30,12 @@ Cmd
 * [x] sort commands alphabetically
 
 * [x] make fail fast and verbose optional via parameter
+
+code
+----
+
+after
+-----
+
+* Total coverage: 93.07%
+* Your code has been rated at 9.75/10
