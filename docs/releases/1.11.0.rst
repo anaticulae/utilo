@@ -6,7 +6,9 @@ RP 1.11.0
 Maintainance
 ------------
 
-* [ ] refactor class names to avoid collision on `Content` etc.
+* [/] refactor class names to avoid collision on `Content` etc.
+
+.. note :: This was a problem in iamraw-package and is already solved.
 
 Utils
 -----
