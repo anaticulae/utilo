@@ -19,6 +19,7 @@ from utila.classificator import three_side_equal_cluster
 from utila.cli import INVALID_COMMAND
 from utila.cli import Command
 from utila.cli import Flag
+from utila.cli import Number
 from utila.cli import Parameter
 from utila.cli import RequiredCommand
 from utila.cli import is_userflag
