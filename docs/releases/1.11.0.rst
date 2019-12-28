@@ -18,7 +18,7 @@ Utils
 File
 ----
 
-* [ ] support to copy single files
+* [x] support to copy single files
 
 Cmd
 ---

@@ -81,8 +81,9 @@ def file_create(path: str, content: str = ''):
     Hint:
         If file exists, an assertion is raised.
     """
-
-    assert not os.path.exists(path), 'File already exists: %s' % path
+    parent = os.path.split(path)[0]
+    assert os.path.exists(parent) or not parent, f'{parent} does not exists'
+    assert not os.path.exists(path), f'{path} already exists'
     with open(path, mode='w', newline=NEWLINE, encoding=UTF8) as fp:
         fp.write(content)
 

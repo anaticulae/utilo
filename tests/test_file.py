@@ -429,3 +429,17 @@ def test_file_make_package_root():
     result = utila.make_package(path, root='www')
 
     assert result == expected, str(result)
+
+
+def test_file_copy_single_file(testdir):
+    root = str(testdir)
+    source = os.path.join(root, 'source')
+    dest = os.path.join(root, 'destination')
+    os.makedirs(source)
+    os.makedirs(dest)
+
+    sourcefile = os.path.join(source, 'hello')
+    utila.file_create(sourcefile)
+
+    utila.file_copy(sourcefile, dest)
+    assert os.path.exists(os.path.join(dest, 'hello'))
