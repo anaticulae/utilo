@@ -1,0 +1,16 @@
+.. _1_12_0:
+
+RP 1.12.0
+=========
+
+quality
+-------
+
+before
+~~~~~~
+
+* Total coverage: 93.40%
+* Your code has been rated at 9.77/10
+
+after
+~~~~~

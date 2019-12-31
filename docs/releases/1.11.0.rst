@@ -22,7 +22,7 @@ File
 
 * [x] support to copy single files
 
-Cmd
+cli
 ---
 
 * [x] fix fast fail command: set disabled as default
@@ -31,11 +31,14 @@ Cmd
 
 * [x] make fail fast and verbose optional via parameter
 
+* [x] add multiple outputs defined by *-pattern/ add option to create
+  subfolder by using /-pattern
+
 code
 ----
 
 after
 -----
 
-* Total coverage: 93.07%
-* Your code has been rated at 9.75/10
+* Total coverage: 93.40%
+* Your code has been rated at 9.77/10
