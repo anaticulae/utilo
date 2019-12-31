@@ -307,9 +307,9 @@ def run_hook_safely(
         result = [result]
     # Verify result
     if result and len(stepoutput) != len(result):
-        error('wrong return value count')
-        error('interface count %d' % len(stepoutput))
-        error('return count from method %d' % len(result))
+        error(f'wrong return value count in step: `{name}`')
+        error(f'interface count: {len(stepoutput)}')
+        error(f'return count from step: {len(result)}')
         raise InterfaceMismatch
     return result
 
@@ -323,9 +323,9 @@ def write_result_safely(result, processstep, outputstep):
             file_replace(path, content)
         return SUCCESS
     except TypeError as msg:
-        error('while processing %s' % processstep)
+        error(f'while processing {processstep}')
         error('wrong return value')
-        error('current return value: %s' % result)
+        error(f'current return value: {result}')
         error(msg)
         return FAILURE
 
