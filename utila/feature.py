@@ -694,12 +694,12 @@ def prepare_variables(variables, args):
 def prepare_inputs(inputs, inspaces, outspace) -> typing.List[str]:
     """Parse single and multiple file input
 
-    Loacted files by defined pattern in `Workplan`. A file pattern is defined
+    Locate files by defined pattern in `Workplan`. A file pattern is defined
     via (name, typ). The ext is in UPPER-CASES, for example (*, PDF) to
     locate multiple pdf's.
 
     Args:
-        inputs(str): inputs is deliverd by workplan
+        inputs(str): inputs are defined in a workplan
         inspaces([str]): inspaces is the current input via -i
     Returns:
         list of located files
@@ -766,15 +766,16 @@ def prepare_outputs(
         process_: str,
         stepname: str,
         prefix: str,
-        outputs: str,
+        outputs: list,
         outspace: str,
 ) -> typing.List[str]:
     """Support different output types
 
     Args:
-        process(str):
+        process_(str): name to invoke program by system call
+        stepname(str): a step describes a part of working in the process
         prefix(str): optional to add prefix to differentiate output files
-        outputs(str):
+        outputs(list): list of items to write results of steps as files
         outspace(str): folder to write results
     Returns:
         a list with paths to write output
