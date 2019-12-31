@@ -820,26 +820,19 @@ def verify_interface(inputs, outputs, worker):
     # check callable
     # check input parameter
     call_parameter = inspect.signature(worker).parameters
-    interface_error_msg = 'interface error %s != %s' % (
-        list(call_parameter.keys()),
-        inputs,
-    )
-
     # optional pages flag, reduces count of required parameter in definition
     has_pages = int(PAGES_FLAG in call_parameter)
     if not len(call_parameter) == len(inputs) + has_pages:
-        error('missing input resources: %s' % interface_error_msg)
+        error(f'missing input resources: '
+              f'interface error {list(call_parameter.keys())} != {inputs}')
         return FAILURE
 
     # check output parameter
     return_parameter = str(inspect.signature(worker).return_annotation)
     return_count = return_parameter.count('str')
-    interface_error_msg = 'interface error %s != %s' % (
-        return_parameter,
-        outputs,
-    )
     if not len(outputs) == return_count:
-        error('missing output resources: %s' % interface_error_msg)
+        error(f'missing output resources: '
+              f'interface error {return_parameter} != {outputs}')
         return FAILURE
     return SUCCESS
 
