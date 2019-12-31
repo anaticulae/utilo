@@ -2,6 +2,16 @@
 
 Every noteable change is logged here.
 
+## v1.11.1
+
+### Feature
+
+* support multiple output parameter (b4aba2476ffd)
+
+### Documentation
+
+* fix interface documentation (bed5a55ffeb8)
+
 ## v1.11.0
 
 ### Feature
