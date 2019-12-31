@@ -788,12 +788,11 @@ def prepare_outputs(
             try:
                 item, datatype = item
             except ValueError:
-                error('checking output number %d' % index)
-                msg = 'require tuple with (item, datatype). got: %r %s'
-                error(msg % (item, type(item)))
+                error(f'checking output number {index}')
+                error(f'require tuple with (item, datatype).'
+                      f' got: {item!r} {type(item)}')
                 ret += 1
-        outitem = '%s__%s%s_%s.%s'
-        outitem = outitem % (process_, prefix, stepname, item, datatype)
+        outitem = f'{process_}__{prefix}{stepname}_{item}.{datatype}'
         _outputs.append(outitem)
 
     if ret:
