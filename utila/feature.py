@@ -306,11 +306,17 @@ def run_hook_safely(
     if isinstance(result, str):
         result = [result]
     # Verify result
-    if result and len(stepoutput) != len(result):
+    variable_returnvalues = variable_parameter(stepoutput)
+    if result and len(stepoutput) != len(result) and not variable_returnvalues:
         error(f'wrong return value count in step: `{name}`')
         error(f'interface count: {len(stepoutput)}')
         error(f'return count from step: {len(result)}')
         raise InterfaceMismatch
+    return result
+
+
+def variable_parameter(items):
+    result = any(['*' in item for item in items])
     return result
 
 
