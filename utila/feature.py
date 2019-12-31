@@ -15,6 +15,11 @@
         PROCESS_DESCRIPTION,
         VERSION,
     )
+
+requirements
+------------
+
+.. note :: TODO: SUPPORT ONLY ONE VARIABLE INPUT AND OUTPUT PARAMETER?
 """
 import collections
 import concurrent.futures
@@ -168,7 +173,7 @@ def process(
         errorhook: ErrorHook = None,
         *,
         failfast: bool = False,
-):
+) -> int:
     """Process the given features. The process ignores errors in
     sub-steps and run till the end. If some error occurs, the process
     returns an `FAILURE` after finishing. If the todo-list is empty,
@@ -323,6 +328,22 @@ def variable_parameter(items):
 def write_result_safely(result, processstep, outputstep):
     call('write results')
     try:
+        variable_returnvalues = variable_parameter(outputstep)
+        if variable_returnvalues:
+            assert len(outputstep) == 1, (f'only one variable parameter '
+                                          f'is supported {outputstep}')
+            outputstep = outputstep[0]
+            splitted = outputstep.split('/')
+            if len(splitted) == 2:
+                # create parent folder if required
+                # cli_example__multistep_pages/view_*.html
+                # adding list of files in parent folder is possible
+                os.makedirs(splitted[0], exist_ok=True)
+            # replace star-pattern to archive indexed output paths
+            outputstep = [
+                outputstep.replace('*', f'{index}')
+                for index, content in enumerate(result)
+            ]
         for path, content in zip(outputstep, result):
             info('write %s' % path)
             # write content to file.
@@ -836,7 +857,9 @@ def verify_interface(inputs, outputs, worker):
     # check output parameter
     return_parameter = str(inspect.signature(worker).return_annotation)
     return_count = return_parameter.count('str')
-    if not len(outputs) == return_count:
+
+    variable_returnvalues = variable_parameter(outputs)
+    if not len(outputs) == return_count and not variable_returnvalues:
         error(f'missing output resources: '
               f'interface error {return_parameter} != {outputs}')
         return FAILURE

@@ -7,6 +7,7 @@
 # be prosecuted under federal law. Its content is company confidential.
 # =============================================================================
 
+import os
 import sys
 from contextlib import contextmanager
 from functools import partial
@@ -66,6 +67,30 @@ EXAMPLE_WITH_PAGE_WORKPLAN = [
             File('third'),
         ],
         (('result'),),
+    ),
+]
+
+EXAMPLE_MULTIPLE_RETURNVALUES = """
+def work(test : str) -> list:
+    result = []
+    result.append('Hello')
+    result.append('Mr')
+    result.append('Tom')
+    result.append('.')
+    print('work')
+    return result
+
+def name():
+    return 'multistep'
+"""
+
+EXAMPLE_MULTIPLE_RETURNVALUES_WORKPLAN = [
+    create_step(
+        'multistep',
+        [
+            File('third'),
+        ],
+        (('pages/view_*', 'html'),),
     ),
 ]
 
@@ -298,3 +323,18 @@ def test_cli_multiple_jobs(
         out, err = capsys.readouterr()
     error_message = '%s\n%s\n%s' % (result, out, err)
     assert returncode(result) == SUCCESS, str(error_message)
+
+
+def test_workplan_multiple_returnvalues(testdir, monkeypatch, capsys):  # pylint:disable=W0621
+    invalid = create_runner(workplan=EXAMPLE_MULTIPLE_RETURNVALUES_WORKPLAN)
+    root, _ = cli_example(testdir, EXAMPLE_MULTIPLE_RETURNVALUES)
+    with run_cli(root, monkeypatch, '--all', runner=invalid) as result:
+        out, err = capsys.readouterr()
+    assert returncode(result) == SUCCESS, str(out) + str(err)
+    path = str(testdir)
+    pages = os.path.join(path, 'cli_example__multistep_pages')
+    assert os.path.exists(pages), str(pages)
+    # test to create multiple return files
+    created_files = os.listdir(pages)
+    # 4 html files must be created
+    assert len(created_files) == 4
