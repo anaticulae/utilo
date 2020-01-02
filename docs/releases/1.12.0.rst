@@ -3,6 +3,22 @@
 RP 1.12.0
 =========
 
+cli
+~~~
+
+* [ ] fix creating of required folder defined in workplan via
+ 'abc/def/index.txt'. There is a problem with windows absolut path's.
+
+* [ ] add --quite option to suppress logging
+
+* [ ] fix file output name on --help
+
+file
+~~~~
+
+* [ ] fix error in isfilepath when using /abc/def/../hello, double dots leats
+ to detecting as file path
+
 quality
 -------
 
