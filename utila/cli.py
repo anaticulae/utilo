@@ -119,6 +119,7 @@ def create_parser(  # pylint:disable=R1260
         outputparameter: bool = False,
         pages: bool = False,
         prefix: bool = False,
+        quiteflag: bool = False,
         verboseflag: bool = False,
 ) -> argparse.ArgumentParser:
     """Create parser out of defined dictonary with command-line-definiton.
@@ -136,6 +137,7 @@ def create_parser(  # pylint:disable=R1260
         todo(list): extend default parser with todo list
         verboseflag(bool): if True add option to control verbosity of logging
         version(str): current version of parser applicatin
+        quiteflag(bool): if True add option to suppress logging
     Returns:
         created argparser
     """
@@ -148,6 +150,7 @@ def create_parser(  # pylint:disable=R1260
         multiprocessed=multiprocessed,
         pages=pages,
         prefix=prefix,
+        quiteflag=quiteflag,
         verboseflag=verboseflag,
     )
 
@@ -204,6 +207,7 @@ def prepare_todo(
         failfastflag: bool,
         pages: bool,
         prefix: bool,
+        quiteflag: bool,
         flags: list = None,
 ):
     todo = todo if todo else []
@@ -271,6 +275,10 @@ def prepare_todo(
                 longcut='ff',
                 message='failfast: quit after the first error',
             ))
+
+    if quiteflag:
+        todo.append(Flag(longcut='quite', message='suppress logging'))
+
     todo = sort(todo)
     return todo
 

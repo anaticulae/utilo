@@ -81,9 +81,10 @@ def featurepack(
         flags: list = None,
         multiprocessed: bool = False,
         pages: bool = False,
+        prefixflag: bool = True,
+        quiteflag: bool = False,
         singleinput: bool = False,
         verboseflag: bool = True,
-        prefixflag: bool = True,
 ) -> int:
     """Run featurepack defined in `workplan`
 
@@ -113,10 +114,11 @@ def featurepack(
         multiprocessed=multiprocessed,
         outputparameter=True,
         pages=pages,
+        prefix=prefixflag,
         prog=name,
+        quiteflag=quiteflag,
         verboseflag=verboseflag,
         version=version,
-        prefix=prefixflag,
     )
     args = parse(parser)
 
@@ -129,7 +131,12 @@ def featurepack(
     )
 
     # update logging level
-    level_setup(Level(verbose))
+    level = Level(verbose)
+    with contextlib.suppress(KeyError):
+        if args['quite']:
+            # suppress logging - log only errors
+            level = Level.ERROR
+    level_setup(level)
 
     hooks = prepare_hooks(feature)
     workplan = read_workplan(

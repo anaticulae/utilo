@@ -9,7 +9,7 @@ cli
 * [ ] fix creating of required folder defined in workplan via
  'abc/def/index.txt'. There is a problem with windows absolut path's.
 
-* [ ] add --quite option to suppress logging
+* [x] add --quite option to suppress logging
 
 * [ ] fix file output name on --help
 
