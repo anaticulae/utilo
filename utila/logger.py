@@ -87,7 +87,7 @@ def log_stacktrace():
     error(forward_slash(stack_trace))
 
 
-def log_args(func):
+def log_args(func) -> callable:
     """Decorator to write passed arguments to function call. Log if
     logging `LEVEL` is higher equal than Level.CALLS.
 
@@ -169,6 +169,10 @@ def profile(msg: str = ''):
 
     Args:
         msg(str): extend runtime message to differentiate multiple runtime
+    Yields:
+        None: to run commands to profile
+    Raises:
+        Exception: re raise Exception which was raised while profiling
     """
     start = time.time()
     try:
