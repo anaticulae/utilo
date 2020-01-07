@@ -7,35 +7,22 @@
 # be prosecuted under federal law. Its content is company confidential.
 # =============================================================================
 
+import contextlib
+import functools
 import os
 import sys
-from contextlib import contextmanager
-from functools import partial
-from os import makedirs
-from os.path import exists
-from os.path import join
 
-from pytest import mark
-from pytest import raises
+import pytest
 
 import utila
-from utila import FAILURE
-from utila import File
-from utila import create_step
-from utila import featurepack
-from utila import file_create
-from utila import file_remove
-from utila import returncode
-from utila.feature import PAGES_FLAG
-from utila.utils import SUCCESS
 
 WORKPLAN = [
-    create_step(
+    utila.create_step(
         'first_cli_step',
         [
-            File('first'),
-            File('second', 'html'),
-            File('third'),
+            utila.File('first'),
+            utila.File('second', 'html'),
+            utila.File('third'),
         ],
         (('result'),),
     ),
@@ -60,11 +47,11 @@ def name():
 """
 
 EXAMPLE_WITH_PAGE_WORKPLAN = [
-    create_step(
+    utila.create_step(
         'cli_with_pages',
         [
-            File('second', 'html'),
-            File('third'),
+            utila.File('second', 'html'),
+            utila.File('third'),
         ],
         (('result'),),
     ),
@@ -85,24 +72,24 @@ def name():
 """
 
 EXAMPLE_MULTIPLE_RETURNVALUES_WORKPLAN = [
-    create_step(
+    utila.create_step(
         'multistep',
         [
-            File('third'),
+            utila.File('third'),
         ],
         (('pages/view_*', 'html'),),
     ),
 ]
 
 INVALID_WORKPLAN = [
-    create_step(
+    utila.create_step(
         'cli_with_pages',
         [
             # Pages parameter is not allowed in workplan, it is delivered
             # automatically if needed
-            File(PAGES_FLAG),
-            File('second', 'html'),
-            File('third'),
+            utila.File(utila.PAGES_FLAG),
+            utila.File('second', 'html'),
+            utila.File('third'),
         ],
         (('result'),),
     ),
@@ -111,26 +98,26 @@ INVALID_WORKPLAN = [
 
 def cli_example(testdir, example=EXAMPLE):
     root = str(testdir)
-    example_path = join(root, 'example')
-    makedirs(example_path)
-    featurepath = join(example_path, 'features')
-    makedirs(featurepath)
+    example_path = os.path.join(root, 'example')
+    os.makedirs(example_path)
+    featurepath = os.path.join(example_path, 'features')
+    os.makedirs(featurepath)
 
-    cli_example_feature = join(featurepath, 'cli_example.py')
-    file_create(cli_example_feature, example)
+    cli_example_feature = os.path.join(featurepath, 'cli_example.py')
+    utila.file_create(cli_example_feature, example)
 
-    cli_example_feature_init = join(featurepath, '__init__.py')
-    file_create(cli_example_feature_init, '')
+    cli_example_feature_init = os.path.join(featurepath, '__init__.py')
+    utila.file_create(cli_example_feature_init, '')
 
-    cli_example_init = join(example_path, '__init__.py')
-    file_create(cli_example_init, '')
+    cli_example_init = os.path.join(example_path, '__init__.py')
+    utila.file_create(cli_example_init, '')
 
     sys.path.append(root)
 
     # create test files
-    file_create('first.yaml')
-    file_create('second.html')
-    file_create('third.yaml')
+    utila.file_create('first.yaml')
+    utila.file_create('second.html')
+    utila.file_create('third.yaml')
 
     return (root, featurepath)
 
@@ -139,7 +126,7 @@ PROCESSNAME = 'cli_example'
 
 
 def create_runner(
-        featurepack_=featurepack,
+        featurepack_=utila.featurepack,
         description='',
         featurepackage='example.features',
         multiprocessed=False,
@@ -150,7 +137,7 @@ def create_runner(
 ):
     if workplan is None:
         workplan = list(WORKPLAN)
-    runner = partial(
+    runner = functools.partial(
         featurepack_,
         description=description,
         featurepackage=featurepackage,
@@ -166,7 +153,7 @@ def create_runner(
 Runner = create_runner()  # pylint:disable=C0103
 
 
-@contextmanager
+@contextlib.contextmanager
 def run_cli(root, monkeypatch, cmdline, runner=Runner):
     """Run test command line interface
 
@@ -174,7 +161,7 @@ def run_cli(root, monkeypatch, cmdline, runner=Runner):
     """
     cmdline = cmdline.split()
     with monkeypatch.context() as context:
-        with raises(SystemExit) as result:
+        with pytest.raises(SystemExit) as result:
             context.setattr(sys, 'argv', [PROCESSNAME] + cmdline)
             runner(root=root)
     yield result
@@ -186,7 +173,7 @@ def test_workplan_invalid(testdir, monkeypatch, capsys):  # pylint:disable=W0621
     with run_cli(root, monkeypatch, '--all', runner=invalid) as result:
         out, err = capsys.readouterr()
     assert 'parameter `pages` is not allowed' in err
-    assert returncode(result) == FAILURE, str(out) + str(err)
+    assert utila.returncode(result) == utila.FAILURE, str(out) + str(err)
 
 
 def test_workplan_valid_with_pages(testdir, monkeypatch, capsys):  # pylint:disable=W0621
@@ -195,7 +182,7 @@ def test_workplan_valid_with_pages(testdir, monkeypatch, capsys):  # pylint:disa
     command = '--all --pages=5:10'
     with run_cli(root, monkeypatch, command, runner=valid) as result:
         out, err = capsys.readouterr()
-    assert returncode(result) == SUCCESS, str(out) + str(err)
+    assert utila.returncode(result) == utila.SUCCESS, str(out) + str(err)
 
 
 def test_cli_example(testdir, monkeypatch, capsys):  # pylint:disable=W0621
@@ -207,10 +194,10 @@ def test_cli_example(testdir, monkeypatch, capsys):  # pylint:disable=W0621
     assert 'inputs:' in captured, str(captured)
     assert 'outputs:' in captured, str(captured)
 
-    assert returncode(result) == SUCCESS, str(result)
+    assert utila.returncode(result) == utila.SUCCESS, str(result)
 
 
-@mark.parametrize('command', [
+@pytest.mark.parametrize('command', [
     '--all',
     '--pages=0:10',
 ])
@@ -223,7 +210,7 @@ def test_cli_example_all(testdir, monkeypatch, capsys, command):
     assert len(out) > 50, str(out) + str(err)
     assert not err, str(err)
 
-    assert returncode(result) == SUCCESS, str(result)
+    assert utila.returncode(result) == utila.SUCCESS, str(result)
 
 
 def test_cli_print_processing_step(testdir, monkeypatch, capsys):
@@ -234,12 +221,12 @@ def test_cli_print_processing_step(testdir, monkeypatch, capsys):
     with run_cli(root, monkeypatch, '--all -VVV') as result:
         out = capsys.readouterr().out
 
-    assert returncode(result) == SUCCESS, str(result)
+    assert utila.returncode(result) == utila.SUCCESS, str(result)
     assert len(out) > 100
     assert 'processing: first_cli_step' in out, utila.log_raw(out)
 
 
-@mark.parametrize(
+@pytest.mark.parametrize(
     'create_missing_input',
     [True, False],
 )
@@ -252,19 +239,19 @@ def test_cli_multiple_input(
     cli_example(testdir)
     root = str(testdir)
     # remove file out of first example to test multiple -i sources
-    first_yaml = join(root, 'first.yaml')
-    assert exists(first_yaml), first_yaml
-    file_remove(first_yaml)
-    assert not exists(first_yaml), first_yaml
+    first_yaml = os.path.join(root, 'first.yaml')
+    assert os.path.exists(first_yaml), first_yaml
+    utila.file_remove(first_yaml)
+    assert not os.path.exists(first_yaml), first_yaml
 
-    second_input = join(root, 'second')
-    makedirs(second_input)
+    second_input = os.path.join(root, 'second')
+    os.makedirs(second_input)
 
     if create_missing_input:
-        second_first_yaml = join(second_input, 'first.yaml')
-        assert not exists(second_first_yaml), second_first_yaml
-        file_create(second_first_yaml)
-        assert exists(second_first_yaml), second_first_yaml
+        second_first_yaml = os.path.join(second_input, 'first.yaml')
+        assert not os.path.exists(second_first_yaml), second_first_yaml
+        utila.file_create(second_first_yaml)
+        assert os.path.exists(second_first_yaml), second_first_yaml
 
     # run
     inputcmd = '-i %s -i %s -VVV' % (root, second_input)
@@ -272,9 +259,9 @@ def test_cli_multiple_input(
         out, err = capsys.readouterr()
 
     # check
-    expected_result = SUCCESS if create_missing_input else FAILURE
+    expected_result = utila.SUCCESS if create_missing_input else utila.FAILURE
     error_message = '%s\n%s\n%s' % (result, out, err)
-    assert returncode(result) == expected_result, error_message
+    assert utila.returncode(result) == expected_result, error_message
 
 
 def test_cli_multiple_input_with_double_input(
@@ -286,23 +273,24 @@ def test_cli_multiple_input_with_double_input(
     cli_example(testdir)
     root = str(testdir)
 
-    second_input = join(root, 'second')
-    makedirs(second_input)
+    second_input = os.path.join(root, 'second')
+    os.makedirs(second_input)
 
-    third_path = join(second_input, 'third.yaml')
-    file_create(third_path)
-    assert exists(third_path)
+    third_path = os.path.join(second_input, 'third.yaml')
+    utila.file_create(third_path)
+    assert os.path.exists(third_path)
 
     inputcmd = '-i %s -i %s -VVV' % (root, second_input)
     with run_cli(root, monkeypatch, inputcmd) as result:
         out, err = capsys.readouterr()
-    assert returncode(result) == SUCCESS, str(result) + str(out) + str(err)
+    assert utila.returncode(
+        result) == utila.SUCCESS, str(result) + str(out) + str(err)
 
 
 MULTI_RUNNER = create_runner(multiprocessed=True)
 
 
-@mark.parametrize(
+@pytest.mark.parametrize(
     'jobs',
     [
         1,  # single processed
@@ -322,7 +310,7 @@ def test_cli_multiple_jobs(
     with run_cli(root, monkeypatch, cmd, MULTI_RUNNER) as result:
         out, err = capsys.readouterr()
     error_message = '%s\n%s\n%s' % (result, out, err)
-    assert returncode(result) == SUCCESS, str(error_message)
+    assert utila.returncode(result) == utila.SUCCESS, str(error_message)
 
 
 def test_workplan_multiple_returnvalues(testdir, monkeypatch, capsys):  # pylint:disable=W0621
@@ -330,7 +318,7 @@ def test_workplan_multiple_returnvalues(testdir, monkeypatch, capsys):  # pylint
     root, _ = cli_example(testdir, EXAMPLE_MULTIPLE_RETURNVALUES)
     with run_cli(root, monkeypatch, '--all', runner=invalid) as result:
         out, err = capsys.readouterr()
-    assert returncode(result) == SUCCESS, str(out) + str(err)
+    assert utila.returncode(result) == utila.SUCCESS, str(out) + str(err)
     path = str(testdir)
     pages = os.path.join(path, 'cli_example__multistep_pages')
     assert os.path.exists(pages), str(pages)
