@@ -326,7 +326,12 @@ def parse(parser: argparse.ArgumentParser):
     return args
 
 
-def sources(args, *, singleinput: bool = False, verbose: bool = False):
+def sources(
+        args,
+        *,
+        singleinput: bool = False,
+        verbose: bool = False,
+) -> tuple:
     """Parse the in- and outport from given command line args
 
     The input- and output-path must be a directory. If singleinput flag is
@@ -414,7 +419,7 @@ def evaluate_flags(args, multiprocessed: bool):
     return processes, failfast, pages
 
 
-def is_userflag(flag: str):
+def is_userflag(flag: str) -> bool:
     """Check if `flag` is passed as user argument
 
     Args:
