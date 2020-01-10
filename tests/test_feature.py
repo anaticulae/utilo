@@ -394,9 +394,8 @@ def work(pdf : str, result: str, char_margin : float, char_align : float) -> str
             )
     out, err = capsys.readouterr()
     assert not err, str(err)
-    assert out.count('variable:') == 2, str(out)
-    assert out.count('type:') == 2, str(out)
-    assert out.count('default:') == 2, str(out)
+    assert 'char_align(float)=20' in out
+    assert 'char_margin(float)=0.1' in out
 
     assert returncode(result) == SUCCESS
 

@@ -415,8 +415,9 @@ def prepare_description(name: str, description: str, workplan: list) -> str:
         inputs = []
         for source in step.inputs:
             if isinstance(source, Value):
-                msg = '   variable: %s, type: %s, default: %s'
-                msg = msg % (source.name, source.typ, str(source.defaultvar))
+                # for example: <class 'float'>
+                datatype = str(source.typ).split("'")[1]
+                msg = f'   {source.name}({datatype})={source.defaultvar}'
                 inputs.append(msg)
             elif isinstance(source, ResultFile):
                 inputs.append(f'   {source}')
