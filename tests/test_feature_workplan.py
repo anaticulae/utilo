@@ -116,7 +116,7 @@ def test_feature_resultfile_ctor_position():
 
 def test_parallelize_workplan_multiprocessing():
     """Test to ensure that parallelizing works with multi resource
-    environment. This is an old example wich failed before."""
+    environment. This is an old example which failed before."""
     example = tests.examples.workplan.multistep.WORKPLAN
     root = tests.examples.workplan.multistep.ROOT
 

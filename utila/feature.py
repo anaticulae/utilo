@@ -396,7 +396,14 @@ def prepare_hooks(items: typing.List[FeatureInterface]):
     return result
 
 
-def prepare_description(name: str, description: str, workplan):
+def prepare_description(name: str, description: str, workplan: list) -> str:
+    """Create help description with in- and outports for program steps.
+
+    Args:
+        name(str): application name
+    Returns:
+        help description
+    """
     result = [
         '\nworking plan resources:\n',
     ]
@@ -531,7 +538,7 @@ def create_step(
         name: str,
         inputs: typing.List['Input'],
         output: typing.Tuple[str],
-):
+) -> WorkStep:
     """
     step = {
         NAME: name,
