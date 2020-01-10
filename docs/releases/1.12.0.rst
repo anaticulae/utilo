@@ -13,6 +13,8 @@ cli
 
 * [x] fix file output name on --help
 
+* [ ] support `helm/file/directory` as file input
+
 file
 ~~~~
 
