@@ -19,7 +19,7 @@ WORKPLAN = [
         inputs=[
             ResultFile(producer='rawmaker', name='text_text'),
         ],
-        output=('chapter',),
+        output=('charls',),
     ),
     step(
         'toc',
@@ -45,7 +45,7 @@ WORKPLAN = [
             ResultFile(producer='rawmaker', name='border_pages'),
             ResultFile(producer='groupme', name='pagenumbers_pagenumbers'),
         ],
-        output=('footer',),
+        output=('result',),
     )
 ]
 

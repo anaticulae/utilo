@@ -418,6 +418,8 @@ def prepare_description(name: str, description: str, workplan: list) -> str:
                 msg = '   variable: %s, type: %s, default: %s'
                 msg = msg % (input_.name, input_.typ, str(input_.defaultvar))
                 inputs.append(msg)
+            elif isinstance(input_, ResultFile):
+                inputs.append(f'   {input_}')
             else:
                 try:
                     fname, fending = input_
@@ -434,7 +436,7 @@ def prepare_description(name: str, description: str, workplan: list) -> str:
                 fname, fending = output_
             except ValueError:
                 fname, fending = output_, 'yaml'
-            outputs.append('   %s__%s.%s' % (name, fname, fending))
+            outputs.append(f'   {name}__{item.name}_{fname}.{fending}')
         result.extend(sorted(outputs))
 
         # final newline

@@ -11,7 +11,7 @@ cli
 
 * [x] add --quite option to suppress logging
 
-* [ ] fix file output name on --help
+* [x] fix file output name on --help
 
 file
 ~~~~
