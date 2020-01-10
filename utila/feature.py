@@ -407,42 +407,42 @@ def prepare_description(name: str, description: str, workplan: list) -> str:
     result = [
         '\nworking plan resources:\n',
     ]
-    for item in workplan:
-        result.append('step:\n   %s' % item.name)
+    for step in workplan:
+        result.append(f'step:\n   {step.name}')
 
         # prepare inputs
         result.append('inputs:')
         inputs = []
-        for input_ in item.inputs:
-            if isinstance(input_, Value):
+        for source in step.inputs:
+            if isinstance(source, Value):
                 msg = '   variable: %s, type: %s, default: %s'
-                msg = msg % (input_.name, input_.typ, str(input_.defaultvar))
+                msg = msg % (source.name, source.typ, str(source.defaultvar))
                 inputs.append(msg)
-            elif isinstance(input_, ResultFile):
-                inputs.append(f'   {input_}')
+            elif isinstance(source, ResultFile):
+                inputs.append(f'   {source}')
             else:
                 try:
-                    fname, fending = input_
+                    fname, fending = source
                 except ValueError:
-                    fname, fending = input_, 'yaml'
-                inputs.append('   %s.%s' % (fname, fending))
+                    fname, fending = source, 'yaml'
+                inputs.append(f'   {fname}.{fending}')
         result.extend(sorted(inputs))
 
         # prepare outputs
         result.append('outputs:')
         outputs = []
-        for output_ in item.outputs:
+        for dest in step.outputs:
             try:
-                fname, fending = output_
+                fname, fending = dest
             except ValueError:
-                fname, fending = output_, 'yaml'
-            outputs.append(f'   {name}__{item.name}_{fname}.{fending}')
+                fname, fending = dest, 'yaml'
+            outputs.append(f'   {name}__{step.name}_{fname}.{fending}')
         result.extend(sorted(outputs))
 
         # final newline
         result.append('')
-    result = NEWLINE.join(result)
-    return description + NEWLINE + result
+    raw = NEWLINE.join(result)
+    return description + NEWLINE + raw
 
 
 def find_features(
