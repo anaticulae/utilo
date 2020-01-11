@@ -2,6 +2,25 @@
 
 Every noteable change is logged here.
 
+## v1.11.4
+
+### Feature
+
+* support dir-path as file-input (6c50c9bd160f)
+* improve variable presentation (526714c82d5c)
+* add quite flag to suppress logging (cd82339945e0)
+* extend public API (58c35e1ac7e9)
+
+### Fix
+
+* correct input/output resource definition (c36f84594f35)
+
+### Documentation
+
+* extend interface documentation (d513b5953d7d)
+* extend interface documentation (fa416be74f80)
+* extend interface documentation (4cd76f92ea77)
+
 ## v1.11.3
 
 ### Documentation
