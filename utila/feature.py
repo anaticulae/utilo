@@ -792,6 +792,11 @@ def prepare_inputs(inputs, inspaces, outspace) -> typing.List[str]:
                     # File as a input name
                     result.append(inspace)
                     break  # do not double add path
+                elif os.path.isfile(inspace):
+                    # support dir-like file-path as input
+                    # TODO: Introduce new datatype?
+                    result.append(inspace)
+                    break # do not double add path
                 else:
                     ext = ext.lower()
                     pattern = '%s/%s.%s' % (inspace, name, ext)
