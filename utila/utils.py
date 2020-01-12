@@ -125,3 +125,15 @@ def chdir(path: str) -> typing.NoReturn:
         raise
     else:
         os.chdir(before)
+
+@contextlib.contextmanager
+def nothing():
+    """Use a empty contextmanager to ease code.
+
+    Example:
+
+        contextmanager = utila.profile if profiling else utila.nothing
+        with contextmanager():
+            pass
+    """
+    yield
