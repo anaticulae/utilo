@@ -7,7 +7,7 @@ cli
 ~~~
 
 * [ ] fix creating of required folder defined in workplan via
- 'abc/def/index.txt'. There is a problem with windows absolut path's.
+  'abc/def/index.txt'. There is a problem with windows absolut path's.
 
 * [x] add --quite option to suppress logging
 
@@ -18,8 +18,10 @@ cli
 file
 ~~~~
 
-* [ ] fix error in isfilepath when using /abc/def/../hello, double dots leats
- to detecting as file path
+* [/] fix error in isfilepath when using /abc/def/../hello, double dots leats
+  to detecting as file path
+
+.. note :: it seams that this is not required
 
 quality
 -------
