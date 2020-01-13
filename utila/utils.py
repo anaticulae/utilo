@@ -126,6 +126,7 @@ def chdir(path: str) -> typing.NoReturn:
     else:
         os.chdir(before)
 
+
 @contextlib.contextmanager
 def nothing():
     """Use a empty contextmanager to ease code.

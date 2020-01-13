@@ -136,10 +136,10 @@ def create_parser(  # pylint:disable=R1260
         prefix(bool): if true, default prefix is active
         profilingflag(bool): if True --profile option is added
         prog(str): name of application `prog --help`
+        quiteflag(bool): if True add option to suppress logging
         todo(list): extend default parser with todo list
         verboseflag(bool): if True add option to control verbosity of logging
         version(str): current version of parser applicatin
-        quiteflag(bool): if True add option to suppress logging
     Returns:
         created argparser
     """

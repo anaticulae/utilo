@@ -59,8 +59,9 @@ from utila.utils import determine_order
 FeatureInterface = typing.Tuple[str, Command, callable]
 
 WorkStep = collections.namedtuple('WorkStep', 'name inputs outputs')
+WorkSteps = typing.List[WorkStep]
 
-ErrorHook = typing.Tuple[str, Exception]
+ErrorHook = typing.Tuple[Exception, str]
 
 
 class InterfaceMismatch(TypeError):
@@ -69,7 +70,7 @@ class InterfaceMismatch(TypeError):
 
 @saveme(systemexit=True)
 def featurepack(
-        workplan: typing.List[WorkStep],
+        workplan: WorkSteps,
         root: str,
         description: str,
         featurepackage: str,
@@ -175,7 +176,7 @@ def featurepack(
 
 
 def process(
-        workplan: typing.List[WorkStep],
+        workplan: WorkSteps,
         name: str = None,
         todo: typing.List = None,
         processes: int = 1,
@@ -191,12 +192,13 @@ def process(
     every single step is processed.
 
     Args:
-        workplan(List[WorkStep]):
+        workplan(WorkSteps): list of defined WorkStep's
         name(str): name of executable
         todo: list with steps to run, if no steps are None, every step is
-              executed
+              executed.
         processes(int): maximal parallel exection steps
-        pagenumbers(list): list with processed pages
+        pages(list): list with processed pages
+        errorhook(ErrorHook): if Error occurrs write it to ErrorHook
         failfast(bool): quit after first failure
         profiling(bool): if True, runtime of every single step is logged
     Returns:
@@ -426,8 +428,10 @@ def prepare_description(name: str, description: str, workplan: list) -> str:
 
     Args:
         name(str): application name
+        description(str): text which is presented in --help view
+        workplan(list): list of WorkingStep's
     Returns:
-        help description
+        Prepared description with out- and input-parameter.
     """
     result = [
         '\nworking plan resources:\n',
@@ -567,15 +571,18 @@ def create_step(
         inputs: typing.List['Input'],
         output: typing.Tuple[str],
 ) -> WorkStep:
-    """
-    step = {
-        NAME: name,
-        INPUT: [
-            ('groupme', 'chapter'),
-            ('iamraw', 'toc'),
-        ],
-        OUTPUT: ('butter', 'tart', 'cream'),
-    }
+    """Create a WorkStep from definition.
+
+    Example:
+
+        step = {
+            NAME: name,
+            INPUT: [
+                ('groupme', 'chapter'),
+                ('iamraw', 'toc'),
+            ],
+            OUTPUT: ('butter', 'tart', 'cream'),
+        }
     """
     assert isinstance(inputs, list), '%s %s' % (type(inputs), str(inputs))
     for index, item in enumerate(inputs):
@@ -607,9 +614,9 @@ def read_workplan(
         prefix(str): to distingush different parameterization written in the
                      same folder
         verify(bool): if True, let execution failed on workplan error
-        processes(int): maximum parallel used processes
+        used_processes(int): maximum parallel used processes
     Returns:
-        parsed list of worksteps with verified inputs
+        Parsed list of worksteps with verified inputs.
     """
     assert used_processes >= 1, 'invalid process count %d' % used_processes
     # if no outspace is defined, use the first passed inspace to write output
@@ -821,7 +828,7 @@ def prepare_inputs(inputs, inspaces, outspace) -> typing.List[str]:
                     # support dir-like file-path as input
                     # TODO: Introduce new datatype?
                     result.append(inspace)
-                    break # do not double add path
+                    break  # do not double add path
                 else:
                     ext = ext.lower()
                     pattern = '%s/%s.%s' % (inspace, name, ext)
