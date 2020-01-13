@@ -2,6 +2,14 @@
 
 Every noteable change is logged here.
 
+## v1.12.1
+
+### Fix
+
+* use Flag instead of Parameter (9799a6e0ff03)
+* move logging to better place to display step name (18ec3ac7ed71)
+* support every function input to `nothing` context manager (a31f9ce92d05)
+
 ## v1.12.0
 
 ### Feature

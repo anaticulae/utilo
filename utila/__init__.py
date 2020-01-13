@@ -134,7 +134,7 @@ from utila.utils import nothing
 from utila.utils import roundme
 from utila.utils import select
 
-__version__ = '1.12.0'
+__version__ = '1.12.1'
 
 ROOT = os.path.abspath(os.path.join(os.path.dirname(__file__), '..'))
 PACKAGENAME = 'utila'
