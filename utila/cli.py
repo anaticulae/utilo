@@ -365,12 +365,7 @@ def sources(
     inputpaths = args.get('input')  # if key is not present, return None
     outputpath = args.get('output')
 
-    # check if prefix is a key in passed `args`
-    try:
-        prefix = args['prefix']
-    except KeyError:
-        # prefix is disabled
-        prefix = False
+    prefix = args.get('prefix', False)
 
     if inputpaths:
         # make path absolute
