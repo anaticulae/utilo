@@ -237,7 +237,7 @@ def prepare_todo(
     if profileflag:
         profilecmd = Flag(
             longcut='profile',
-            message='add profile feature step execution',
+            message='profile feature step execution',
         )
         todo.insert(0, profilecmd)
 
