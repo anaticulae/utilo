@@ -285,13 +285,21 @@ def write_level_result(
     return utila.SUCCESS if success else utila.FAILURE
 
 
-def callback(hook, stepname: str, output, pages: list, profiling: bool):
-    """
+def callback(
+        hook: callable,
+        stepname: str,
+        output,
+        pages: list,
+        profiling: bool,
+):
+    """Run processing step.
+
     Args:
-        hook:
+        hook(callable): function to execute
         stepname(str): name of working step
         output(str): path to write step output
-        pages(list): list with pages to processed
+        pages(list): list of pages to processed
+        profiling(bool): if True log callback runtime
     """
     log(f'processing: {stepname}')
     # run runnable
