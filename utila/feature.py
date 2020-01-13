@@ -85,6 +85,7 @@ def featurepack(
         quiteflag: bool = False,
         singleinput: bool = False,
         verboseflag: bool = True,
+        profilingflag: bool = False,
 ) -> int:
     """Run featurepack defined in `workplan`
 
@@ -118,11 +119,12 @@ def featurepack(
         prog=name,
         quiteflag=quiteflag,
         verboseflag=verboseflag,
+        profilingflag=profilingflag,
         version=version,
     )
     args = parse(parser)
 
-    processes, failfast, pages = evaluate_flags(args, multiprocessed)
+    processes, failfast, pages, profiling = evaluate_flags(args, multiprocessed)
     # evaluate the verbose flag
     inputpath, outputpath, prefix, verbose = sources(
         args,
@@ -167,6 +169,7 @@ def featurepack(
         pages=pages,
         processes=processes,
         todo=current_todo,
+        profiling=profiling,
     )
     return completed
 
@@ -180,6 +183,7 @@ def process(
         errorhook: ErrorHook = None,
         *,
         failfast: bool = False,
+        profiling: bool = False,
 ) -> int:
     """Process the given features. The process ignores errors in
     sub-steps and run till the end. If some error occurs, the process
@@ -194,6 +198,7 @@ def process(
         processes(int): maximal parallel exection steps
         pagenumbers(list): list with processed pages
         failfast(bool): quit after first failure
+        profiling(bool): if True, runtime of every single step is logged
     Returns:
         SUCCESS if all features process successfully, if not FAILURE
     """
@@ -212,7 +217,14 @@ def process(
             # wait that level finishes without waiting, a next level which
             # require resource of the current may will not find the
             # resource, cause the excution is not done.
-            results = run_level(level, todo, pool, name, pages)
+            results = run_level(
+                level,
+                todo,
+                pool,
+                name,
+                pages,
+                profiling=profiling,
+            )
 
             # write result
             failure += write_level_result(
@@ -226,7 +238,7 @@ def process(
     return status
 
 
-def run_level(level, todo, pool, runnable, pages):
+def run_level(level, todo, pool, runnable, pages, profiling):
     results = []
     for step in level:
         # if todo is empty, nothing is selected, run every step
@@ -239,6 +251,7 @@ def run_level(level, todo, pool, runnable, pages):
             stepname=step.name,
             output=step.outputs,
             pages=pages,
+            profiling=profiling,
         )
         results.append(future)
 
@@ -270,7 +283,7 @@ def write_level_result(
     return utila.SUCCESS if success else utila.FAILURE
 
 
-def callback(hook, stepname: str, output, pages: list):
+def callback(hook, stepname: str, output, pages: list, profiling: bool):
     """
     Args:
         hook:
@@ -286,6 +299,7 @@ def callback(hook, stepname: str, output, pages: list):
         name=stepname,
         stepoutput=output,
         pages=pages,
+        profiling=profiling,
     )
     try:
         result = runnable()
@@ -301,14 +315,25 @@ def run_hook_safely(
         name: str,
         stepoutput,
         pages,
+        profiling: bool = False,
 ) -> int:
+    """Verify interface, run hook and catch Exception and log problem if
+    required.
+
+    Args:
+        profiling(bool): if True the time for hook execution is measured
+                         and logged.
+    """
     sig = inspect.signature(hook)
     try:
-        if PAGES_FLAG in sig.parameters:
-            # optional page numbers flag
-            result = hook(pages=pages)
-        else:
-            result = hook()
+        contextmanager = utila.profile if profiling else utila.nothing
+
+        with contextmanager():
+            if PAGES_FLAG in sig.parameters:
+                # optional page numbers flag
+                result = hook(pages=pages)
+            else:
+                result = hook()
     except Exception as msg:  # pylint: disable=broad-except
         log_stacktrace()
         error('while processing %s' % name)

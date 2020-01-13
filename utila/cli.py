@@ -119,6 +119,7 @@ def create_parser(  # pylint:disable=R1260
         outputparameter: bool = False,
         pages: bool = False,
         prefix: bool = False,
+        profilingflag: bool = False,
         quiteflag: bool = False,
         verboseflag: bool = False,
 ) -> argparse.ArgumentParser:
@@ -133,6 +134,7 @@ def create_parser(  # pylint:disable=R1260
         outputparameter(bool): if true, default output parameter is active
         pages(bool): add --pages flag to select processed pages
         prefix(bool): if true, default prefix is active
+        profilingflag(bool): if True --profile option is added
         prog(str): name of application `prog --help`
         todo(list): extend default parser with todo list
         verboseflag(bool): if True add option to control verbosity of logging
@@ -150,6 +152,7 @@ def create_parser(  # pylint:disable=R1260
         multiprocessed=multiprocessed,
         pages=pages,
         prefix=prefix,
+        profilingflag=profilingflag,
         quiteflag=quiteflag,
         verboseflag=verboseflag,
     )
@@ -209,6 +212,7 @@ def prepare_todo(
         prefix: bool,
         quiteflag: bool,
         flags: list = None,
+        profilingflag: bool = False,
 ):
     todo = todo if todo else []
     if not isinstance(todo, list):
@@ -229,6 +233,13 @@ def prepare_todo(
             message=message,
         )
         todo.insert(0, flag)
+
+    if profilingflag:
+        profilecmd = Parameter(
+            longcut='profile',
+            message='add profile feature step execution',
+        )
+        todo.insert(0, profilecmd)
 
     if prefix:
         prefixcommand = Parameter(
@@ -412,11 +423,15 @@ def evaluate_flags(args, multiprocessed: bool):
     with contextlib.suppress(KeyError):
         del args['ff']
 
+    profiling = args.get('profiling', False)
+    with contextlib.suppress(KeyError):
+        del args['profiling']
+
     pages = parse_pages(args.get(PAGES_FLAG, ALL_PAGES))
     with contextlib.suppress(KeyError):
         del args[PAGES_FLAG]
 
-    return processes, failfast, pages
+    return processes, failfast, pages, profiling
 
 
 def is_userflag(flag: str) -> bool:
