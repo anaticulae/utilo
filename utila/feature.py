@@ -329,7 +329,6 @@ def run_hook_safely(
     sig = inspect.signature(hook)
     try:
         contextmanager = utila.profile if profiling else utila.nothing
-
         with contextmanager():
             if PAGES_FLAG in sig.parameters:
                 # optional page numbers flag
@@ -381,18 +380,21 @@ def write_result_safely(
             assert len(outputstep) == 1, (f'only one variable parameter '
                                           f'is supported {outputstep}')
             outputstep = outputstep[0]
-            splitted = outputstep.split('/')
-            if len(splitted) == 2:
-                # create parent folder if required
-                # cli_example__multistep_pages/view_*.html
-                # adding list of files in parent folder is possible
-                os.makedirs(splitted[0], exist_ok=True)
+            # Create parent folder if required:
+            # cli_example__multistep_pages/view_*.html
+            # adding list of files in parent folder is possible.
+            parent, _ = os.path.split(outputstep)
+            os.makedirs(parent, exist_ok=True)
             # replace star-pattern to archive indexed output paths
             outputstep = [
                 outputstep.replace('*', f'{index}')
                 for index, content in enumerate(result)
             ]
         for path, content in zip(outputstep, result):
+            # Ensure that parent folder exists. It is possible to create
+            # folder via `hello/folder/content.txt`.
+            parent, _ = os.path.split(path)
+            os.makedirs(parent, exist_ok=True)
             info('write %s' % path)
             # write content to file.
             file_replace(path, content)

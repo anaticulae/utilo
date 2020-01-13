@@ -6,7 +6,7 @@ RP 1.12.0
 cli
 ~~~
 
-* [ ] fix creating of required folder defined in workplan via
+* [x] fix creating of required folder defined in workplan via
   'abc/def/index.txt'. There is a problem with windows absolut path's.
 
 * [x] add --quite option to suppress logging
