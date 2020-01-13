@@ -61,7 +61,7 @@ def test_feature_playground_cli_profile(cmd, testdir, monkeypatch, capsys):
     """Print runtime for each working step."""
     stdout, _, = run_playground(
         cmd,
-        {'profilingflag': True},
+        {'profileflag': True},
         testdir,
         monkeypatch,
         capsys,
@@ -76,7 +76,7 @@ def test_feature_playground_cli_quite(quite, testdir, monkeypatch, capsys):
     stdout, _ = run_playground(
         cmd,
         {
-            'profilingflag': True,
+            'profileflag': True,
             'quiteflag': True
         },
         testdir,

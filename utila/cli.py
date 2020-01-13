@@ -119,7 +119,7 @@ def create_parser(  # pylint:disable=R1260
         outputparameter: bool = False,
         pages: bool = False,
         prefix: bool = False,
-        profilingflag: bool = False,
+        profileflag: bool = False,
         quiteflag: bool = False,
         verboseflag: bool = False,
 ) -> argparse.ArgumentParser:
@@ -134,7 +134,7 @@ def create_parser(  # pylint:disable=R1260
         outputparameter(bool): if true, default output parameter is active
         pages(bool): add --pages flag to select processed pages
         prefix(bool): if true, default prefix is active
-        profilingflag(bool): if True --profile option is added
+        profileflag(bool): if True --profile option is added
         prog(str): name of application `prog --help`
         quiteflag(bool): if True add option to suppress logging
         todo(list): extend default parser with todo list
@@ -152,7 +152,7 @@ def create_parser(  # pylint:disable=R1260
         multiprocessed=multiprocessed,
         pages=pages,
         prefix=prefix,
-        profilingflag=profilingflag,
+        profileflag=profileflag,
         quiteflag=quiteflag,
         verboseflag=verboseflag,
     )
@@ -212,7 +212,7 @@ def prepare_todo(
         prefix: bool,
         quiteflag: bool,
         flags: list = None,
-        profilingflag: bool = False,
+        profileflag: bool = False,
 ):
     todo = todo if todo else []
     if not isinstance(todo, list):
@@ -234,7 +234,7 @@ def prepare_todo(
         )
         todo.insert(0, flag)
 
-    if profilingflag:
+    if profileflag:
         profilecmd = Flag(
             longcut='profile',
             message='add profile feature step execution',

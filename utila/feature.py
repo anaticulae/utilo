@@ -86,7 +86,7 @@ def featurepack(
         quiteflag: bool = False,
         singleinput: bool = False,
         verboseflag: bool = True,
-        profilingflag: bool = False,
+        profileflag: bool = False,
 ) -> int:
     """Run featurepack defined in `workplan`
 
@@ -120,7 +120,7 @@ def featurepack(
         prog=name,
         quiteflag=quiteflag,
         verboseflag=verboseflag,
-        profilingflag=profilingflag,
+        profileflag=profileflag,
         version=version,
     )
     args = parse(parser)
