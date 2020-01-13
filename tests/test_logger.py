@@ -40,7 +40,7 @@ def test_logger_profile_with_exception(capsys):
             raise ValueError('some problems in invocation')
 
     stdout = capsys.readouterr().out
-    assert 'Runtime' in stdout, str(stdout)
+    assert 'runtime' in stdout, str(stdout)
 
 
 def test_logger_print_env(capsys, monkeypatch):
