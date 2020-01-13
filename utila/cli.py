@@ -235,7 +235,7 @@ def prepare_todo(
         todo.insert(0, flag)
 
     if profilingflag:
-        profilecmd = Parameter(
+        profilecmd = Flag(
             longcut='profile',
             message='add profile feature step execution',
         )
@@ -419,9 +419,9 @@ def evaluate_flags(args, multiprocessed: bool):
     with contextlib.suppress(KeyError):
         del args['ff']
 
-    profiling = args.get('profiling', False)
+    profiling = args.get('profile', False)
     with contextlib.suppress(KeyError):
-        del args['profiling']
+        del args['profile']
 
     pages = parse_pages(args.get(PAGES_FLAG, ALL_PAGES))
     with contextlib.suppress(KeyError):
