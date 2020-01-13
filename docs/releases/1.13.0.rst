@@ -1,0 +1,26 @@
+.. _1_13_0:
+
+RP 1.13.0
+=========
+
+logging
+-------
+
+* [ ] add method to temporary set logging level
+
+  .. code-block:: python
+
+      with utila.level_setup(utila.Level.DEBUG):
+          created = protocol.from_file(example)
+
+quality
+-------
+
+before
+~~~~~~
+
+* Total coverage: 93.55%
+* Your code has been rated at 9.82/10
+
+after
+~~~~~
