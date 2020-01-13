@@ -109,40 +109,13 @@ def same_area_cluster(
 def determine_cluster(todo, classificator, min_elements=2):
     if not todo:
         return []
-
     # prepare cluster, a single element is a cluster
     result = [[item] for item in todo]
-
-    def match(result, current):
-        for clusterindex, cluster in enumerate(result):
-            for clusteritem in cluster:
-                match = [
-                    classificator(candidat=test, clusteritem=clusteritem)
-                    for test in current
-                ]
-                if any(match):
-                    return clusterindex
-        return None
-
-    def clusterme(result):
-        result, todo = result[0], result[1:]
-        if not isinstance(result[0], list):
-            result = [result]
-        while todo:
-            current = todo.pop()
-            index = match(result, current)
-            if index is None:
-                # No match, create new cluster
-                result.insert(0, current)
-            else:
-                result[index].extend(current)
-        return result
-
-    # Break when cluster does not change result
-    # Cluster till cluster move does not change the result
+    # Break when cluster does not change result. Cluster till clustering
+    # does not change the result.
     before = set()
     while True:
-        result = clusterme(result)
+        result = clusterme(result, classificator)
         if len(result) == 1:
             # all elements are in the same group
             break
@@ -153,3 +126,28 @@ def determine_cluster(todo, classificator, min_elements=2):
     # A cluster must have at least 2 items
     clusters = [item for item in result if len(item) >= min_elements]
     return clusters
+
+def match(result, current, classificator):
+    for index, cluster in enumerate(result):
+        for item in cluster:
+            result = [
+                classificator(candidat=test, clusteritem=item)
+                for test in current
+            ]
+            if any(result):
+                return index
+    return None
+
+def clusterme(result, classificator):
+    result, todo = result[0], result[1:]
+    if not isinstance(result[0], list):
+        result = [result]
+    while todo:
+        current = todo.pop()
+        index = match(result, current, classificator)
+        if index is None:
+            # No match, create new cluster
+            result.insert(0, current)
+        else:
+            result[index].extend(current)
+    return result
