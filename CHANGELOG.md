@@ -2,6 +2,19 @@
 
 Every noteable change is logged here.
 
+## v1.12.0
+
+### Feature
+
+* support automate creation of subfolder (8fb9d0731ec7)
+* add --profile step to print runtime for every process step (feffe588f7bc)
+* add context manager `nothing` to ease code (980360ff363b)
+
+### Documentation
+
+* extend interface documentation (84b1f37c9a05)
+* extend interface documentation (e9917b2ddb30)
+
 ## v1.11.4
 
 ### Feature
