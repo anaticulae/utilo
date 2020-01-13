@@ -348,7 +348,7 @@ def run_hook_safely(
     return result
 
 
-def variable_parameter(items:list)->bool:
+def variable_parameter(items: list) -> bool:
     """Check if some path contains *-pattern to replace."""
     result = any(['*' in item for item in items])
     return result
