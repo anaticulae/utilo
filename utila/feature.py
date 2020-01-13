@@ -354,12 +354,26 @@ def run_hook_safely(
     return result
 
 
-def variable_parameter(items):
+def variable_parameter(items:list)->bool:
+    """Check if some path contains *-pattern to replace."""
     result = any(['*' in item for item in items])
     return result
 
 
-def write_result_safely(result, processstep, outputstep):
+def write_result_safely(
+        result: typing.List[str],
+        processstep: str,
+        outputstep: typing.List[str],
+) -> int:
+    """Write `result`s to desired `outputstep`s and catch problems.
+
+    Args:
+        result(list): list of content to write
+        processstep(name): name of process step
+        outputstep(list): list of output paths
+    Returns:
+        Returns return code SUCCESS or FAILURE.
+    """
     call('write results')
     try:
         variable_returnvalues = variable_parameter(outputstep)

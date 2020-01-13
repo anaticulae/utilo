@@ -295,6 +295,7 @@ def prepare_todo(
 
 
 def sort(items):
+    """Sort commands alphabetically. Sort by show- or longcut."""
     sorter = lambda item: item.shortcut.lower()\
                           if item.shortcut\
                           else item.longcut.lower()
