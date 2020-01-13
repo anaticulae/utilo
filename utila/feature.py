@@ -413,16 +413,17 @@ def select_executor():
 
 def prepare_process(todo, name, processes):
     if todo is None:
-        todo = []
+        todo = set()
+    # make todo unique
     todo = set(todo)
     # process all features, see some lines below
     if 'all' in todo:
         todo = set()
-    if name:
-        # log start of executable
-        log(name)
+    # log start of executable
+    log(name)
     if processes > 1:
         log('use multiple processes')
+    log()
     return todo
 
 
