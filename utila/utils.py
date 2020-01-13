@@ -128,7 +128,7 @@ def chdir(path: str) -> typing.NoReturn:
 
 
 @contextlib.contextmanager
-def nothing():
+def nothing(*args, **kwargs): # pylint:disable=W0613
     """Use a empty contextmanager to ease code.
 
     Example:
