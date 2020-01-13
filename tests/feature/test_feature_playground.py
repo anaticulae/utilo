@@ -43,8 +43,9 @@ def run_playground(
     return stdout, stderr
 
 
-def test_feature_playground_cli(testdir, monkeypatch, capsys):
-    cmd = '--profile'
+@pytest.mark.parametrize('cmd', ['', '--profile'])
+def test_feature_playground_cli_profile(cmd, testdir, monkeypatch, capsys):
+    """Print runtime for each working step."""
     stdout, _, = run_playground(
         cmd,
         {'profilingflag': True},
@@ -52,4 +53,21 @@ def test_feature_playground_cli(testdir, monkeypatch, capsys):
         monkeypatch,
         capsys,
     )
-    assert 'runtime(household):' in stdout
+    assert ('runtime(household):' in stdout) == bool(cmd)
+
+
+@pytest.mark.parametrize('quite', ['', '--quite'])
+def test_feature_playground_cli_quite(quite, testdir, monkeypatch, capsys):
+    """Test to suppress logging when using --quite flag."""
+    cmd = f'--profile {quite}'
+    stdout, _ = run_playground(
+        cmd,
+        {
+            'profilingflag': True,
+            'quiteflag': True
+        },
+        testdir,
+        monkeypatch,
+        capsys,
+    )
+    assert bool(stdout) != bool(quite)
