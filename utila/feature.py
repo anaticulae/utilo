@@ -301,11 +301,13 @@ def callback(hook, stepname: str, output, pages: list, profiling: bool):
         name=stepname,
         stepoutput=output,
         pages=pages,
-        profiling=profiling,
     )
     try:
-        result = runnable()
-        log(f'completed: {stepname}')
+        contextmanager = utila.profile if profiling else utila.nothing
+        with contextmanager(msg=stepname):
+            result = runnable()
+            log(f'completed: {stepname}')
+        log('')
     except Exception as exception:  # pylint:disable=broad-except
         error(f'failed: {stepname}')
         result = exception
@@ -317,24 +319,17 @@ def run_hook_safely(
         name: str,
         stepoutput,
         pages,
-        profiling: bool = False,
 ) -> int:
     """Verify interface, run hook and catch Exception and log problem if
     required.
-
-    Args:
-        profiling(bool): if True the time for hook execution is measured
-                         and logged.
     """
     sig = inspect.signature(hook)
     try:
-        contextmanager = utila.profile if profiling else utila.nothing
-        with contextmanager():
-            if PAGES_FLAG in sig.parameters:
-                # optional page numbers flag
-                result = hook(pages=pages)
-            else:
-                result = hook()
+        if PAGES_FLAG in sig.parameters:
+            # optional page numbers flag
+            result = hook(pages=pages)
+        else:
+            result = hook()
     except Exception as msg:  # pylint: disable=broad-except
         log_stacktrace()
         error('while processing %s' % name)
