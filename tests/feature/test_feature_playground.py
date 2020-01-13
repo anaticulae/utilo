@@ -6,6 +6,17 @@
 # use or distribution is an offensive act against international law and may
 # be prosecuted under federal law. Its content is company confidential.
 # =============================================================================
+"""Feature playground
+==================
+
+The feature playground eases to verify the cli commands of featurepack
+implementation.
+
+currently tested:
+
+* --profile: log runtime of each working step
+* --quite: suppress logging
+"""
 
 import contextlib
 import os
@@ -17,12 +28,14 @@ import utila
 
 
 def run_playground(
-        cmd,
-        main,
+        cmd: str,
+        main: dict,
         testdir,
         monkeypatch,
         capsys,
 ):
+    """Setup working step with main(dict) which defines the passed
+    parameter to featurepack(**main). `cmd` is passed as argv to run."""
     import tests.examples.featurepack.testfield.playground as exe
     root = exe.ROOT
     utila.file_create(os.path.join(str(testdir), 'infile.yaml'))
