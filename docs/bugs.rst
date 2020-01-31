@@ -7,7 +7,8 @@ open
 * adding feature with name `pages` conflicting with --pages flag and
   produces an error:
 
-    ```[python]
+  .. code-block:: none
+
     ---------------------------- Captured stderr call -----------------------------
     [ERROR] 'bool' object has no attribute 'strip'
     [ERROR] Traceback (most recent call last):
@@ -20,7 +21,6 @@ open
       File "C:/usr/python/372/lib/site-packages/utila/pages.py", line 60, in parse_pages
         pattern = pattern.strip()
     AttributeError: 'bool' object has no attribute 'strip'
-    ```
 
 closed
 ------

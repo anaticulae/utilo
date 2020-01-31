@@ -8,9 +8,9 @@ Welcome to write it once
 
   pages/changelog
 
-  pages/bugs
+  bugs
 
-  pages/todo
+  todo
 
   releases/releases
 
