@@ -24,21 +24,16 @@ with open(join(ROOT, 'utila/__init__.py'), 'rt', encoding='utf8') as fp:
 if __name__ == "__main__":
     setup(
         author='Helmut Konrad Fahrendholz',
-        author_email='kiwi@derspanier.de',
+        author_email='info@checkitweg.de',
         description='write it once',
         include_package_data=True,
-        install_requires=[],
         long_description=README,
         name='utila',
         platforms='any',
-        setup_requires=[],
-        tests_require=[],
         url='http://dev.package.checkitweg.de/utila',
         version=VERSION,
         zip_safe=False,  # create 'zip'-file if True. Don't do it!
         classifiers=[
-            'Programming Language :: Python :: 3.6',
-            'Programming Language :: Python :: 3.7',
             'Programming Language :: Python :: 3.8',
         ],
         packages=[
