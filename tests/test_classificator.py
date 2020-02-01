@@ -11,7 +11,7 @@ from utila import same_area_cluster
 from utila import three_side_equal_cluster
 
 
-def test_classificator_same_area_cluster():
+def test_classifier_same_area_cluster():
 
     todo = [
         ((0, 0, 50, 50), 'A'),
@@ -30,7 +30,7 @@ def test_classificator_same_area_cluster():
     assert clusters == expected
 
 
-def test_classificator_three_side_equal():
+def test_classifier_three_side_equal():
 
     todo = [
         ((0, 0, 50, 50), 'A'),

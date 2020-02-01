@@ -11,10 +11,10 @@ import os
 
 # Public API:
 # Classificator
-from utila.classificator import common_items
-from utila.classificator import determine_cluster
-from utila.classificator import same_area_cluster
-from utila.classificator import three_side_equal_cluster
+from utila.classifier import common_items
+from utila.classifier import determine_cluster
+from utila.classifier import same_area_cluster
+from utila.classifier import three_side_equal_cluster
 # cli
 from utila.cli import INVALID_COMMAND
 from utila.cli import PAGES_FLAG

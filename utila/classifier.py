@@ -21,7 +21,7 @@ def common_items(
     Args:
         collected: items to cluster
         max_difference(float): upper bound of differences which is accepted
-                               by classificator as same item.
+                               by classifier as same item.
         min_elements(int): smallest accepted cluster
     Returns:
         list of filtered cluster
@@ -57,7 +57,7 @@ def page_from_cluster(cluster, collected):
 
 def three_side_equal_cluster(todo):
 
-    def classificator(candidat, clusteritem):
+    def classifier(candidat, clusteritem):
 
         def matcher(candidat, clusteritem):
             candidat_pos, _ = candidat
@@ -71,7 +71,7 @@ def three_side_equal_cluster(todo):
 
         return matcher(candidat, clusteritem)
 
-    return determine_cluster(todo, classificator, min_elements=2)
+    return determine_cluster(todo, classifier, min_elements=2)
 
 
 def same_area_cluster(
@@ -80,7 +80,7 @@ def same_area_cluster(
         min_elements: int = 2,
 ):
 
-    def classificator(candidat, clusteritem, max_difference=max_difference):
+    def classifier(candidat, clusteritem, max_difference=max_difference):
 
         def distance(x0, y0, x1, y1):
             return math.sqrt(pow((x1 - x0), 2) + pow((y1 - y0), 2))
@@ -103,10 +103,10 @@ def same_area_cluster(
 
         return matcher(candidat, clusteritem)
 
-    return determine_cluster(todo, classificator, min_elements=min_elements)
+    return determine_cluster(todo, classifier, min_elements=min_elements)
 
 
-def determine_cluster(todo, classificator, min_elements=2):
+def determine_cluster(todo, classifier, min_elements=2):
     if not todo:
         return []
     # prepare cluster, a single element is a cluster
@@ -115,7 +115,7 @@ def determine_cluster(todo, classificator, min_elements=2):
     # does not change the result.
     before = set()
     while True:
-        result = clusterme(result, classificator)
+        result = clusterme(result, classifier)
         if len(result) == 1:
             # all elements are in the same group
             break
@@ -128,25 +128,24 @@ def determine_cluster(todo, classificator, min_elements=2):
     return clusters
 
 
-def match(result, current, classificator):
+def match(result, current, classifier):
     for index, cluster in enumerate(result):
         for item in cluster:
             result = [
-                classificator(candidat=test, clusteritem=item)
-                for test in current
+                classifier(candidat=test, clusteritem=item) for test in current
             ]
             if any(result):
                 return index
     return None
 
 
-def clusterme(result, classificator):
+def clusterme(result, classifier):
     result, todo = result[0], result[1:]
     if not isinstance(result[0], list):
         result = [result]
     while todo:
         current = todo.pop()
-        index = match(result, current, classificator)
+        index = match(result, current, classifier)
         if index is None:
             # No match, create new cluster
             result.insert(0, current)
