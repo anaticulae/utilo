@@ -127,6 +127,7 @@ def determine_cluster(todo, classificator, min_elements=2):
     clusters = [item for item in result if len(item) >= min_elements]
     return clusters
 
+
 def match(result, current, classificator):
     for index, cluster in enumerate(result):
         for item in cluster:
@@ -137,6 +138,7 @@ def match(result, current, classificator):
             if any(result):
                 return index
     return None
+
 
 def clusterme(result, classificator):
     result, todo = result[0], result[1:]

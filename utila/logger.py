@@ -193,7 +193,9 @@ class SkipCollector:
         Args:
             pages(list): list with pages which `skip(page)` return False
         """
-        self.pages = pages
+        if isinstance(pages, int):  # convert single page set
+            pages = [pages]
+        self.pages = set(pages)
         self.data = []
 
     def skip(self, page: int) -> bool:

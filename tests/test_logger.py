@@ -24,6 +24,22 @@ def test_logger_skipcollector():
     assert skipped == to_skip, str(skipped)
 
 
+def test_logger_skipcollector_single_int():
+    """Skip all other pages than zero."""
+    single_int = 0
+    with utila.SkipCollector(pages=single_int) as collector:
+        assert collector.skip(0) is False
+        assert collector.skip(1) is True
+
+
+def test_logger_skipcollector_zero_tuple():
+    """Skip all other pages than zero."""
+    zero_tuple = (0,)
+    with utila.SkipCollector(pages=zero_tuple) as collector:
+        assert collector.skip(0) is False
+        assert collector.skip(1) is True
+
+
 @pytest.mark.parametrize('message', ['', 'setup'])
 def test_logger_profile(capsys, message):
     """Test that profiler print the `message` in combination of runtime"""
