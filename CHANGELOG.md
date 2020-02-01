@@ -2,6 +2,22 @@
 
 Every noteable change is logged here.
 
+## v1.12.2
+
+### Feature
+
+* ensure to handle single values correctly (75579801c1cc)
+
+### Fix
+
+* add newline after logging process to run (1ca6e06d0119)
+* correct text of --help message (7c3a9526b293)
+
+### Documentation
+
+* use general doc approach on bugs and todo (2245775625ad)
+* extend interface documentation (8fd91647d0a9)
+
 ## v1.12.1
 
 ### Fix
