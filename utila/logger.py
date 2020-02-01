@@ -188,7 +188,7 @@ class SkipCollector:
     """Context manager to handle selective pages."""
 
     def __init__(self, pages):
-        """Initialize SkipCollector with pages which should not be skipped
+        """Initialize SkipCollector with `pages` which should not be skipped.
 
         Args:
             pages(list): list with pages which `skip(page)` return False
@@ -196,7 +196,7 @@ class SkipCollector:
         self.pages = pages
         self.data = []
 
-    def skip(self, page):
+    def skip(self, page: int) -> bool:
         if self.pages and page not in self.pages:
             self.data.append(page)
             return True
