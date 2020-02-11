@@ -11,6 +11,9 @@ import typing
 # default number of digits to round
 NDIGITS = 2
 
+Number = typing.TypeVar('Number', int, float)  # pylint:disable=C0103
+Numbers = typing.List[Number]  # pylint:disable=C0103
+
 
 def roundme(value: float, digits: int = NDIGITS) -> float:
     """Round `value` to `NDIGITS`=2
