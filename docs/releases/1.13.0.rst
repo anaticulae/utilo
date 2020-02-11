@@ -13,6 +13,119 @@ logging
       with utila.level_setup(utila.Level.DEBUG):
           created = protocol.from_file(example)
 
+regex
+-----
+
+* [ ] move and test
+
+  .. code-block:: python
+
+    def extract_match(matched):
+        assert isinstance(matched, Match), type(matched)
+        return matched.string[matched.span()[0]:matched.span()[1]]
+
+math
+----
+
+* [ ] move and test
+
+  .. code-block:: python
+
+    def isascending(items):
+        # TODO: MOVE TO UTILA
+        items = [int(item) for item in items]
+        diff = [
+            (after - current) for (current, after) in zip(items[:-1], items[1:])
+        ]
+        return all([item >= 0 for item in diff])
+
+* [ ] add typing to math package
+
+  .. code-block:: python
+
+    # TODO: MOVE TO UTILA
+    Number = typing.TypeVar('Number', int, float)  # pylint:disable=C0103
+    Numbers = typing.List[Number]  # pylint:disable=C0103
+
+
+    def multi_mode(data, minimize: bool = True):
+        """Return the most common data point from discrete or nominal data.
+
+        See: statistics.mode
+        """
+        if not data:
+            raise statistics.StatisticsError('no mode for empty data')
+        # TODO: MOVE TO UTILA
+        table = statistics._counts(data)  # pylint:disable=W0212
+        if len(table) == 1:
+            return table[0][0]
+        current = sorted([item[0] for item in table])
+        if minimize:
+            return current[0]
+        return current[-1]
+
+* [ ] extend utila.roundme to round multiple value at once
+
+  .. code-block:: python
+
+      a, b, c = utila.roundme(a,b,c)
+
+runtime
+-------
+
+* [ ] move and test
+
+  .. code-block:: python
+
+    def run_parallel(items, cwd=None, worker: int = 8) -> int:
+        # TODO: MOVE TO UTILA
+        ret = 0
+        with concurrent.futures.ThreadPoolExecutor(max_workers=worker) as executor:
+            todo = {executor.submit(utila.run, cmd, cwd): cmd for cmd in items}
+            for future in concurrent.futures.as_completed(todo):
+                current = todo[future]
+                try:
+                    data = future.result()
+                    assert data.returncode == utila.SUCCESS, data
+                except Exception as exc:  # pylint:disable=broad-except
+                    print('%r generated an exception: %s' % (current, exc))
+                    ret += 1
+        return ret
+
+test
+----
+
+* [ ] move and test
+
+  .. code-block:: python
+
+    def single_execution():
+        """Check that test method is executed as single test. You can use
+        this method to open the result in a web browser if test is executed
+        with a human in front of the machine eg. as a single test."""
+        # TODO: MOVE TO UTILA TEST
+        frame = inspect.currentframe()
+        parent = inspect.getouterframes(frame)[1]
+        caller = parent.function
+        return all([item in sys.argv for item in ['-k', caller]])
+
+* [ ] move and test
+
+  .. code-block:: python
+
+    @contextlib.contextmanager
+    def increased_filecount(path: str, ending: str = None):
+        """Ensure to create some files while running operations in yieldet
+        state."""
+        # TODO: MOVE TO UTILA TEST
+        assert os.path.exists(path), str(path)
+        pattern = '**/*.*' if ending is None else f'**/*.{ending}'
+        with utila.chdir(path):
+            before = list(glob.glob(pattern, recursive=True))
+            yield
+            after = list(glob.glob(pattern, recursive=True))
+        assert len(after) > len(before), f'{before}\n\n{after}'
+
 quality
 -------
 
