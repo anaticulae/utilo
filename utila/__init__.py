@@ -93,6 +93,8 @@ from utila.logger import log_stacktrace
 from utila.logger import print_env
 from utila.logger import print_runtime
 from utila.logger import profile
+# math
+from utila.math import roundme
 # pages
 from utila.pages import parse_pages
 from utila.pages import select_page
@@ -131,7 +133,6 @@ from utila.utils import UTF8
 from utila.utils import chdir
 from utila.utils import flatten
 from utila.utils import nothing
-from utila.utils import roundme
 from utila.utils import select
 
 __version__ = '1.12.1'

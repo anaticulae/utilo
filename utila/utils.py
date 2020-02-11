@@ -19,21 +19,7 @@ UTF8 = 'utf8'
 NEWLINE = '\n'
 INF = (1 << 31) - 1
 
-NDIGITS = 2
-
 ALL_PAGES = ':'
-
-
-def roundme(value: float, digits: int = NDIGITS) -> float:
-    """Round `value` to `NDIGITS`=2
-
-    Args:
-        value(float): value to round
-        digits(int): amout of numbers after dot
-    Returns:
-        rounded `value`
-    """
-    return round(value, digits)
 
 
 def flatten(lists):
