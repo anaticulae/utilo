@@ -6,7 +6,7 @@ RP 1.13.0
 logging
 -------
 
-* [ ] add method to temporary set logging level
+* [x] add method to temporary set logging level
 
   .. code-block:: python
 

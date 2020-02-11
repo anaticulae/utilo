@@ -29,13 +29,27 @@ class Level(enum.IntEnum):
     DEBUG = 3
     ERROR = -1
 
+LEVEL_DEFAULT = Level.LOGGING
 
-LEVEL = Level.LOGGING
+LEVEL = LEVEL_DEFAULT
 
 
 def level_setup(level: Level):
     global LEVEL  # pylint:disable=global-statement
     LEVEL = level
+
+
+@contextlib.contextmanager
+def level_temp(level: Level):
+    """Set logging level, yield context and reset to previous logging level."""
+    before = level_current()
+    level_setup(level)
+    yield
+    level_setup(before)
+
+
+def level_current() -> Level:
+    return LEVEL
 
 
 def log(msg: str = '', level: Level = Level.LOGGING, end: str = NEWLINE):

@@ -10,6 +10,7 @@
 import pytest
 
 import utila
+import utila.logger
 
 
 def test_logger_skipcollector():
@@ -119,3 +120,35 @@ def test_logger_log_args_loglevel_to_low(capsys, monkeypatch):
 
     captured = capsys.readouterr().out.strip()
     assert not captured, str(captured)
+
+
+def test_logger_level_temp(monkeypatch):
+    assert utila.level_current() == utila.LEVEL_DEFAULT
+    with monkeypatch.context() as context:
+        context.setattr(utila.logger, 'LEVEL', utila.Level.ERROR)
+
+        setme = utila.Level.DEBUG
+        before = utila.level_current()
+        with utila.level_temp(setme):
+            now = utila.level_current()
+        after = utila.level_current()
+
+    assert setme != before, f'{setme} must differ from default level {before}'
+    assert before != now, 'context manager has no effect'
+    assert after == before, 'the level was not set back to default'
+    assert utila.level_current() == utila.LEVEL_DEFAULT
+
+
+def test_logger_level_setup(monkeypatch):
+    assert utila.level_current() == utila.LEVEL_DEFAULT
+    with monkeypatch.context() as context:
+        context.setattr(utila.logger, 'LEVEL', utila.Level.ERROR)
+
+        setme = utila.Level.DEBUG
+        before = utila.level_current()
+        assert setme != before, f'{setme} must differ from default level {before}'
+
+        utila.level_setup(setme)
+        after = utila.level_current()
+        assert after == setme, 'could not update log level'
+    assert utila.level_current() == utila.LEVEL_DEFAULT

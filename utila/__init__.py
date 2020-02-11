@@ -79,6 +79,7 @@ from utila.likelihood import maxi
 from utila.likelihood import mini
 from utila.likelihood import uniform_result
 # Logging
+from utila.logger import LEVEL_DEFAULT
 from utila.logger import Level
 from utila.logger import SkipCollector
 from utila.logger import call
@@ -86,7 +87,9 @@ from utila.logger import debug
 from utila.logger import error
 from utila.logger import format_completed
 from utila.logger import info
+from utila.logger import level_current
 from utila.logger import level_setup
+from utila.logger import level_temp
 from utila.logger import log
 from utila.logger import log_args
 from utila.logger import log_stacktrace
