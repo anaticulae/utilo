@@ -102,8 +102,9 @@ from utila.math import roundme
 from utila.pages import parse_pages
 from utila.pages import select_page
 from utila.pages import should_skip
+# regex
+from utila.regex import extract_match
 # string
-from utila.string import extract_match
 from utila.string import fix_encoding
 from utila.string import forward_slash
 # Tests

@@ -29,6 +29,7 @@ class Level(enum.IntEnum):
     DEBUG = 3
     ERROR = -1
 
+
 LEVEL_DEFAULT = Level.LOGGING
 
 LEVEL = LEVEL_DEFAULT
