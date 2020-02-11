@@ -43,3 +43,12 @@ def numbers(items: typing.List) -> typing.List[int]:
         except ValueError:
             result.append(None)
     return result
+
+
+def isascending(items: Numbers) -> bool:
+    """Check that `items` are ascending numbers."""
+    items = [int(item) for item in items]
+    diff = [
+        (after - current) for (current, after) in zip(items[:-1], items[1:])
+    ]
+    return all([item >= 0 for item in diff])

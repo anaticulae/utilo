@@ -27,7 +27,7 @@ regex
 math
 ----
 
-* [ ] move and test
+* [x] move and test
 
   .. code-block:: python
 
@@ -39,7 +39,7 @@ math
         ]
         return all([item >= 0 for item in diff])
 
-* [ ] add typing to math package
+* [x] add typing to math package
 
   .. code-block:: python
 
