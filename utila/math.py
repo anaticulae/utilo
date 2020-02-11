@@ -6,7 +6,9 @@
 # use or distribution is an offensive act against international law and may
 # be prosecuted under federal law. Its content is company confidential.
 # =============================================================================
+import typing
 
+# default number of digits to round
 NDIGITS = 2
 
 
@@ -20,3 +22,21 @@ def roundme(value: float, digits: int = NDIGITS) -> float:
         rounded `value`
     """
     return round(value, digits)
+
+
+def numbers(items: typing.List) -> typing.List[int]:
+    """Convert iterable `items` to list of int's. Replace none
+    convertable items to `None`.
+
+    Args:
+        items: iterable with items to convert
+    Returns:
+        List of int's or None's.
+    """
+    result = []
+    for item in items:
+        try:
+            result.append(int(item))
+        except ValueError:
+            result.append(None)
+    return result

@@ -10,7 +10,7 @@
 import contextlib
 import typing
 
-from utila.utils import numbers
+import utila.math
 
 
 def parse_pages(pattern: str, pagecount=None) -> tuple:  # pylint:disable=too-complex
@@ -25,7 +25,7 @@ def parse_pages(pattern: str, pagecount=None) -> tuple:  # pylint:disable=too-co
 
     def parse_comma(pattern):
         """Pattern contains `,`"""
-        splitted = numbers(pattern.split(','))
+        splitted = utila.math.numbers(pattern.split(','))
         if not all([isinstance(item, int) for item in splitted]):
             return None
         return splitted

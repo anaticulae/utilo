@@ -71,16 +71,6 @@ def determine_order(requirements, flat=True):
     return result
 
 
-def numbers(items):
-    result = []
-    for item in items:
-        try:
-            result.append(int(item))
-        except ValueError:
-            result.append(None)
-    return result
-
-
 @contextlib.contextmanager
 def chdir(path: str) -> typing.NoReturn:
     """Contextmanager to change current working directory. Exceptions
