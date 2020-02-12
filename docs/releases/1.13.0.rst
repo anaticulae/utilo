@@ -49,6 +49,8 @@ math
 
 * [x] add multi_mode to math package
 
+  .. code-block:: python
+
     def multi_mode(data, minimize: bool = True):
         """Return the most common data point from discrete or nominal data.
 
@@ -138,3 +140,6 @@ before
 
 after
 ~~~~~
+
+* Total coverage: 93.82%
+* Your code has been rated at 9.84/10
