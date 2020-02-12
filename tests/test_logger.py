@@ -25,6 +25,12 @@ def test_logger_skipcollector():
     assert skipped == to_skip, str(skipped)
 
 
+def test_logger_skipcollector_none():
+    with utila.SkipCollector() as collector:
+        assert collector.skip(10) == False
+        assert collector.skip(20) == False
+
+
 def test_logger_skipcollector_single_int():
     """Skip all other pages than zero."""
     single_int = 0
