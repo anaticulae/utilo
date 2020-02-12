@@ -7,6 +7,8 @@
 # be prosecuted under federal law. Its content is company confidential.
 # =============================================================================
 
+import statistics
+
 import pytest
 
 import utila
@@ -45,3 +47,17 @@ def test_roundme_single():
 def test_roundme_single_with_digits():
     rounded = utila.roundme(1.558, 2.448, digits=1)
     assert rounded == [1.6, 2.4], str(rounded)
+
+
+def test_modes():
+    items = [1, 1, 1, 3, 3, 3]
+    assert utila.modes(items) == 1
+    assert utila.modes(items, minimize=False) == 3
+
+    items = [1, 1, 2, 3, 4, 5]
+    assert utila.modes(items, minimize=False) == 1
+
+
+def test_modes_empty():
+    with pytest.raises(statistics.StatisticsError):
+        utila.modes([])

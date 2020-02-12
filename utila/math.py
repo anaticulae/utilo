@@ -6,6 +6,7 @@
 # use or distribution is an offensive act against international law and may
 # be prosecuted under federal law. Its content is company confidential.
 # =============================================================================
+import statistics
 import typing
 
 # default number of digits to round
@@ -60,3 +61,31 @@ def isascending(items: Numbers) -> bool:
         (after - current) for (current, after) in zip(items[:-1], items[1:])
     ]
     return all([item >= 0 for item in diff])
+
+
+def modes(data: Numbers, minimize: bool = True) -> Number:
+    """Return the most common data point from discrete or nominal data.
+
+    It is possible to have multiple common data points. To extract a
+    unique point `minimize` enables to decide which number is used.
+
+    See: statistics.mode
+
+    Args:
+        data: list of numbers
+        minimize(bool): if True the biggest common number is used, if
+                        not the smallest is used.
+    Raises:
+        StatisticsError: if data is empty
+    Returns:
+        Most common number.
+    """
+    if not data:
+        raise statistics.StatisticsError('no mode for empty data')
+    table = statistics._counts(data)  # pylint:disable=W0212
+    if len(table) == 1:
+        return table[0][0]
+    current = sorted([item[0] for item in table])
+    if minimize:
+        return current[0]
+    return current[-1]

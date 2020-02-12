@@ -47,7 +47,7 @@ math
     Number = typing.TypeVar('Number', int, float)  # pylint:disable=C0103
     Numbers = typing.List[Number]  # pylint:disable=C0103
 
-* [ ] add multi_mode to math package
+* [x] add multi_mode to math package
 
     def multi_mode(data, minimize: bool = True):
         """Return the most common data point from discrete or nominal data.
