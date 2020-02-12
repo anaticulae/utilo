@@ -107,6 +107,8 @@ from utila.math import roundme
 from utila.pages import parse_pages
 from utila.pages import select_page
 from utila.pages import should_skip
+# process
+from utila.process import run_parallel
 # regex
 from utila.regex import extract_match
 # string

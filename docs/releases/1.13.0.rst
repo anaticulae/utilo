@@ -74,7 +74,7 @@ math
 runtime
 -------
 
-* [ ] move and test
+* [x] move and test
 
   .. code-block:: python
 
