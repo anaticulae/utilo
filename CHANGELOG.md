@@ -2,6 +2,12 @@
 
 Every noteable change is logged here.
 
+## v1.13.1
+
+### Fix
+
+* ensure that SkipCollector handles pages=None correctly (b02fefeec2f1)
+
 ## v1.13.0
 
 ### Feature
