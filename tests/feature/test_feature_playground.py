@@ -25,6 +25,7 @@ import sys
 import pytest
 
 import utila
+import utila.logger
 
 
 def run_playground(
@@ -72,15 +73,17 @@ def test_feature_playground_cli_profile(cmd, testdir, monkeypatch, capsys):
 @pytest.mark.parametrize('quite', ['', '--quite'])
 def test_feature_playground_cli_quite(quite, testdir, monkeypatch, capsys):
     """Test to suppress logging when using --quite flag."""
-    cmd = f'--profile {quite}'
-    stdout, _ = run_playground(
-        cmd,
-        {
-            'profileflag': True,
-            'quiteflag': True
-        },
-        testdir,
-        monkeypatch,
-        capsys,
-    )
+    with monkeypatch.context() as context:
+        context.setattr(utila.logger, 'LEVEL', utila.logger.LEVEL_DEFAULT)
+        cmd = f'--profile {quite}'
+        stdout, _ = run_playground(
+            cmd,
+            {
+                'profileflag': True,
+                'quiteflag': True
+            },
+            testdir,
+            monkeypatch,
+            capsys,
+        )
     assert bool(stdout) != bool(quite)

@@ -62,7 +62,7 @@ def test_logger_profile_with_exception(capsys):
 
 def test_logger_print_env(capsys, monkeypatch):
     with monkeypatch.context() as context:
-        context.setattr('utila.logger.LEVEL', utila.Level.INFORMATION)
+        context.setattr(utila.logger, 'LEVEL', utila.Level.INFORMATION)
         utila.print_env()
     stdout = capsys.readouterr().out
     assert len(stdout) > 500, str(stdout)
@@ -99,7 +99,7 @@ def add(x, y, z):  # pylint:disable=C0103
 ])
 def test_logger_log_args(level, expected_log, capsys, monkeypatch):
     with monkeypatch.context() as context:
-        context.setattr('utila.logger.LEVEL', level)
+        context.setattr(utila.logger, 'LEVEL', level)
         add(1, 2, 3)
 
     captured = capsys.readouterr().out
@@ -115,7 +115,7 @@ def test_logger_log_args_loglevel_to_low(capsys, monkeypatch):
     """Set `LEVEL` to `LOGGING` to avoid any output"""
     with monkeypatch.context() as context:
         level = utila.Level.LOGGING
-        context.setattr('utila.logger.LEVEL', level)
+        context.setattr(utila.logger, 'LEVEL', level)
         add(1, 2, 3)
 
     captured = capsys.readouterr().out.strip()
@@ -123,6 +123,7 @@ def test_logger_log_args_loglevel_to_low(capsys, monkeypatch):
 
 
 def test_logger_level_temp(monkeypatch):
+    utila.level_setup(utila.LEVEL_DEFAULT)  # TODO: REMOVE LATER
     assert utila.level_current() == utila.LEVEL_DEFAULT
     with monkeypatch.context() as context:
         context.setattr(utila.logger, 'LEVEL', utila.Level.ERROR)
@@ -140,6 +141,7 @@ def test_logger_level_temp(monkeypatch):
 
 
 def test_logger_level_setup(monkeypatch):
+    utila.level_setup(utila.LEVEL_DEFAULT)  # TODO: REMOVE LATER
     assert utila.level_current() == utila.LEVEL_DEFAULT
     with monkeypatch.context() as context:
         context.setattr(utila.logger, 'LEVEL', utila.Level.ERROR)
