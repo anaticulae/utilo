@@ -8,6 +8,7 @@
 #==============================================================================
 
 import contextlib
+import inspect
 import os
 import subprocess
 import sys
@@ -172,3 +173,14 @@ def log_raw(content: str):
     """
     content = fix_encoding(content)
     print(content)
+
+
+def single_execution():
+    """Check that test method is executed as single test. You can use
+    this method to open the result in a web browser if test is executed
+    with a human in front of the machine eg. as a single test."""
+    # TODO: MOVE TO utilatest LATER
+    frame = inspect.currentframe()
+    parent = inspect.getouterframes(frame)[1]
+    caller = parent.function
+    return all([item in sys.argv for item in ['-k', caller]])

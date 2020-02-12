@@ -127,6 +127,7 @@ from utila.test import log_raw
 from utila.test import returncode
 from utila.test import run
 from utila.test import run_command
+from utila.test import single_execution
 from utila.test import skip_longrun
 from utila.test import skip_nightly
 from utila.test import skip_nonvirtual

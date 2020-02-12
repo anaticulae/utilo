@@ -7,6 +7,8 @@
 # be prosecuted under federal law. Its content is company confidential.
 # =============================================================================
 
+import sys
+
 import pytest
 
 import utila
@@ -76,3 +78,14 @@ def test_test_log_raw(capsys):
         assert len(content) > 1000, utila.log_raw(content)
 
     assert content in capsys.readouterr().out
+
+
+def test_test_single_execution(monkeypatch):
+    with monkeypatch.context() as context:
+        context.setattr(sys, 'argv', ['-k', 'test_helm'])
+
+        def test_helm():
+            return utila.single_execution()
+
+        result = test_helm()
+        assert result, 'not a single test'
