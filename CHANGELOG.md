@@ -2,6 +2,33 @@
 
 Every noteable change is logged here.
 
+## v1.13.0
+
+### Feature
+
+* add method to run commands in parallel (7734d98ffa73)
+* add context manager to ensure that files were created (fb239e84238b)
+* add method to test that pytest test is executed as single test (f18ed33c5caf)
+* add method to support ambiguous modes (4568df9bf92f)
+* extend roundme method to round list of floats (10e5dab77fc8)
+* add method to check that iterable contains only ascending numbers (6c1470f66343)
+* add typing Numbers to public API (c87249760029)
+* introduce regex package to add some recipes (24c7078cbde1)
+* add context manager to temporary set logging level (baeebdeb626b)
+* ensure to handle single values correctly (75579801c1cc)
+
+### Fix
+
+* rename classificator to correct work classifier (64a6affc033c)
+* add newline after logging process to run (1ca6e06d0119)
+* correct text of --help message (7c3a9526b293)
+
+### Documentation
+
+* add link to backlog on index page (14412d7c4bed)
+* use general doc approach on bugs and todo (2245775625ad)
+* extend interface documentation (8fd91647d0a9)
+
 ## v1.12.1
 
 ### Fix
