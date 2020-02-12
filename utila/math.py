@@ -15,16 +15,24 @@ Number = typing.TypeVar('Number', int, float)  # pylint:disable=C0103
 Numbers = typing.List[Number]  # pylint:disable=C0103
 
 
-def roundme(value: float, digits: int = NDIGITS) -> float:
-    """Round `value` to `NDIGITS`=2
+def roundme(*items: float, digits: int = NDIGITS) -> float:
+    """Round `items` to `NDIGITS.
+
+    It is possible to pass a list of floats or a single float. If a list
+    is passed a rounded list is returned. If a single float or a one
+    sized list is passed a single rounded float is returned.
 
     Args:
-        value(float): value to round
+        items: list of floats or a single float
         digits(int): amout of numbers after dot
     Returns:
-        rounded `value`
+        List of round `items` or a single rounded item.
     """
-    return round(value, digits)
+    assert digits >= 0, f'negative digits {digits}'
+    result = [round(item, digits) for item in items]
+    if len(result) == 1:
+        return result[0]
+    return result
 
 
 def numbers(items: typing.List) -> typing.List[int]:

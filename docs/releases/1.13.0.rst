@@ -47,6 +47,7 @@ math
     Number = typing.TypeVar('Number', int, float)  # pylint:disable=C0103
     Numbers = typing.List[Number]  # pylint:disable=C0103
 
+* [ ] add multi_mode to math package
 
     def multi_mode(data, minimize: bool = True):
         """Return the most common data point from discrete or nominal data.
@@ -64,7 +65,7 @@ math
             return current[0]
         return current[-1]
 
-* [ ] extend utila.roundme to round multiple value at once
+* [x] extend utila.roundme to round multiple value at once
 
   .. code-block:: python
 

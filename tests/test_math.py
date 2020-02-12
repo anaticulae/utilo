@@ -7,6 +7,8 @@
 # be prosecuted under federal law. Its content is company confidential.
 # =============================================================================
 
+import pytest
+
 import utila
 
 
@@ -18,3 +20,28 @@ def test_math_isascending():
 def test_math_isascending_negative():
     items = [10, 0.5, 5]
     assert utila.isascending(items) is False
+
+
+@pytest.mark.parametrize('value, digits, expected', [
+    (0.9, 0, 1.0),
+    (0.9, 1, 0.9),
+    (0.993, 2, 0.99),
+    ([1.1, 2.5, 3.0], 0, [1.0, 2.0, 3.0]),
+    ([1.1, 2.5, 3.0], 1, [1.1, 2.5, 3.0]),
+])
+def test_roundme(value, digits, expected):
+    if isinstance(value, list):
+        result = utila.roundme(*value, digits=digits)
+    else:
+        result = utila.roundme(value, digits=digits)
+    assert result == expected
+
+
+def test_roundme_single():
+    rounded = utila.roundme(1.558, 2.448)
+    assert rounded == [1.56, 2.45], str(rounded)
+
+
+def test_roundme_single_with_digits():
+    rounded = utila.roundme(1.558, 2.448, digits=1)
+    assert rounded == [1.6, 2.4], str(rounded)
