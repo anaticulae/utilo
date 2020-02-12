@@ -8,6 +8,7 @@
 #==============================================================================
 
 import contextlib
+import glob
 import inspect
 import os
 import subprocess
@@ -184,3 +185,15 @@ def single_execution():
     parent = inspect.getouterframes(frame)[1]
     caller = parent.function
     return all([item in sys.argv for item in ['-k', caller]])
+
+
+@contextlib.contextmanager
+def increased_filecount(path: str, ending: str = None):
+    """Ensure that some files were created while yielded operation."""
+    assert os.path.exists(path), str(path)
+    pattern = '**/*.*' if ending is None else f'**/*.{ending}'
+    with utila.chdir(path):
+        before = list(glob.glob(pattern, recursive=True))
+        yield
+        after = list(glob.glob(pattern, recursive=True))
+    assert len(after) > len(before), f'{before}\n\n{after}'

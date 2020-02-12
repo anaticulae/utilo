@@ -89,3 +89,18 @@ def test_test_single_execution(monkeypatch):
 
         result = test_helm()
         assert result, 'not a single test'
+
+
+def test_test_increased_filecount(testdir):
+    root = str(testdir)
+
+    with pytest.raises(AssertionError):
+        with utila.increased_filecount(root):
+            pass
+
+    with utila.increased_filecount(root):
+        utila.file_create('test.txt')
+
+    with pytest.raises(AssertionError):
+        with utila.increased_filecount(root, ending='*.pdf'):
+            utila.file_create('test.txt')

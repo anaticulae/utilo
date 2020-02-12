@@ -110,7 +110,7 @@ test
         caller = parent.function
         return all([item in sys.argv for item in ['-k', caller]])
 
-* [ ] move and test
+* [x] move and test
 
   .. code-block:: python
 
