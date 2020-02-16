@@ -787,18 +787,24 @@ def prepare_variables(variables, args):
     return result
 
 
-def prepare_inputs(inputs, inspaces, outspace) -> typing.List[str]:
+def prepare_inputs(
+        inputs: list,
+        inspaces: list,
+        outspace: str,
+) -> typing.List[str]:
     """Parse single and multiple file input
 
-    Locate files by defined pattern in `Workplan`. A file pattern is defined
-    via (name, typ). The ext is in UPPER-CASES, for example (*, PDF) to
-    locate multiple pdf's.
+    Locate files by defined pattern in `Workplan`. A file pattern is
+    defined via (name, typ). The ext is in UPPER-CASES, for example (*,
+    PDF) to locate multiple pdf's.
 
     Args:
         inputs(str): inputs are defined in a workplan
-        inspaces([str]): inspaces is the current input via -i
+        inspaces(str): inspaces is the current input via -i
+        outspace(str): path to write results and use as possible input
+                       source for `recursive inputs`.
     Returns:
-        list of located files
+        List of located files.
     """
 
     call('prepare inputs')
