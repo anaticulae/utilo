@@ -840,7 +840,8 @@ def prepare_inputs(inputs, inspaces, outspace) -> typing.List[str]:
                     error('missing input: %s' % filepath)
             else:
                 _, filename = os.path.split(inspace)
-                if '.' in filename:
+                if '.' in filename and filename[0] != '.':  # .tmp
+                    # .tmp is not a file name, it is a directory.
                     # File as a input name
                     result.append(inspace)
                     break  # do not double add path
