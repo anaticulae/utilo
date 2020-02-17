@@ -1,0 +1,59 @@
+.. _1_14_0:
+
+RP 1.14.0
+=========
+
+test
+----
+
+* [ ] add method to automate open html file with webbrowser avoid writing code.
+
+ .. code-block:: python
+
+     def open_webbrowser()
+        if utila.single_execution():
+            webbrowser.open(outpath)
+
+* [ ] increased_filecount: change ending to ext
+
+* [ ] increased_filecount: introduce optional file_number_diff_count
+
+file
+----
+
+* [ ] copy_content add flag to log copy operation
+
+* [ ] copy_content add flag to log but not execute copy operation
+
+math
+----
+
+* [ ] fix roundme to accept list as input
+
+In the current state it is no possible to round list without unpacking.
+We should support passing a list.
+
+
+.. code-block:: python
+
+    value = utila.roundme(*[float(item) for item in value])
+
+Better:
+
+.. code-block:: python
+
+    value = utila.roundme([float(item) for item in value])
+
+cli
+---
+
+* [ ] move and test code for variable inputs from feedback project
+
+quality
+-------
+
+before
+~~~~~~
+
+* Total coverage: 93.82%
+* Your code has been rated at 9.84/10
