@@ -54,3 +54,9 @@ def test_string_extract_match():
 
     extracted = utila.extract_match(first_item)
     assert extracted == '123', str(extracted)
+
+
+def test_parse_tuple():
+    raw = '1.0 2.0 3.0 4.01'
+    parsed = utila.parse_tuple(raw)
+    assert parsed == (1.0, 2.0, 3.0, 4.01), str(parsed)
