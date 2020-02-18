@@ -27,8 +27,8 @@ def test_logger_skipcollector():
 
 def test_logger_skipcollector_none():
     with utila.SkipCollector() as collector:
-        assert collector.skip(10) == False
-        assert collector.skip(20) == False
+        assert collector.skip(10) is False
+        assert collector.skip(20) is False
 
 
 def test_logger_skipcollector_single_int():

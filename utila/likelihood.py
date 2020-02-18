@@ -10,35 +10,35 @@
 import utila
 
 
-def uniform_result(items):
-    """Determine ?relatively likelihood? of a collection
+def uniform_result(items)->list:
+    """Determine ?relatively likelihood? of a collection.
 
     Args:
-        items(list/dict): collection with occurrence of position in collection
+        items(list,dict): collection with occurrence of position in collection
     Returns:
-        collect with relative likelihood of occurrence
+        List with relative likelihood of occurrence.
     """
     if isinstance(items, dict):
         return _uniform_dict(items)
     return _uniform_list(items)
 
 
-def maxi(items):
-    """Determine the maximized likelihood of an uniformed collection
+def maxi(items)->list:
+    """Determine the maximized likelihood of an uniformed collection.
 
     Args:
-        items(list/dict): data for determining uniformed data
+        items(list,dict): data for determining uniformed data
     Returns:
         element(s) with maximized likelihood
     """
     return _max_mini(items, method=max)
 
 
-def mini(items):
-    """Determine the minimized likelihood of an uniformed collection
+def mini(items)->list:
+    """Determine the minimized likelihood of an uniformed collection.
 
     Args:
-        items(list/dict): data for determining uniformed data
+        items(list,dict): data for determining uniformed data
     Returns:
         element(s) with minimized likelihood
     """
