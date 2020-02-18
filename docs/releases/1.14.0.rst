@@ -16,7 +16,7 @@ test
 
 * [x] increased_filecount: change ending to ext
 
-* [ ] increased_filecount: introduce optional file_number_diff_count
+* [x] increased_filecount: introduce optional file_number_diff_count
 
 file
 ----
