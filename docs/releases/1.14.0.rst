@@ -21,7 +21,7 @@ test
 file
 ----
 
-* [ ] copy_content add flag to log copy operation
+* [x] copy_content add flag to log copy operation
 
 * [ ] copy_content add flag to log but not execute copy operation
 

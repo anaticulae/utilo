@@ -13,6 +13,7 @@ import random
 import shutil
 import stat
 
+import utila
 from utila.logger import error
 from utila.string import forward_slash
 from utila.utils import FAILURE
@@ -237,6 +238,7 @@ def copy_content(
         *,
         recursive: bool = False,
         skip_overwrite: bool = False,
+        verbose: bool = False,
 ):
     """Copy the content from `source` to `destination` folder. If
     `destination` folder does not exists, it will be created.
@@ -250,13 +252,17 @@ def copy_content(
         destination(str): directory to copy source item(s)
         pattern(str): accept files which matches this pattern, if None
                       all files matches.
+
         recursive(bool): if True, copy child folder
         skip_overwrite(bool): if file exists and is not changed, do
                               nothing.
+        verbose(bool): explain what is being done
     """
     if os.path.isfile(source):
         if not isfilepath(destination):
             destination = os.path.join(destination, os.path.basename(source))
+        if verbose:
+            utila.log(f'cp: {source} -> {destination}')
         file_copy(
             source,
             destination,
@@ -275,8 +281,12 @@ def copy_content(
         source_ = os.path.join(source, item)
         dest_ = os.path.join(destination, item)
         if os.path.isfile(source_):
+            if verbose:
+                utila.log(f'cp: {source_} -> {dest_}')
             file_copy(source_, dest_, skip_overwrite=skip_overwrite)
         else:
+            if verbose:
+                utila.log(f'mkdir: {dest_}')
             os.makedirs(dest_, exist_ok=True)
 
 

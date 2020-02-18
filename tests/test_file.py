@@ -121,6 +121,17 @@ def test_file_copy_content_recursive(testdir, content_folder):  #pylint:disable=
     assert os.path.exists(os.path.join(goal, 'abc/def/ghi/jklm/ggg.txt'))
 
 
+def test_file_copy_content_verbose(testdir, content_folder, capsys):  #pylint:disable=W0621
+    """Test that operation are logged to console"""
+    goal = str(testdir)
+    utila.copy_content(content_folder, goal, recursive=True, verbose=True)
+
+    stdout = capsys.readouterr().out
+
+    assert stdout.count('mkdir:') == 4, stdout
+    assert stdout.count('cp:') == 5, stdout
+
+
 def test_file_copy_content_recursive_false(testdir, content_folder):  #pylint:disable=W0621
     """Test to copy `content_folder` non recursive"""
     goal = str(testdir)
