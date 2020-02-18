@@ -7,11 +7,14 @@
 # be prosecuted under federal law. Its content is company confidential.
 # =============================================================================
 
+import os
 import sys
+import webbrowser
 
 import pytest
 
 import utila
+import utila.test
 from utila import FAILURE
 from utila import PACKAGENAME
 from utila import ROOT
@@ -119,3 +122,23 @@ def test_test_increased_filecount_to_few_created(testdir):
     with pytest.raises(AssertionError):
         with utila.increased_filecount(root, diff=2):
             utila.file_create('test.txt')
+
+
+def test_test_open_webbrowser(testdir, monkeypatch):
+    # NOTE: don't know if that is a good test
+    root = str(testdir)
+    path = os.path.join(root, 'index.html')
+    utila.file_create(path, 'Hello World')
+
+    called = False
+
+    def open_url(url, new=0, autoraise=True):  # pylint:disable=W0613
+        nonlocal called
+        called = True
+
+    with monkeypatch.context() as context:
+        context.setattr(utila.test, 'single_execution', lambda: True)
+        context.setattr(webbrowser, 'open', open_url)
+        with utila.open_webbrowser(path):
+            pass
+    assert called

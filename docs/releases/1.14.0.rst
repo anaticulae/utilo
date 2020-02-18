@@ -6,7 +6,7 @@ RP 1.14.0
 test
 ----
 
-* [ ] add method to automate open html file with webbrowser avoid writing code.
+* [x] add method to automate open html file with webbrowser avoid writing code.
 
  .. code-block:: python
 

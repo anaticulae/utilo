@@ -13,6 +13,7 @@ import inspect
 import os
 import subprocess
 import sys
+import webbrowser
 
 import pytest
 
@@ -210,3 +211,19 @@ def increased_filecount(path: str, ext: str = None, diff: int = None):
     diff = 1 if diff is None else diff
     current = len(after) - len(before)
     assert current >= diff, f'{before}\n\n{after}'
+
+
+@contextlib.contextmanager
+def open_webbrowser(path: str):
+    """Open webbrowser on `give` path if test is used as single
+    execution.
+
+    Args:
+        path(str): path to located html file
+    Yields:
+        None: to run operation to create website
+    """
+    yield
+    assert os.path.exists(path), str(str)
+    if single_execution():
+        webbrowser.open(path)
