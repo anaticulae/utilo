@@ -188,10 +188,19 @@ def single_execution():
 
 
 @contextlib.contextmanager
-def increased_filecount(path: str, ending: str = None):
-    """Ensure that some files were created while yielded operation."""
+def increased_filecount(path: str, ext: str = None):
+    """Ensure that some files were created while yielded operation.
+
+    Args:
+        path(str): path to check for file creation
+        ext(str): look for a special file extention
+    Raises:
+        AssertionError: if no file is created
+    Yields:
+        None: to run file creation operation
+    """
     assert os.path.exists(path), str(path)
-    pattern = '**/*.*' if ending is None else f'**/*.{ending}'
+    pattern = '**/*.*' if ext is None else f'**/*.{ext}'
     with utila.chdir(path):
         before = list(glob.glob(pattern, recursive=True))
         yield

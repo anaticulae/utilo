@@ -14,7 +14,7 @@ test
         if utila.single_execution():
             webbrowser.open(outpath)
 
-* [ ] increased_filecount: change ending to ext
+* [x] increased_filecount: change ending to ext
 
 * [ ] increased_filecount: introduce optional file_number_diff_count
 

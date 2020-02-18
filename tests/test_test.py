@@ -102,5 +102,5 @@ def test_test_increased_filecount(testdir):
         utila.file_create('test.txt')
 
     with pytest.raises(AssertionError):
-        with utila.increased_filecount(root, ending='*.pdf'):
+        with utila.increased_filecount(root, ext='*.pdf'):
             utila.file_create('test.txt')
