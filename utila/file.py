@@ -196,20 +196,20 @@ def file_islocked(path: str):
 def file_copy(
         source: str,
         destination: str,
-        skip_overwrite: bool = True,
+        update: bool = True,
 ):
     """Copy a single `source` file to `destination` file or folder.
 
     Args:
         source(str): path to existing source file
         destination(str): a folder or a file to copy
-        skip_overwrite(bool): if True an existing equal file is not
-                              touched. Last modification date stays
-                              equal.
+        update(bool): copy only when the source file is different than
+                      the destination file or when the destination file
+                      is missing.
     """
     assert os.path.exists(source), f'"{source}" does not exists'
     try:
-        if skip_overwrite and file_compare(source, destination):
+        if update and file_compare(source, destination):
             return
         parent, _ = os.path.split(destination)
         os.makedirs(parent, exist_ok=True)
@@ -237,7 +237,7 @@ def copy_content(
         pattern: str = None,
         *,
         recursive: bool = False,
-        skip_overwrite: bool = False,
+        update: bool = False,
         verbose: bool = False,
 ):
     """Copy the content from `source` to `destination` folder. If
@@ -254,8 +254,9 @@ def copy_content(
                       all files matches.
 
         recursive(bool): if True, copy child folder
-        skip_overwrite(bool): if file exists and is not changed, do
-                              nothing.
+        update(bool): move only when the source file is newer than the
+                      destination file or when the destination file is
+                      missing.
         verbose(bool): explain what is being done
     """
     if os.path.isfile(source):
@@ -266,7 +267,7 @@ def copy_content(
         file_copy(
             source,
             destination,
-            skip_overwrite=skip_overwrite,
+            update=update,
         )
         return
 
@@ -283,7 +284,7 @@ def copy_content(
         if os.path.isfile(source_):
             if verbose:
                 utila.log(f'cp: {source_} -> {dest_}')
-            file_copy(source_, dest_, skip_overwrite=skip_overwrite)
+            file_copy(source_, dest_, update=update)
         else:
             if verbose:
                 utila.log(f'mkdir: {dest_}')

@@ -227,12 +227,12 @@ def test_file_copy_content_directory_to_directory(testdir):
     assert len(os.listdir(goal)) == 3, os.listdir(goal)
 
 
-@pytest.mark.parametrize('skip_overwrite', [
+@pytest.mark.parametrize('update', [
     True,
     False,
 ])
 def test_file_copy_content_access_error(
-        skip_overwrite,
+        update,
         testdir,
         monkeypatch,
         capsys,
@@ -245,8 +245,8 @@ def test_file_copy_content_access_error(
     copy_content(source, sink) should raises an error, cause the sink pdf is
     locked by an pdf reader for example.
 
-    skip_overwrite: if True, the copy process which raises OSError is
-                    not reached and therefore no SystemExit is raised.
+    update: if True, the copy process which raises OSError is
+            not reached and therefore no SystemExit is raised.
     monkeypatch: patch copy command to introduce overwrite error
 
     TODO: refactor/simplify with: file_lock/file_unlock
@@ -271,8 +271,8 @@ def test_file_copy_content_access_error(
     with monkeypatch.context() as context:
         context.setattr(shutil, 'copy', copy)
 
-        if skip_overwrite:
-            utila.copy_content(source, sink, skip_overwrite=True)
+        if update:
+            utila.copy_content(source, sink, update=True)
             return
 
         with pytest.raises(SystemExit):
