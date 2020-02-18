@@ -45,7 +45,7 @@ Better:
 cli
 ---
 
-* [ ] move and test code for variable inputs from feedback project
+* [x] move and test code for variable inputs from feedback project
 
 quality
 -------
