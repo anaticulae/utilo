@@ -49,6 +49,22 @@ def test_roundme_single_with_digits():
     assert rounded == [1.6, 2.4], str(rounded)
 
 
+def test_math_roundme_tuple_vs_list():
+    fixed = (1, 2, 3, 4)
+    variable = [1, 2, 3, 4]
+
+    assert utila.roundme(fixed) == fixed
+    assert utila.roundme(variable) == variable
+    assert utila.roundme(*variable) == variable
+    assert utila.roundme(*fixed) == variable
+
+
+def test_math_roundme_str_error():
+    with pytest.raises(ValueError):
+        utila.roundme('h')
+        utila.roundme('hello')
+
+
 def test_modes():
     items = [1, 1, 1, 3, 3, 3]
     assert utila.modes(items) == 1

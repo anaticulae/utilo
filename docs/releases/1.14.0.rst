@@ -28,7 +28,7 @@ file
 math
 ----
 
-* [ ] fix roundme to accept list as input
+* [x] fix roundme to accept list as input
 
 In the current state it is no possible to round list without unpacking.
 We should support passing a list.

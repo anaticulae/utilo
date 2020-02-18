@@ -19,18 +19,35 @@ Numbers = typing.List[Number]  # pylint:disable=C0103
 def roundme(*items: float, digits: int = NDIGITS) -> float:
     """Round `items` to `NDIGITS.
 
-    It is possible to pass a list of floats or a single float. If a list
-    is passed a rounded list is returned. If a single float or a one
-    sized list is passed a single rounded float is returned.
+    This method supports to round floats, tuple/list of floats. The
+    passed datatype stays the same.
+
+    Usage:
+        datum = roundme(1.5, 2.5, 3.2, digits=1)
+        datum = roundme([1.5, 2.5, 3.2])
+        datum = roundme((1.5, 2.5, 3.2), digits=3)
 
     Args:
         items: list of floats or a single float
         digits(int): amout of numbers after dot
+    Raises:
+        ValueError: if no float or list/tuple of numbers is passed
     Returns:
         List of round `items` or a single rounded item.
     """
     assert digits >= 0, f'negative digits {digits}'
-    result = [round(item, digits) for item in items]
+    result = None
+    try:
+        result = [round(item, digits) for item in items]
+    except TypeError as error:
+        # support roundme([1,2,3]); roundme((1.5,2.33,3.2))
+        if not isinstance(items[0], (list, tuple)):
+            msg = f'require float, list or tuple, not: "{items}"'
+            raise ValueError(msg) from error
+        result = [roundme(item, digits=digits) for item in items[0]]
+        if isinstance(items[0], tuple):
+            # ensure that input which was a tuple stays a tuple
+            result = tuple(result)
     if len(result) == 1:
         return result[0]
     return result
