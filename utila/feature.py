@@ -863,7 +863,7 @@ def prepare_inputs(
                     files = glob.glob(pattern)
                     utila.info('%s' % str(files))
                     for finding in files:
-                        log('FINDING %s' % finding)
+                        utila.info('FINDING %s' % finding)
                         result.append(finding)
     utila.call('result: {result}')
     return result
