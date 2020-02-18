@@ -2,6 +2,27 @@
 
 Every noteable change is logged here.
 
+## v1.14.0
+
+### Feature
+
+* support multiple input files (39c4741196e5)
+* reduce logging level of FINDING (31e2a85e3ad2)
+* add verbose flag to log copy operation (fea445b9f703)
+* add context manager to open website on single test execution (3d006faabbcb)
+* add expected file fount to increased_filecount (1f139a2a6dbb)
+* print log to console immediately (de76bbd11d18)
+* support different iterable's (9273a9aeb014)
+* add method to convert string to tuple of float (a2f2fd4c185d)
+
+### Fix
+
+* handle .tmp folder correctly as folder not as a file (ffea551ef776)
+
+### Documentation
+
+* extend interface documentation (4b78be11beb0)
+
 ## v1.13.1
 
 ### Fix

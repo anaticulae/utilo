@@ -150,7 +150,7 @@ from utila.utils import flatten
 from utila.utils import nothing
 from utila.utils import select
 
-__version__ = '1.13.1'
+__version__ = '1.14.0'
 
 ROOT = os.path.abspath(os.path.join(os.path.dirname(__file__), '..'))
 PACKAGENAME = 'utila'
