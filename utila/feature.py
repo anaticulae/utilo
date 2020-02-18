@@ -807,13 +807,13 @@ def prepare_inputs(
         List of located files.
     """
 
-    call('prepare inputs')
+    utila.call('prepare inputs')
     result = []
     # single file input
     search_location = ' '.join(inspaces)
     for item in inputs:
         lastinput = item == inputs[-1]
-        info('skipping input `%s`, require `Pattern' % str(item))
+        utila.info('skipping input `%s`, require `Pattern' % str(item))
         if not isinstance(item, Pattern):
             continue
         (name, ext) = item.name, item.ext
@@ -831,7 +831,7 @@ def prepare_inputs(
                     # in other input folder
                     if inspace == inspaces[-1]:
                         recursivepath = os.path.join(outspace, filename)
-                        info('recursive input %s' % recursivepath)
+                        utila.info('recursive input %s' % recursivepath)
                         result.append('_%s' % recursivepath)
             elif isinstance(item, File):
                 filename = '%s.%s' % (name, ext)
@@ -842,8 +842,8 @@ def prepare_inputs(
                 else:
                     if not lastinput:
                         continue
-                    error('search location: %s' % search_location)
-                    error('missing input: %s' % filepath)
+                    utila.error('search location: %s' % search_location)
+                    utila.error('missing input: %s' % filepath)
             else:
                 _, filename = os.path.split(inspace)
                 if '.' in filename and filename[0] != '.':  # .tmp
@@ -859,14 +859,13 @@ def prepare_inputs(
                 else:
                     ext = ext.lower()
                     pattern = '%s/%s.%s' % (inspace, name, ext)
-                    info('using pattern: %s' % pattern)
+                    utila.info('using pattern: %s' % pattern)
                     files = glob.glob(pattern)
-                    info('%s' % str(files))
+                    utila.info('%s' % str(files))
                     for finding in files:
                         log('FINDING %s' % finding)
                         result.append(finding)
-
-    call('result: %s\n' % result)
+    utila.call('result: {result}')
     return result
 
 
