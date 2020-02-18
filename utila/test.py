@@ -173,7 +173,7 @@ def log_raw(content: str):
         asssert len(abc) > 100, utila.log_raw(abc)
     """
     content = fix_encoding(content)
-    print(content)
+    print(content, flush=True)
 
 
 def single_execution():
