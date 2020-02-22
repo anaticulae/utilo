@@ -22,10 +22,12 @@ def roundme(*items: float, digits: int = NDIGITS) -> float:
     This method supports to round floats, tuple/list of floats. The
     passed datatype stays the same.
 
-    Usage:
-        datum = roundme(1.5, 2.5, 3.2, digits=1)
-        datum = roundme([1.5, 2.5, 3.2])
-        datum = roundme((1.5, 2.5, 3.2), digits=3)
+    >>> roundme(1.55, 2.50, 3.06, digits=1)
+    [1.6, 2.5, 3.1]
+    >>> roundme([1.5, 2.5, 3.2])
+    [1.5, 2.5, 3.2]
+    >>> roundme((1.53333, 2.5666, 3.21111), digits=3)
+    (1.533, 2.567, 3.211)
 
     Args:
         items: list of floats or a single float
@@ -72,7 +74,13 @@ def numbers(items: typing.List) -> typing.List[int]:
 
 
 def isascending(items: Numbers) -> bool:
-    """Check that `items` are ascending numbers."""
+    """Check that `items` are ascending numbers.
+
+    >>> isascending([1, 2, 3, 4])
+    True
+    >>> isascending((5, 2.2, 5))
+    False
+    """
     items = [int(item) for item in items]
     diff = [
         (after - current) for (current, after) in zip(items[:-1], items[1:])
