@@ -22,6 +22,7 @@ from utila.cli import Command
 from utila.cli import Flag
 from utila.cli import Number
 from utila.cli import Parameter
+from utila.cli import ParserConfiguration
 from utila.cli import RequiredCommand
 from utila.cli import is_userflag
 from utila.cli import parse
@@ -38,6 +39,7 @@ from utila.error import CANCELLED_BY_USER
 from utila.error import handle_error
 from utila.error import saveme
 # Feature
+from utila.feature import FeaturePackConfig
 from utila.feature import File
 from utila.feature import Input
 from utila.feature import InterfaceMismatch

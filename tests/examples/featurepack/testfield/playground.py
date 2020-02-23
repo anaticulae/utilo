@@ -24,15 +24,18 @@ WORKPLAN = [
 
 
 def main(**kwargs):
-    utila.featurepack(
+    config = utila.FeaturePackConfig(
         description='This is a default feature pack to increase test coverage',
-        featurepackage='testfield.features',
         multiprocessed=True,
         name=PROCESS,
         pages=True,
-        root=ROOT,
         singleinput=True,
         version=VERSION,
-        workplan=WORKPLAN,
         **kwargs,
+    )
+    utila.featurepack(
+        config=config,
+        featurepackage='testfield.features',
+        root=ROOT,
+        workplan=WORKPLAN,
     )

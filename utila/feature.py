@@ -69,71 +69,75 @@ class InterfaceMismatch(TypeError):
     pass
 
 
+@dataclasses.dataclass
+class FeaturePackConfig:
+    description: str = None
+    errorhook: ErrorHook = None
+    failfastflag: bool = True
+    flags: list = dataclasses.field(default_factory=list)
+    multiprocessed: bool = False
+    name: str = None
+    pages: bool = False
+    prefixflag: bool = True
+    profileflag: bool = False
+    quiteflag: bool = False
+    singleinput: bool = False
+    verboseflag: bool = True
+    version: str = None
+
+
 @saveme(systemexit=True)
-def featurepack(
+def featurepack(  # pylint:disable=too-many-locals
         workplan: WorkSteps,
         root: str,
-        description: str,
         featurepackage: str,
-        name: str,
-        version: str,
-        errorhook: ErrorHook = None,
-        *,
-        failfastflag: bool = True,
-        flags: list = None,
-        multiprocessed: bool = False,
-        pages: bool = False,
-        prefixflag: bool = True,
-        quiteflag: bool = False,
-        singleinput: bool = False,
-        verboseflag: bool = True,
-        profileflag: bool = False,
+        config: FeaturePackConfig = None,
 ) -> int:
     """Run featurepack defined in `workplan`
 
     Args:
-        workplan:
+        workplan: define used features with in- and outpath
         root(str): path to project root
         featurepackage(str): location to featurepackage releative to root
-        name(str): name to invoke cmdline tool
-        description(str): description shown in cmdline tool
-        version(str): version to display with --version command
-        singleinput(bool): if true, files as input are allowed, else only
-                           directories are allowed
+        config(FeaturePackConfig): define featurepack behavior
     Returns:
         return SUCCESS or FAILURE
     """
-    flags = flags if flags else []
+    if config is None:
+        FeaturePackConfig()
     feature = find_features(root, featurepackage)
     commands = commandline(feature, workplan)
 
-    description = prepare_description(name, description, workplan)
-    config = ParserConfiguration(
-        failfastflag=failfastflag,
-        flags=flags,
+    description = prepare_description(config.name, config.description, workplan)
+    parser_configuration = ParserConfiguration(
+        failfastflag=config.failfastflag,
+        flags=config.flags,
         inputparameter=True,
-        multiprocessed=multiprocessed,
+        multiprocessed=config.multiprocessed,
         outputparameter=True,
-        pages=pages,
-        prefix=prefixflag,
-        profileflag=profileflag,
-        quiteflag=quiteflag,
-        verboseflag=verboseflag,
+        pages=config.pages,
+        prefix=config.prefixflag,
+        profileflag=config.profileflag,
+        quiteflag=config.quiteflag,
+        verboseflag=config.verboseflag,
     )
     parser = create_parser(
         commands,
-        config=config,
+        config=parser_configuration,
         description=description,
-        prog=name,
-        version=version,
+        prog=config.name,
+        version=config.version,
     )
     args = parse(parser)
 
-    processes, failfast, pages, profiling = evaluate_flags(args, multiprocessed)
+    processes, failfast, pages, profiling = evaluate_flags(
+        args,
+        config.multiprocessed,
+    )
     # evaluate the verbose flag
     inputpath, outputpath, prefix, verbose = sources(
         args,
-        singleinput=singleinput,
+        singleinput=config.singleinput,
         verbose=True,
     )
 
@@ -148,7 +152,7 @@ def featurepack(
     hooks = prepare_hooks(feature)
     workplan = read_workplan(
         workplan,
-        process_=name,
+        process_=config.name,
         hooks=hooks,
         inspace=inputpath,
         outspace=outputpath,
@@ -165,11 +169,11 @@ def featurepack(
     # Ensure to have output folder
     os.makedirs(outputpath, exist_ok=True)
 
-    current_todo = determine_todo(args, flags)
+    current_todo = determine_todo(args, config.flags)
     completed = process(
         workplan,
-        name,
-        errorhook=errorhook,
+        config.name,
+        errorhook=config.errorhook,
         failfast=failfast,
         pages=pages,
         processes=processes,

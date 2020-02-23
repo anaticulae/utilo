@@ -263,6 +263,7 @@ def prepare_todo(
     todo = sort(todo)
     return todo
 
+
 def flags_to_parameter(flags):
     todo = []
     for item in flags:
@@ -276,7 +277,6 @@ def flags_to_parameter(flags):
         )
         todo.insert(0, flag)
     return todo
-
 
 
 def sort(items):
@@ -323,7 +323,7 @@ def parse(parser: argparse.ArgumentParser):
     return args
 
 
-def sources( # pylint:disable=too-complex,too-many-branches
+def sources(  # pylint:disable=too-complex,too-many-branches
         args,
         *,
         singleinput: bool = False,

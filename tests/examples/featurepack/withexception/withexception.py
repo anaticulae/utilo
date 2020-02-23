@@ -24,16 +24,19 @@ WORKPLAN = [
 
 
 def main():
-    utila.featurepack(
+    config = utila.FeaturePackConfig(
         description='Test the error hook feature',
         errorhook=errorhook,
-        featurepackage='withexception.features',
         multiprocessed=True,
         name=PROCESS,
         pages=True,
-        root=ROOT,
         singleinput=True,
         version=VERSION,
+    )
+    utila.featurepack(
+        config=config,
+        featurepackage='withexception.features',
+        root=ROOT,
         workplan=WORKPLAN,
     )
 

@@ -137,15 +137,18 @@ def create_runner(
 ):
     if workplan is None:
         workplan = list(WORKPLAN)
-    runner = functools.partial(
-        featurepack_,
+    config = utila.FeaturePackConfig(
         description=description,
-        featurepackage=featurepackage,
         multiprocessed=multiprocessed,
         name=name,
         pages=pages,
         version=version,
+    )
+    runner = functools.partial(
+        featurepack_,
+        featurepackage=featurepackage,
         workplan=workplan,
+        config=config,
     )
     return runner
 

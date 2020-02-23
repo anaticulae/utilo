@@ -18,6 +18,7 @@ from pytest import raises
 import utila
 from utila import FAILURE
 from utila import SUCCESS
+from utila import FeaturePackConfig
 from utila import create_step
 from utila import featurepack
 from utila import file_create
@@ -81,13 +82,16 @@ PROCESS_NAME = 'feedback_decider_border'
 def pack(plan, root, featurepackage):
     description = 'generate html view for overlapping content'
     version = '1.0.0'
-    executed = featurepack(
-        workplan=plan,
-        root=root,
-        featurepackage=featurepackage,
-        name=PROCESS_NAME,
+    config = FeaturePackConfig(
         description=description,
+        name=PROCESS_NAME,
         version=version,
+    )
+    executed = featurepack(
+        config=config,
+        featurepackage=featurepackage,
+        root=root,
+        workplan=plan,
     )
     return executed
 
@@ -327,16 +331,19 @@ def work(pdf : str, result: str, char_margin : float, char_align : float) -> str
             '50.5',
         ])
         context.syspath_prepend(root)
+        config = FeaturePackConfig(
+            description='Description',
+            name='parsi',
+            singleinput=True,
+            version='1.0.0',
+        )
         with raises(SystemExit) as result:
             context.syspath_prepend(root)
             featurepack(
-                workplan,
-                root=root,
+                config=config,
                 featurepackage=featurepackage,
-                name='parsi',
-                description='Description',
-                version='1.0.0',
-                singleinput=True,
+                root=root,
+                workplan=workplan,
             )
     assert returncode(result) == SUCCESS
     written = file_read(
@@ -381,16 +388,19 @@ def work(pdf : str, result: str, char_margin : float, char_align : float) -> str
             '--help',
         ])
         context.syspath_prepend(root)
+        config = FeaturePackConfig(
+            name='parsi',
+            description='Description',
+            version='1.0.0',
+            singleinput=True,
+        )
         with raises(SystemExit) as result:
             context.syspath_prepend(root)
             featurepack(
-                workplan,
-                root=root,
+                config=config,
                 featurepackage=featurepackage,
-                name='parsi',
-                description='Description',
-                version='1.0.0',
-                singleinput=True,
+                root=root,
+                workplan=workplan,
             )
     out, err = capsys.readouterr()
     assert not err, str(err)
