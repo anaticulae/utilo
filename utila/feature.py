@@ -37,6 +37,7 @@ from utila.cli import PAGES_FLAG
 from utila.cli import Command
 from utila.cli import Flag
 from utila.cli import Parameter
+from utila.cli import ParserConfiguration
 from utila.cli import create_parser
 from utila.cli import evaluate_flags
 from utila.cli import parse
@@ -107,9 +108,7 @@ def featurepack(
     commands = commandline(feature, workplan)
 
     description = prepare_description(name, description, workplan)
-    parser = create_parser(
-        commands,
-        description=description,
+    config = ParserConfiguration(
         failfastflag=failfastflag,
         flags=flags,
         inputparameter=True,
@@ -117,10 +116,15 @@ def featurepack(
         outputparameter=True,
         pages=pages,
         prefix=prefixflag,
-        prog=name,
+        profileflag=profileflag,
         quiteflag=quiteflag,
         verboseflag=verboseflag,
-        profileflag=profileflag,
+    )
+    parser = create_parser(
+        commands,
+        config=config,
+        description=description,
+        prog=name,
         version=version,
     )
     args = parse(parser)

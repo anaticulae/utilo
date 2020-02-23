@@ -10,7 +10,7 @@
 import utila
 
 
-def uniform_result(items)->list:
+def uniform_result(items) -> list:
     """Determine ?relatively likelihood? of a collection.
 
     Args:
@@ -23,7 +23,7 @@ def uniform_result(items)->list:
     return _uniform_list(items)
 
 
-def maxi(items)->list:
+def maxi(items) -> list:
     """Determine the maximized likelihood of an uniformed collection.
 
     Args:
@@ -34,7 +34,7 @@ def maxi(items)->list:
     return _max_mini(items, method=max)
 
 
-def mini(items)->list:
+def mini(items) -> list:
     """Determine the minimized likelihood of an uniformed collection.
 
     Args:

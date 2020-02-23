@@ -27,6 +27,7 @@ from utila import parse
 from utila import returncode
 from utila import sources
 from utila import userflag_to_arg
+from utila.cli import ParserConfiguration
 from utila.cli import create_parser
 from utila.cli import sort
 from utila.test import run
@@ -40,13 +41,16 @@ def test_cli_parse_args(monkeypatch):
         Parameter('-a', '--alls', 'Do all!'),
         Parameter('-n', '--nothing', 'Do nothing!'),
     ]
+    config = ParserConfiguration(
+        failfastflag=True,
+        verboseflag=True,
+        prefix=True,
+    )
     parser = create_parser(
         description='This is just a sample parser',
         prog='parser',
         todo=todo,
-        failfastflag=True,
-        verboseflag=True,
-        prefix=True,
+        config=config,
     )
 
     argv = ['parser', '--alls', '"hallo this is helmut"', '--nothing', 'aaa']
@@ -70,11 +74,12 @@ def test_cli_prefix_activation(monkeypatch, prefix):
         Flag(longcut='--longcut', message='display longcuts'),
     ]
     parsername = 'parser'
+    config = ParserConfiguration(prefix=prefix,)
     parser = create_parser(
         description='This is just a sample parser',
         prog=parsername,
         todo=todo,
-        prefix=prefix,
+        config=config,
     )
 
     argv = [parsername, '--longcut']
@@ -187,7 +192,7 @@ EMPTY_PARSER = """\
 #! /usr/bin/env python
 import sys
 sys.path.append("%s")
-from utila.cli import create_parser, parse
+from utila.cli import create_parser, parse, ParserConfiguration
 parser = create_parser(%s)
 args = parse(parser)
 """
@@ -202,8 +207,9 @@ print(sources(args))
 @fixture
 def parser_example(tmpdir):
     runner = os.path.join(tmpdir, 'empty.py')
-    content = EMPTY_PARSER % (forward_slash(ROOT),
-                              'inputparameter=True, outputparameter=True')
+    config = ("config=ParserConfiguration('inputparameter=True, "
+              "outputparameter=True')")
+    content = EMPTY_PARSER % (forward_slash(ROOT), config)
     file_create(runner, content)
     cwd = os.path.split(tmpdir)[0]
     return cwd, runner
@@ -265,11 +271,14 @@ def create_and_run_parser(
 ):
     prog = 'parser'
     argv = [prog] + argv
-    parser = create_parser(
-        prog=prog,
+    config = ParserConfiguration(
         inputparameter=True,
         outputparameter=True,
         prefix=prefix,
+    )
+    parser = create_parser(
+        prog=prog,
+        config=config,
     )
 
     with monkeypatch.context() as context:

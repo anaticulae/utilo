@@ -89,7 +89,8 @@ class Number(Parameter):
     def __post_init__(self):
         #pylint:disable=unsupported-assignment-operation
         assert self.longcut or self.shortcut, 'no short or longcut defined'
-        if 'dest' not in self.args:  # do not overwrite user defined flags
+        if 'dest' not in self.args:  # pylint:disable=E1135
+            # do not overwrite user defined flags
             self.args['dest'] = self.longcut if self.longcut else self.shortcut
         self.args['default'] = self.default
         self.args['type'] = type(self.default)
@@ -106,56 +107,42 @@ class RequiredCommand(Command):
 VERBOSE = 'verbose'
 
 
-def create_parser(  # pylint:disable=R1260
+@dataclasses.dataclass
+class ParserConfiguration:
+    failfastflag: bool = False
+    flags: list = dataclasses.field(default_factory=list)
+    inputparameter: bool = False
+    multiprocessed: bool = False
+    outputparameter: bool = False
+    pages: bool = False
+    prefix: bool = False
+    profileflag: bool = False
+    quiteflag: bool = False
+    verboseflag: bool = False
+
+
+def create_parser(
         todo: list = None,
-        version=None,
+        config: ParserConfiguration = None,
         description: str = '',
         prog: str = '',
-        *,
-        failfastflag: bool = False,
-        flags: list = None,
-        inputparameter: bool = False,
-        multiprocessed: bool = False,
-        outputparameter: bool = False,
-        pages: bool = False,
-        prefix: bool = False,
-        profileflag: bool = False,
-        quiteflag: bool = False,
-        verboseflag: bool = False,
+        version=None,
 ) -> argparse.ArgumentParser:
     """Create parser out of defined dictonary with command-line-definiton.
 
     Args:
+        config(ParserConfiguration): collections of creation flags
         description(str): description text of --help invocation
-        failfastflag(bool): if True --ff option is added to parser
-        flags(list): list of `Command`s to add
-        inputparameter(bool): if true, default input parameter is active
-        multiprocessed(bool): add parameter to use more than one processor
-        outputparameter(bool): if true, default output parameter is active
-        pages(bool): add --pages flag to select processed pages
-        prefix(bool): if true, default prefix is active
-        profileflag(bool): if True --profile option is added
         prog(str): name of application `prog --help`
-        quiteflag(bool): if True add option to suppress logging
         todo(list): extend default parser with todo list
-        verboseflag(bool): if True add option to control verbosity of logging
         version(str): current version of parser applicatin
     Returns:
-        created argparser
+        Created argparser.
     """
-    flags = flags[:] if flags is not None else []
+    if config is None:
+        config = ParserConfiguration()
 
-    todo = prepare_todo(
-        todo,
-        failfastflag=failfastflag,
-        flags=flags,
-        multiprocessed=multiprocessed,
-        pages=pages,
-        prefix=prefix,
-        profileflag=profileflag,
-        quiteflag=quiteflag,
-        verboseflag=verboseflag,
-    )
+    todo = prepare_todo(todo, config=config)
 
     parser = argparse.ArgumentParser(
         description=description,
@@ -167,35 +154,36 @@ def create_parser(  # pylint:disable=R1260
         todo.append(Flag('-v', 'version', 'show version and exit.'))
         parser.__version = version
 
-    io_ports = create_io_ports(inputparameter, outputparameter)
+    io_ports = create_io_ports(config.inputparameter, config.outputparameter)
     if io_ports:
         # set io ports to the top
         todo = io_ports + todo
 
-    def use_todo(parser, todo):
-        for shortcut, longcut, msg, args in todo:
-            # support defining shortcut without -
-            if shortcut and not shortcut.startswith('-'):
-                shortcut = '-%s' % shortcut
-            # support defining longcut without --
-            if longcut and not longcut.startswith('--'):
-                longcut = '--%s' % longcut
-
-            if longcut:
-                shortcuts = (shortcut, longcut) if shortcut else (longcut,)
-            else:
-                # no longcut is defined
-                shortcuts = (shortcut,)
-
-            if args:
-                args['help'] = msg
-                parser.add_argument(*shortcuts, **args)
-            else:
-                parser.add_argument(*shortcuts, action='store_true', help=msg)
-
-    use_todo(parser, todo)
+    add_todo_to_parser(parser, todo)
 
     return parser
+
+
+def add_todo_to_parser(parser, todo):
+    for shortcut, longcut, msg, args in todo:
+        # support defining shortcut without -
+        if shortcut and not shortcut.startswith('-'):
+            shortcut = '-%s' % shortcut
+        # support defining longcut without --
+        if longcut and not longcut.startswith('--'):
+            longcut = '--%s' % longcut
+
+        if longcut:
+            shortcuts = (shortcut, longcut) if shortcut else (longcut,)
+        else:
+            # no longcut is defined
+            shortcuts = (shortcut,)
+
+        if args:
+            args['help'] = msg
+            parser.add_argument(*shortcuts, **args)
+        else:
+            parser.add_argument(*shortcuts, action='store_true', help=msg)
 
 
 MULTI_FLAG = 'job'
@@ -205,14 +193,7 @@ PAGES_FLAG = 'pages'
 def prepare_todo(
         todo,
         *,
-        multiprocessed: bool,
-        verboseflag: bool,
-        failfastflag: bool,
-        pages: bool,
-        prefix: bool,
-        quiteflag: bool,
-        flags: list = None,
-        profileflag: bool = False,
+        config: ParserConfiguration = None,
 ):
     todo = todo if todo else []
     if not isinstance(todo, list):
@@ -222,8 +203,7 @@ def prepare_todo(
     # --input twice.
     todo = list(todo)
 
-    flags = flags if flags else []
-    for item in flags:
+    for item in config.flags:
         try:
             longcut, message = item
         except ValueError:
@@ -234,21 +214,21 @@ def prepare_todo(
         )
         todo.insert(0, flag)
 
-    if profileflag:
+    if config.profileflag:
         profilecmd = Flag(
             longcut='profile',
             message='profile feature step execution',
         )
         todo.insert(0, profilecmd)
 
-    if prefix:
+    if config.prefix:
         prefixcommand = Parameter(
             longcut='prefix',
             message='add prefix to separate different output files',
         )
         todo.insert(0, prefixcommand)
 
-    if multiprocessed:
+    if config.multiprocessed:
         multicmd = Number(
             shortcut=MULTI_FLAG[0],
             default=1,
@@ -256,7 +236,7 @@ def prepare_todo(
             args={'dest': MULTI_FLAG})
         todo.insert(0, multicmd)
 
-    if pages:
+    if config.pages:
         # TODO: pages flag in def work is only possible as the last parameter
         # BUG
         page = Parameter(
@@ -269,7 +249,7 @@ def prepare_todo(
         )
         todo.insert(0, page)
 
-    if verboseflag:
+    if config.verboseflag:
         todo.append(
             Flag(
                 args={
@@ -280,14 +260,14 @@ def prepare_todo(
                 shortcut='V',
             ))
 
-    if failfastflag:
+    if config.failfastflag:
         todo.append(
             Flag(
                 longcut='ff',
                 message='failfast: quit after the first error',
             ))
 
-    if quiteflag:
+    if config.quiteflag:
         todo.append(Flag(longcut='quite', message='suppress logging'))
 
     todo = sort(todo)
