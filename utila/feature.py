@@ -317,7 +317,7 @@ def callback(
             log(f'completed: {stepname}')
     except Exception as exception:  # pylint:disable=broad-except
         error(f'failed: {stepname}')
-        result = exception
+        result = exception  # pylint:disable=R0204
     return [result, stepname, output]
 
 
