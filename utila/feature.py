@@ -315,7 +315,6 @@ def callback(
         with contextmanager(msg=stepname):
             result = runnable()
             log(f'completed: {stepname}')
-        log('')
     except Exception as exception:  # pylint:disable=broad-except
         error(f'failed: {stepname}')
         result = exception
