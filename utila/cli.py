@@ -201,18 +201,8 @@ def prepare_todo(
     # Copy to avoid changing the source list. If create_parse(todo) is invoked
     # twice, changing the reference is no good idea and will produce --output,
     # --input twice.
-    todo = list(todo)
-
-    for item in config.flags:
-        try:
-            longcut, message = item
-        except ValueError:
-            longcut, message = item, ''
-        flag = Flag(
-            longcut=f'--{longcut}',
-            message=message,
-        )
-        todo.insert(0, flag)
+    todo = todo[:]
+    todo.extend(flags_to_parameter(config.flags))
 
     if config.profileflag:
         profilecmd = Flag(
@@ -273,6 +263,21 @@ def prepare_todo(
     todo = sort(todo)
     return todo
 
+def flags_to_parameter(flags):
+    todo = []
+    for item in flags:
+        try:
+            longcut, message = item
+        except ValueError:
+            longcut, message = item, ''
+        flag = Flag(
+            longcut=f'--{longcut}',
+            message=message,
+        )
+        todo.insert(0, flag)
+    return todo
+
+
 
 def sort(items):
     """Sort commands alphabetically. Sort by show- or longcut."""
@@ -318,7 +323,7 @@ def parse(parser: argparse.ArgumentParser):
     return args
 
 
-def sources(
+def sources( # pylint:disable=too-complex,too-many-branches
         args,
         *,
         singleinput: bool = False,
