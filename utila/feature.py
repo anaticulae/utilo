@@ -1,3 +1,5 @@
+# pylint:disable=too-many-lines
+# TODO: SPLIT THIS MODULE
 # =============================================================================
 # C O P Y R I G H T
 # -----------------------------------------------------------------------------
@@ -33,31 +35,10 @@ import os
 import typing
 
 import utila
-from utila.cli import PAGES_FLAG
-from utila.cli import Command
-from utila.cli import Flag
-from utila.cli import Parameter
-from utila.cli import ParserConfiguration
-from utila.cli import create_parser
-from utila.cli import evaluate_flags
-from utila.cli import parse
-from utila.cli import sources
-from utila.cli import userflag_to_arg
-from utila.error import saveme
-from utila.file import file_replace
-from utila.logger import Level
-from utila.logger import call
-from utila.logger import error
-from utila.logger import info
-from utila.logger import level_setup
-from utila.logger import log
-from utila.logger import log_stacktrace
-from utila.utils import FAILURE
-from utila.utils import NEWLINE
-from utila.utils import SUCCESS
-from utila.utils import determine_order
+import utila.cli
+import utila.utils
 
-FeatureInterface = typing.Tuple[str, Command, callable]
+FeatureInterface = typing.Tuple[str, utila.Command, callable]
 
 WorkStep = collections.namedtuple('WorkStep', 'name inputs outputs')
 WorkSteps = typing.List[WorkStep]
@@ -86,7 +67,7 @@ class FeaturePackConfig:
     version: str = None
 
 
-@saveme(systemexit=True)
+@utila.saveme(systemexit=True)
 def featurepack(  # pylint:disable=too-many-locals
         workplan: WorkSteps,
         root: str,
@@ -109,7 +90,7 @@ def featurepack(  # pylint:disable=too-many-locals
     commands = commandline(feature, workplan)
 
     description = prepare_description(config.name, config.description, workplan)
-    parser_configuration = ParserConfiguration(
+    parser_configuration = utila.ParserConfiguration(
         failfastflag=config.failfastflag,
         flags=config.flags,
         inputparameter=True,
@@ -121,33 +102,33 @@ def featurepack(  # pylint:disable=too-many-locals
         quiteflag=config.quiteflag,
         verboseflag=config.verboseflag,
     )
-    parser = create_parser(
+    parser = utila.cli.create_parser(
         commands,
         config=parser_configuration,
         description=description,
         prog=config.name,
         version=config.version,
     )
-    args = parse(parser)
+    args = utila.parse(parser)
 
-    processes, failfast, pages, profiling = evaluate_flags(
+    processes, failfast, pages, profiling = utila.cli.evaluate_flags(
         args,
         config.multiprocessed,
     )
     # evaluate the verbose flag
-    inputpath, outputpath, prefix, verbose = sources(
+    inputpath, outputpath, prefix, verbose = utila.sources(
         args,
         singleinput=config.singleinput,
         verbose=True,
     )
 
     # update logging level
-    level = Level(verbose)
+    level = utila.Level(verbose)
     with contextlib.suppress(KeyError):
         if args['quite']:
             # suppress logging - log only errors
-            level = Level.ERROR
-    level_setup(level)
+            level = utila.Level.ERROR
+    utila.level_setup(level)
 
     hooks = prepare_hooks(feature)
     workplan = read_workplan(
@@ -163,8 +144,8 @@ def featurepack(  # pylint:disable=too-many-locals
     )
     # an empty workplan is defined by user code, feature pack does nothing
     if not workplan:
-        error('empty workplan - nothing todo - abort!')
-        exit(FAILURE)
+        utila.error('empty workplan - nothing todo - abort!')
+        exit(utila.FAILURE)
 
     # Ensure to have output folder
     os.makedirs(outputpath, exist_ok=True)
@@ -228,11 +209,10 @@ def process(
             # require resource of the current may will not find the
             # resource, cause the excution is not done.
             results = run_level(
-                level,
-                todo,
-                pool,
-                name,
-                pages,
+                level=level,
+                todo=todo,
+                pool=pool,
+                pages=pages,
                 profiling=profiling,
             )
 
@@ -243,17 +223,17 @@ def process(
                 failfast=failfast,
             )
             if failfast and failure:
-                return FAILURE
+                return utila.FAILURE
     status = utila.FAILURE if failure else utila.SUCCESS
     return status
 
 
-def run_level(level, todo, pool, runnable, pages, profiling):
+def run_level(level, todo, pool, pages, profiling):
     results = []
     for step in level:
         # if todo is empty, nothing is selected, run every step
         if step.name not in todo and todo:
-            log(f'skipping: {step.name}')
+            utila.log(f'skipping: {step.name}')
             continue
         future = pool.submit(
             callback,
@@ -283,13 +263,13 @@ def write_level_result(
                 errorhook(result, name)
             success = False
             if failfast:
-                return FAILURE
+                return utila.FAILURE
         else:
             written = write_result_safely(*completed)
-            if written == FAILURE:
+            if written == utila.FAILURE:
                 success = False
                 if failfast:
-                    return FAILURE
+                    return utila.FAILURE
     return utila.SUCCESS if success else utila.FAILURE
 
 
@@ -299,7 +279,7 @@ def callback(
         output,
         pages: list,
         profiling: bool,
-):
+) -> tuple:
     """Run processing step.
 
     Args:
@@ -308,8 +288,10 @@ def callback(
         output(str): path to write step output
         pages(list): list of pages to processed
         profiling(bool): if True log callback runtime
+    Returns:
+        Tuple of result, stepname and output
     """
-    log(f'processing: {stepname}')
+    utila.log(f'processing: {stepname}')
     # run runnable
     runnable = functools.partial(
         run_hook_safely,
@@ -322,9 +304,9 @@ def callback(
         contextmanager = utila.profile if profiling else utila.nothing
         with contextmanager(msg=stepname):
             result = runnable()
-            log(f'completed: {stepname}')
+            utila.log(f'completed: {stepname}')
     except Exception as exception:  # pylint:disable=broad-except
-        error(f'failed: {stepname}')
+        utila.error(f'failed: {stepname}')
         result = exception  # pylint:disable=R0204
     return [result, stepname, output]
 
@@ -340,15 +322,15 @@ def run_hook_safely(
     """
     sig = inspect.signature(hook)
     try:
-        if PAGES_FLAG in sig.parameters:
+        if utila.PAGES_FLAG in sig.parameters:
             # optional page numbers flag
             result = hook(pages=pages)
         else:
             result = hook()
     except Exception as msg:  # pylint: disable=broad-except
-        log_stacktrace()
-        error('while processing %s' % name)
-        error(msg)
+        utila.log_stacktrace()
+        utila.error('while processing %s' % name)
+        utila.error(msg)
         raise
 
     if isinstance(result, str):
@@ -356,9 +338,9 @@ def run_hook_safely(
     # Verify result
     variable_returnvalues = variable_parameter(stepoutput)
     if result and len(stepoutput) != len(result) and not variable_returnvalues:
-        error(f'wrong return value count in step: `{name}`')
-        error(f'interface count: {len(stepoutput)}')
-        error(f'return count from step: {len(result)}')
+        utila.error(f'wrong return value count in step: `{name}`')
+        utila.error(f'interface count: {len(stepoutput)}')
+        utila.error(f'return count from step: {len(result)}')
         raise InterfaceMismatch
     return result
 
@@ -383,7 +365,7 @@ def write_result_safely(
     Returns:
         Returns return code SUCCESS or FAILURE.
     """
-    call('write results')
+    utila.call('write results')
     try:
         variable_returnvalues = variable_parameter(outputstep)
         if variable_returnvalues:
@@ -405,16 +387,16 @@ def write_result_safely(
             # folder via `hello/folder/content.txt`.
             parent, _ = os.path.split(path)
             os.makedirs(parent, exist_ok=True)
-            info('write %s' % path)
+            utila.info('write %s' % path)
             # write content to file.
-            file_replace(path, content)
-        return SUCCESS
+            utila.file_replace(path, content)
+        return utila.SUCCESS
     except TypeError as msg:
-        error(f'while processing {processstep}')
-        error('wrong return value')
-        error(f'current return value: {result}')
-        error(msg)
-        return FAILURE
+        utila.error(f'while processing {processstep}')
+        utila.error('wrong return value')
+        utila.error(f'current return value: {result}')
+        utila.error(msg)
+        return utila.FAILURE
 
 
 def select_executor():
@@ -435,10 +417,10 @@ def prepare_process(todo, name, processes):
     if 'all' in todo:
         todo = set()
     # log start of executable
-    log(name)
+    utila.log(name)
     if processes > 1:
-        log('use multiple processes')
-    log()
+        utila.log('use multiple processes')
+    utila.log()
     return todo
 
 
@@ -498,8 +480,8 @@ def prepare_description(name: str, description: str, workplan: list) -> str:
 
         # final newline
         result.append('')
-    raw = NEWLINE.join(result)
-    return description + NEWLINE + raw
+    raw = utila.NEWLINE.join(result)
+    return description + utila.NEWLINE + raw
 
 
 def find_features(
@@ -514,9 +496,10 @@ def find_features(
     featurepath = os.path.join(root, featurepackage.replace('.', '/'))
     assert os.path.exists(root), root
     if not os.path.exists(featurepath):
-        error('wrong featurepack configuration, check `featurepackage` path')
-        error('featurepath %s does not exists' % featurepath)
-        exit(FAILURE)
+        utila.error(
+            'wrong featurepack configuration, check `featurepackage` path')
+        utila.error('featurepath %s does not exists' % featurepath)
+        exit(utila.FAILURE)
     collected = [
         item.replace('.py', '')
         for item in os.listdir(featurepath)
@@ -532,11 +515,11 @@ def find_features(
         try:
             result.append(connect_feature_interface(current, item))
         except AttributeError as exception:
-            error('SKIP LOADING %s' % item)
-            error(exception)
+            utila.error('SKIP LOADING %s' % item)
+            utila.error(exception)
             ret += 1
     if ret:
-        exit(FAILURE)
+        exit(utila.FAILURE)
     return result
 
 
@@ -546,7 +529,7 @@ def connect_feature_interface(current, item) -> FeatureInterface:
 
     # no commandline information is defined
     def curcommandline():
-        return Flag(longcut=curname, message='export %s' % curname)
+        return utila.Flag(longcut=curname, message='export %s' % curname)
 
     if hasattr(current, 'commandline'):
         curcommandline = current.commandline
@@ -555,19 +538,20 @@ def connect_feature_interface(current, item) -> FeatureInterface:
 
 
 Name = str
-CommandLineInterface = typing.List[Command]
+CommandLineInterface = typing.List[utila.Command]
 Worker = callable  #pylint:disable=C0103
 Feature = typing.Tuple[Name, CommandLineInterface, Worker]
 
 
 def commandline(
         features: typing.List[Feature],
-        workplan,
-) -> typing.List[Command]:
+        workplan: list,
+) -> typing.List[utila.Command]:
     """Build command line interface due iterating searched features
 
     Args:
         features: list of parsed features
+        workplan: list with steps with in- and outputs
     Returns:
         list of `Command`s
     """
@@ -585,10 +569,10 @@ def commandline(
     variables = determine_variables(workplan)
     variables = list(set(variables))  # avoid duplicating parameter
     for item in sorted(variables):
-        result.append(Parameter(longcut=item))
+        result.append(utila.Parameter(longcut=item))
 
     # run all workplan feature
-    result.append(Flag(longcut='all'))
+    result.append(utila.Flag(longcut='all'))
 
     return result
 
@@ -618,13 +602,13 @@ def create_step(
     return WorkStep(name, inputs, output)
 
 
-def read_workplan(
-        plan,
+def read_workplan(  # pylint:disable=too-many-locals
+        plan: list,
         process_: str,
         hooks: dict,
-        inspace,
-        outspace=None,
-        args=None,
+        inspace: str,
+        outspace: str = None,
+        args: dict = None,
         prefix: str = None,
         verify: bool = False,
         used_processes: int = 1,
@@ -632,12 +616,12 @@ def read_workplan(
     """Parse user defined workplan
 
     Args:
-        plan:
+        plan: list of working steps
         process_: step name to print on console
-        hooks:
-        inspace([str]): list of input spaces
+        hooks: dict of name and callable function
+        inspace(str or list): list of input spaces
         outspace(str): absolute path to write output
-        args:
+        args: dict of additonal arguments
         prefix(str): to distingush different parameterization written in the
                      same folder
         verify(bool): if True, let execution failed on workplan error
@@ -656,10 +640,10 @@ def read_workplan(
         variables = prepare_variables(variables=step.inputs, args=args)
 
         # optional pages flag is not allowed in workplan
-        if PAGES_FLAG in [item.name for item in step.inputs]:
-            error(str(step.inputs))
+        if utila.PAGES_FLAG in [item.name for item in step.inputs]:
+            utila.error(str(step.inputs))
             msg = 'parameter `pages` is not allowed in `workplan`, step: %s'
-            error(msg % step.name)
+            utila.error(msg % step.name)
             ret += 1
             continue
 
@@ -668,7 +652,7 @@ def read_workplan(
         try:
             caller = hooks[name]
         except KeyError:
-            error('missing hook with name %s' % name)
+            utila.error('missing hook with name %s' % name)
             ret += 1
             continue
 
@@ -686,7 +670,7 @@ def read_workplan(
         ]
         if variables:
             call_inputs.extend(variables)
-        if verify_interface(call_inputs, outputs, caller) == FAILURE:
+        if verify_interface(call_inputs, outputs, caller) == utila.FAILURE:
             ret += 1
             continue
         function_call = functools.partial(caller, *call_inputs)
@@ -694,7 +678,7 @@ def read_workplan(
         result.append(WorkStep(name, function_call, outputs))
 
     if ret and verify:
-        exit(FAILURE)
+        exit(utila.FAILURE)
     return result
 
 
@@ -761,7 +745,7 @@ def input_order(plan, root):
             except ValueError:
                 # for example input.pdf
                 require[name].add(item)
-    order = determine_order(require, flat=False)
+    order = utila.utils.determine_order(require, flat=False)
     return order
 
 
@@ -789,12 +773,12 @@ def prepare_variables(variables, args):
             result.append(converted)
         except ValueError:
             msg = 'while processing %s with value %s'
-            error(msg % (variable.name, variable.typ))
-            error('given args %r' % args)
+            utila.error(msg % (variable.name, variable.typ))
+            utila.error('given args %r' % args)
     return result
 
 
-def prepare_inputs(
+def prepare_inputs(  # pylint:disable=too-many-locals,too-complex,too-many-branches
         inputs: list,
         inspaces: list,
         outspace: str,
@@ -902,15 +886,16 @@ def prepare_outputs(
             try:
                 item, datatype = item
             except ValueError:
-                error(f'checking output number {index}')
-                error(f'require tuple with (item, datatype).'
-                      f' got: {item!r} {type(item)}')
+                utila.error(f'checking output number {index}')
+                msg = ('require tuple with (item, datatype).'
+                       f' got: {item!r} {type(item)}')
+                utila.error(msg)
                 ret += 1
         outitem = f'{process_}__{prefix}{stepname}_{item}.{datatype}'
         _outputs.append(outitem)
 
     if ret:
-        exit(FAILURE)
+        exit(utila.FAILURE)
     outputs = [os.path.join(outspace, item) for item in _outputs]
     return outputs
 
@@ -925,7 +910,7 @@ def verify_resources(inputs):
             # recursive input-definition start with _. We do not check
             # recursive inputs, because there were generated later.
             continue
-        error('File does not exists: %s' % path)
+        utila.error('File does not exists: %s' % path)
         ret += 1
     return ret
 
@@ -967,7 +952,7 @@ def determine_todo(args: dict, flags: list) -> typing.List[str]:
 
     Args:
         args(dict): user defined command line arguments
-        flags(tuple/str): possible bool flag args for examle `--linter`
+        flags(tuple or str): possible bool flag args for examle `--linter`
     Returns:
         args list without possible flag-args
     """
@@ -986,7 +971,7 @@ def determine_todo(args: dict, flags: list) -> typing.List[str]:
                 flag, _ = item
             except ValueError:
                 flag = item
-            flag = userflag_to_arg(flag)
+            flag = utila.userflag_to_arg(flag)
             with contextlib.suppress(KeyError):
                 # remove present user flags.
                 del cli_args[flag]
