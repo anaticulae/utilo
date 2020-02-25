@@ -28,6 +28,10 @@ produces an error:
 Solution: rename `--pages` flag to `-p` and add information when using
 default parameter as feature step name like `--prefix`.
 
+featurepack
+~~~~~~~~~~~
+
+* handle --bool flags correctly, move fix from rawmaker.
 
 closed
 ------
