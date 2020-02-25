@@ -28,22 +28,6 @@ produces an error:
 Solution: rename `--pages` flag to `-p` and add information when using
 default parameter as feature step name like `--prefix`.
 
-roundme
-~~~~~~~
-
-In the current state it is no possible to round list without unpacking.
-We should support passing a list.
-
-
-.. code-block:: python
-
-    value = utila.roundme(*[float(item) for item in value])
-
-Better:
-
-.. code-block:: python
-
-    value = utila.roundme([float(item) for item in value])
 
 closed
 ------
