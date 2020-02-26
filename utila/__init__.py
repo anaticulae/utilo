@@ -49,6 +49,7 @@ from utila.feature import Value
 from utila.feature import create_step
 from utila.feature import featurepack
 from utila.feature import parallelize_workplan
+from utila.feature_io import pathconnector
 # File
 from utila.file import assert_file
 from utila.file import assert_html
