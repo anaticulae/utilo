@@ -152,6 +152,8 @@ from utila.utils import chdir
 from utila.utils import flatten
 from utila.utils import nothing
 from utila.utils import select
+from utila.utils import str2bool
+from utila.utils import str2int
 
 __version__ = '1.14.0'
 

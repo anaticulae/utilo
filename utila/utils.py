@@ -114,3 +114,11 @@ def nothing(*args, **kwargs):  # pylint:disable=W0613
             pass
     """
     yield
+
+
+def str2int(item: str) -> int:
+    return int(float(item))
+
+
+def str2bool(item: str) -> bool:
+    return item.lower() == 'true'
