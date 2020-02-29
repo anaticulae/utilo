@@ -11,6 +11,7 @@ import re
 import sys
 
 import utila.math
+import utila.utils
 
 
 def forward_slash(content: str, save_newline: bool = True) -> str:
@@ -59,9 +60,13 @@ def extract_match(matched: re.Match) -> str:
     return matched.string[matched.span()[0]:matched.span()[1]]
 
 
-def parse_tuple(raw: str, expected_length: int = 4) -> tuple:
+def parse_tuple(raw: str, expected_length: int = 4, typ=float) -> tuple:
     """Convert `raw` to tuple of floats."""
-    items = (float(item) for item in raw.split())
+    if typ is int:
+        typ = utila.str2int
+    if typ is bool:
+        typ = utila.str2bool
+    items = (typ(item) for item in raw.split())
     items = utila.math.roundme(*items)
     items = tuple(items)
     assert len(items) == expected_length, f'could not parse {raw}'

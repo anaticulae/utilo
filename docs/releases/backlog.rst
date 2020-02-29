@@ -12,5 +12,3 @@ backlog
 * utila.copy_content(source, root, pattern='rawmaker__*.yaml')
   utila.copy_content(source, root, pattern='groupme__*.yaml')
   unit to one pattern.
-
-* add required datatype to parse_tuple int/float
