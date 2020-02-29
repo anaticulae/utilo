@@ -366,7 +366,7 @@ def make_absolute(path: str, cwd=None) -> str:
 
 
 def make_relative(path: str, root: str = None) -> str:
-    """Cut leading `root` from `path`
+    """Cut leading `root` from `path`.
 
     Hint:
         Convert path to forwards slashs
@@ -385,8 +385,8 @@ def make_relative(path: str, root: str = None) -> str:
     """
     if root is None:
         root = os.getcwd()
-    root = forward_slash(root)
-    path = forward_slash(path)
+    root = forward_slash(root, save_newline=False)
+    path = forward_slash(path, save_newline=False)
 
     path = path.replace(root, '')
     if path[0] == '/':
