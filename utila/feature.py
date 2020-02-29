@@ -760,12 +760,15 @@ def determine_variables(workplan):
 
 
 def prepare_variables(variables, args):
-    """Extract variables out of inputs, ignore files and pattern"""
+    """Extract variables out of inputs, ignore files and pattern."""
     result = []
     for variable in variables:
-        if not isinstance(variable, Value):
+        if not isinstance(variable, utila.Value):
             continue
         typ = variable.typ
+        if typ is bool:
+            # convert cause every non empty string is converted to true
+            typ = lambda x: str(x).lower() == 'true'
         try:
             values = args[variable.name]
             defaultvalues = typ(variable.defaultvar)
