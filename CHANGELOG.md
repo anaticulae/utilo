@@ -2,6 +2,13 @@
 
 Every noteable change is logged here.
 
+## v1.15.1
+
+### Fix
+
+* fix logging output (1943e6c4cf8b)
+* support converting bool as input (1c39083adc9b)
+
 ## v1.15.0
 
 ### Feature
