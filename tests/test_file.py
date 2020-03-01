@@ -454,3 +454,20 @@ def test_file_copy_single_file(testdir):
 
     utila.file_copy(sourcefile, dest)
     assert os.path.exists(os.path.join(dest, 'hello'))
+
+
+def test_file_copy_content_mult(testdir):
+    testdir.mkdir('source')
+    utila.file_create('source/groupme__selm.yaml')
+    utila.file_create('source/rawmaker__helm.yaml')
+    testdir.mkdir('dest')
+
+    utila.copy_content(
+        'source',
+        'dest',
+        pattern='(rawmaker|groupme)__*.yaml',
+        recursive=True,
+        verbose=True,
+    )
+    assert os.path.exists('dest/groupme__selm.yaml')
+    assert os.path.exists('dest/rawmaker__helm.yaml')

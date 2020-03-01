@@ -10,6 +10,7 @@
 import glob
 import os
 import random
+import re
 import shutil
 import stat
 
@@ -231,7 +232,7 @@ def isfilepath(path: str) -> bool:
     return '.' in base
 
 
-def copy_content(
+def copy_content(  # pylint:disable=R1260
         source: str,
         destination: str,
         pattern: str = None,
@@ -242,6 +243,12 @@ def copy_content(
 ):
     """Copy the content from `source` to `destination` folder. If
     `destination` folder does not exists, it will be created.
+
+    Pattern-Syntax:
+        In the current implementation only one multiple field is
+        possible. The multiple pattern group is inside brackets and is
+        separated by |. For example: (rawmaker|groupme)__*.yaml, copies
+        rawmaker and groupme yaml files.
 
     Hint:
         Why not using shutil.copytree?: Copy tree expect that
@@ -273,6 +280,23 @@ def copy_content(
 
     if pattern is None:
         pattern = '*'
+
+    multiple = split_multipattern(pattern)
+    if multiple:
+        if verbose:
+            utila.log(f'split pattern: {pattern} -> {multiple}')
+        for converted_pattern in multiple:
+            # run multiple operation
+            copy_content(
+                source,
+                destination,
+                pattern=converted_pattern,
+                recursive=recursive,
+                update=update,
+                verbose=verbose,
+            )
+        return
+
     pattern = f'**/{pattern}' if recursive else pattern
 
     with chdir(source):
@@ -289,6 +313,25 @@ def copy_content(
             if verbose:
                 utila.log(f'mkdir: {dest_}')
             os.makedirs(dest_, exist_ok=True)
+
+
+def split_multipattern(multipattern):
+    """Split multiple pattern into several single pattern.
+
+    >>> split_multipattern('(rawmaker|groupme)__*.yaml')
+    ['rawmaker__*.yaml', 'groupme__*.yaml']
+    """
+    # TODO: SUPPORT MULTIPLE GROUPS
+    pattern = r'\([\w|\|\_\-]+\)'
+    matched = re.match(pattern, multipattern)
+    if not matched:
+        return None
+    match = utila.regex.extract_match(matched)
+    result = []
+    without_brackets = match[1:-1]
+    for item in without_brackets.split('|'):
+        result.append(multipattern.replace(match, item))
+    return result
 
 
 def from_raw_or_path(content: str, ftype: str = 'yaml') -> str:
