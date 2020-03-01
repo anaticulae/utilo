@@ -30,16 +30,16 @@ def flatten(lists):
     return result
 
 
-def select(items, selector) -> list:
+def select_type(items, selector) -> list:
     """Select items which are instance of `selector`
 
-    >>> select([10, 'abc', 10.5], int)
+    >>> select_type([10, 'abc', 10.5], int)
     [10]
-    >>> select([10, 'abc', 10.5], str)
+    >>> select_type([10, 'abc', 10.5], str)
     ['abc']
-    >>> select([10, 'abc', 10.5], dict)
+    >>> select_type([10, 'abc', 10.5], dict)
     []
-    >>> select({'a':1, 'b':'zwei', 'c' : []}, list)
+    >>> select_type({'a':1, 'b':'zwei', 'c' : []}, list)
     [[]]
 
     Args:

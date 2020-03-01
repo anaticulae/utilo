@@ -29,7 +29,7 @@ def test_flatten():
     assert len(flat) == 7, str(flat)
 
 
-def test_select():
+def test_select_type():
 
     class A:  # pylint:disable=C0103
         pass
@@ -38,8 +38,8 @@ def test_select():
         pass
 
     todo = [A(), B(), A()]
-    assert len(utila.select(todo, A)) == 3
-    assert len(utila.select(todo, B)) == 1
+    assert len(utila.select_type(todo, A)) == 3
+    assert len(utila.select_type(todo, B)) == 1
 
 
 def test_chdir(testdir):
