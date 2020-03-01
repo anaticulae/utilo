@@ -104,6 +104,7 @@ from utila.logger import profile
 from utila.math import Numbers
 from utila.math import isascending
 from utila.math import modes
+from utila.math import near
 from utila.math import numbers
 from utila.math import roundme
 # pages

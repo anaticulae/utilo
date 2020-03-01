@@ -6,6 +6,7 @@
 # use or distribution is an offensive act against international law and may
 # be prosecuted under federal law. Its content is company confidential.
 # =============================================================================
+import math
 import statistics
 import typing
 
@@ -114,3 +115,14 @@ def modes(data: Numbers, minimize: bool = True) -> Number:
     if minimize:
         return current[0]
     return current[-1]
+
+
+def near(first, second, diff: float = 2.0) -> bool:
+    """Test that two items are close together.
+
+    >>> near(2.1,-0.9, diff=3.0)
+    True
+    >>> near(1.0, 10, diff=1.0)
+    False
+    """
+    return math.fabs(first - second) <= diff
