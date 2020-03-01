@@ -32,7 +32,6 @@ math
   .. code-block:: python
 
     def isascending(items):
-        # TODO: MOVE TO UTILA
         items = [int(item) for item in items]
         diff = [
             (after - current) for (current, after) in zip(items[:-1], items[1:])
@@ -43,7 +42,6 @@ math
 
   .. code-block:: python
 
-    # TODO: MOVE TO UTILA
     Number = typing.TypeVar('Number', int, float)  # pylint:disable=C0103
     Numbers = typing.List[Number]  # pylint:disable=C0103
 
@@ -58,7 +56,6 @@ math
         """
         if not data:
             raise statistics.StatisticsError('no mode for empty data')
-        # TODO: MOVE TO UTILA
         table = statistics._counts(data)  # pylint:disable=W0212
         if len(table) == 1:
             return table[0][0]
@@ -81,7 +78,6 @@ runtime
   .. code-block:: python
 
     def run_parallel(items, cwd=None, worker: int = 8) -> int:
-        # TODO: MOVE TO UTILA
         ret = 0
         with concurrent.futures.ThreadPoolExecutor(max_workers=worker) as executor:
             todo = {executor.submit(utila.run, cmd, cwd): cmd for cmd in items}
@@ -106,7 +102,6 @@ test
         """Check that test method is executed as single test. You can use
         this method to open the result in a web browser if test is executed
         with a human in front of the machine eg. as a single test."""
-        # TODO: MOVE TO UTILA TEST
         frame = inspect.currentframe()
         parent = inspect.getouterframes(frame)[1]
         caller = parent.function
@@ -120,7 +115,6 @@ test
     def increased_filecount(path: str, ending: str = None):
         """Ensure to create some files while running operations in yieldet
         state."""
-        # TODO: MOVE TO UTILA TEST
         assert os.path.exists(path), str(path)
         pattern = '**/*.*' if ending is None else f'**/*.{ending}'
         with utila.chdir(path):
