@@ -861,7 +861,7 @@ def prepare_inputs(  # pylint:disable=too-many-locals,too-complex,too-many-branc
                     for finding in files:
                         utila.info('FINDING %s' % finding)
                         result.append(finding)
-    utila.call('result: {result}')
+    utila.call(f'result: {result}')
     return result
 
 
