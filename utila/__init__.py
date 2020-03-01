@@ -106,6 +106,9 @@ from utila.math import isascending
 from utila.math import modes
 from utila.math import near
 from utila.math import numbers
+from utila.math import rectangle_inside
+from utila.math import rectangle_merge
+from utila.math import rectangle_size
 from utila.math import roundme
 # pages
 from utila.pages import parse_pages
