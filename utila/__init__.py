@@ -159,7 +159,7 @@ from utila.utils import select_type
 from utila.utils import str2bool
 from utila.utils import str2int
 
-__version__ = '1.14.0'
+__version__ = '1.15.0'
 
 ROOT = os.path.abspath(os.path.join(os.path.dirname(__file__), '..'))
 PACKAGENAME = 'utila'

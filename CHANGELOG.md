@@ -2,6 +2,30 @@
 
 Every noteable change is logged here.
 
+## v1.15.0
+
+### Feature
+
+* move rectangle merger from `hey` (28c37aaa6743)
+* add method to determine that 2 numbers are near together (d3d74d3eae98)
+* copy_content supports multiple pattern right now (403892d70d3c)
+* support int variables correctly (0a0aceac3cc2)
+* support type conversion for parse tuple (ce9cf2b130e3)
+* add methods to convert str to bool or int (a01559f2bd40)
+* add path connector to public API (19dbe8b456dc)
+* introduce config to reduce complexity (3f822b17f527)
+
+### Fix
+
+* convert bool args correctly (e885175c54f3)
+* ensure to convert \n to /n and don't preserve as newline (a429349a7cf8)
+* save vertical space (b1f3691085d7)
+
+### Documentation
+
+* remove noisy todo hint (0a408ebcc853)
+* use docstring to improve roundme documentation (b163d1b2bc54)
+
 ## v1.14.0
 
 ### Feature
