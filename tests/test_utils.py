@@ -30,10 +30,6 @@ def test_flatten():
 
 
 def test_select():
-    todo = [10, 'abc', 10.5]
-    assert len(utila.select(todo, int)) == 1
-    assert len(utila.select(todo, str)) == 1
-    assert not utila.select(todo, dict)
 
     class A:  # pylint:disable=C0103
         pass

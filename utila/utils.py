@@ -33,6 +33,15 @@ def flatten(lists):
 def select(items, selector) -> list:
     """Select items which are instance of `selector`
 
+    >>> select([10, 'abc', 10.5], int)
+    [10]
+    >>> select([10, 'abc', 10.5], str)
+    ['abc']
+    >>> select([10, 'abc', 10.5], dict)
+    []
+    >>> select({'a':1, 'b':'zwei', 'c' : []}, list)
+    [[]]
+
     Args:
         items(collection): data to filter
         selector(class): `type` of selected instance
@@ -121,4 +130,18 @@ def str2int(item: str) -> int:
 
 
 def str2bool(item: str) -> bool:
-    return item.lower() == 'true'
+    """Convert string to bool. Every string except of `False` and
+    `false` are converted to True.
+
+    >>> str2bool('True')
+    True
+    >>> str2bool('False')
+    False
+    >>> str2bool('false')
+    False
+    >>> str2bool('Off')
+    True
+    >>> str2bool('abc')
+    True
+    """
+    return not item.lower() == 'false'
