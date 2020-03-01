@@ -139,9 +139,11 @@ def str2bool(item: str) -> bool:
     False
     >>> str2bool('false')
     False
-    >>> str2bool('Off')
-    True
     >>> str2bool('abc')
     True
+    >>> str2bool(True)
+    True
+    >>> str2bool(False)
+    False
     """
-    return not item.lower() == 'false'
+    return str(item).lower() != 'false'
