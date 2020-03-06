@@ -59,7 +59,7 @@ def roundme(*items: float, digits: int = NDIGITS) -> float:
     return result
 
 
-def numbers(items: typing.List) -> typing.List[int]:
+def numbers(items: typing.List) -> Numbers:
     """Convert iterable `items` to list of int's. Replace none
     convertable items to `None`.
 
@@ -67,6 +67,9 @@ def numbers(items: typing.List) -> typing.List[int]:
         items: iterable with items to convert
     Returns:
         List of int's or None's.
+
+    >>> numbers(['1', '3', '5', 'wasd'])
+    [1, 3, 5, None]
     """
     result = []
     for item in items:
