@@ -130,6 +130,7 @@ def near(first, second, diff: float = 2.0) -> bool:
     """
     return math.fabs(first - second) <= diff
 
+
 def rectangle_merge(rectangles):
     """Reduce list of rectangles to the minimal list to describe the
     covered area. Remove rectangle when there have a parent rectangle
@@ -168,6 +169,7 @@ def rectangle_merge(rectangles):
         current = merged
         merged = merge(current)
     return current
+
 
 def rectangle_size(rectangle):
     """Determine area size of rectangle.

@@ -14,21 +14,38 @@ import utila.math
 
 
 def parse_pages(pattern: str, pagecount=None) -> tuple:  # pylint:disable=too-complex
-    """Determine list of pages out of given `pattern`.
+    """Determine unique, sorted tuple of pages out of given `pattern`.
 
     Args:
         pattern(str): user defined pattern
-        pagecount(int): maximum number of pages for example `5:` -> 5:pagecount
+        pagecount(int): maximum number of pages - for example
+                        `5:` -> 5:pagecount
     Returns:
-        list with user defined pages
+        tuple of user defined pages
+
+    Examples:
+    >>> parse_pages('2:5')
+    (2, 3, 4)
+    >>> parse_pages('0:', pagecount=5)
+    (0, 1, 2, 3, 4)
+    >>> parse_pages('1, 1, 2, 3, 3')
+    (1, 2, 3)
+    >>> parse_pages('10:13, 3')
+    (3, 10, 11, 12)
+    >>> parse_pages('10:13, 3:5')
+    (3, 4, 10, 11, 12)
+    >>> parse_pages(':5')
+    (0, 1, 2, 3, 4)
     """
 
     def parse_comma(pattern):
         """Pattern contains `,`"""
-        splitted = utila.math.numbers(pattern.split(','))
-        if not all([isinstance(item, int) for item in splitted]):
+        splitted = pattern.split(',')
+        result = [parse_pages(item, pagecount) for item in splitted]
+        if [item for item in result if item is None]:
             return None
-        return splitted
+        result = utila.flatten(result)
+        return result
 
     def parse_collon(pattern):
         """Pattern contains `:`"""
@@ -36,17 +53,14 @@ def parse_pages(pattern: str, pagecount=None) -> tuple:  # pylint:disable=too-co
             # single :
             return []
         splitted = pattern.split(':')
-        if len(splitted) == 1:
-            return [int(splitted[0])]
-        if len(splitted) == 2:
-            # left, right
-            if splitted[1] == '':
-                # 50:
-                splitted[1] = pagecount
-            with contextlib.suppress(ValueError, TypeError):
-                left = int(splitted[0])
-                right = int(splitted[1])
-                return list(range(left, right))
+        # Example 50:
+        splitted[1] = pagecount if splitted[1] == '' else splitted[1]
+        # Example :5
+        splitted[0] = 0 if splitted[0] == '' else splitted[0]
+        with contextlib.suppress(ValueError, TypeError):
+            left = int(splitted[0])
+            right = int(splitted[1])
+            return list(range(left, right))
         return None
 
     def parse_single(pattern):
@@ -65,7 +79,11 @@ def parse_pages(pattern: str, pagecount=None) -> tuple:  # pylint:disable=too-co
         parsed = parse_collon(pattern)
     else:
         parsed = parse_single(pattern)
-    return tuple(parsed) if parsed else None
+    if not parsed:
+        return None
+    parsed = utila.make_unique(parsed)
+    parsed = sorted(parsed)
+    return tuple(parsed)
 
 
 PageNumbers = typing.TypeVar('PageNumbers', int, tuple)
