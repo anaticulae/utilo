@@ -138,20 +138,23 @@ def select_page(
         items(collection): content which contains the pages
         page(int): page-attribute to select from `items`
         default: returned if `page` does not exists
-
     Returns:
         page with page-attribute matches with `page`
     Raises:
         ValueError: if items contains duplicated page number
         ValueError: if no items are passed
+
+    Examples:
+    >>> select_page(items={0 : 'first', 1 : 'second'}, page=1)
+    'second'
     """
     if items is None:
         raise ValueError('no items provided')
     if not isinstance(items, dict):
-        before = len(items)
+        pages = sorted([item.page for item in items])
         items = {item.page: item for item in items}
-        if len(items) != before:
-            raise ValueError('duplicated page attribute')
+        if len(items) != len(pages):
+            raise ValueError(f'duplicated page attributes: {pages}')
     try:
         return items[page]
     except KeyError:
