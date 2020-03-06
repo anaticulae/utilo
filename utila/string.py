@@ -15,23 +15,26 @@ import utila.utils
 
 
 def forward_slash(content: str, save_newline: bool = True) -> str:
-    """Replace every backward slash \\ with an forward slash /.
+    r"""Replace every backward slash \\ with an forward slash /.
 
     Args:
         content(str): content with backslashs
         save_newline(bool): if True, do not convert \n to /n
     Returns:
         content without backslashs
+
+    Examples:
+    >>> forward_slash('\\helm\nelm')
+    '/helm\nelm'
+    >>> forward_slash('\\helm\\telm')
+    '/helm/telm'
+    >>> forward_slash('\\helm\\nelm', save_newline=False)
+    '/helm/nelm'
     """
-    # TODO: LEARN MORE ABOUT REGEX
-    safety_token = '_1337THISISSECRET1337_'
+    pattern = r'\\'
     if save_newline:
-        content = content.replace(r'\n', safety_token)
-
-    content = content.replace(r'\\', '/').replace('\\', '/')
-
-    if save_newline:
-        content = content.replace(safety_token, r'\n')
+        pattern = r'\\(?!n)'
+    content = re.sub(re.compile(pattern), '/', content)
     return content
 
 
