@@ -145,7 +145,7 @@ def featurepack(  # pylint:disable=too-many-locals
     # an empty workplan is defined by user code, feature pack does nothing
     if not workplan:
         utila.error('empty workplan - nothing todo - abort!')
-        exit(utila.FAILURE)
+        return utila.FAILURE
 
     # Ensure to have output folder
     os.makedirs(outputpath, exist_ok=True)
