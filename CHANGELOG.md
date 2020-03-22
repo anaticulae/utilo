@@ -2,6 +2,26 @@
 
 Every noteable change is logged here.
 
+## v1.15.2
+
+### Feature
+
+* move code from `hey` (74250980d742)
+* move iterator to sync iterator of content pages (e7d525d8b934)
+* add information of wrong page to assertion (891f8511f8b7)
+* support chaining page pattern (0786ae4f12a0)
+
+### Fix
+
+* use equal exit point (0656d04926b1)
+* ensure that tuple of bool is handled correctly (3b0467fffd0d)
+* ensure to handle unsorted `page` correctly (69c0cdb146b4)
+
+### Documentation
+
+* add doctest to convert list of items to list of numbers (ba25f1f1923f)
+* clarify some comments (3058d64c6fcd)
+
 ## v1.15.1
 
 ### Fix
