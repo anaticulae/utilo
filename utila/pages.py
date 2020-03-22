@@ -159,3 +159,55 @@ def select_page(
         return items[page]
     except KeyError:
         return default
+
+
+def sync_pages(iterators) -> typing.Tuple[int, typing.List]:
+    """Generator to synchronize a list of PageContentIterators.
+
+    Args:
+        iterators(list): list of `PageContent`-Iterators
+    Yields:
+        pagenumber: (content of current pagenumber...)
+    """
+    # ensure to have sorted iterators
+    for index, iterator in enumerate(iterators):
+        pages = [determine_pagenumber(item) for item in iterator]
+        assert utila.isascending(pages), f'iter: {index} not sorted: {iterator}'
+    # TODO: NOT GOOD, BUT WORKS
+    # reverse list to use as a stack with push and pop
+    copy = [list(reversed(item)) for item in iterators]
+    while copy:
+        popped = []
+        # iterate over all iterators and pop the first element
+        for item in copy:
+            try:
+                popped.append(item.pop())
+            except IndexError:
+                popped.append(None)
+        if not any(popped):
+            # nothing to do anymore
+            return
+        # lowest page number of popped content
+        pagenumber = min([determine_pagenumber(item) for item in popped])
+
+        deliver = [
+            item if determine_pagenumber(item) == pagenumber else None
+            for item in popped
+        ]
+        yield pagenumber, tuple(deliver)
+
+        for index, item in enumerate(popped):
+            # push back non-yielded items
+            if determine_pagenumber(item) != pagenumber:
+                # use as a stack, therefore push(append) and pop(pop), not
+                # insert on pos 0.
+                copy[index].append(item)
+
+
+def determine_pagenumber(item):
+    if item is None:
+        return utila.INF
+    try:
+        return item.page
+    except AttributeError:
+        return item.number
