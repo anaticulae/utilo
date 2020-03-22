@@ -6,18 +6,21 @@
 # use or distribution is an offensive act against international law and may
 # be prosecuted under federal law. Its content is company confidential.
 # =============================================================================
+import enum
 import math
 import operator
 import statistics
 import typing
-
-import utila
 
 # default number of digits to round
 NDIGITS = 2
 
 Number = typing.TypeVar('Number', int, float)  # pylint:disable=C0103
 Numbers = typing.List[Number]  # pylint:disable=C0103
+
+# x0, y0, x1, y1
+Rectangle = typing.Tuple[float, float, float, float]
+Rectangles = typing.List[Rectangle]
 
 
 def roundme(*items: float, digits: int = NDIGITS) -> float:
@@ -183,7 +186,7 @@ def rectangle_size(rectangle):
     width = rectangle[2] - rectangle[0]
     height = rectangle[3] - rectangle[1]
     area = math.fabs(width * height)
-    area = utila.roundme(area)
+    area = roundme(area)
     return area
 
 
@@ -202,3 +205,90 @@ def rectangle_inside(first, second, diff: float = 0):
         ((x0 - diff) <= x00 <= x11 <= (x1 + diff)),
         ((y0 - diff) <= y00 <= y11 <= (y1 + diff)),
     ))
+
+
+def diff_mode(items: Numbers, max_diff: float = 2.0) -> Numbers:
+    """Compute mode of `item` and determine matched `items` which does
+    not more differ than `max_diff` from mode.
+
+    >>> diff_mode([1,1,3,5])
+    [1, 1, 3]
+
+    Args:
+        items(Numbers): items to filter
+        max_diff(float): max difference to mode which matches the classifier
+    Returns:
+        matched items
+    """
+    mode = modes(items)
+    matched = [item for item in items if math.fabs(item - mode) <= max_diff]
+    return matched
+
+
+class Strategy(enum.Enum):
+    LOWER = enum.auto()
+    UPPER = enum.auto()
+    LINEARISE = enum.auto()
+
+
+def lookup(
+        value: Number,
+        table: typing.List,
+        strategy: Strategy = None,
+) -> Number:
+    """Use table lookup to determine holy value.
+
+    Out of Bounds:
+    >>> lookup(0, [(10,10), (20, 30), (30, 0.5)])
+    >>> lookup(40, [(10,10), (20, 30), (30, 0.5)])
+
+    Different strategies:
+    >>> lookup(30, [(10,10), (20, 30), (30, 0.5)], strategy = Strategy.UPPER)
+    0.5
+    >>> lookup(15, [(10,10), (20, 30), (30, 0.5)])
+    10
+    >>> lookup(15, [(10,10), (20, 30), (30, 0.5)], strategy = Strategy.LINEARISE)
+    20.0
+
+    Args:
+        value: selector to determine holy value
+        table: contains holy values to determine on given `value`.
+        strategy: select left, right or linerise
+    Returns:
+        determined value
+    """
+    # TODO: VERY SLOW
+    assert len(table) >= 2, f'invalid data table: {table}'
+    if strategy is None:
+        strategy = Strategy.LOWER
+    if value < table[0][0]:
+        return None
+    if value > table[-1][0]:
+        return None
+    lower, result_lower = table[0]
+    for upper, result_upper in table[1:]:
+        if lower <= value <= upper:
+            if strategy == Strategy.LINEARISE:
+                diff = upper - lower
+                mo = (result_upper - result_lower) / diff  # pylint:disable=C0103
+                return result_lower + mo * (value - lower)
+            if strategy == Strategy.LOWER:
+                return result_lower
+            return result_upper # if strategy == Strategy.UPPER: always upper
+        lower, result_lower = upper, result_upper
+    return None
+
+def diffs(items: Numbers) -> Numbers:
+    """Difference between current and successor.
+
+    >>> diffs([1, 5, 10, 5.5])
+    [4.0, 5.0, 4.5]
+    """
+    assert len(items) >= 2, f'no enough items: {len(items)}'
+    result = [
+        math.fabs(first - second) for first, second in zip(
+            items[1:],
+            items[0:-1],
+        )
+    ]
+    return result
