@@ -2,6 +2,12 @@
 
 Every noteable change is logged here.
 
+## v1.15.3
+
+### Feature
+
+* add loading from default file name (5988fa029627)
+
 ## v1.15.2
 
 ### Feature
