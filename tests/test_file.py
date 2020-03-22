@@ -39,7 +39,6 @@ def test_file_from_path_or_raw(tmpdir):
     """
 
     path = os.path.join(tmpdir, 'example.yaml')
-
     utila.file_create(path, content)
 
     from_path = utila.from_raw_or_path(path)
@@ -48,7 +47,22 @@ def test_file_from_path_or_raw(tmpdir):
     assert from_raw == content
     assert from_path == from_raw
 
-    with pytest.raises(ValueError):
+
+def test_file_from_path_or_raw_default(testdir):
+    root = str(testdir.tmpdir)
+    utila.file_create(os.path.join(root, 'example.yaml'), 'defaultcontent')
+    default = utila.from_raw_or_path(root, ftype='yaml', fname='example')
+    assert default == 'defaultcontent'
+
+
+def test_file_from_path_or_raw_default_not_exists(testdir):
+    root = str(testdir.tmpdir)
+    with pytest.raises(FileNotFoundError):
+        utila.from_raw_or_path(root, ftype='yaml', fname='abc')
+
+
+def test_file_from_path_or_raw_not_exists():
+    with pytest.raises(FileNotFoundError):
         utila.from_raw_or_path('/c/test.yaml')
 
 

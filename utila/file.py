@@ -334,24 +334,36 @@ def split_multipattern(multipattern):
     return result
 
 
-def from_raw_or_path(content: str, ftype: str = 'yaml') -> str:
+def from_raw_or_path(
+        content: str,
+        ftype: str = 'yaml',
+        fname: str = None,
+) -> str:
     """Provide raw content from file or pass content
 
-    This method enables the interface to get content from filepath or use
-    direct raw content.
+    This method enables the interface to get content from filepath,
+    directory or use direct raw content.
 
     Args:
         content(str): filepath or raw content
         ftype(str): file type which is checked
+        fname(str): if `content` is directory, and ``directory/fname.ftype``
+                    exists, load ``directory/fname.ftype``
     Returns:
         loaded content or raw passed content
     Raises:
-        ValueError: if `content` path not exists
+        FileNotFoundError: if `content` path not exists
     """
     assert isinstance(content, str), 'Require `str` %s' % type(content)
-    if content.endswith('.%s' % ftype) and not os.path.exists(content):
-        raise ValueError('File does not exists: %s' % content)
-
+    if content.endswith(f'.{ftype}') and not os.path.exists(content):
+        raise FileNotFoundError(f'file not exists: {content}')
+    if fname and os.path.isdir(content):
+        # use default file path if exists
+        newpath = os.path.join(content, f'{fname}.{ftype}')
+        if os.path.exists(newpath):
+            content = newpath
+        else:
+            raise FileNotFoundError(f'directory not found: {newpath}')
     # filepath must not have any linebreaks
     if len(content.splitlines()) == 1 and os.path.isfile(content):
         content = file_read(content)
