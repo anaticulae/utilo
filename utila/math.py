@@ -274,9 +274,10 @@ def lookup(
                 return result_lower + mo * (value - lower)
             if strategy == Strategy.LOWER:
                 return result_lower
-            return result_upper # if strategy == Strategy.UPPER: always upper
+            return result_upper  # if strategy == Strategy.UPPER: always upper
         lower, result_lower = upper, result_upper
     return None
+
 
 def diffs(items: Numbers) -> Numbers:
     """Difference between current and successor.
