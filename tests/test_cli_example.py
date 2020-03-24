@@ -194,8 +194,12 @@ def test_cli_example(testdir, monkeypatch, capsys):  # pylint:disable=W0621
     with run_cli(root, monkeypatch, '-h') as result:
         captured = capsys.readouterr().out
 
-    assert 'inputs:' in captured, str(captured)
-    assert 'outputs:' in captured, str(captured)
+    # step name
+    assert '//' in captured, str(captured)
+    # inputs
+    assert '+' in captured, str(captured)
+    # outputs
+    assert '>' in captured, str(captured)
 
     assert utila.returncode(result) == utila.SUCCESS, str(result)
 

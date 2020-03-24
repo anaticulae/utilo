@@ -32,6 +32,7 @@ import glob
 import importlib
 import inspect
 import os
+import textwrap
 import typing
 
 import utila
@@ -442,46 +443,55 @@ def prepare_description(name: str, description: str, workplan: list) -> str:
     Returns:
         Prepared description with out- and input-parameter.
     """
-    result = [
-        '\nworking plan resources:\n',
-    ]
+    result = []
     for step in workplan:
-        result.append(f'step:\n   {step.name}')
-
+        result.append(f'//{step.name}')
         # prepare inputs
-        result.append('inputs:')
-        inputs = []
-        for source in step.inputs:
-            if isinstance(source, Value):
-                # for example: <class 'float'>
-                datatype = str(source.typ).split("'")[1]
-                msg = f'   {source.name}({datatype})={source.defaultvar}'
-                inputs.append(msg)
-            elif isinstance(source, ResultFile):
-                inputs.append(f'   {source}')
-            else:
-                try:
-                    fname, fending = source
-                except ValueError:
-                    fname, fending = source, 'yaml'
-                inputs.append(f'   {fname}.{fending}')
-        result.extend(sorted(inputs))
-
+        inputs = format_inputs(step)
+        result.append(inputs)
         # prepare outputs
-        result.append('outputs:')
-        outputs = []
-        for dest in step.outputs:
-            try:
-                fname, fending = dest
-            except ValueError:
-                fname, fending = dest, 'yaml'
-            outputs.append(f'   {name}__{step.name}_{fname}.{fending}')
-        result.extend(sorted(outputs))
-
-        # final newline
+        outputs = format_outputs(step, name)
+        result.append(outputs)
         result.append('')
     raw = utila.NEWLINE.join(result)
     return description + utila.NEWLINE + raw
+
+
+def format_inputs(step) -> str:
+    inputs = []
+    for source in step.inputs:
+        if isinstance(source, Value):
+            # for example: <class 'float'>
+            datatype = str(source.typ).split("'")[1]
+            msg = f'{source.name}({datatype})={source.defaultvar}'
+            inputs.append(msg)
+        elif isinstance(source, ResultFile):
+            inputs.append(f'{source}')
+        else:
+            try:
+                fname, fending = source
+            except ValueError:
+                fname, fending = source, 'yaml'
+            inputs.append(f'{fname}.{fending}')
+    inputs = sorted(inputs)
+    raw = ''.join('+%s   ' % item.ljust(30, ' ') for item in inputs)
+    raw = textwrap.fill(raw, 132)
+    return raw
+
+
+def format_outputs(step, name) -> str:
+    outputs = []
+    for dest in step.outputs:
+        try:
+            fname, fending = dest
+        except ValueError:
+            fname, fending = dest, 'yaml'
+        outputs.append(f'{name}__{step.name}_{fname}.{fending}')
+
+    outputs = sorted(outputs)
+    raw = ''.join('>%s   ' % item.ljust(30, ' ') for item in outputs)
+    raw = textwrap.fill(raw, 120)
+    return raw
 
 
 def find_features(

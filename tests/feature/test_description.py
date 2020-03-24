@@ -17,25 +17,17 @@ def test_feature_description_groupme():
     result = utila.feature.prepare_description(name, description, workplan)
 
     first = """\
-step:
-   chapter
-inputs:
-   rawmaker__text_text.yaml
-outputs:
-   groupme__chapter_charls.yaml
+//chapter
++rawmaker__text_text.yaml
+>groupme__chapter_charls.yaml
 """
 
     fourth = """\
-step:
-   footer
-inputs:
-   groupme__pagenumbers_pagenumbers.yaml
-   rawmaker__border_pages.yaml
-   rawmaker__boxes_horizontal.yaml
-   rawmaker__text_positions.yaml
-   rawmaker__text_text.yaml
-outputs:
-   groupme__footer_result.yaml
+//footer
++groupme__pagenumbers_pagenumbers.yaml   +rawmaker__border_pages.yaml      +rawmaker__boxes_horizontal.yaml
++rawmaker__text_positions.yaml    +rawmaker__text_text.yaml
+>groupme__footer_result.yaml
 """
     assert first in result, result
+    print(result)
     assert fourth in result, result
