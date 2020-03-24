@@ -37,6 +37,7 @@ import typing
 
 import utila
 import utila.cli
+import utila.feature.description
 import utila.utils
 
 FeatureInterface = typing.Tuple[str, utila.Command, callable]
@@ -90,7 +91,11 @@ def featurepack(  # pylint:disable=too-many-locals
     feature = find_features(root, featurepackage)
     commands = commandline(feature, workplan)
 
-    description = prepare_description(config.name, config.description, workplan)
+    description = utila.feature.description.prepare_description(
+        config.name,
+        config.description,
+        workplan,
+    )
     parser_configuration = utila.ParserConfiguration(
         failfastflag=config.failfastflag,
         flags=config.flags,
@@ -431,67 +436,6 @@ def prepare_hooks(items: typing.List[FeatureInterface]):
         name, _, caller = item
         result[name] = caller
     return result
-
-
-def prepare_description(name: str, description: str, workplan: list) -> str:
-    """Create help description with in- and outports for program steps.
-
-    Args:
-        name(str): application name
-        description(str): text which is presented in --help view
-        workplan(list): list of WorkingStep's
-    Returns:
-        Prepared description with out- and input-parameter.
-    """
-    result = []
-    for step in workplan:
-        result.append(f'//{step.name}')
-        # prepare inputs
-        inputs = format_inputs(step)
-        result.append(inputs)
-        # prepare outputs
-        outputs = format_outputs(step, name)
-        result.append(outputs)
-        result.append('')
-    raw = utila.NEWLINE.join(result)
-    return description + utila.NEWLINE + raw
-
-
-def format_inputs(step) -> str:
-    inputs = []
-    for source in step.inputs:
-        if isinstance(source, Value):
-            # for example: <class 'float'>
-            datatype = str(source.typ).split("'")[1]
-            msg = f'{source.name}({datatype})={source.defaultvar}'
-            inputs.append(msg)
-        elif isinstance(source, ResultFile):
-            inputs.append(f'{source}')
-        else:
-            try:
-                fname, fending = source
-            except ValueError:
-                fname, fending = source, 'yaml'
-            inputs.append(f'{fname}.{fending}')
-    inputs = sorted(inputs)
-    raw = ''.join('+%s   ' % item.ljust(30, ' ') for item in inputs)
-    raw = textwrap.fill(raw, 132)
-    return raw
-
-
-def format_outputs(step, name) -> str:
-    outputs = []
-    for dest in step.outputs:
-        try:
-            fname, fending = dest
-        except ValueError:
-            fname, fending = dest, 'yaml'
-        outputs.append(f'{name}__{step.name}_{fname}.{fending}')
-
-    outputs = sorted(outputs)
-    raw = ''.join('>%s   ' % item.ljust(30, ' ') for item in outputs)
-    raw = textwrap.fill(raw, 120)
-    return raw
 
 
 def find_features(
