@@ -1,0 +1,27 @@
+.. _1_16_0:
+
+RP 1.16.0
+=========
+
+config
+------
+
+* [ ] add option to pass --config -c file
+
+* [ ] support multiple config files
+
+* [ ] config order from left to right
+
+cli
+---
+
+* [ ] make help less verbose
+
+quality
+-------
+
+before
+~~~~~~
+
+* Total coverage: 94.25%
+* Your code has been rated at 10.0/10
