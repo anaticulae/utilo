@@ -1,0 +1,48 @@
+# =============================================================================
+# C O P Y R I G H T
+# -----------------------------------------------------------------------------
+# Copyright (c) 2020 by Helmut Konrad Fahrendholz. All rights reserved.
+# This file is property of Helmut Konrad Fahrendholz. Any unauthorized copy,
+# use or distribution is an offensive act against international law and may
+# be prosecuted under federal law. Its content is company confidential.
+# =============================================================================
+
+import contextlib
+
+import utila
+import utila.utils
+
+
+def read(config: str) -> dict:
+    r"""Read configuration file.
+
+    >>> read("# comment\nconfig = 1.0\none = 1\nstring = helmut hier")
+    {'config': 1.0, 'one': 1, 'string': 'helmut hier'}
+    """
+    result = {}
+    for item in config.splitlines():
+        item = item.strip()
+        if not item:
+            continue
+        if '#' in item:
+            continue
+        try:
+            name, value = item.split('=', maxsplit=1)
+            name = name.strip()
+            value = value.strip()
+        except ValueError:
+            utila.error(f'could not parse {item}')
+            continue
+        if value.lower() in ('true', 'false'):
+            result[name] = utila.utils.str2bool(value)
+            continue
+        with contextlib.suppress(ValueError):
+            value = int(value)
+            result[name] = value
+            continue
+        with contextlib.suppress(ValueError):
+            value = float(value)  # pylint:disable=R0204
+            result[name] = value
+            continue
+        result[name] = value
+    return result
