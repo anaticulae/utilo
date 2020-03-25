@@ -8,9 +8,7 @@ config
 
 * [x] add option to pass config -c file
 
-* [ ] support multiple config files
-
-* [ ] config order from left to right
+* [x] config order: default -> cli -> config file
 
 cli
 ---
@@ -24,4 +22,10 @@ before
 ~~~~~~
 
 * Total coverage: 94.25%
+* Your code has been rated at 10.0/10
+
+after
+~~~~~
+
+* Total coverage: 94.17%
 * Your code has been rated at 10.0/10
