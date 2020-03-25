@@ -2,6 +2,22 @@
 
 Every noteable change is logged here.
 
+## v1.16.0
+
+### Feature
+
+* add option to pass configuration file (f7fcdab221ff)
+* add method to parse configuration file (90540465f1f2)
+* format in- and outputs (abe8df241d43)
+
+### Fix
+
+* fix reference (90b997a6e2b5)
+
+### Documentation
+
+* clarify docs (57ccbd04ecfe)
+
 ## v1.15.3
 
 ### Feature
