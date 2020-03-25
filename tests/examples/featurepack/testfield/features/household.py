@@ -7,6 +7,9 @@
 # be prosecuted under federal law. Its content is company confidential.
 # =============================================================================
 
+import utila
 
-def work(path: str) -> str:  # pylint:disable=W0613
+
+def work(path: str, char_margin: float) -> str:  # pylint:disable=W0613
+    utila.log(char_margin)
     return 'hello'

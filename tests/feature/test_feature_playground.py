@@ -87,3 +87,28 @@ def test_feature_playground_cli_quite(quite, testdir, monkeypatch, capsys):
             capsys,
         )
     assert bool(stdout) != bool(quite)
+
+
+def test_feature_playground_pass_config_file(testdir, monkeypatch, capsys):
+    """Test overwriting global flag in input parameter of working step."""
+    config = str(os.path.join(testdir.tmpdir, 'config.cfg'))
+
+    utila.file_create(
+        config, """\
+            # change global flag
+            profile = True\n\n
+            # change step input
+            char_margin = 1234.5
+        """)
+    cmd = f'-c {config}'
+    stdout, _, = run_playground(
+        cmd,
+        {},
+        testdir,
+        monkeypatch,
+        capsys,
+    )
+    # parameter was passed
+    assert '1234.5' in stdout, stdout
+    # profiling was active
+    assert ('runtime(household):' in stdout) == bool(cmd)

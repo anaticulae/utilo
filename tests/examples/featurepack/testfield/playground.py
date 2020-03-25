@@ -17,7 +17,10 @@ PROCESS = 'testfield'
 WORKPLAN = [
     utila.create_step(
         'household',
-        inputs=[utila.File('infile')],
+        inputs=[
+            utila.File('infile'),
+            utila.Value('char_margin', float, defaultvar=2.0, minimum=0.1)
+        ],
         output=('first',),
     ),
 ]
@@ -30,6 +33,7 @@ def main(**kwargs):
         name=PROCESS,
         pages=True,
         singleinput=True,
+        configflag=True,
         version=VERSION,
         **kwargs,
     )
