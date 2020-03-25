@@ -65,10 +65,7 @@ def test_cli_parse_args(monkeypatch):
     assert '--nothing' in args
 
 
-@mark.parametrize('prefix', [
-    True,
-    False,
-])
+@mark.parametrize('prefix', [True, False])
 def test_cli_prefix_activation(monkeypatch, prefix):
     todo = [
         Flag(longcut='--longcut', message='display longcuts'),
