@@ -607,11 +607,11 @@ def determine_todo(args: dict, flags: list) -> typing.List[str]:
     del args['output']
 
     def remove_bool_flags(cli_args, flags):
-        # We have to remove all flags, which are not possible to do flags.
-        # The to do mechanism run all features if no to do flag is passed.
-        # If one flag is left, which is not releated to todo flag like
-        # `--linter_writing` every todo-job is skipped, therefore we have
-        # to remove all external flags.
+        # We have to remove all flags, which are not possible `to do`
+        # flags. The `to do` mechanism run all features if no to do flag
+        # is passed. If one flag is left, which is not related to todo
+        # flag like `--linter_writing` every todo-job is skipped,
+        # therefore we have to remove all external flags.
         for item in flags:
             try:
                 flag, _ = item
