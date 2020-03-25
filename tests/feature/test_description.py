@@ -33,5 +33,4 @@ def test_feature_description_groupme():
 >groupme__footer_result.yaml
 """
     assert first in result, result
-    print(result)
     assert fourth in result, result

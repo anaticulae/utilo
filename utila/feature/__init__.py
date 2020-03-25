@@ -37,6 +37,7 @@ import typing
 import utila
 import utila.cli
 import utila.feature.collector
+import utila.feature.config
 import utila.feature.description
 import utila.feature.processor
 import utila.utils
@@ -69,6 +70,7 @@ class FeaturePackConfig:
     quiteflag: bool = False
     singleinput: bool = False
     verboseflag: bool = True
+    configflag: bool = False
     version: str = None
 
 
@@ -110,6 +112,7 @@ def featurepack(  # pylint:disable=too-many-locals
         profileflag=config.profileflag,
         quiteflag=config.quiteflag,
         verboseflag=config.verboseflag,
+        configflag=config.configflag,
     )
     parser = utila.cli.create_parser(
         commands,
@@ -119,6 +122,9 @@ def featurepack(  # pylint:disable=too-many-locals
         version=config.version,
     )
     args = utila.parse(parser)
+    # overwrite input as fast as possible. This is required to overwrite
+    # general flags (profiling, failfast, etc.).
+    utila.feature.config.overwrite(args)
 
     processes, failfast, pages, profiling = utila.cli.evaluate_flags(
         args,
@@ -268,7 +274,6 @@ def read_workplan(  # pylint:disable=too-many-locals
     ret = 0
     for step in plan:
         variables = prepare_variables(variables=step.inputs, args=args)
-
         # optional pages flag is not allowed in workplan
         if utila.PAGES_FLAG in [item.name for item in step.inputs]:
             utila.error(str(step.inputs))

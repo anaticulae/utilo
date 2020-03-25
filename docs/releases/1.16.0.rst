@@ -6,7 +6,7 @@ RP 1.16.0
 config
 ------
 
-* [ ] add option to pass --config -c file
+* [x] add option to pass config -c file
 
 * [ ] support multiple config files
 

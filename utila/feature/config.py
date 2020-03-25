@@ -8,6 +8,7 @@
 # =============================================================================
 
 import contextlib
+import os
 
 import utila
 import utila.utils
@@ -46,3 +47,24 @@ def read(config: str) -> dict:
             continue
         result[name] = value
     return result
+
+
+def overwrite(args):
+    """Override command line arguments with arguments passed in a
+    configuration file."""
+    try:
+        configpath = args['config']
+    except KeyError:
+        return
+    if not configpath:
+        return
+    if not os.path.exists(configpath):
+        utila.error(f'config does not exists: {configpath}')
+        exit(utila.FAILURE)
+    loaded = utila.feature.config.read(utila.file_read(configpath))
+    for key, value in loaded.items():
+        try:
+            utila.info(f'update {key}:{value}')
+            args[key] = value
+        except KeyError:
+            utila.error(f'could not update {key}:{value}')

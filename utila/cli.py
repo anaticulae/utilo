@@ -119,6 +119,7 @@ class ParserConfiguration:
     profileflag: bool = False
     quiteflag: bool = False
     verboseflag: bool = False
+    configflag: bool = False
 
 
 def create_parser(
@@ -154,7 +155,11 @@ def create_parser(
         todo.append(Flag('-v', 'version', 'show version and exit.'))
         parser.__version = version
 
-    io_ports = create_io_ports(config.inputparameter, config.outputparameter)
+    io_ports = create_io_ports(
+        config.inputparameter,
+        config.outputparameter,
+        config.configflag,
+    )
     if io_ports:
         # set io ports to the top
         todo = io_ports + todo
@@ -288,7 +293,11 @@ def sort(items):
     return result
 
 
-def create_io_ports(infile: bool = False, outfile: bool = False):
+def create_io_ports(
+        infile: bool = False,
+        outfile: bool = False,
+        config: bool = False,
+):
     todo = []
     if infile:
         input_command = Command(
@@ -310,6 +319,16 @@ def create_io_ports(infile: bool = False, outfile: bool = False):
             },
         )
         todo.append(output_command)
+
+    if config:
+        config_command = Command(
+            shortcut='c',
+            message='read config from path',
+            args={
+                'dest': 'config',
+            },
+        )
+        todo.append(config_command)
     return todo
 
 
