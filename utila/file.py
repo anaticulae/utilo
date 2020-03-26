@@ -221,7 +221,13 @@ def file_copy(
 
 
 def isfilepath(path: str) -> bool:
-    """Check that given `path` is a file path."""
+    """Check that given `path` is a file path.
+
+    >>> isfilepath('/c/tmp/file.txt')
+    True
+    >>> isfilepath('/c/tmp/.tmp')
+    False
+    """
     assert path, path
     if os.path.exists(path):
         return os.path.isfile(path)
@@ -371,7 +377,7 @@ def from_raw_or_path(
 
 
 def tmpname(width: int = MAX_NUMBER) -> str:
-    """Get random file-name with 20-ziffre, random name
+    """Get random file-name with 20-ziffre, random name.
 
     Args:
         width(int): length of tmpname
@@ -402,7 +408,7 @@ def tmpfile(root):
 
 
 def make_absolute(path: str, cwd=None) -> str:
-    """Covert path to absolute. If path is already absolute, do nothing
+    """Convert path to absolute. If path is already absolute, do nothing.
 
     Args:
         path(str): relative path to convert to absolute path
@@ -421,20 +427,16 @@ def make_absolute(path: str, cwd=None) -> str:
 
 
 def make_relative(path: str, root: str = None) -> str:
-    """Cut leading `root` from `path`.
+    r"""Cut leading `root` from `path`.
+
+    >>> make_relative('C:/folder/names/test.pdf', root='C:/folder/')
+    'names/test.pdf'
+
+    >>> make_relative('resources\\main\\examples', 'resources')
+    'main/examples'
 
     Hint:
-        Convert path to forwards slashs
-
-    Examples:
-        'C:/folder/names/test.pdf',
-        'C:/folder/',
-        'names/test.pdf',
-
-        'resources\\main\\examples',
-        'resources',
-        'main/examples',
-
+        Convert path to forwards slashs.
     See:
         os.path.relpath
     """
@@ -446,7 +448,6 @@ def make_relative(path: str, root: str = None) -> str:
     path = path.replace(root, '')
     if path[0] == '/':
         path = path[1:]
-
     return path
 
 
