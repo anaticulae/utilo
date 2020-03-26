@@ -282,7 +282,7 @@ def read_workplan(  # pylint:disable=too-many-locals
             ret += 1
             continue
 
-        call_inputs = prepare_inputs(step.inputs, inspace, outspace)
+        inputs = prepare_inputs(step.inputs, inspace, outspace)
         name = step.name
         try:
             caller = hooks[name]
@@ -298,17 +298,15 @@ def read_workplan(  # pylint:disable=too-many-locals
             outputs=step.outputs,
             outspace=outspace,
         )
-        ret += verify_resources(call_inputs)
+        ret += verify_resources(inputs)
         # filter rewrite recursive inputs
-        call_inputs = [
-            item[1:] if item[0] == '_' else item for item in call_inputs
-        ]
+        inputs = [item[1:] if item[0] == '_' else item for item in inputs]
         if variables:
-            call_inputs.extend(variables)
-        if verify_interface(call_inputs, outputs, caller) == utila.FAILURE:
+            inputs.extend(variables)
+        if verify_interface(inputs, outputs, caller, name) == utila.FAILURE:
             ret += 1
             continue
-        function_call = functools.partial(caller, *call_inputs)
+        function_call = functools.partial(caller, *inputs)
 
         result.append(WorkStep(name, function_call, outputs))
 
@@ -555,7 +553,7 @@ def verify_resources(inputs):
     return ret
 
 
-def verify_interface(inputs, outputs, worker):
+def verify_interface(inputs, outputs, worker, stepname):
     # check callable
     # check input parameter
     call_parameter = inspect.signature(worker).parameters
@@ -567,9 +565,10 @@ def verify_interface(inputs, outputs, worker):
         # definition.
         has_pages = int(utila.PAGES_FLAG in call_parameter)
         if not len(call_parameter) == len(inputs) + has_pages:
-            utila.error(
-                f'missing input resources: '
-                f'interface error {list(call_parameter.keys())} != {inputs}')
+            utila.error('interface error: missing input resources\n'
+                        f'step: {stepname}\n'
+                        f'expected: {list(call_parameter.keys())}\n'
+                        f'got: {inputs}')
             return utila.FAILURE
 
     # check output parameter
