@@ -534,12 +534,23 @@ def assert_html(files):
 
 
 def assert_yaml(files):
-    """Ensure that all given `files` are `yaml` files"""
+    """Ensure that all given `files` are `yaml` files.
+
+    >>> assert_yaml('test.yaml')
+    """
     assert_file(files, 'yaml')
 
 
 def assert_json(files):
-    """Ensure that all given `files` are `json` files"""
+    """Ensure that all given `files` are `json` files.
+
+    >>> assert_json('test.json')
+
+    >>> assert_json('test.html')
+    Traceback (most recent call last):
+      ...
+    AssertionError: wrong file types
+    """
     assert_file(files, 'json')
 
 
