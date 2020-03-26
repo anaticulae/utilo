@@ -8,6 +8,9 @@
 # =============================================================================
 
 import dataclasses
+import typing
+
+import utila.feature
 
 
 @dataclasses.dataclass  # pylint:disable=R0903
@@ -68,3 +71,28 @@ class ResultFile(File):
 
     def __str__(self):
         return '%s__%s.%s' % (self.producer, self.name, self.ext)
+
+
+def create_step(
+        name: str,
+        inputs: typing.List['Input'],
+        output: typing.Tuple[str],
+) -> 'WorkStep':
+    """Create a WorkStep from definition.
+
+    Example:
+
+        step = {
+            NAME: name,
+            INPUT: [
+                ('groupme', 'chapter'),
+                ('iamraw', 'toc'),
+            ],
+            OUTPUT: ('butter', 'tart', 'cream'),
+        }
+    """
+    assert isinstance(inputs, list), '%s %s' % (type(inputs), str(inputs))
+    for index, item in enumerate(inputs):
+        assert isinstance(item, Input), f'{index} {item}'
+    assert isinstance(output, tuple), '%s %s' % (type(output), str(output))
+    return utila.feature.WorkStep(name, inputs, output)

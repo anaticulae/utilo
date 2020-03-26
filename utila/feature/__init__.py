@@ -219,32 +219,6 @@ def commandline(
     return result
 
 
-def create_step(
-        name: str,
-        inputs: typing.List['Input'],
-        output: typing.Tuple[str],
-) -> WorkStep:
-    """Create a WorkStep from definition.
-
-    Example:
-
-        step = {
-            NAME: name,
-            INPUT: [
-                ('groupme', 'chapter'),
-                ('iamraw', 'toc'),
-            ],
-            OUTPUT: ('butter', 'tart', 'cream'),
-        }
-    """
-    assert isinstance(inputs, list), '%s %s' % (type(inputs), str(inputs))
-    for index, item in enumerate(inputs):
-        assert isinstance(item,
-                          utila.feature.userinput.Input), f'{index} {item}'
-    assert isinstance(output, tuple), '%s %s' % (type(output), str(output))
-    return WorkStep(name, inputs, output)
-
-
 def remove_workplan_flags(plan, args):
     """Remove `Bool`-Flags which are part of the workplan steps to
     evaluate selected steps correctly."""
