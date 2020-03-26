@@ -7,6 +7,7 @@
 # be prosecuted under federal law. Its content is company confidential.
 # =============================================================================
 
+import collections
 import functools
 import glob
 import inspect
@@ -290,3 +291,70 @@ def verify_interface(inputs, outputs, worker, stepname):
                     f'interface error {return_parameter} != {outputs}')
         return utila.FAILURE
     return utila.SUCCESS
+
+
+def parallelize(
+        plan,
+        root,
+        *,
+        max_processes=1,
+):
+    order = input_order(plan, root)
+    steps = {f'{root}{REQUIREMENT_SEPARATOR}{step.name}': step for step in plan}
+    result = []
+
+    for level in order:
+        level_result = []
+        for item in level:
+            if len(level_result) < max_processes:
+                level_result.append(steps[item])
+            else:
+                result.append(level_result)
+                level_result = [steps[item]]
+        if level_result:
+            result.append(level_result)
+    return result
+
+
+REQUIREMENT_SEPARATOR = ':'
+
+
+def input_order(plan, root):
+    require = collections.defaultdict(set)
+    for step in plan:
+        name = f'{root}{REQUIREMENT_SEPARATOR}{step.name}'
+        try:
+            # TODO: ADD MORE DOCS HERE
+            # determine args out of  partial.method?
+            inputs = [str(item) for item in step.inputs.args]
+        except AttributeError:
+            inputs = [str(item) for item in step.inputs]
+
+        def remove_common_path(inputs):
+            """Remove common path, which is equal for every inputs but
+            destroy the required file analysis in `determine_order`.
+
+            'C:\\restruct\\rawmaker__text_positions.yaml',
+            'C:\\restruct\\groupme__pagenumbers_pagenumbers.yaml'
+
+            'rawmaker__text_positions.yaml',
+            'groupme__pagenumbers_pagenumbers.yaml'
+            """
+            inputs = [os.path.split(item)[1] for item in inputs]
+            return inputs
+
+        inputs = remove_common_path(inputs)
+        for item in inputs:
+            try:
+                item = item.replace('.yaml', '')
+                producer, file_ = item.split('__', maxsplit=1)
+                if '_' in file_:
+                    step, _ = file_.split('_', maxsplit=1)
+                else:
+                    step = file_
+                require[name].add(f'{producer}{REQUIREMENT_SEPARATOR}{step}')
+            except ValueError:
+                # for example input.pdf
+                require[name].add(item)
+    order = utila.utils.determine_order(require, flat=False)
+    return order

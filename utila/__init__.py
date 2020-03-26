@@ -43,7 +43,6 @@ from utila.error import saveme
 from utila.feature import FeaturePackConfig
 from utila.feature import InterfaceMismatch
 from utila.feature import featurepack
-from utila.feature import parallelize_workplan
 from utila.feature.path import connector as pathconnector
 from utila.feature.userinput import Bool
 from utila.feature.userinput import File
@@ -52,6 +51,7 @@ from utila.feature.userinput import Pattern
 from utila.feature.userinput import ResultFile
 from utila.feature.userinput import Value
 from utila.feature.userinput import create_step
+from utila.feature.workplan import parallelize as parallelize_workplan
 # File
 from utila.file import assert_file
 from utila.file import assert_html

@@ -14,6 +14,7 @@ import tests.examples.workplan.multistep
 import tests.examples.workplan.resources
 import utila
 import utila.feature
+import utila.feature.workplan
 
 # TODO: REMOVE COPY AND PASTE, MOVE EXAMPLES TO REGULAR PYTHON FILES
 
@@ -68,8 +69,8 @@ PLAN = [
 
 def test_parallelize_workplan_order():
     # 3 level's
-    process_and_separator = f'{PROCESS}{utila.feature.REQUIREMENT_SEPARATOR}'
-    order = utila.feature.input_order(PLAN, root=PROCESS)
+    process_and_separator = f'{PROCESS}{utila.feature.workplan.REQUIREMENT_SEPARATOR}'
+    order = utila.feature.workplan.input_order(PLAN, root=PROCESS)
     expected = [
         [
             f'{process_and_separator}fifth',
@@ -174,7 +175,7 @@ def test_feature_input_order():
     """Test to remove common path's for correct requirement determination."""
     plan_with_path = tests.examples.workplan.groupme.PLAN_WITH_PATH
     root = tests.examples.workplan.groupme.ROOT
-    order = utila.feature.input_order(plan_with_path, root)
+    order = utila.feature.workplan.input_order(plan_with_path, root)
     assert len(order) == 2, utila.log_raw(order)
     assert len(order[0]) == 3, utila.log_raw(order)
     assert len(order[1]) == 1, utila.log_raw(order)

@@ -59,7 +59,9 @@ class Command:
         for item in [self.shortcut, self.longcut, self.message, self.args]:
             yield item
 
+
 Commands = typing.List[Command]
+
 
 @dataclasses.dataclass
 class Flag(Command):

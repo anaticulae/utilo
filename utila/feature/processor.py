@@ -7,7 +7,7 @@
 # be prosecuted under federal law. Its content is company confidential.
 # =============================================================================
 
-import concurrent
+import concurrent.futures
 import functools
 import inspect
 import os
@@ -15,6 +15,7 @@ import typing
 
 import utila
 import utila.feature
+import utila.feature.workplan
 
 ErrorHook = typing.Tuple[Exception, str]
 
@@ -50,7 +51,7 @@ def process(
     """
     todo = prepare_process(todo, name, processes)
 
-    workplan = utila.feature.parallelize_workplan(
+    workplan = utila.feature.workplan.parallelize(
         workplan,
         root=name,
         max_processes=processes,
