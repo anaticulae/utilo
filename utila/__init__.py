@@ -21,7 +21,7 @@ from utila.cli import PAGES_FLAG
 from utila.cli import Command
 from utila.cli import Commands
 from utila.cli import Flag
-from utila.cli import Number
+from utila.cli import NumberedParameter
 from utila.cli import Parameter
 from utila.cli import ParserConfiguration
 from utila.cli import RequiredCommand

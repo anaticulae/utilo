@@ -86,7 +86,7 @@ class Parameter(Command):
 
 
 @dataclasses.dataclass
-class Number(Parameter):
+class NumberedParameter(Parameter):
 
     default: int = 1
 
@@ -228,7 +228,7 @@ def prepare_todo(
         todo.insert(0, prefixcommand)
 
     if config.multiprocessed:
-        multicmd = Number(
+        multicmd = NumberedParameter(
             shortcut=MULTI_FLAG[0],
             default=1,
             message='select number of used jobs',

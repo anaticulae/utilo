@@ -18,7 +18,7 @@ from utila import INVALID_COMMAND
 from utila import ROOT
 from utila import SUCCESS
 from utila import Flag
-from utila import Number
+from utila import NumberedParameter
 from utila import Parameter
 from utila import file_append
 from utila import file_create
@@ -354,7 +354,7 @@ def test_cli_sort_parameter():
                 'default': ':'
             },
         ),
-        Number(
+        NumberedParameter(
             shortcut='j',
             longcut='',
             message='select number of used jobs',
