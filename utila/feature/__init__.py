@@ -21,15 +21,9 @@ requirements
 
 """
 import collections
-import concurrent.futures
 import contextlib
 import dataclasses
-import functools
-import glob
-import importlib
-import inspect
 import os
-import textwrap
 import typing
 
 import utila
@@ -39,7 +33,6 @@ import utila.feature.config
 import utila.feature.description
 import utila.feature.processor
 import utila.feature.userinput
-import utila.utils
 
 WorkStep = collections.namedtuple('WorkStep', 'name inputs outputs')
 WorkSteps = typing.List[WorkStep]
