@@ -19,7 +19,8 @@ WORKPLAN = [
         'household',
         inputs=[
             utila.File('infile'),
-            utila.Value('char_margin', float, defaultvar=2.0, minimum=0.1)
+            utila.Value('char_margin', float, defaultvar=2.0, minimum=0.1),
+            utila.Bool('sync'),
         ],
         output=('first',),
     ),

@@ -10,6 +10,8 @@
 import utila
 
 
-def work(path: str, char_margin: float) -> str:  # pylint:disable=W0613
+def work(path: str, char_margin: float, sync: bool = False) -> str:
+    utila.log(path)
     utila.log(char_margin)
+    utila.log(sync)
     return 'hello'

@@ -112,3 +112,20 @@ def test_feature_playground_pass_config_file(testdir, monkeypatch, capsys):
     assert '1234.5' in stdout, stdout
     # profiling was active
     assert ('runtime(household):' in stdout) == bool(cmd)
+
+
+@pytest.mark.parametrize('flag', [True, False])
+def test_feature_playground_pass_flag(flag, testdir, monkeypatch, capsys):
+    cmd = '--sync' if flag else ''
+    stdout, _, = run_playground(
+        cmd,
+        {},
+        testdir,
+        monkeypatch,
+        capsys,
+    )
+    # parameter was passed
+    if flag:
+        assert 'True' in stdout, stdout
+    else:
+        assert 'False' in stdout, stdout
