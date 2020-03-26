@@ -93,6 +93,10 @@ def featurepack(  # pylint:disable=too-many-locals
     """
     if config is None:
         FeaturePackConfig()
+    # an empty workplan is defined by user code, feature pack does nothing
+    if not workplan:
+        utila.error('empty workplan - nothing todo - abort!')
+        return utila.FAILURE
     feature = utila.feature.collector.find_features(root, featurepackage)
     commands = commandline(feature, workplan)
 
@@ -157,10 +161,6 @@ def featurepack(  # pylint:disable=too-many-locals
         used_processes=processes,
         verify=True,
     )
-    # an empty workplan is defined by user code, feature pack does nothing
-    if not workplan:
-        utila.error('empty workplan - nothing todo - abort!')
-        return utila.FAILURE
 
     # Ensure to have output folder
     os.makedirs(outputpath, exist_ok=True)
