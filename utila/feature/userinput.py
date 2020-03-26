@@ -1,0 +1,70 @@
+# =============================================================================
+# C O P Y R I G H T
+# -----------------------------------------------------------------------------
+# Copyright (c) 2020 by Helmut Konrad Fahrendholz. All rights reserved.
+# This file is property of Helmut Konrad Fahrendholz. Any unauthorized copy,
+# use or distribution is an offensive act against international law and may
+# be prosecuted under federal law. Its content is company confidential.
+# =============================================================================
+
+import dataclasses
+
+
+@dataclasses.dataclass  # pylint:disable=R0903
+class Input:
+    pass
+
+
+@dataclasses.dataclass  # pylint:disable=R0903
+class Bool(Input):
+    name: str
+
+
+@dataclasses.dataclass  # pylint:disable=R0903
+class Value(Input):
+    name: str
+    typ: str
+    defaultvar: str
+    minimum: str = ''
+    maximum: str = ''
+
+    def __repr__(self):
+        ctor = ("Value(name='%s', typ='%s', defaultvar='%s',"
+                " minimum='%s', maximum='%s',)")
+        return ctor % (
+            self.name,
+            self.typ,
+            self.defaultvar,
+            self.minimum,
+            self.maximum,
+        )
+
+
+@dataclasses.dataclass
+class Pattern(Input):
+    name: str
+    ext: str
+
+    def __str__(self):
+        return '%s.%s' % (self.name, self.ext)
+
+    def __getitem__(self, index):
+        # make pattern iterable
+        return [self.name, self.ext][index]
+
+
+@dataclasses.dataclass  # pylint:disable=R0903
+class File(Pattern):
+    ext: str = 'yaml'
+
+
+@dataclasses.dataclass  # pylint:disable=R0903
+class ResultFile(File):
+    producer: str = 'default'
+
+    def __init__(self, producer: str, name: str):
+        self.producer = producer
+        self.name = name
+
+    def __str__(self):
+        return '%s__%s.%s' % (self.producer, self.name, self.ext)

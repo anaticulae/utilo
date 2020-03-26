@@ -39,18 +39,18 @@ from utila.error import CANCELLED_BY_USER
 from utila.error import handle_error
 from utila.error import saveme
 # Feature
-from utila.feature import Bool
 from utila.feature import FeaturePackConfig
-from utila.feature import File
-from utila.feature import Input
 from utila.feature import InterfaceMismatch
-from utila.feature import Pattern
-from utila.feature import ResultFile
-from utila.feature import Value
 from utila.feature import create_step
 from utila.feature import featurepack
 from utila.feature import parallelize_workplan
 from utila.feature.path import connector as pathconnector
+from utila.feature.userinput import Bool
+from utila.feature.userinput import File
+from utila.feature.userinput import Input
+from utila.feature.userinput import Pattern
+from utila.feature.userinput import ResultFile
+from utila.feature.userinput import Value
 # File
 from utila.file import assert_file
 from utila.file import assert_html

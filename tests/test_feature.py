@@ -19,14 +19,14 @@ import utila
 from utila import FAILURE
 from utila import SUCCESS
 from utila import FeaturePackConfig
+from utila import Pattern
+from utila import ResultFile
+from utila import Value
 from utila import create_step
 from utila import featurepack
 from utila import file_create
 from utila import file_read
 from utila import returncode
-from utila.feature import Pattern
-from utila.feature import ResultFile
-from utila.feature import Value
 
 WORKER = """
 from typing import Tuple
