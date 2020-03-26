@@ -182,10 +182,8 @@ def select_executor():
 
 
 def prepare_process(todo, name, processes):
-    if todo is None:
-        todo = set()
     # make todo unique
-    todo = set(todo)
+    todo = set() if todo is None else set(todo)
     # process all features, see some lines below
     if 'all' in todo:
         todo = set()
