@@ -88,6 +88,7 @@ def run_level(level, todo, pool, pages, profiling):
         if step.name not in todo and todo:
             utila.log(f'skipping: {step.name}')
             continue
+
         future = pool.submit(
             callback,
             step.inputs,
@@ -172,15 +173,6 @@ def run_hook_safely(
     return result
 
 
-def select_executor():
-    # TODO: how to use multiprocessing with pytest, see pytest: 38.3.1
-    testrun = os.environ.get('PYTEST_PLUGINS', False)
-    executor = concurrent.futures.ProcessPoolExecutor
-    if testrun:
-        executor = concurrent.futures.ThreadPoolExecutor
-    return executor
-
-
 def prepare_process(todo, name, processes):
     # make todo unique
     todo = set() if todo is None else set(todo)
@@ -193,6 +185,31 @@ def prepare_process(todo, name, processes):
         utila.log('use multiple processes')
     utila.log()
     return todo
+
+
+def write_level_result(
+        results,
+        errorhook: ErrorHook = None,
+        *,
+        failfast=False,
+) -> int:
+    success = True
+    for result in results:
+        completed = result.result()
+        result, name, _ = completed
+        if isinstance(result, Exception):
+            if errorhook:
+                errorhook(result, name)
+            success = False
+            if failfast:
+                return utila.FAILURE
+        else:
+            written = write_result_safely(*completed)
+            if written == utila.FAILURE:
+                success = False
+                if failfast:
+                    return utila.FAILURE
+    return utila.SUCCESS if success else utila.FAILURE
 
 
 def write_result_safely(
@@ -243,26 +260,10 @@ def write_result_safely(
         return utila.FAILURE
 
 
-def write_level_result(
-        results,
-        errorhook: ErrorHook = None,
-        *,
-        failfast=False,
-) -> int:
-    success = True
-    for result in results:
-        completed = result.result()
-        result, name, _ = completed
-        if isinstance(result, Exception):
-            if errorhook:
-                errorhook(result, name)
-            success = False
-            if failfast:
-                return utila.FAILURE
-        else:
-            written = write_result_safely(*completed)
-            if written == utila.FAILURE:
-                success = False
-                if failfast:
-                    return utila.FAILURE
-    return utila.SUCCESS if success else utila.FAILURE
+def select_executor():
+    # TODO: how to use multiprocessing with pytest, see pytest: 38.3.1
+    testrun = os.environ.get('PYTEST_PLUGINS', False)
+    executor = concurrent.futures.ProcessPoolExecutor
+    if testrun:
+        executor = concurrent.futures.ThreadPoolExecutor
+    return executor
