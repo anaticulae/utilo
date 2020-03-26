@@ -6,20 +6,19 @@
 # use or distribution is an offensive act against international law and may
 # be prosecuted under federal law. Its content is company confidential.
 # =============================================================================
-"""How to use a featurepack
+"""FeaturePack
+===========
 
-    completed = featurepack(
-        WORKPLAN,
-        FEATURE_PATH,
-        PROCESS_NAME,
-        PROCESS_DESCRIPTION,
-        VERSION,
-    )
+HowToUse
+--------
+
+todo!
 
 requirements
 ------------
 
 .. note :: TODO: SUPPORT ONLY ONE VARIABLE INPUT AND OUTPUT PARAMETER?
+
 """
 import collections
 import concurrent.futures
