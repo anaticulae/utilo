@@ -2,6 +2,17 @@
 
 Every noteable change is logged here.
 
+## v1.16.2
+
+### Feature
+
+* enable Number as type for float and int (de6c2c3c0867)
+
+### Documentation
+
+* remove outdated information (9a6cec0cb44b)
+* increase interface documentation (e57544157e61)
+
 ## v1.16.1
 
 ### Feature
