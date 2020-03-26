@@ -10,14 +10,23 @@
 import os
 
 
-def pathconnector(
+def connector(
         path: str,
         runner: str,
         filename: str,
         prefix: str = '',
+        *,
+        ftype: str = 'yaml',
 ) -> str:
+    """Create path to resource.
+
+    >>> connector('/c/gummi/', 'processor', 'info') # doctest: +SKIP
+    '/c/gummi/processor__info.yaml'
+    >>> connector('C:/', 'processor', 'info', ftype='doc') # doctest: +SKIP
+    'C:/processor__info.doc'
+    """
     assert os.path.isdir(path), str(path)
     prefix = f'{prefix}_' if prefix else ''
-    filename = f'{runner}__{prefix}{filename}.yaml'
+    filename = f'{runner}__{prefix}{filename}.{ftype}'
     result = os.path.join(path, filename)
     return result
