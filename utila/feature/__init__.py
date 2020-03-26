@@ -150,7 +150,8 @@ def featurepack(  # pylint:disable=too-many-locals
     utila.level_setup(level)
 
     hooks = utila.feature.collector.prepare_hooks(feature)
-    workplan = read_workplan(
+
+    prepared_workplan = read_workplan(
         workplan,
         process_=config.name,
         hooks=hooks,
@@ -161,13 +162,15 @@ def featurepack(  # pylint:disable=too-many-locals
         used_processes=processes,
         verify=True,
     )
+    # ensure to handle selected steps correctly
+    remove_workplan_flags(workplan, args)
 
     # Ensure to have output folder
     os.makedirs(outputpath, exist_ok=True)
 
     current_todo = determine_todo(args, config.flags)
     completed = utila.feature.processor.process(
-        workplan,
+        prepared_workplan,
         config.name,
         errorhook=config.errorhook,
         failfast=failfast,
@@ -202,10 +205,13 @@ def commandline(
         else:
             result.append(commands)
     # add sorted, unique parameter as parameterization point
-    variables = determine_variables(workplan)
-    variables = list(set(variables))  # avoid duplicating parameter
+    variables = determine_instance(workplan, Value)
     for item in sorted(variables):
         result.append(utila.Parameter(longcut=item))
+    # add sorted, unique flag as parameterization point
+    flags = determine_instance(workplan, Bool)
+    for item in sorted(flags):
+        result.append(utila.Flag(longcut=item))
 
     # run all workplan feature
     result.append(utila.Flag(longcut='all'))
@@ -315,6 +321,18 @@ def read_workplan(  # pylint:disable=too-many-locals
     return result
 
 
+def remove_workplan_flags(plan, args):
+    """Remove `Bool`-Flags which are part of the workplan steps to
+    evaluate selected steps correctly."""
+    collected = set()
+    for step in plan:
+        for variable in step.inputs:
+            if isinstance(variable, utila.Bool):
+                collected.add(variable.name)
+    for item in collected:
+        del args[item]
+
+
 def parallelize_workplan(
         plan,
         root,
@@ -382,13 +400,16 @@ def input_order(plan, root):
     return order
 
 
-def determine_variables(workplan):
-    result = []
+def determine_instance(workplan, typ):
+    # avoid duplicating parameter
+    result = set()
     for step in workplan:
         for item in step.inputs:
-            if not isinstance(item, Value):
+            if not isinstance(item, typ):
                 continue
-            result.append(item.name)
+            result.add(item.name)
+    result = list(result)  # pylint:disable=R0204
+    result = sorted(result)
     return result
 
 
@@ -396,6 +417,12 @@ def prepare_variables(variables, args):
     """Extract variables out of inputs, ignore files and pattern."""
     result = []
     for variable in variables:
+        if isinstance(variable, utila.Bool):
+            if args[variable.name]:
+                result.append(True)
+            else:
+                result.append(False)
+            continue
         if not isinstance(variable, utila.Value):
             continue
         typ = variable.typ
@@ -656,6 +683,11 @@ class Value(Input):
             self.minimum,
             self.maximum,
         )
+
+
+@dataclasses.dataclass  # pylint:disable=R0903
+class Bool(Input):
+    name: str
 
 
 @dataclasses.dataclass

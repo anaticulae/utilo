@@ -45,6 +45,8 @@ def format_inputs(step) -> str:
             datatype = str(source.typ).split("'")[1]
             msg = f'{source.name}({datatype})={source.defaultvar}'
             inputs.append(msg)
+        elif isinstance(source, utila.feature.Bool):
+            inputs.append(f'{source.name}(Bool)=True')
         elif isinstance(source, utila.feature.ResultFile):
             inputs.append(f'{source}')
         else:

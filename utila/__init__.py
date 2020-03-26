@@ -39,6 +39,7 @@ from utila.error import CANCELLED_BY_USER
 from utila.error import handle_error
 from utila.error import saveme
 # Feature
+from utila.feature import Bool
 from utila.feature import FeaturePackConfig
 from utila.feature import File
 from utila.feature import Input
