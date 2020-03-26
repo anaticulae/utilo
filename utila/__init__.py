@@ -102,7 +102,7 @@ from utila.logger import print_env
 from utila.logger import print_runtime
 from utila.logger import profile
 # math
-# from utila.math import Number TODO: ACTIVATE LATER
+from utila.math import Number
 from utila.math import Numbers
 from utila.math import Rectangle
 from utila.math import Rectangles
