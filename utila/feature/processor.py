@@ -155,10 +155,9 @@ def run_hook_safely(
             result = hook(pages=pages)
         else:
             result = hook()
-    except Exception as msg:  # pylint: disable=broad-except
-        utila.log_stacktrace()
+    except Exception:  # pylint: disable=broad-except
         utila.error('while processing %s' % name)
-        utila.error(msg)
+        utila.log_stacktrace()
         raise
 
     if isinstance(result, str):
