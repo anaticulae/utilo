@@ -2,6 +2,13 @@
 
 Every noteable change is logged here.
 
+## v1.16.1
+
+### Feature
+
+* introduce `Bool` to pass bool to working steps (3be74d27343b)
+* empty workplan: quit early (b51d5b7e4f0c)
+
 ## v1.16.0
 
 ### Feature
