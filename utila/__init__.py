@@ -19,6 +19,7 @@ from utila.classifier import three_side_equal_cluster
 from utila.cli import INVALID_COMMAND
 from utila.cli import PAGES_FLAG
 from utila.cli import Command
+from utila.cli import Commands
 from utila.cli import Flag
 from utila.cli import Number
 from utila.cli import Parameter

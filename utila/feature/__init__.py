@@ -182,10 +182,7 @@ def featurepack(  # pylint:disable=too-many-locals
     return completed
 
 
-def commandline(
-        features: Features,
-        workplan: list,
-) -> typing.List[utila.Command]:
+def commandline(features: Features, workplan: list) -> utila.Commands:
     """Build command line interface due iterating searched features
 
     Args:

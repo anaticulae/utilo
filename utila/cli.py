@@ -32,6 +32,7 @@ import contextlib
 import dataclasses
 import os
 import sys
+import typing
 
 from utila.file import make_absolute
 from utila.logger import error
@@ -58,6 +59,7 @@ class Command:
         for item in [self.shortcut, self.longcut, self.message, self.args]:
             yield item
 
+Commands = typing.List[Command]
 
 @dataclasses.dataclass
 class Flag(Command):
