@@ -397,10 +397,15 @@ def sources(  # pylint:disable=too-complex,too-many-branches
             error('Output %s must be a directory' % outputpath)
             exit(INVALID_COMMAND)
         if not os.path.exists(outputpath):
-            log('Creating: %s' % outputpath)
-            os.makedirs(outputpath)
-
-    # run application in current working directory if not paths are provided
+            try:
+                os.makedirs(outputpath)
+            except FileExistsError:
+                # avoid race condition if some other thread creates this
+                # folder before.
+                log(f'use: {outputpath}')
+            else:
+                log(f'creating: {outputpath}')
+    # run application in current working directory if no path's are provided
     if not inputpaths:
         inputpaths = [os.getcwd()]
     if not outputpath:
