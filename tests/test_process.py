@@ -19,5 +19,5 @@ def test_process_run_parallel():
     assert success == utila.SUCCESS
 
     failures = ['wasd']
-    error = utila.run_parallel(failures)
+    error = utila.run_parallel(failures, expect=False)
     assert error >= utila.FAILURE
