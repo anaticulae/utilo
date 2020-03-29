@@ -363,7 +363,12 @@ def from_raw_or_path(
     assert isinstance(content, str), 'Require `str` %s' % type(content)
     if content.endswith(f'.{ftype}') and not os.path.exists(content):
         raise FileNotFoundError(f'file not exists: {content}')
-    if fname and os.path.isdir(content):
+    try:
+        isdir = utila.NEWLINE not in content and os.path.isdir(content)
+    except ValueError:
+        # File name is to long, cause testing yaml content as file content.
+        isdir = False
+    if fname and isdir:
         # use default file path if exists
         newpath = os.path.join(content, f'{fname}.{ftype}')
         if os.path.exists(newpath):
