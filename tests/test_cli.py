@@ -167,7 +167,7 @@ def test_cli_parse_required_command_missing(tmpdir):
     file_create(runner, RUN_ME % forward_slash(ROOT))
 
     command = 'python "%s"' % runner
-    completed = run(command, tmpdir)
+    completed = run(command, tmpdir, expect=False)
 
     in_stderr = 'the following arguments are required'
     assert in_stderr in completed.stderr
@@ -229,7 +229,7 @@ def test_cli_parser_source_in_out(parser_example):  # pylint: disable=W0621
     file_append(runner, SOURCES)
 
     command = 'python "%s" -i %s -o out.file' % (runner, runner)
-    completed = run(command, cwd)
+    completed = run(command, cwd, expect=False)
 
     assert completed.returncode == INVALID_COMMAND, str(completed)
 
@@ -239,7 +239,7 @@ def test_cli_parse_empty_parser_version(parser_example):  # pylint: disable=W062
     """Test default parser with --version"""
     cwd, runner = parser_example
     command = 'python "%s" --version' % runner
-    completed = run(command, cwd)
+    completed = run(command, cwd, expect=False)
 
     assert completed.returncode == INVALID_COMMAND, str(completed)
 

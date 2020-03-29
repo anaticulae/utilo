@@ -58,13 +58,13 @@ def test_test_assert_success():
 
 
 def test_test_assert_success_failed():
-    completed = utila.run('python --helpsambadamba')
+    completed = utila.run('python --helpsambadamba', expect=None)
     with pytest.raises(AssertionError):
         utila.assert_success(completed)
 
 
 def test_test_assert_failure():
-    completed = utila.run('python --helpsambadamba')
+    completed = utila.run('python --helpsambadamba', expect=None)
     utila.assert_failure(completed)
 
 

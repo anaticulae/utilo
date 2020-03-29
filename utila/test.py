@@ -45,6 +45,7 @@ def run(
         cmd: str,
         cwd: str = None,
         env: dict = None,
+        expect : bool = True,
 ) -> subprocess.CompletedProcess:
     """Run external process
 
@@ -53,6 +54,9 @@ def run(
         cwd(str): current working directory
         env(dict): modify environment variable for test run. If nothing is
                    passed, the global environment variable is used.
+        expect(bool): if True: fail on error
+                      if False: fail on success
+                      if None: return completed process
     Returns:
         Completed process.
     """
@@ -73,6 +77,10 @@ def run(
         stdout=subprocess.PIPE,
         universal_newlines=True,
     )
+    if expect is True:
+        assert_success(completed)
+    if expect is False:
+        assert_failure(completed)
     return completed
 
 
@@ -118,7 +126,7 @@ def assert_run(command: str, cwd: str):
 
 @contextlib.contextmanager
 def assert_run_fail(command: str, cwd: str):
-    completed = run(command, cwd)
+    completed = run(command, cwd, expect=False)
     msg = '%s\n%s' % (completed.stderr, completed.stdout)
     assert completed.returncode, msg
     yield completed
