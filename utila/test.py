@@ -45,7 +45,7 @@ def run(
         cmd: str,
         cwd: str = None,
         env: dict = None,
-        expect : bool = True,
+        expect: bool = True,
 ) -> subprocess.CompletedProcess:
     """Run external process
 
