@@ -2,6 +2,12 @@
 
 Every noteable change is logged here.
 
+## v1.16.4
+
+### Fix
+
+* handle very long string correctly (abb943234792)
+
 ## v1.16.3
 
 ### Feature
