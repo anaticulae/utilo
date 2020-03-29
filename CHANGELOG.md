@@ -2,6 +2,17 @@
 
 Every noteable change is logged here.
 
+## v1.16.3
+
+### Feature
+
+* add optional validation step (b060181b0f61)
+* add validation step (8b5eaae19d3f)
+
+### Fix
+
+* ensure that creating output folder does not break application (d6c36363cc22)
+
 ## v1.16.2
 
 ### Feature
