@@ -77,6 +77,7 @@ from utila.file import make_package
 from utila.file import make_relative
 from utila.file import make_single
 from utila.file import tmp
+from utila.file import tmpdir
 from utila.file import tmpfile
 from utila.file import tmpname
 from utila.file import yaml

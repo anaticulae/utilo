@@ -420,6 +420,29 @@ def tmpfile(root):
     return path
 
 
+def tmpdir(root, create: bool = True, trys: int = 10):
+    """Get temporary directory-path located in `TEMP_FOLDER`.
+
+    Returns:
+        filepath(str): to tempfile in TEMP_FOLDER
+    """
+    assert os.path.exists(root)
+    assert trys, trys
+    tmppath = tmp(root)
+
+    name = 'tmp%s' % tmpname()
+    path = os.path.join(tmppath, name)
+    if os.path.exists(path):
+        # try again to find unused tmp dir
+        return tmpfile(root)
+    if create:
+        try:
+            os.makedirs(path)
+        except OSError:
+            return tmpdir(root, create=create, trys=trys - 1)
+    return path
+
+
 def make_absolute(path: str, cwd=None) -> str:
     """Convert path to absolute. If path is already absolute, do nothing.
 

@@ -496,3 +496,8 @@ def test_file_count(tmpdir):
 
     assert utila.file_count(tmpdir, ext='yaml') == 1
     assert utila.file_count(tmpdir) == 2
+
+
+def test_file_tmpdir(testdir):
+    create = utila.tmpdir(testdir.tmpdir)
+    assert os.path.exists(create), create
