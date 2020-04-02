@@ -20,12 +20,14 @@ def connector(
 ) -> str:
     """Create path to resource.
 
-    >>> connector('/c/gummi/', 'processor', 'info') # doctest: +SKIP
+    Hint: We do not check the existence of path before connecting them,
+    because path can not exists.
+
+    >>> connector('/c/gummi/', 'processor', 'info')
     '/c/gummi/processor__info.yaml'
-    >>> connector('C:/', 'processor', 'info', ftype='doc') # doctest: +SKIP
+    >>> connector('C:/', 'processor', 'info', ftype='doc')
     'C:/processor__info.doc'
     """
-    assert os.path.isdir(path), str(path)
     prefix = f'{prefix}_' if prefix else ''
     filename = f'{runner}__{prefix}{filename}.{ftype}'
     result = os.path.join(path, filename)
