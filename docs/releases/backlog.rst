@@ -10,3 +10,16 @@ backlog
 * file:copy_content: add flag to log but not execute copy operation
 
 * support multiple pages flag: upme --pages=5 --pages=3 --pages=6 --pages=5
+
+* add contextmanager and decorator:
+
+  .. code-block:: python
+
+    with utila.refactor(major=1, minor=17, patch=5):
+        pass
+
+    @utila.refactor(major=1, minor=17, patch=5)
+    def method():
+        pass
+
+  fail when code was not replaced.
