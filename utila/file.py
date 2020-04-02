@@ -360,7 +360,7 @@ def from_raw_or_path(
     Raises:
         FileNotFoundError: if `content` path not exists
     """
-    assert isinstance(content, str), 'Require `str` %s' % type(content)
+    content = str(content)  # convert `LocalPath` to str
     if content.endswith(f'.{ftype}') and not os.path.exists(content):
         raise FileNotFoundError(f'file not exists: {content}')
     try:
