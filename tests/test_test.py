@@ -102,7 +102,7 @@ def test_test_increased_filecount(testdir):
 
 def test_test_increased_filecount_with_number(testdir):
     root = str(testdir)
-    with utila.increased_filecount(root, diff=1):
+    with utila.increased_filecount(root, mindiff=1, maxdiff=1):
         utila.file_create('test.txt')
 
 
@@ -120,7 +120,7 @@ def test_test_increased_filecount_to_few_created(testdir):
             pass
 
     with pytest.raises(AssertionError):
-        with utila.increased_filecount(root, diff=2):
+        with utila.increased_filecount(root, mindiff=2):
             utila.file_create('test.txt')
 
 
