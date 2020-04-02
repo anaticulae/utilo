@@ -61,6 +61,7 @@ from utila.file import copy_content
 from utila.file import file_append
 from utila.file import file_compare
 from utila.file import file_copy
+from utila.file import file_count
 from utila.file import file_create
 from utila.file import file_islocked
 from utila.file import file_lock

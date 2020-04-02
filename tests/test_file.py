@@ -485,3 +485,14 @@ def test_file_copy_content_mult(testdir):
     )
     assert os.path.exists('dest/groupme__selm.yaml')
     assert os.path.exists('dest/rawmaker__helm.yaml')
+
+
+def test_file_count(tmpdir):
+    assert utila.file_count(tmpdir) == 0
+
+    with utila.chdir(tmpdir):
+        utila.file_create('hi.yaml')
+        utila.file_create('hi.txt')
+
+    assert utila.file_count(tmpdir, ext='yaml') == 1
+    assert utila.file_count(tmpdir) == 2

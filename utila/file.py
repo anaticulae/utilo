@@ -220,6 +220,14 @@ def file_copy(
         exit(FAILURE)
 
 
+def file_count(path: str, ext: str = None, recursive: bool = True) -> int:
+    assert os.path.exists(path), path
+    pattern = '**/*.*' if ext is None else f'**/*.{ext}'
+    with utila.chdir(path):
+        collected = list(glob.glob(pattern, recursive=recursive))
+    return len(collected)
+
+
 def isfilepath(path: str) -> bool:
     """Check that given `path` is a file path.
 
