@@ -273,7 +273,8 @@ def verify_interface(inputs, outputs, worker, stepname):
         # Optional pages flag, reduces count of required parameter in
         # definition.
         has_pages = int(utila.PAGES_FLAG in call_parameter)
-        if not len(call_parameter) == len(inputs) + has_pages:
+        required_callparameter = len(inputs) + has_pages
+        if len(call_parameter) != required_callparameter:
             utila.error('interface error: missing input resources\n'
                         f'step: {stepname}\n'
                         f'expected: {list(call_parameter.keys())}\n'
