@@ -233,7 +233,7 @@ def prepare_outputs(
         if not isinstance(item, str):
             try:
                 item, datatype = item
-            except ValueError:
+            except TypeError:
                 utila.error(f'checking output number {index}')
                 msg = ('require tuple with (item, datatype).'
                        f' got: {item!r} {type(item)}')
