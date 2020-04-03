@@ -24,6 +24,11 @@ WORKPLAN = [
         ],
         output=('first',),
     ),
+    utila.create_step(
+        'binary',
+        inputs=[],
+        output=(('binary', 'hex'),),
+    ),
 ]
 
 

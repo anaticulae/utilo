@@ -50,7 +50,6 @@ def process(
         SUCCESS if all features process successfully, if not FAILURE
     """
     todo = prepare_process(todo, name, processes)
-
     workplan = utila.feature.workplan.parallelize(
         workplan,
         root=name,
@@ -89,7 +88,6 @@ def run_level(level, todo, pool, pages, profiling):
         if step.name not in todo and todo:
             utila.log(f'skipping: {step.name}')
             continue
-
         future = pool.submit(
             callback,
             step.inputs,

@@ -22,7 +22,7 @@ todo
 feature
 -------
 
-* [ ] support detecting and writing binary results
+* [x] support detecting and writing binary results
 
 * [ ] add paired list return
 
