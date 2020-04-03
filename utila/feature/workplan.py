@@ -345,6 +345,10 @@ def input_order(plan, root):
             return inputs
 
         inputs = remove_common_path(inputs)
+        if not inputs:
+            # no required input - for example a random number generator
+            # without using a seed :).
+            _ = require[name]  # create empty set
         for item in inputs:
             try:
                 item = item.replace('.yaml', '')
