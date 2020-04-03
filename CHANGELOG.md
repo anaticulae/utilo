@@ -2,6 +2,26 @@
 
 Every noteable change is logged here.
 
+## v1.17.0
+
+### Feature
+
+* add list of tuples as generated output (a7bfe2bd42be)
+* add option to write binary output data (6c24a4c5dad3)
+* add method to overwrite and create binary files (a6a00e10dd96)
+* add decorator/contextmanager to signal required todo/refactoring (8c9d57a85717)
+* add method to create temporary directories (9f3871ca3262)
+* add method to count files in folder (455c17e28247)
+* extend insure file count with maxdiff flag (7a01bd16bc94)
+
+### Fix
+
+* catch splitting error (1d5c879fb644)
+* clarify call parameter check (67b8ab642f49)
+* do not skip step if no input data is required (5ec19703610b)
+* do not check existence of path connector root (eac43e8a6754)
+* avoid converting LocalPath to str, do it inside method (42664b1bf790)
+
 ## v1.16.4
 
 ### Fix
