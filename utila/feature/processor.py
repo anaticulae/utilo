@@ -161,7 +161,7 @@ def run_hook_safely(
         utila.log_stacktrace()
         raise
 
-    if isinstance(result, str):
+    if isinstance(result, (str, bytes)):
         result = [result]
     # Verify result
     variable_returnvalues = utila.feature.variable_parameter(stepoutput)
@@ -250,7 +250,10 @@ def write_result_safely(
             os.makedirs(parent, exist_ok=True)
             utila.info('write %s' % path)
             # write content to file.
-            utila.file_replace(path, content)
+            if isinstance(content, str):
+                utila.file_replace(path, content)
+            if isinstance(content, bytes):
+                utila.file_replace_binary(path, content)
         return utila.SUCCESS
     except TypeError as msg:
         utila.error(f'while processing {processstep}')

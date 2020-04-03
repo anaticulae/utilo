@@ -283,7 +283,8 @@ def verify_interface(inputs, outputs, worker, stepname):
 
     # check output parameter
     return_parameter = str(inspect.signature(worker).return_annotation)
-    return_count = return_parameter.count('str')
+    supported = ('str', 'bytes')
+    return_count = sum([return_parameter.count(typ) for typ in supported])
 
     variable_returnvalues = utila.feature.variable_parameter(outputs)
     if not len(outputs) == return_count and not variable_returnvalues:
@@ -302,7 +303,6 @@ def parallelize(
     order = input_order(plan, root)
     steps = {f'{root}{REQUIREMENT_SEPARATOR}{step.name}': step for step in plan}
     result = []
-
     for level in order:
         level_result = []
         for item in level:
