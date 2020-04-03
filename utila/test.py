@@ -17,6 +17,7 @@ import webbrowser
 
 import pytest
 
+import utila
 import utila.logger
 from utila.string import fix_encoding
 from utila.utils import SUCCESS
@@ -189,7 +190,7 @@ def single_execution():
     """Check that test method is executed as single test. You can use
     this method to open the result in a web browser if test is executed
     with a human in front of the machine eg. as a single test."""
-    # TODO: MOVE TO utilatest LATER
+    utila.refactor(major=2, description='move to utila test')
     frame = inspect.currentframe()
     parent = inspect.getouterframes(frame)[1]
     caller = parent.function

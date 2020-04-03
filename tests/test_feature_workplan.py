@@ -16,7 +16,7 @@ import utila
 import utila.feature
 import utila.feature.workplan
 
-# TODO: REMOVE COPY AND PASTE, MOVE EXAMPLES TO REGULAR PYTHON FILES
+utila.refactor(major=2, description='move examples to separate files')
 
 PROCESS = 'process'
 PLAN = [
