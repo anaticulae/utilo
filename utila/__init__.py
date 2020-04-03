@@ -69,12 +69,14 @@ from utila.file import file_compare
 from utila.file import file_copy
 from utila.file import file_count
 from utila.file import file_create
+from utila.file import file_create_binary
 from utila.file import file_islocked
 from utila.file import file_lock
 from utila.file import file_read
 from utila.file import file_read_binary
 from utila.file import file_remove
 from utila.file import file_replace
+from utila.file import file_replace_binary
 from utila.file import file_unlock
 from utila.file import from_raw_or_path
 from utila.file import isfilepath

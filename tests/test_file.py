@@ -501,3 +501,12 @@ def test_file_count(tmpdir):
 def test_file_tmpdir(testdir):
     create = utila.tmpdir(testdir.tmpdir)
     assert os.path.exists(create), create
+
+
+def test_file_replace_binary(tmpdir):
+    path = os.path.join(tmpdir, 'file.hex')
+    utila.file_replace_binary(path, b'Helm')
+    # replace content
+    utila.file_replace_binary(path, b'Helm2')
+    # do nothing
+    utila.file_replace_binary(path, b'Helm2')

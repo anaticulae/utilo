@@ -90,6 +90,23 @@ def file_create(path: str, content: str = ''):
         fp.write(content)
 
 
+def file_create_binary(path: str, content: bytes = b''):
+    """Create file `path` with the content `content`
+
+    Args:
+        path(str): path to write file, path must not exists
+        content(str): content to write in given `path`
+
+    Hint:
+        If file already exists, an assertion is raised.
+    """
+    parent = os.path.split(path)[0]
+    assert os.path.exists(parent) or not parent, f'{parent} does not exists'
+    assert not os.path.exists(path), f'{path} already exists'
+    with open(path, mode='wb') as fp:
+        fp.write(content)
+
+
 def file_read(path: str):
     assert os.path.exists(path), path
     with open(path, mode='r', newline=NEWLINE, encoding=UTF8) as fp:
@@ -128,6 +145,27 @@ def file_replace(path: str, content: str):
         return
 
     with open(path, mode='w', newline=NEWLINE, encoding=UTF8) as fp:
+        fp.write(content)
+
+
+def file_replace_binary(path: str, content: bytes):
+    """Replace file content
+
+    1. If not exist, create file
+    2. If exists,   compare content, if changed than replace
+                                     if not, do nothing
+    Args:
+        path(str): path to file
+        content(str): content to write
+    """
+    if not os.path.exists(path):
+        file_create_binary(path, content)
+        return
+    current_content = file_read_binary(path)
+    if current_content == content:
+        return
+
+    with open(path, mode='wb') as fp:
         fp.write(content)
 
 
