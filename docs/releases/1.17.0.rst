@@ -24,7 +24,7 @@ feature
 
 * [x] support detecting and writing binary results
 
-* [ ] add paired list return
+* [x] add paired list return
 
 
 quality

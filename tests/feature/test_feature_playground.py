@@ -139,3 +139,18 @@ def test_write_binary_data(testdir, monkeypatch):
     expected_path = os.path.join(testdir.tmpdir, 'testfield__binary_binary.hex')
     binary = utila.file_read_binary(expected_path)
     assert binary == b'I Love Binaries.', binary
+
+
+def test_write_list_of_tuple(testdir, monkeypatch):
+    # test writing hex file
+    run_playground('--multiple', {}, testdir, monkeypatch)
+
+    expected = [
+        'testfield__multiple_0_info.yaml',
+        'testfield__multiple_0_binary.hex',
+        'testfield__multiple_1_info.yaml',
+        'testfield__multiple_1_binary.hex',
+    ]
+    expected = [os.path.join(testdir.tmpdir, item) for item in expected]
+    for item in expected:
+        assert os.path.exists(item), str(item)
