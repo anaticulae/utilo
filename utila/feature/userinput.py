@@ -94,5 +94,6 @@ def create_step(
     assert isinstance(inputs, list), '%s %s' % (type(inputs), str(inputs))
     for index, item in enumerate(inputs):
         assert isinstance(item, Input), f'{index} {item}'
-    assert isinstance(output, tuple), '%s %s' % (type(output), str(output))
+    msg = '%s %s' % (type(output), str(output))
+    assert isinstance(output, (tuple, list)), msg
     return utila.feature.WorkStep(name, inputs, output)

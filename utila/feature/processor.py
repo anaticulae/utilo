@@ -226,32 +226,9 @@ def write_result_safely(
     """
     utila.call('write results')
     try:
-        variable_returnvalues = utila.feature.variable_parameter(outputstep)
-        if variable_returnvalues:
-            assert len(outputstep) == 1, (f'only one variable parameter '
-                                          f'is supported {outputstep}')
-            outputstep = outputstep[0]
-            # Create parent folder if required:
-            # cli_example__multistep_pages/view_*.html
-            # adding list of files in parent folder is possible.
-            parent, _ = os.path.split(outputstep)
-            os.makedirs(parent, exist_ok=True)
-            # replace star-pattern to archive indexed output paths
-            outputstep = [
-                outputstep.replace('*', f'{index}')
-                for index, content in enumerate(result)
-            ]
+        outputstep = replace_star_pattern(outputstep, result)
         for path, content in zip(outputstep, result):
-            # Ensure that parent folder exists. It is possible to create
-            # folder via `hello/folder/content.txt`.
-            parent, _ = os.path.split(path)
-            os.makedirs(parent, exist_ok=True)
-            utila.info('write %s' % path)
-            # write content to file.
-            if isinstance(content, str):
-                utila.file_replace(path, content)
-            if isinstance(content, bytes):
-                utila.file_replace_binary(path, content)
+            write_resource(path, content)
         return utila.SUCCESS
     except TypeError as msg:
         utila.error(f'while processing {processstep}')
@@ -259,6 +236,53 @@ def write_result_safely(
         utila.error(f'current return value: {result}')
         utila.error(msg)
         return utila.FAILURE
+
+
+def write_resource(path, content):
+    if not isinstance(path, str):
+        # multiple resource
+        for first, second in zip(path, content):
+            write_resource(first, second)
+        return
+    # Ensure that parent folder exists. It is possible to create folder
+    # via `hello/folder/content.txt`.
+    parent, _ = os.path.split(path)
+    os.makedirs(parent, exist_ok=True)
+    utila.info('write %s' % path)
+    # write content to file.
+    if isinstance(content, str):
+        utila.file_replace(path, content)
+    if isinstance(content, bytes):
+        utila.file_replace_binary(path, content)
+
+
+def replace_star_pattern(outputstep, result):
+    variable_returnvalues = utila.feature.variable_parameter(outputstep)
+    if not variable_returnvalues:
+        return outputstep
+    # Create parent folder if required:
+    # cli_example__multistep_pages/view_*.html
+    # adding list of files in parent folder is possible.
+    parent, _ = os.path.split(outputstep[0])
+    os.makedirs(parent, exist_ok=True)
+    # replace star-pattern to archive indexed output paths
+    if variable_returnvalues == 1:
+        outputstep = outputstep[0]
+        outputstep = [
+            outputstep.replace('*', f'{index}')
+            for index, _ in enumerate(result)
+        ]
+        return outputstep
+    multiple_start = []
+    for index in range(len(result)):
+        line = []
+        for item in outputstep:
+            if isinstance(item, str):
+                line.append(item.replace('*', f'{index}'))
+            else:
+                line.append(tuple(it.replace('*', f'{index}') for it in item))
+        multiple_start.append(tuple(line))
+    return multiple_start
 
 
 def select_executor():

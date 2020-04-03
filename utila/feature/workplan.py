@@ -241,7 +241,6 @@ def prepare_outputs(
                 ret += 1
         outitem = f'{process_}__{prefix}{stepname}_{item}.{datatype}'
         _outputs.append(outitem)
-
     if ret:
         exit(utila.FAILURE)
     outputs = [os.path.join(outspace, item) for item in _outputs]
@@ -256,7 +255,7 @@ def verify_resources(inputs):
             continue
         if path[0] == '_':
             # recursive input-definition start with _. We do not check
-            # recursive inputs, because there were generated later.
+            # recursive inputs, because there will be generated later.
             continue
         utila.error('File does not exists: %s' % path)
         ret += 1

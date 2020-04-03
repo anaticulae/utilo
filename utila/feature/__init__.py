@@ -233,9 +233,9 @@ def determine_instance(workplan, typ):
     return result
 
 
-def variable_parameter(items: list) -> bool:
-    """Check if some path contains *-pattern to replace."""
-    result = any(['*' in item for item in items])
+def variable_parameter(items: list) -> int:
+    """Count number of path contains *-pattern to replace."""
+    result = len([item for item in items if '*' in item])
     return result
 
 
