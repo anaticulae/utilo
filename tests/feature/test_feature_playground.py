@@ -33,7 +33,7 @@ def run_playground(
         main: dict,
         testdir,
         monkeypatch,
-        capsys,
+        capsys=None,
 ):
     """Setup working step with main(dict) which defines the passed
     parameter to featurepack(**main). `cmd` is passed as argv to run."""
@@ -52,9 +52,11 @@ def run_playground(
             exe.main(**main)
 
     assert utila.returncode(result) == utila.SUCCESS
-    stdout = capsys.readouterr().out
-    stderr = capsys.readouterr().err
-    return stdout, stderr
+    if capsys:
+        stdout = capsys.readouterr().out
+        stderr = capsys.readouterr().err
+        return stdout, stderr
+    return None
 
 
 @pytest.mark.parametrize('cmd', ['', '--profile'])
