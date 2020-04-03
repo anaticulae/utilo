@@ -9,6 +9,8 @@
 
 import os
 
+import utila
+
 
 def connector(
         path: str,
@@ -18,7 +20,7 @@ def connector(
         *,
         ftype: str = 'yaml',
 ) -> str:
-    """Create path to resource.
+    """Create path to resource. Replace backslash due forward slash.
 
     Hint: We do not check the existence of path before connecting them,
     because path can not exists.
@@ -31,4 +33,5 @@ def connector(
     prefix = f'{prefix}_' if prefix else ''
     filename = f'{runner}__{prefix}{filename}.{ftype}'
     result = os.path.join(path, filename)
+    result = utila.forward_slash(result, save_newline=False)
     return result
