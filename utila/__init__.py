@@ -7,9 +7,15 @@
 # be prosecuted under federal law. Its content is company confidential.
 #==============================================================================
 
+__version__ = '1.16.4'
+
 import os
 
 # Public API:
+# Todos
+from utila.__todo__ import docu
+from utila.__todo__ import refactor
+from utila.__todo__ import todo
 # Classificator
 from utila.classifier import common_items
 from utila.classifier import determine_cluster
@@ -169,8 +175,6 @@ from utila.utils import nothing
 from utila.utils import select_type
 from utila.utils import str2bool
 from utila.utils import str2int
-
-__version__ = '1.16.4'
 
 ROOT = os.path.abspath(os.path.join(os.path.dirname(__file__), '..'))
 PACKAGENAME = 'utila'
