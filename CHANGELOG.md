@@ -2,6 +2,16 @@
 
 Every noteable change is logged here.
 
+## v1.17.1
+
+### Feature
+
+* ensure to have forward slash only (5b8260861a7f)
+
+### Fix
+
+* enable checking zero files created (9fbfeb9ad13c)
+
 ## v1.17.0
 
 ### Feature
