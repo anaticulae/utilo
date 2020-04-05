@@ -1,0 +1,18 @@
+# =============================================================================
+# C O P Y R I G H T
+# -----------------------------------------------------------------------------
+# Copyright (c) 2020 by Helmut Konrad Fahrendholz. All rights reserved.
+# This file is property of Helmut Konrad Fahrendholz. Any unauthorized copy,
+# use or distribution is an offensive act against international law and may
+# be prosecuted under federal law. Its content is company confidential.
+# =============================================================================
+
+import utila
+
+
+def work() -> list:
+    result = []
+    result.append(utila.DataTypeResult('first', 'txt'))
+    result.append(utila.DataTypeResult('second', 'fdp'))
+    result.append(utila.DataTypeResult(b'\x00\x11\x22', 'png'))
+    return result

@@ -51,7 +51,7 @@ def run_playground(
         with pytest.raises(SystemExit) as result:
             exe.main(**main)
 
-    assert utila.returncode(result) == utila.SUCCESS
+    assert utila.returncode(result) == utila.SUCCESS, str(result)
     if capsys:
         stdout = capsys.readouterr().out
         stderr = capsys.readouterr().err
@@ -154,3 +154,29 @@ def test_write_list_of_tuple(testdir, monkeypatch):
     expected = [os.path.join(testdir.tmpdir, item) for item in expected]
     for item in expected:
         assert os.path.exists(item), str(item)
+
+
+def test_write_selective_datatype(testdir, monkeypatch):
+    with utila.increased_filecount(testdir.tmpdir, mindiff=2, maxdiff=2):
+        run_playground('--datatype', {}, testdir, monkeypatch)
+    path = os.path.join(testdir.tmpdir, 'testfield__datatype_selected.txt')
+    assert os.path.exists(path), path
+    written = utila.file_read(path)
+    assert written == 'CONTENT', written
+
+
+def test_write_selective_datatype_multi(testdir, monkeypatch):
+    expected = [
+        (b'first', 'testfield__datatype_multi_0.txt'),
+        (b'second', 'testfield__datatype_multi_1.fdp'),
+        (b'\x00\x11\x22', 'testfield__datatype_multi_2.png'),
+    ]
+
+    with utila.increased_filecount(testdir.tmpdir, mindiff=4, maxdiff=4):
+        run_playground('--datatype_multi', {}, testdir, monkeypatch)
+
+    for content, filename in expected:
+        path = os.path.join(testdir.tmpdir, filename)
+        assert os.path.exists(path), path
+        written = utila.file_read_binary(path)
+        assert written == content, written

@@ -35,7 +35,19 @@ WORKPLAN = [
         output=([
             ('*_info', 'yaml'),
             ('*_binary', 'hex'),
-        ]),
+        ],
+    ),
+    utila.create_step(
+        'datatype',
+        output=[
+            ('selected', '???'),
+        ],
+    ),
+    utila.create_step(
+        'datatype_multi',
+        output=[
+            ('*', '???'),
+        ],
     ),
 ]
 

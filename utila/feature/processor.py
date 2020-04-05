@@ -7,6 +7,7 @@
 # be prosecuted under federal law. Its content is company confidential.
 # =============================================================================
 
+import collections
 import concurrent.futures
 import functools
 import inspect
@@ -18,6 +19,8 @@ import utila.feature
 import utila.feature.workplan
 
 ErrorHook = typing.Tuple[Exception, str]
+
+DataTypeResult = collections.namedtuple('DataTypeResult', 'content, ext')
 
 
 def process(
@@ -163,7 +166,13 @@ def run_hook_safely(
         result = [result]
     # Verify result
     variable_returnvalues = utila.feature.variable_parameter(stepoutput)
-    if result and len(stepoutput) != len(result) and not variable_returnvalues:
+    variable_datatype = utila.feature.variable_datatype(stepoutput)
+    result_length = len(result) - variable_datatype
+    if all((
+            result,
+            len(stepoutput) != result_length,
+            not variable_returnvalues,
+    )):
         utila.error(f'wrong return value count in step: `{name}`')
         utila.error(f'interface count: {len(stepoutput)}')
         utila.error(f'return count from step: {len(result)}')
@@ -226,6 +235,7 @@ def write_result_safely(
     """
     utila.call('write results')
     try:
+        outputstep, result = replace_datatype_pattern(outputstep, result)
         outputstep = replace_star_pattern(outputstep, result)
         for path, content in zip(outputstep, result):
             write_resource(path, content)
@@ -254,6 +264,32 @@ def write_resource(path, content):
         utila.file_replace(path, content)
     if isinstance(content, bytes):
         utila.file_replace_binary(path, content)
+
+
+def replace_datatype_pattern(outputstep, result):
+    if isinstance(result, DataTypeResult):
+        result, ext = result
+        outputstep = [outputstep[0].replace('???', ext)]
+        result = [result]
+        # write_resource(outpath, content)
+    elif isinstance(result, list):
+        if len(outputstep) > 1:
+            outlist, reslist = [], []
+            for out, res in zip(outputstep, result):
+                item = replace_datatype_pattern(out, res)
+                outlist.append(item[0])
+                reslist.append(item[1])
+            outputstep, result = outlist, reslist
+        elif utila.feature.variable_datatype(outputstep):
+            outlist, reslist = [], []
+            for index, item in enumerate(result):
+                res, ext = item
+                path = outputstep[0].replace('???', ext)
+                path = path.replace('*', f'{index}')
+                outlist.append(path)
+                reslist.append(res)
+            outputstep, result = outlist, reslist
+    return outputstep, result
 
 
 def replace_star_pattern(outputstep, result):

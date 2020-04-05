@@ -239,6 +239,12 @@ def variable_parameter(items: list) -> int:
     return result
 
 
+def variable_datatype(items: list) -> int:
+    """Count number of path ends with ???-pattern to replace datatype."""
+    result = len([item for item in items if item.endswith('???')])
+    return result
+
+
 def determine_todo(args: dict, flags: list) -> typing.List[str]:
     """Remove flags from feature todo list
 
