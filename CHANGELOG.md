@@ -2,6 +2,14 @@
 
 Every noteable change is logged here.
 
+## v1.17.2
+
+### Feature
+
+* add default type to reduce required amount of code (c629c3c5015f)
+* introduce datatype pattern to describe variable file types (08288af8f3cf)
+* add type Strings to handle list of str (d264e421f7f1)
+
 ## v1.17.1
 
 ### Feature
