@@ -26,13 +26,11 @@ WORKPLAN = [
     ),
     utila.create_step(
         'binary',
-        inputs=[],
         output=(('binary', 'hex'),),
     ),
     utila.create_step(
         'multiple',
-        inputs=[],
-        output=([
+        output=[
             ('*_info', 'yaml'),
             ('*_binary', 'hex'),
         ],

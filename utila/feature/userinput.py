@@ -75,8 +75,8 @@ class ResultFile(File):
 
 def create_step(
         name: str,
-        inputs: typing.List['Input'],
-        output: typing.Tuple[str],
+        inputs: typing.List['Input'] = None,
+        output: typing.Tuple[str] = None,
 ) -> 'WorkStep':
     """Create a WorkStep from definition.
 
@@ -91,6 +91,10 @@ def create_step(
             OUTPUT: ('butter', 'tart', 'cream'),
         }
     """
+    if inputs is None:
+        inputs = []
+    if output is None:
+        output = []
     assert isinstance(inputs, list), '%s %s' % (type(inputs), str(inputs))
     for index, item in enumerate(inputs):
         assert isinstance(item, Input), f'{index} {item}'
