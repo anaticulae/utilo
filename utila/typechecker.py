@@ -9,6 +9,7 @@
 
 import functools
 import inspect
+import typing
 
 from utila.logger import error
 
@@ -45,3 +46,26 @@ def checkdatatype(func) -> callable:
         return func(*args, **kwargs)
 
     return wrapper
+
+
+Strings = typing.List[str]
+
+
+def isstrings(items) -> bool:
+    """Ensure to have list of str.
+
+    >>> isstrings(['hello', 'my', 'man'])
+    True
+    >>> isstrings('test')
+    False
+    >>> isstrings(10)
+    False
+    >>> isstrings({'hi': 'me'})
+    False
+    """
+    if not isinstance(items, list):
+        return False
+    try:
+        return all((isinstance(item, str) for item in items))
+    except TypeError:
+        return False

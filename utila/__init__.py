@@ -164,7 +164,9 @@ from utila.test import skip_nightly
 from utila.test import skip_nonvirtual
 from utila.test import skip_virtual
 # Typerchecker
+from utila.typechecker import Strings
 from utila.typechecker import checkdatatype
+from utila.typechecker import isstrings
 # Utils
 from utila.utils import FAILURE
 from utila.utils import INF
