@@ -135,7 +135,7 @@ def test_feature_playground_pass_flag(flag, testdir, monkeypatch, capsys):
 
 def test_write_binary_data(testdir, monkeypatch):
     # test writing hex file
-    run_playground('', {}, testdir, monkeypatch)
+    run_playground('--binary', {}, testdir, monkeypatch)
     expected_path = os.path.join(testdir.tmpdir, 'testfield__binary_binary.hex')
     binary = utila.file_read_binary(expected_path)
     assert binary == b'I Love Binaries.', binary
