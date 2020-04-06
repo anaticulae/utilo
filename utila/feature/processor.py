@@ -312,7 +312,9 @@ def replace_star_pattern(outputstep, result):
     # cli_example__multistep_pages/view_*.html
     # adding list of files in parent folder is possible.
     parent, _ = os.path.split(outputstep[0])
-    os.makedirs(parent, exist_ok=True)
+    if result:
+        # only create output folder if some content is to write
+        os.makedirs(parent, exist_ok=True)
     # replace star-pattern to archive indexed output paths
     if variable_returnvalues == 1:
         outputstep = outputstep[0]
