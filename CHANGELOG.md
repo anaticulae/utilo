@@ -2,6 +2,12 @@
 
 Every noteable change is logged here.
 
+## v1.17.3
+
+### Fix
+
+* fix support different datatypes (1fc11c95ef39)
+
 ## v1.17.2
 
 ### Feature
