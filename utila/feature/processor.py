@@ -7,7 +7,6 @@
 # be prosecuted under federal law. Its content is company confidential.
 # =============================================================================
 
-import collections
 import concurrent.futures
 import functools
 import inspect
@@ -19,8 +18,6 @@ import utila.feature
 import utila.feature.workplan
 
 ErrorHook = typing.Tuple[Exception, str]
-
-DataTypeResult = collections.namedtuple('DataTypeResult', 'content, ext')
 
 
 def process(
@@ -266,29 +263,44 @@ def write_resource(path, content):
         utila.file_replace_binary(path, content)
 
 
-def replace_datatype_pattern(outputstep, result):
-    if isinstance(result, DataTypeResult):
-        result, ext = result
-        outputstep = [outputstep[0].replace('???', ext)]
-        result = [result]
-        # write_resource(outpath, content)
-    elif isinstance(result, list):
-        if len(outputstep) > 1:
-            outlist, reslist = [], []
-            for out, res in zip(outputstep, result):
-                item = replace_datatype_pattern(out, res)
-                outlist.append(item[0])
-                reslist.append(item[1])
-            outputstep, result = outlist, reslist
-        elif utila.feature.variable_datatype(outputstep):
-            outlist, reslist = [], []
+def replace_datatype_pattern(outputstep, result):  # pylint:disable=R1260
+    # TODO: DIRTY
+    datatype = utila.feature.variable_datatype(outputstep)
+    parameter = utila.feature.variable_parameter(outputstep)
+    if datatype and not parameter:
+        if len(outputstep) == 1:
+            if isinstance(result, tuple):
+                result, ext = result
+                outputstep = [outputstep[0].replace('???', ext)]
+                result = (result,)
+        else:
+            assert 0, 'not handled'
+    elif datatype == 1 and parameter == 1:
+        out, res = [], []
+        if len(outputstep) == 1:
             for index, item in enumerate(result):
-                res, ext = item
-                path = outputstep[0].replace('???', ext)
-                path = path.replace('*', f'{index}')
-                outlist.append(path)
-                reslist.append(res)
-            outputstep, result = outlist, reslist
+                content, ext = item
+                path = outputstep[0].replace('*', f'{index}')
+                path = path.replace('???', ext)
+                out.append(path)
+                res.append(content)
+            outputstep, result = out, res
+        else:
+            assert 0, 'not handled'
+    elif datatype and parameter:
+        out, res = [], []
+        for index, item in enumerate(result):
+            path_line, res_line = [], []
+            for step, content in zip(outputstep, item):
+                path = step.replace('*', f'{index}')
+                if not isinstance(content, (str, bytes)):
+                    content, ext = content
+                    path = path.replace('???', ext)
+                path_line.append(path)
+                res_line.append(content)
+            out.append(path_line)
+            res.append(res_line)
+        outputstep, result = out, res
     return outputstep, result
 
 

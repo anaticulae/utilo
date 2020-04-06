@@ -7,9 +7,7 @@
 # be prosecuted under federal law. Its content is company confidential.
 # =============================================================================
 
-import utila
-
 
 def work() -> str:
     content = 'CONTENT'
-    return utila.DataTypeResult(content, 'txt')
+    return (content, 'txt')

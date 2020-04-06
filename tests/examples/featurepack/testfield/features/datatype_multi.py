@@ -7,12 +7,10 @@
 # be prosecuted under federal law. Its content is company confidential.
 # =============================================================================
 
-import utila
-
 
 def work() -> list:
     result = []
-    result.append(utila.DataTypeResult('first', 'txt'))
-    result.append(utila.DataTypeResult('second', 'fdp'))
-    result.append(utila.DataTypeResult(b'\x00\x11\x22', 'png'))
+    result.append(('first', 'txt'))
+    result.append(('second', 'fdp'))
+    result.append((b'\x00\x11\x22', 'png'))
     return result

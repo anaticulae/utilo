@@ -47,6 +47,15 @@ WORKPLAN = [
             ('*', '???'),
         ],
     ),
+    # utila.create_step(
+    #     'mixed',
+    #     output=[
+    #         ('single',),
+    #         ('*_info', 'yaml'),
+    #         ('binary', 'hex'),
+    #         ('*', '???'),
+    #     ],
+    # ),
 ]
 
 
