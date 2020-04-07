@@ -2,6 +2,12 @@
 
 Every noteable change is logged here.
 
+## v1.17.4
+
+### Feature
+
+* create subdirectory only if there are files to write (4e6f92eaef65)
+
 ## v1.17.3
 
 ### Fix
