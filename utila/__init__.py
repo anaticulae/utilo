@@ -140,6 +140,7 @@ from utila.regex import extract_match
 # string
 from utila.string import fix_encoding
 from utila.string import forward_slash
+from utila.string import normalize_whitespaces
 from utila.string import parse_tuple
 # Tests
 from utila.test import FASTRUN

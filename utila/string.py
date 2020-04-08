@@ -77,3 +77,12 @@ def parse_tuple(raw: str, length: int = 4, typ=float) -> tuple:
     items = tuple(items)
     assert len(items) == length, f'could not parse {raw}'
     return items
+
+
+def normalize_whitespaces(text: str) -> str:
+    """Remove unnecessary white spaces.
+
+    >>> normalize_whitespaces(' make    me happy' + utila.NEWLINE)
+    'make me happy'
+    """
+    return ' '.join(text.strip().split())
