@@ -99,11 +99,9 @@ def chdir(path: str) -> typing.NoReturn:
             pass
     """
     assert os.path.exists(path) and not os.path.isfile(path), str(path)
-
     before = os.getcwd()
-
-    os.chdir(path)
     try:
+        os.chdir(path)
         yield
     except Exception:
         os.chdir(before)
