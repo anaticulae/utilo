@@ -27,20 +27,20 @@ class todo(contextlib.ContextDecorator):  # pylint:disable=C0103
 
     def __init__(
             self,
+            version: str = None,
             major=1,
             minor=1,
             patch=None,
             description='todo',
     ):
+        if version is None:
+            import utila
+            version = utila.__version__
         self.major = major
         self.minor = minor
         self.patch = patch
         self.description = description
-        # TODO: SUPPORT DIFFERENT PACKAGES THAN UTILA
-        import utila
-        major, minor, patch = [
-            int(item) for item in utila.__version__.split('.')
-        ]
+        major, minor, patch = [int(item) for item in version.split('.')]
         msg = f'{self.description}: {self.major}.{self.minor}.{self.patch}'
         assert major <= self.major, msg
         if minor is not None and major == self.major:
@@ -59,12 +59,14 @@ class refactor(todo):  # pylint:disable=C0103
 
     def __init__(
             self,
+            version=None,
             major=1,
             minor=1,
             patch=None,
             description='time to refactor',
     ):
         super().__init__(
+            version=version,
             major=major,
             minor=minor,
             patch=patch,
@@ -76,12 +78,14 @@ class docu(todo):  # pylint:disable=C0103
 
     def __init__(
             self,
+            version=None,
             major=1,
             minor=1,
             patch=None,
             description='extend documentation',
     ):
         super().__init__(
+            version=version,
             major=major,
             minor=minor,
             patch=patch,
