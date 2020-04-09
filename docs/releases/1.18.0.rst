@@ -1,0 +1,35 @@
+.. _1_18_0:
+
+RP 1.18.0
+=========
+
+feature
+-------
+
+* [ ] add directory as input pattern
+
+* [ ] add output of more than one step to a single folder
+
+* [ ] add custom output folder/ ignore default file pattern
+
+file
+----
+
+* [ ] file_search(path, pattern='*.yaml')
+
+* [ ] file_list(path, include='*.yaml', exlude='*.png')
+
+todo
+----
+
+* [ ] support different packages
+
+
+quality
+-------
+
+before
+~~~~~~
+
+* Total coverage: 93.70%
+* Your code has been rated at 10.0/10
