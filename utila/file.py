@@ -266,6 +266,41 @@ def file_count(path: str, ext: str = None, recursive: bool = True) -> int:
     return len(collected)
 
 
+def file_list(
+        path: str,
+        include: list = None,
+        exclude: list = None,
+        recursive: bool = True,
+):
+    """Scans `path` recursively and returns list of relative file path
+    which matches `include` or `exclude` pattern."""
+    assert os.path.exists(path), path
+    msg = f'only one pattern is allowed {include} ! {exclude}'
+    assert not (include and exclude), msg
+
+    include = include if include else []
+    exclude = exclude if exclude else []
+    include = [include] if isinstance(include, str) else include
+    exclude = [exclude] if isinstance(exclude, str) else exclude
+    # make unique and ?fast?
+    include = set(include)
+    exclude = set(exclude)
+
+    result = []
+    with utila.chdir(path):
+        for item in glob.glob('**/*.*', recursive=recursive):
+            filepath = utila.forward_slash(item, save_newline=False)
+            ext = filepath.rsplit('.', maxsplit=1)[1]
+            if include:
+                if ext not in include:
+                    continue
+            if exclude:
+                if ext in exclude:
+                    continue
+            result.append(filepath)
+    return result
+
+
 def isfilepath(path: str) -> bool:
     """Check that given `path` is a file path.
 

@@ -15,9 +15,7 @@ feature
 file
 ----
 
-* [ ] file_search(path, pattern='*.yaml')
-
-* [ ] file_list(path, include='*.yaml', exlude='*.png')
+* [x] file_list(path, include='*.yaml' OR exlude='*.png')
 
 todo
 ----

@@ -510,3 +510,20 @@ def test_file_replace_binary(tmpdir):
     utila.file_replace_binary(path, b'Helm2')
     # do nothing
     utila.file_replace_binary(path, b'Helm2')
+
+
+def test_file_list():
+    files = utila.file_list(utila.ROOT)
+    assert files
+
+    txt = utila.file_list(utila.ROOT, include='txt')
+    assert len(txt) <= len(files)
+
+    py = utila.file_list(utila.ROOT, include='py')  # pylint:disable=C0103
+    assert len(py) > len(txt)
+
+    py_txt = utila.file_list(utila.ROOT, include=['py', 'txt'])
+    assert len(py_txt) == (len(txt) + len(py))
+
+    exclude_txt = utila.file_list(utila.ROOT, exclude='txt')
+    assert len(exclude_txt) == (len(files) - len(txt))

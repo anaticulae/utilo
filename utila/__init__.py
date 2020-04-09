@@ -72,6 +72,7 @@ from utila.file import file_count
 from utila.file import file_create
 from utila.file import file_create_binary
 from utila.file import file_islocked
+from utila.file import file_list
 from utila.file import file_lock
 from utila.file import file_read
 from utila.file import file_read_binary
