@@ -2,6 +2,21 @@
 
 Every noteable change is logged here.
 
+## v1.18.0
+
+### Feature
+
+* add `File` write output to defined file (becdcae827ab)
+* add method to scan directory recursively (42b0a66d5771)
+* add `Directory` pattern to support directories as input (e572485fa976)
+* support different package version to check for (063220811dfe)
+* add method to normalize white spaces (138956af8ce5)
+
+### Fix
+
+* do not check existence of folder input (5d094e657238)
+* ensure to restore old working directory (0588e4affaf5)
+
 ## v1.17.4
 
 ### Feature
