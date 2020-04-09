@@ -2,6 +2,12 @@
 
 Every noteable change is logged here.
 
+## v1.18.1
+
+### Fix
+
+* group multiple input directories to a single one (942490148fc2)
+
 ## v1.18.0
 
 ### Feature
