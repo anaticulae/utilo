@@ -185,12 +185,9 @@ def prepare_inputs(  # pylint:disable=too-many-locals,too-complex,too-many-branc
                     utila.error('search location: %s' % search_location)
                     utila.error('missing input: %s' % filepath)
             elif isinstance(item, utila.feature.userinput.Directory):
-                # TODO: support directories which are created on runtime
                 directory_path = os.path.join(inspace, name)
-                if not os.path.exists(directory_path):
-                    utila.error(f'missing directory: {directory_path}')
-                    exit(utila.cli.INVALID_COMMAND)
-                result.append(directory_path)
+                # mark `_` to not check existence of folder
+                result.append(f'_{directory_path}')
             else:
                 _, filename = os.path.split(inspace)
                 if '.' in filename and filename[0] != '.':  # .tmp

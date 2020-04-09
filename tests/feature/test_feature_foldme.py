@@ -61,7 +61,7 @@ def test_directory_asinput_missing_input(testdir, monkeypatch):
         testdir,
         monkeypatch,
         create=False,
-        success=False,
+        success=True,
     )
 
 
