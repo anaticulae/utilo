@@ -18,12 +18,11 @@ currently tested:
 * --quite: suppress logging
 """
 
-import contextlib
 import os
-import sys
 
 import pytest
 
+import tests.feature.runner
 import utila
 import utila.logger
 
@@ -35,28 +34,17 @@ def run_playground(
         monkeypatch,
         capsys=None,
 ):
-    """Setup working step with main(dict) which defines the passed
-    parameter to featurepack(**main). `cmd` is passed as argv to run."""
     import tests.examples.featurepack.testfield.playground as exe
-    root = exe.ROOT
     utila.file_create(os.path.join(str(testdir), 'infile.yaml'))
-
-    with contextlib.suppress(AttributeError):
-        cmd = cmd.split()
-    cmd = [exe.PROCESS] + cmd
-    with monkeypatch.context() as context:
-        context.syspath_prepend(root)
-        context.setattr(sys, 'argv', cmd)
-
-        with pytest.raises(SystemExit) as result:
-            exe.main(**main)
-
-    assert utila.returncode(result) == utila.SUCCESS, str(result)
-    if capsys:
-        stdout = capsys.readouterr().out
-        stderr = capsys.readouterr().err
-        return stdout, stderr
-    return None
+    result = tests.feature.runner.run_featurepack(
+        cmd=cmd,
+        main=main,
+        testdir=testdir,
+        monkeypatch=monkeypatch,
+        exe=exe,
+        capsys=capsys,
+    )
+    return result
 
 
 @pytest.mark.parametrize('cmd', ['', '--profile'])
