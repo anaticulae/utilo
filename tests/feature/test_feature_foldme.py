@@ -75,3 +75,16 @@ def test_custom_output_folder_file(testdir, monkeypatch):
     )
     expected = os.path.join(testdir.tmpdir, 'helm/iamsounique.txt')
     assert os.path.exists(expected), str(expected)
+
+
+def test_custom_output_folder_different_datatype(testdir, monkeypatch):
+    # input directory does not exists
+    run_foldme(
+        '--different_datatype',
+        {},
+        testdir,
+        monkeypatch,
+    )
+    for item in ['0.txt', '1.fdp', '2.png']:
+        expected = os.path.join(testdir.tmpdir, f'schelm/{item}')
+        assert os.path.exists(expected), str(expected)

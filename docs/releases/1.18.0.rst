@@ -8,7 +8,7 @@ feature
 
 * [x] add directory as input pattern
 
-* [ ] add output of more than one step to a single folder
+* [x] add output of more than one step to a single folder
 
 * [x] add custom output folder/ ignore default file pattern
 

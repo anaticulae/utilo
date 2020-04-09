@@ -29,6 +29,15 @@ WORKPLAN = [
         ],
         output=(utila.File('helm/iamsounique', ext='txt'),),
     ),
+    utila.create_step(
+        'different_datatype',
+        inputs=[
+            utila.Directory('iamadirectory'),
+        ],
+        output=[
+            utila.File('schelm/*', ext='???'),
+        ],
+    ),
 ]
 
 
