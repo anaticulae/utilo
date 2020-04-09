@@ -237,17 +237,21 @@ def prepare_outputs(
     ret = 0
     _outputs = []
     for index, item in enumerate(outputs):
+        filename = item
         datatype = 'yaml'
         if not isinstance(item, str):
             try:
-                item, datatype = item
+                filename, datatype = item
             except TypeError:
-                utila.error(f'checking output number {index}')
+                utila.error(f'check output number {index}!')
                 msg = ('require tuple with (item, datatype).'
                        f' got: {item!r} {type(item)}')
                 utila.error(msg)
                 ret += 1
-        outitem = f'{process_}__{prefix}{stepname}_{item}.{datatype}'
+        if isinstance(item, utila.File):
+            outitem = f'{filename}.{datatype}'
+        else:
+            outitem = f'{process_}__{prefix}{stepname}_{filename}.{datatype}'
         _outputs.append(outitem)
     if ret:
         exit(utila.FAILURE)

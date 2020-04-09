@@ -63,3 +63,15 @@ def test_directory_asinput_missing_input(testdir, monkeypatch):
         create=False,
         success=False,
     )
+
+
+def test_custom_output_folder_file(testdir, monkeypatch):
+    # input directory does not exists
+    run_foldme(
+        '--custom_output',
+        {},
+        testdir,
+        monkeypatch,
+    )
+    expected = os.path.join(testdir.tmpdir, 'helm/iamsounique.txt')
+    assert os.path.exists(expected), str(expected)

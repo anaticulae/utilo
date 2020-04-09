@@ -22,6 +22,13 @@ WORKPLAN = [
         ],
         output=('message',),
     ),
+    utila.create_step(
+        'custom_output',
+        inputs=[
+            utila.Directory('iamadirectory'),
+        ],
+        output=(utila.File('helm/iamsounique', ext='txt'),),
+    ),
 ]
 
 
