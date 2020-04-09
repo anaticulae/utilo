@@ -23,6 +23,7 @@ def run_featurepack(
         monkeypatch,
         exe=None,
         capsys=None,
+        success: bool = True,
 ):
     """Setup working step with main(dict) which defines the passed
     parameter to featurepack(**main). `cmd` is passed as argv to run."""
@@ -37,8 +38,8 @@ def run_featurepack(
 
         with pytest.raises(SystemExit) as result:
             exe.main(**main)
-
-    assert utila.returncode(result) == utila.SUCCESS, str(result)
+    verified = (utila.returncode(result) == utila.SUCCESS)
+    assert verified == success, str(result)
     if capsys:
         stdout = capsys.readouterr().out
         stderr = capsys.readouterr().err
