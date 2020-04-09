@@ -62,6 +62,11 @@ class File(Pattern):
 
 
 @dataclasses.dataclass  # pylint:disable=R0903
+class Directory(Pattern):
+    ext: str = ''
+
+
+@dataclasses.dataclass  # pylint:disable=R0903
 class ResultFile(File):
     producer: str = 'default'
 

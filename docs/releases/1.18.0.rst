@@ -6,7 +6,7 @@ RP 1.18.0
 feature
 -------
 
-* [ ] add directory as input pattern
+* [x] add directory as input pattern
 
 * [ ] add output of more than one step to a single folder
 

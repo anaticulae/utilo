@@ -14,7 +14,15 @@ import utila
 ROOT = os.path.abspath(os.path.join(os.path.dirname(__file__), '..'))
 VERSION = '2.33.7'
 PROCESS = 'foldme'
-WORKPLAN = []
+WORKPLAN = [
+    utila.create_step(
+        'directory_input',
+        inputs=[
+            utila.Directory('iamadirectory'),
+        ],
+        output=('message',),
+    ),
+]
 
 
 def main(**kwargs):

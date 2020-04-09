@@ -7,7 +7,10 @@
 # be prosecuted under federal law. Its content is company confidential.
 # =============================================================================
 
+import os
+
 import tests.feature.runner
+import utila
 
 
 def run_foldme(
@@ -18,6 +21,10 @@ def run_foldme(
         capsys=None,
 ):
     import tests.examples.featurepack.foldme.morefeatures as exe
+
+    # directory_input step resource
+    testdir.mkdir('iamadirectory')
+
     result = tests.feature.runner.run_featurepack(
         cmd=cmd,
         main=main,
@@ -27,3 +34,12 @@ def run_foldme(
         capsys=capsys,
     )
     return result
+
+
+def test_directory_asinput(testdir, monkeypatch):
+    root = testdir.tmpdir
+    run_foldme('--directory_input', {}, testdir, monkeypatch)
+
+    written = os.path.join(root, 'foldme__directory_input_message.yaml')
+    loaded = utila.file_read(written)
+    assert loaded.endswith('iamadirectory'), loaded

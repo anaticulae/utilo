@@ -15,6 +15,7 @@ import os
 import typing
 
 import utila
+import utila.cli
 import utila.feature
 import utila.feature.userinput
 
@@ -126,7 +127,7 @@ def prepare_variables(variables, args):
     return result
 
 
-def prepare_inputs(  # pylint:disable=too-many-locals,too-complex,too-many-branches
+def prepare_inputs(  # pylint:disable=too-many-locals,too-complex,too-many-branches,too-many-statements
         inputs: list,
         inspaces: list,
         outspace: str,
@@ -183,6 +184,13 @@ def prepare_inputs(  # pylint:disable=too-many-locals,too-complex,too-many-branc
                         continue
                     utila.error('search location: %s' % search_location)
                     utila.error('missing input: %s' % filepath)
+            elif isinstance(item, utila.feature.userinput.Directory):
+                # TODO: support directories which are created on runtime
+                directory_path = os.path.join(inspace, name)
+                if not os.path.exists(directory_path):
+                    utila.error(f'missing directory: {directory_path}')
+                    exit(utila.cli.INVALID_COMMAND)
+                result.append(directory_path)
             else:
                 _, filename = os.path.split(inspace)
                 if '.' in filename and filename[0] != '.':  # .tmp
