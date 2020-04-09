@@ -83,6 +83,7 @@ def read_workplan(  # pylint:disable=too-many-locals
         ret += verify_resources(inputs)
         # filter rewrite recursive inputs
         inputs = [item[1:] if item[0] == '_' else item for item in inputs]
+        inputs = group_multiple_directories(inputs)
         if variables:
             inputs.extend(variables)
         if verify_interface(inputs, outputs, caller, name) == utila.FAILURE:
@@ -94,6 +95,24 @@ def read_workplan(  # pylint:disable=too-many-locals
 
     if ret and verify:
         exit(utila.FAILURE)
+    return result
+
+
+def group_multiple_directories(inputs: list) -> list:
+    """Merge morge than one directory into the first directory bucket."""
+    result = []
+    first_directory = None
+    for index, item in enumerate(inputs):
+        if item[0] == '?':
+            # remove question mark to convert to useable path.
+            item = item[1:]
+            if first_directory is None:
+                first_directory = index
+                result.append([item])
+            else:
+                result[first_directory].append(item)
+            continue
+        result.append(item)
     return result
 
 
@@ -186,8 +205,10 @@ def prepare_inputs(  # pylint:disable=too-many-locals,too-complex,too-many-branc
                     utila.error('missing input: %s' % filepath)
             elif isinstance(item, utila.feature.userinput.Directory):
                 directory_path = os.path.join(inspace, name)
-                # mark `_` to not check existence of folder
-                result.append(f'_{directory_path}')
+                # Mark `?` to not check existence of folder and group
+                # multiple directories which are produced by -i flags to a
+                # single entry.
+                result.append(f'?{directory_path}')
             else:
                 _, filename = os.path.split(inspace)
                 if '.' in filename and filename[0] != '.':  # .tmp
@@ -262,7 +283,7 @@ def verify_resources(inputs):
     for path in inputs:
         if os.path.exists(path):
             continue
-        if path[0] == '_':
+        if path[0] in ('_', '?'):
             # recursive input-definition start with _. We do not check
             # recursive inputs, because there will be generated later.
             continue
