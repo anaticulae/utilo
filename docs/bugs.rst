@@ -4,6 +4,11 @@ bugs
 open
 ----
 
+featurepack output description
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+fix output file names for directories, see feedback --help on images step
+
 conflicting parameter names
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
