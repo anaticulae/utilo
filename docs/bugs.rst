@@ -38,19 +38,5 @@ featurepack
 
 * handle --bool flags correctly, move fix from rawmaker.
 
-verbose
-~~~~~~~
-
-* fix verbose mode: sections --title --verbose
-
-.. code-block:: none
-
-  prepare inputs
-  result: {result}
-  prepare inputs
-  result: {result}
-  prepare inputs
-  result: {result}
-
 closed
 ------
