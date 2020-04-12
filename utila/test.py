@@ -246,3 +246,21 @@ def open_webbrowser(path: str):
     assert os.path.exists(path), str(str)
     if single_execution():
         webbrowser.open(path)
+
+
+def simplify_testfile_names(files, ext='pdf') -> tuple:
+    """Make path relative, remove folder structure due replacing `/`
+    with `_` and remove selected file extention `ext`.
+
+    >>> simplify_testfile_names(('/c/abc/www/second.pdf', '/c/abc/def/first.pdf'))
+    ('def_first', 'www_second')
+    """
+    files = [utila.forward_slash(item) for item in files]
+    prefix = utila.forward_slash(os.path.commonpath(files))
+
+    # remove first slash
+    files = [item.replace(prefix, '')[1:] for item in files]
+    files = [item.replace(f'.{ext}', '') for item in files]
+    files = [item.replace('/', '_') for item in files]
+    files = sorted(files, key=lambda x: x.lower())
+    return tuple(files)
