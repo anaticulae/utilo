@@ -86,3 +86,18 @@ def normalize_whitespaces(text: str) -> str:
     'make me happy'
     """
     return ' '.join(text.strip().split())
+
+
+def istemplate_replaced(text: str):
+    """Check if some pattern `{% %}` is not replaced.
+
+    >>> istemplate_replaced('hello')
+    True
+    >>> istemplate_replaced('%}')
+    False
+    """
+    if '{%' in text:
+        return False
+    if '%}' in text:
+        return False
+    return True
