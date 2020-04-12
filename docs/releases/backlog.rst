@@ -23,3 +23,5 @@ backlog
         pass
 
   fail when code was not replaced.
+
+* add file_ext to determine file extention
