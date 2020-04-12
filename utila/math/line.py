@@ -32,7 +32,11 @@ def round_line(x0, y0, x1, y1, max_noise=4.0) -> tuple:
     return (x0, y0, x1, y1)
 
 
-def unique_lines(lines: list, max_diff: float = 3.0) -> list:
+def unique_lines(lines: list, *, max_diff: float = 3.0) -> list:
+    """\
+    >>> unique_lines(((50, 50, 100, 100), (50, 50, 100, 100), (0, 0, 5, 5)))
+    [(50, 50, 100, 100), (0, 0, 5, 5)]
+    """
     result = []
     for item in lines:
         if any((equal_lines(item, it, max_diff=max_diff) for it in result)):
