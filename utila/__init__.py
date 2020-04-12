@@ -116,8 +116,6 @@ from utila.logger import profile
 # math
 from utila.math import Number
 from utila.math import Numbers
-from utila.math import Rectangle
-from utila.math import Rectangles
 from utila.math import Strategy
 from utila.math import diff_mode
 from utila.math import diffs
@@ -126,9 +124,6 @@ from utila.math import lookup
 from utila.math import modes
 from utila.math import near
 from utila.math import numbers
-from utila.math import rectangle_inside
-from utila.math import rectangle_merge
-from utila.math import rectangle_size
 from utila.math import roundme
 from utila.math.distance import manhatten
 from utila.math.distance import norm
@@ -137,6 +132,11 @@ from utila.math.line import isdot
 from utila.math.line import length
 from utila.math.line import round_line
 from utila.math.line import unique_lines
+from utila.math.rectangle import Rectangle
+from utila.math.rectangle import Rectangles
+from utila.math.rectangle import rectangle_inside
+from utila.math.rectangle import rectangle_merge
+from utila.math.rectangle import rectangle_size
 # pages
 from utila.pages import parse_pages
 from utila.pages import select_page
