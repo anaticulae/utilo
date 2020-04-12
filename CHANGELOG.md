@@ -2,6 +2,20 @@
 
 Every noteable change is logged here.
 
+## v1.19.0
+
+### Feature
+
+* add method to check if two lines intersects with each other (2735e240412b)
+* add const package to determine if a value is near inf or zero (ef4590fb73e9)
+* move config dumper and loader (7f0793e088c4)
+* add method to check if string contains any template pattern (9070b70d0c5f)
+* add package to handle lines and distances (b9b3bda0cea4)
+
+### Fix
+
+* enable single execution pattern in deeper methods (2fc3ab9aa1de)
+
 ## v1.18.1
 
 ### Fix
