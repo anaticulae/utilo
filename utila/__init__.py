@@ -182,6 +182,7 @@ from utila.test import skip_nonvirtual
 from utila.test import skip_virtual
 # Typerchecker
 from utila.typechecker import Strings
+from utila.typechecker import assert_type_list
 from utila.typechecker import checkdatatype
 from utila.typechecker import isstrings
 # Utils

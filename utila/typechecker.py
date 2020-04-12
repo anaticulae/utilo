@@ -69,3 +69,17 @@ def isstrings(items) -> bool:
         return all((isinstance(item, str) for item in items))
     except TypeError:
         return False
+
+
+def assert_type_list(items, types):
+    """\
+    >>> assert_type_list([1, 3, 5, 10], int)
+    >>> assert_type_list([1, 'hello', 10], str)
+    Traceback (most recent call last):
+        ...
+    AssertionError: [False, True, False]
+    """
+
+    assert isinstance(items, list), type(items)
+    verified = [isinstance(item, types) for item in items]
+    assert all(verified), str(verified)
