@@ -130,6 +130,13 @@ from utila.math import rectangle_inside
 from utila.math import rectangle_merge
 from utila.math import rectangle_size
 from utila.math import roundme
+from utila.math.distance import manhatten
+from utila.math.distance import norm
+from utila.math.line import equal_lines
+from utila.math.line import isdot
+from utila.math.line import length
+from utila.math.line import round_line
+from utila.math.line import unique_lines
 # pages
 from utila.pages import parse_pages
 from utila.pages import select_page
