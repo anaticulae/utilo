@@ -443,7 +443,7 @@ def evaluate_flags(args, multiprocessed: bool):
     return processes, failfast, pages, profiling
 
 
-def is_userflag(flag: str) -> bool:
+def isuserflag(flag: str) -> bool:
     """Check if `flag` is passed as user argument
 
     Args:
