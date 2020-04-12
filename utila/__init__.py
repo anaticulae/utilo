@@ -37,6 +37,9 @@ from utila.cli import sources
 from utila.cli import userflag_to_arg
 # collection
 from utila.collection import make_unique
+# config
+from utila.config import dump_config
+from utila.config import load_config
 # Time
 from utila.datetime import current
 from utila.datetime import timedate
