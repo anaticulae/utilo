@@ -128,6 +128,8 @@ from utila.math import modes
 from utila.math import near
 from utila.math import numbers
 from utila.math import roundme
+from utila.math.const import isinf
+from utila.math.const import iszero
 from utila.math.distance import manhatten
 from utila.math.distance import norm
 from utila.math.line import equal_lines
