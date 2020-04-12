@@ -137,6 +137,8 @@ from utila.math.line import isdot
 from utila.math.line import length
 from utila.math.line import round_line
 from utila.math.line import unique_lines
+from utila.math.numbers import Floats
+from utila.math.numbers import Ints
 from utila.math.rectangle import Rectangle
 from utila.math.rectangle import Rectangles
 from utila.math.rectangle import rectangle_inside
