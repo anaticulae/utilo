@@ -117,8 +117,6 @@ from utila.logger import print_env
 from utila.logger import print_runtime
 from utila.logger import profile
 # math
-from utila.math import Number
-from utila.math import Numbers
 from utila.math import Strategy
 from utila.math import diff_mode
 from utila.math import diffs
@@ -126,7 +124,6 @@ from utila.math import isascending
 from utila.math import lookup
 from utila.math import modes
 from utila.math import near
-from utila.math import numbers
 from utila.math import roundme
 from utila.math.const import isinf
 from utila.math.const import iszero
@@ -139,8 +136,11 @@ from utila.math.line import isdot
 from utila.math.line import length
 from utila.math.line import round_line
 from utila.math.line import unique_lines
-from utila.math.numbers import Floats
-from utila.math.numbers import Ints
+from utila.math.number import Floats
+from utila.math.number import Ints
+from utila.math.number import Number
+from utila.math.number import Numbers
+from utila.math.number import numbers
 from utila.math.rectangle import Rectangle
 from utila.math.rectangle import Rectangles
 from utila.math.rectangle import rectangle_inside

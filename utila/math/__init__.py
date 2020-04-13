@@ -12,11 +12,10 @@ import operator
 import statistics
 import typing
 
+import utila.math.number
+
 # default number of digits to round
 NDIGITS = 2
-
-Number = typing.TypeVar('Number', int, float)  # pylint:disable=C0103
-Numbers = typing.List[Number]  # pylint:disable=C0103
 
 
 def roundme(*items: float, digits: int = NDIGITS) -> float:
@@ -58,28 +57,7 @@ def roundme(*items: float, digits: int = NDIGITS) -> float:
     return result
 
 
-def numbers(items: typing.List) -> Numbers:
-    """Convert iterable `items` to list of int's. Replace none
-    convertable items to `None`.
-
-    Args:
-        items: iterable with items to convert
-    Returns:
-        List of int's or None's.
-
-    >>> numbers(['1', '3', '5', 'wasd'])
-    [1, 3, 5, None]
-    """
-    result = []
-    for item in items:
-        try:
-            result.append(int(item))
-        except ValueError:
-            result.append(None)
-    return result
-
-
-def isascending(items: Numbers) -> bool:
+def isascending(items: 'utila.math.number.Numbers') -> bool:
     """Check that `items` are ascending numbers.
 
     >>> isascending([1, 2, 3, 4])
@@ -94,7 +72,10 @@ def isascending(items: Numbers) -> bool:
     return all([item >= 0 for item in diff])
 
 
-def modes(data: Numbers, minimize: bool = True) -> Number:
+def modes(
+        data: 'utila.math.number.Numbers',
+        minimize: bool = True,
+) -> 'utila.math.number.Number':
     """Return the most common data point from discrete or nominal data.
 
     It is possible to have multiple common data points. To extract a
@@ -133,7 +114,10 @@ def near(first, second, diff: float = 2.0) -> bool:
     return math.fabs(first - second) <= diff
 
 
-def diff_mode(items: Numbers, max_diff: float = 2.0) -> Numbers:
+def diff_mode(
+        items: 'utila.math.number.Numbers',
+        max_diff: float = 2.0,
+) -> 'utila.math.number.Numbers':
     """Compute mode of `item` and determine matched `items` which does
     not more differ than `max_diff` from mode.
 
@@ -158,10 +142,10 @@ class Strategy(enum.Enum):
 
 
 def lookup(
-        value: Number,
+        value: 'utila.math.number.Number',
         table: typing.List,
         strategy: Strategy = None,
-) -> Number:
+) -> 'utila.math.number.Number':
     """Use table lookup to determine holy value.
 
     Out of Bounds:
@@ -205,7 +189,7 @@ def lookup(
     return None
 
 
-def diffs(items: Numbers) -> Numbers:
+def diffs(items: 'utila.math.number.Numbers') -> 'utila.math.number.Numbers':
     """Difference between current and successor.
 
     >>> diffs([1, 5, 10, 5.5])
