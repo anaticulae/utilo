@@ -2,6 +2,19 @@
 
 Every noteable change is logged here.
 
+## v1.20.0
+
+### Feature
+
+* add methods to determine file name and ext and sort files (50339a237800)
+* add option to disable file sorting (9d841919ae45)
+* add further data types to store ints and floats (c7d37b08b9df)
+* add assert method to ensure types in list (9a409d9507cf)
+
+### Fix
+
+* add missing imports (d35750aafd9c)
+
 ## v1.19.0
 
 ### Feature
