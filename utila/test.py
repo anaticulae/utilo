@@ -18,6 +18,7 @@ import webbrowser
 import pytest
 
 import utila
+import utila.file
 import utila.logger
 from utila.string import fix_encoding
 from utila.utils import SUCCESS
@@ -262,5 +263,5 @@ def simplify_testfile_names(files, ext='pdf', sort: bool = True) -> tuple:
     files = [item.replace(f'.{ext}', '') for item in files]
     files = [item.replace('/', '_') for item in files]
     if sort:
-        files = sorted(files, key=lambda x: x.lower())
+        files = utila.files_sort(files)
     return tuple(files)
