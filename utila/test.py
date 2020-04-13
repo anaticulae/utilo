@@ -247,7 +247,7 @@ def open_webbrowser(path: str):
         webbrowser.open(path)
 
 
-def simplify_testfile_names(files, ext='pdf') -> tuple:
+def simplify_testfile_names(files, ext='pdf', sort: bool = True) -> tuple:
     """Make path relative, remove folder structure due replacing `/`
     with `_` and remove selected file extention `ext`.
 
@@ -261,5 +261,6 @@ def simplify_testfile_names(files, ext='pdf') -> tuple:
     files = [item.replace(prefix, '')[1:] for item in files]
     files = [item.replace(f'.{ext}', '') for item in files]
     files = [item.replace('/', '_') for item in files]
-    files = sorted(files, key=lambda x: x.lower())
+    if sort:
+        files = sorted(files, key=lambda x: x.lower())
     return tuple(files)
