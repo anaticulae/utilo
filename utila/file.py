@@ -7,6 +7,7 @@
 # be prosecuted under federal law. Its content is company confidential.
 #==============================================================================
 
+import contextlib
 import glob
 import os
 import random
@@ -299,6 +300,84 @@ def file_list(
                     continue
             result.append(filepath)
     return result
+
+
+def file_name(path: str) -> str:
+    """Determine file name without file extension out of file path.
+
+    >>> file_name('/etc/profile.d/helm.sh')
+    'helm'
+    >>> file_name('info.txt')
+    'info'
+    >>> file_name('/etc/.tmp')
+    '.tmp'
+    >>> file_name('.etc')
+    '.etc'
+    >>> file_name('/no/file/ext')
+    'ext'
+    """
+    assert path
+    path = forward_slash(path, save_newline=False)
+    try:
+        _, name = path.rsplit('/', 1)
+    except ValueError:
+        name = path
+    if name[0] == '.':
+        return name
+    return name.split('.')[0]
+
+
+def file_ext(path: str) -> str:
+    """Determine file extension out of `path`. If path does not contain
+    any file extension, None is returned.
+
+    >>> file_ext('/c/images/test.bmp')
+    'bmp'
+    >>> file_ext('test.yaml')
+    'yaml'
+    >>> file_ext('.tmp') is None
+    True
+    >>> file_ext('/c/hekn/.tmp') is None
+    True
+    >>> file_ext('/no/ext/here') is None
+    True
+    """
+    assert path
+    path = forward_slash(path, save_newline=False)
+    try:
+        _, name = path.rsplit('/', 1)
+    except ValueError:
+        name = path
+    if name[0] == '.':
+        # .tmp
+        return None
+    try:
+        return name.split('.')[1]
+    except IndexError:
+        return None
+
+
+def files_sort(files: list) -> list:
+    """Sort `files` path alphabetically. Sort file names by number if given.
+
+    >>> files_sort(('/c/a', '/c/200.txt', '/c/2.txt', '/c/3', '/c/0.bmp'))
+    ('/c/0.bmp', '/c/2.txt', '/c/3', '/c/200.txt', '/c/a')
+    """
+    files = [forward_slash(item, save_newline=False) for item in files]
+
+    def number_filename(item):
+        # sort file names if they are numbers: 0,1,2,3,4,5,6,7,8,9,10
+        item = item.lower()
+        item = file_name(item)
+        with contextlib.suppress(ValueError):
+            # sort items by number
+            item = int(item)
+            # ensure to compare str and str and not str and int
+            item = str(item).zfill(20)
+        return item
+
+    files = sorted(files, key=number_filename)
+    return tuple(files)
 
 
 def isfilepath(path: str) -> bool:
