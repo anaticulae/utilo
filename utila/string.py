@@ -24,9 +24,9 @@ def forward_slash(content: str, newline: bool = True) -> str:
         content without backslashs
 
     Examples:
-    >>> forward_slash('\\helm\nelm')
+    >>> forward_slash('\\helm\nelm', newline=True)
     '/helm\nelm'
-    >>> forward_slash('\\helm\\telm')
+    >>> forward_slash('\\helm\\telm', newline=True)
     '/helm/telm'
     >>> forward_slash('\\helm\\nelm', newline=False)
     '/helm/nelm'

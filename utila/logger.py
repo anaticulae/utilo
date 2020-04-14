@@ -72,7 +72,7 @@ def log(msg: str = '', level: Level = Level.LOGGING, end: str = NEWLINE):
     # avoid problems when using with windows console(cp1252)
     msg = fix_encoding(msg)
     # TODO: msg = NEWLINE.join(wrap(msg, 120))
-    msg = forward_slash(msg)
+    msg = forward_slash(msg, newline=True)
     print(msg, end=end, file=sys.stdout, flush=True)
 
 
@@ -93,13 +93,13 @@ def error(msg: str, end: str = NEWLINE):
     # avoid problems when using with windows console(cp1252)
     msg = fix_encoding(msg)
     # use forward slash's
-    msg = forward_slash(msg)
+    msg = forward_slash(msg, newline=True)
     print('[ERROR] %s' % msg, file=sys.stderr, flush=True, end=end)
 
 
 def log_stacktrace():
     stack_trace = traceback.format_exc()
-    error(forward_slash(stack_trace))
+    error(forward_slash(stack_trace, newline=True))
 
 
 def log_args(func) -> callable:
