@@ -14,7 +14,7 @@ import utila.math
 import utila.utils
 
 
-def forward_slash(content: str, newline: bool = True) -> str:
+def forward_slash(content: str, newline: bool = False) -> str:
     r"""Replace every backward slash \\ with an forward slash /.
 
     Args:
