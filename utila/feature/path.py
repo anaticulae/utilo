@@ -33,5 +33,5 @@ def connector(
     prefix = f'{prefix}_' if prefix else ''
     filename = f'{runner}__{prefix}{filename}.{ftype}'
     result = os.path.join(path, filename)
-    result = utila.forward_slash(result, save_newline=False)
+    result = utila.forward_slash(result, newline=False)
     return result

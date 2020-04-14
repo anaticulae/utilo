@@ -290,7 +290,7 @@ def file_list(
     result = []
     with utila.chdir(path):
         for item in glob.glob('**/*.*', recursive=recursive):
-            filepath = utila.forward_slash(item, save_newline=False)
+            filepath = utila.forward_slash(item, newline=False)
             ext = filepath.rsplit('.', maxsplit=1)[1]
             if include:
                 if ext not in include:
@@ -317,7 +317,7 @@ def file_name(path: str) -> str:
     'ext'
     """
     assert path
-    path = forward_slash(path, save_newline=False)
+    path = forward_slash(path, newline=False)
     try:
         _, name = path.rsplit('/', 1)
     except ValueError:
@@ -343,7 +343,7 @@ def file_ext(path: str) -> str:
     True
     """
     assert path
-    path = forward_slash(path, save_newline=False)
+    path = forward_slash(path, newline=False)
     try:
         _, name = path.rsplit('/', 1)
     except ValueError:
@@ -363,7 +363,7 @@ def files_sort(files: list) -> list:
     >>> files_sort(('/c/a', '/c/200.txt', '/c/2.txt', '/c/3', '/c/0.bmp'))
     ('/c/0.bmp', '/c/2.txt', '/c/3', '/c/200.txt', '/c/a')
     """
-    files = [forward_slash(item, save_newline=False) for item in files]
+    files = [forward_slash(item, newline=False) for item in files]
 
     def number_filename(item):
         # sort file names if they are numbers: 0,1,2,3,4,5,6,7,8,9,10
@@ -630,8 +630,8 @@ def make_relative(path: str, root: str = None) -> str:
     """
     if root is None:
         root = os.getcwd()
-    root = forward_slash(root, save_newline=False)
-    path = forward_slash(path, save_newline=False)
+    root = forward_slash(root, newline=False)
+    path = forward_slash(path, newline=False)
 
     path = path.replace(root, '')
     if path[0] == '/':
@@ -690,7 +690,7 @@ def make_package(path: str, root: str = None) -> str:
     if root is not None:
         root = str(root)
         path = make_relative(path, root=root)
-    path = forward_slash(path, save_newline=False)
+    path = forward_slash(path, newline=False)
     path = path.replace('.py', '')
     path = path.replace('/', '.')
     return path

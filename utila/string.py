@@ -14,12 +14,12 @@ import utila.math
 import utila.utils
 
 
-def forward_slash(content: str, save_newline: bool = True) -> str:
+def forward_slash(content: str, newline: bool = True) -> str:
     r"""Replace every backward slash \\ with an forward slash /.
 
     Args:
         content(str): content with backslashs
-        save_newline(bool): if True, do not convert \n to /n
+        newline(bool): if True, do not convert \n to /n
     Returns:
         content without backslashs
 
@@ -28,11 +28,11 @@ def forward_slash(content: str, save_newline: bool = True) -> str:
     '/helm\nelm'
     >>> forward_slash('\\helm\\telm')
     '/helm/telm'
-    >>> forward_slash('\\helm\\nelm', save_newline=False)
+    >>> forward_slash('\\helm\\nelm', newline=False)
     '/helm/nelm'
     """
     pattern = r'\\'
-    if save_newline:
+    if newline:
         pattern = r'\\(?!n)'
     content = re.sub(re.compile(pattern), '/', content)
     return content
