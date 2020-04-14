@@ -28,7 +28,7 @@ def forward_slash(content: str, newline: bool = False) -> str:
     '/helm\nelm'
     >>> forward_slash('\\helm\\telm', newline=True)
     '/helm/telm'
-    >>> forward_slash('\\helm\\nelm', newline=False)
+    >>> forward_slash('\\helm\\nelm')
     '/helm/nelm'
     """
     pattern = r'\\'
