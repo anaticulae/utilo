@@ -2,6 +2,12 @@
 
 Every noteable change is logged here.
 
+## v1.20.1
+
+### Fix
+
+* ensure to work correctly with paths which contain \n (f2b328efaac4)
+
 ## v1.20.0
 
 ### Feature
