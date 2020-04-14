@@ -255,12 +255,16 @@ def simplify_testfile_names(files, ext='pdf', sort: bool = True) -> tuple:
     >>> simplify_testfile_names(('/c/abc/www/second.pdf', '/c/abc/def/first.pdf'))
     ('def_first', 'www_second')
     """
-    files = [utila.forward_slash(item) for item in files]
-    prefix = utila.forward_slash(os.path.commonpath(files))
+    files = [utila.forward_slash(item, save_newline=False) for item in files]
+    prefix = utila.forward_slash(os.path.commonpath(files), save_newline=False)
 
+    # remove prefix
+    files = [item.replace(prefix, '') for item in files]
     # remove first slash
-    files = [item.replace(prefix, '')[1:] for item in files]
+    files = [item[1:] if item[0] == '/' else item for item in files]
+    # remove extension
     files = [item.replace(f'.{ext}', '') for item in files]
+    # simplify name
     files = [item.replace('/', '_') for item in files]
     if sort:
         files = utila.files_sort(files)
