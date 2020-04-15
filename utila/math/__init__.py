@@ -18,7 +18,11 @@ import utila.math.number
 NDIGITS = 2
 
 
-def roundme(*items: float, digits: int = NDIGITS) -> float:
+def roundme(
+        *items: float,
+        digits: int = NDIGITS,
+        convert: bool = True,
+) -> float:
     """Round `items` to `NDIGITS.
 
     This method supports to round floats, tuple/list of floats. The
@@ -30,10 +34,15 @@ def roundme(*items: float, digits: int = NDIGITS) -> float:
     [1.5, 2.5, 3.2]
     >>> roundme((1.53333, 2.5666, 3.21111), digits=3)
     (1.533, 2.567, 3.211)
+    >>> roundme([10.5], digits=0, convert=False)
+    [10.0]
+    >>> roundme([10.5], digits=0)
+    10.0
 
     Args:
         items: list of floats or a single float
         digits(int): amout of numbers after dot
+        convert(bool): convert single iter item to float
     Raises:
         ValueError: if no float or list/tuple of numbers is passed
     Returns:
@@ -52,7 +61,7 @@ def roundme(*items: float, digits: int = NDIGITS) -> float:
         if isinstance(items[0], tuple):
             # ensure that input which was a tuple stays a tuple
             result = tuple(result)
-    if len(result) == 1:
+    if len(result) == 1 and convert:
         return result[0]
     return result
 
