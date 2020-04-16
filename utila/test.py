@@ -255,6 +255,9 @@ def simplify_testfile_names(files, ext='pdf', sort: bool = True) -> tuple:
     >>> simplify_testfile_names(('/c/abc/www/second.pdf', '/c/abc/def/first.pdf'))
     ('def_first', 'www_second')
     """
+    # ensure to compute prefix correctly
+    assert len(set(files)) > 1, 'require at least two unique items.'
+    assert isinstance(files, (list, tuple)), f'unsupported type: {type(files)}'
     files = [utila.forward_slash(item) for item in files]
     prefix = utila.forward_slash(os.path.commonpath(files))
 
