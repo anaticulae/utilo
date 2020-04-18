@@ -340,7 +340,12 @@ def parse(parser: argparse.ArgumentParser):
     """Parse arguments from sys-args and return the result as dictonary."""
     args = vars(parser.parse_args())
     if 'version' in args and args['version']:
-        log(parser.__version)
+        verbose = args.get('verbose', False)
+        version = ''
+        if verbose:
+            version = f'{parser.prog} '
+        version += parser.__version
+        log(version)
         exit(SUCCESS)
 
     return args

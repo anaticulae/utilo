@@ -250,13 +250,19 @@ def test_cli_parse_version_parser_version(tmpdir):
     version = "1.1.1"
     runner = os.path.join(tmpdir, 'version.py')
 
-    parser = EMPTY_PARSER % (forward_slash(ROOT), f'version="{version}"')
+    root = forward_slash(ROOT)
+    config = (f'version="{version}", prog="testo",'
+              'config=ParserConfiguration(verboseflag=True,)')
+    parser = EMPTY_PARSER % (root, config)
     file_create(runner, parser)
 
     cmd = f'python {runner} --version'
     completed = run(cmd, tmpdir)
     assert completed.stdout.strip() == version
-    assert completed.returncode == SUCCESS, str(completed)
+
+    cmd = f'python {runner} --verbose --version '
+    completed = run(cmd, tmpdir)
+    assert completed.stdout.strip() == f'testo {version}'
 
 
 def create_and_run_parser(
