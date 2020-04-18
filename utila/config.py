@@ -18,9 +18,9 @@ def dump_config(config: dict) -> str:
     '[HEADER]\nfirst = 10\nsecond = 20\n'
     """
     if not config:
-        return ''
-    isflat = isinstance(list(config.values())[0], dict) is False
+        return None
 
+    isflat = isinstance(list(config.values())[0], dict) is False
     result = []
     if isflat:
         for key, value in config.items():
