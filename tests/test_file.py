@@ -527,3 +527,19 @@ def test_file_list():
 
     exclude_txt = utila.file_list(utila.ROOT, exclude='txt')
     assert len(exclude_txt) == (len(files) - len(txt))
+
+
+def test_make_tmpdir(testdir):
+    root = testdir.tmpdir
+    with utila.make_tmpdir(root) as tmp_dir:
+        assert os.path.exists(tmp_dir)
+    assert os.path.exists(tmp_dir)
+
+
+def test_make_tmpdir_remove(testdir):
+    root = testdir.tmpdir
+    with utila.make_tmpdir(root, remove=True) as tmp_dir:
+        assert os.path.exists(tmp_dir)
+        os.makedirs(os.path.join(tmp_dir, 'recursive_path'))
+        utila.file_create(os.path.join(tmp_dir, 'helm.txt'))
+    assert not os.path.exists(tmp_dir), tmp_dir

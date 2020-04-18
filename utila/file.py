@@ -585,13 +585,36 @@ def tmpdir(root, create: bool = True, trys: int = 10):
     path = os.path.join(tmppath, name)
     if os.path.exists(path):
         # try again to find unused tmp dir
-        return tmpdir(root, create=create, trys=trys-1)
+        return tmpdir(root, create=create, trys=trys - 1)
     if create:
         try:
             os.makedirs(path)
         except OSError:
             return tmpdir(root, create=create, trys=trys - 1)
     return path
+
+
+@contextlib.contextmanager
+def make_tmpdir(root: str, remove: bool = False, max_file_guard=100):
+    """\
+    root: project root as backup for tmporary path. This path will be
+    used im SHARED_TEMP does not exists.
+
+    Yields:
+        str: created temporay directory
+    """
+    assert os.path.exists(root), root
+    path = tmpdir(root, create=False)
+    assert not os.path.exists(path), path
+    os.makedirs(path)
+
+    yield path
+
+    if remove:
+        assert 'tmp' in path, path
+        msg = f'do you really want to remove this recursively? {path}'
+        assert len(utila.file_list(path)) < max_file_guard, msg
+        shutil.rmtree(path)
 
 
 def make_absolute(path: str, cwd=None) -> str:
