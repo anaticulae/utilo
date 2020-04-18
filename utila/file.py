@@ -581,12 +581,11 @@ def tmpdir(root, create: bool = True, trys: int = 10):
     assert os.path.exists(root)
     assert trys, trys
     tmppath = tmp(root)
-
     name = 'tmp%s' % tmpname()
     path = os.path.join(tmppath, name)
     if os.path.exists(path):
         # try again to find unused tmp dir
-        return tmpfile(root)
+        return tmpdir(root, create=create, trys=trys-1)
     if create:
         try:
             os.makedirs(path)
