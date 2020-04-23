@@ -12,3 +12,16 @@ import utila
 def test_collection_make_unique():
     assert utila.make_unique(['a', 'b', 'c', 'd', 'a']) == ['a', 'b', 'c', 'd']
     assert utila.make_unique([1, 2, 3, 1, 2, 3]) == [1, 2, 3]
+
+
+def test_single_contains():
+    single = utila.Single()
+    assert not single.contains(10)
+    assert single.contains(10)
+
+
+def test_single_contains_unhashable():
+    """Support unhashable items."""
+    single = utila.Single()
+    assert not single.contains(set())
+    assert single.contains(set())

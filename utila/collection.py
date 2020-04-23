@@ -22,3 +22,28 @@ def make_unique(items) -> typing.List[str]:
             continue
         result.append(item)
     return result
+
+
+class Single:
+    """Ensure to use item only once."""
+
+    def __init__(self):
+        self.visited = set()
+
+    def contains(self, item) -> bool:
+        """Check if items contains Single container and add item
+        afterwards.
+
+        Returns:
+            True  if item was already added due contains
+            False if item was not added. Add item afterwards
+         """
+        try:
+            hashed = hash(item)
+        except TypeError:
+            # unhashable
+            hashed = hash(str(item))
+        if hashed in self.visited:
+            return True
+        self.visited.add(hashed)
+        return False
