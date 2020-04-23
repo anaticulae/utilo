@@ -145,6 +145,8 @@ from utila.math.number import Floats
 from utila.math.number import Ints
 from utila.math.number import Number
 from utila.math.number import Numbers
+from utila.math.number import maxs
+from utila.math.number import mins
 from utila.math.number import numbers
 from utila.math.rectangle import Rectangle
 from utila.math.rectangle import Rectangles

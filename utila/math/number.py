@@ -35,3 +35,39 @@ def numbers(items: typing.List) -> Numbers:
         except ValueError:
             result.append(None)
     return result
+
+
+def mins(*items: float) -> Number:
+    """Determine minimum of passed `items`.
+
+    >>> mins(1.0)
+    1.0
+    >>> mins([1,0,-5,3], 2, 3)
+    -5
+    """
+    result = []
+    for item in items:
+        try:
+            result.extend(item)
+        except TypeError:
+            result.append(item)
+    value = min(result)
+    return value
+
+
+def maxs(*items: float) -> Number:
+    """Determine maximum of passed `items`.
+
+    >>> maxs(231.0)
+    231.0
+    >>> maxs([1,0,-5,3], 2, 3)
+    3
+    """
+    result = []
+    for item in items:
+        try:
+            result.extend(item)
+        except TypeError:
+            result.append(item)
+    value = max(result)
+    return value
