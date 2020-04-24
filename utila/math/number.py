@@ -71,3 +71,25 @@ def maxs(*items: float) -> Number:
             result.append(item)
     value = max(result)
     return value
+
+
+def limit(*items: Numbers, maxvalue: Number) -> Number:
+    """Limit collection by `maxvalue`.
+
+    >>> limit(1, 2, 3, maxvalue=2.5)
+    2.5
+    >>> limit([1, 0, -5, 3], 2, maxvalue=3.5)
+    3
+    """
+    return mins(maxs(*items), maxvalue)
+
+
+def least(*items: Numbers, minvalue: Number) -> Number:
+    """Define a least `minvalue` minimal value.
+
+    >>> least([1, 0, -5, 3], 2, minvalue=3.5)
+    3.5
+    >>> least(10, 2, minvalue=3.5)
+    10
+    """
+    return maxs(*items, minvalue)
