@@ -42,7 +42,7 @@ def mins(*items: float) -> Number:
 
     >>> mins(1.0)
     1.0
-    >>> mins([1,0,-5,3], 2, 3)
+    >>> mins([1, 0, -5, 3], 2, 3)
     -5
     """
     result = []
@@ -60,7 +60,7 @@ def maxs(*items: float) -> Number:
 
     >>> maxs(231.0)
     231.0
-    >>> maxs([1,0,-5,3], 2, 3)
+    >>> maxs([1, 0, -5, 3], 2, 3)
     3
     """
     result = []
