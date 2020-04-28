@@ -243,7 +243,8 @@ def prepare_todo(
             message='run computation on given pages',
             args={
                 'dest': PAGES_FLAG,
-                'default': ':',
+                'default': [],
+                'action': 'append',  # support multiple --pages
             },
         )
         todo.insert(0, page)
@@ -428,7 +429,7 @@ def sources(  # pylint:disable=too-complex,too-many-branches
     return tuple(result)
 
 
-def evaluate_flags(args, multiprocessed: bool):
+def evaluate_flags(args, multiprocessed: bool = False):
     processes = 1 if not multiprocessed else args.get(MULTI_FLAG)
     with contextlib.suppress(KeyError):
         del args[MULTI_FLAG]
@@ -441,7 +442,9 @@ def evaluate_flags(args, multiprocessed: bool):
     with contextlib.suppress(KeyError):
         del args['profile']
 
-    pages = parse_pages(args.get(PAGES_FLAG, ALL_PAGES))
+    # evaluate multiple --pages
+    pages = ','.join(args.get(PAGES_FLAG, [ALL_PAGES]))
+    pages = parse_pages(pages)  # pylint:disable=R0204
     with contextlib.suppress(KeyError):
         del args[PAGES_FLAG]
 

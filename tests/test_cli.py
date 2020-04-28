@@ -14,6 +14,7 @@ from pytest import fixture
 from pytest import mark
 from pytest import raises
 
+import utila.cli
 from utila import INVALID_COMMAND
 from utila import ROOT
 from utila import SUCCESS
@@ -408,3 +409,17 @@ def test_cli_sort_parameter():
         for item in result
     ]
     assert sorted(items) == items, 'is not sorted correctly'
+
+
+def test_evaluate_multiple_pages_flags():
+    args = {'pages': ['5:10', '9', '19', '50:58']}
+    _, __, pages, ___ = utila.cli.evaluate_flags(args)
+
+    expected = (5, 6, 7, 8, 9, 19, 50, 51, 52, 53, 54, 55, 56, 57)
+    assert pages == expected
+
+
+def test_evaluate_multiple_pages_flags_empty():
+    args = {'pages': []}
+    _, __, pages, ___ = utila.cli.evaluate_flags(args)
+    assert pages is None, pages

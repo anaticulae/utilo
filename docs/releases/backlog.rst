@@ -9,8 +9,6 @@ backlog
 
 * file:copy_content: add flag to log but not execute copy operation
 
-* support multiple pages flag: upme --pages=5 --pages=3 --pages=6 --pages=5
-
 * file_list extend pattern to check more than file extention
 
 * utila.test: add method to evaluate capsys from pytest
