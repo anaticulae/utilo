@@ -11,8 +11,6 @@ backlog
 
 * support multiple pages flag: upme --pages=5 --pages=3 --pages=6 --pages=5
 
-* file_list add absolute flag to add `path` to collected items
-
 * file_list extend pattern to check more than file extention
 
 * utila.test: add method to evaluate capsys from pytest

@@ -272,9 +272,20 @@ def file_list(
         include: list = None,
         exclude: list = None,
         recursive: bool = True,
-):
+        absolute: bool = False,
+) -> list:
     """Scans `path` recursively and returns list of relative file path
-    which matches `include` or `exclude` pattern."""
+    which matches `include` or `exclude` pattern.
+
+    Args:
+        path(str): root path to scan files
+        include(list): list of patterns to include
+        exclude(list): list of patterns to exclude
+        recursive(bool): visit child folder
+        absolute(bool): if True add `path` to extracted files
+    Returns:
+        List of selected files.
+    """
     assert os.path.exists(path), path
     msg = f'only one pattern is allowed {include} ! {exclude}'
     assert not (include and exclude), msg
@@ -298,6 +309,8 @@ def file_list(
             if exclude:
                 if ext in exclude:
                     continue
+            if absolute:
+                filepath = os.path.join(path, item)
             result.append(filepath)
     return result
 
