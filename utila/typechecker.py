@@ -72,14 +72,15 @@ def isstrings(items) -> bool:
 
 
 def assert_type_list(items, types):
-    """\
+    """Ensure that `items` is a list and the types of the single `items`
+    matches width `types`.
+
     >>> assert_type_list([1, 3, 5, 10], int)
     >>> assert_type_list([1, 'hello', 10], str)
     Traceback (most recent call last):
         ...
     AssertionError: [False, True, False]
     """
-
     assert isinstance(items, list), type(items)
     verified = [isinstance(item, types) for item in items]
     assert all(verified), str(verified)
