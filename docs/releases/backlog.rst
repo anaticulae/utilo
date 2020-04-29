@@ -14,3 +14,5 @@ backlog
 * utila.test: add method to evaluate capsys from pytest
 
 * utila.run: add support for asyncio
+
+* uitla.file.make_absoulte: support more than one file
