@@ -87,7 +87,6 @@ from utila.file import file_replace
 from utila.file import file_replace_binary
 from utila.file import file_unlock
 from utila.file import files_sort
-from utila.file import from_raw_or_path
 from utila.file import isfilepath
 from utila.file import make_absolute
 from utila.file import make_package
@@ -99,6 +98,7 @@ from utila.file import tmpdir
 from utila.file import tmpfile
 from utila.file import tmpname
 from utila.file import yaml
+from utila.file.loader import from_raw_or_path
 # likelihood
 from utila.likelihood import maxi
 from utila.likelihood import mini
