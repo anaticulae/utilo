@@ -2,6 +2,27 @@
 
 Every noteable change is logged here.
 
+## v1.21.0
+
+### Feature
+
+* change `modes` behavior (9b49f36fa7a8)
+* add method to load and verify yaml data (f6d3cabb6867)
+* add multiple --pages inputs (12223aeefd73)
+* add flag to make listed files absolute (01fadc418f3b)
+* add methods least and limit to define borders (112208f5ac46)
+* add method to determine max and min of iterable or single item (a1bf4421de34)
+* add Single to check if item was already used (7a9272aef7fb)
+* add method to create temporary directory with context manager (e36242803669)
+* add program name to --version command (3f19fc22edac)
+* ensure to get correct input data (43e3cd8da6b1)
+* add convert flag to roundme to avoid changing datatype (b43605c53386)
+
+### Fix
+
+* dump None as not valid dumping (be26165de5a7)
+* fix tmpdir creation (9e58ed256a2e)
+
 ## v1.20.1
 
 ### Fix
