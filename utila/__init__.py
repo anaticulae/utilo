@@ -128,6 +128,7 @@ from utila.math import diff_mode
 from utila.math import diffs
 from utila.math import isascending
 from utila.math import lookup
+from utila.math import mode
 from utila.math import modes
 from utila.math import near
 from utila.math import roundme

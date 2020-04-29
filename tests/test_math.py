@@ -66,12 +66,8 @@ def test_math_roundme_str_error():
 
 
 def test_modes():
-    items = [1, 1, 1, 3, 3, 3]
-    assert utila.modes(items) == 1
-    assert utila.modes(items, minimize=False) == 3
-
-    items = [1, 1, 2, 3, 4, 5]
-    assert utila.modes(items, minimize=False) == 1
+    assert utila.modes((1, 1, 1, 3, 3, 3)) == [1, 3]
+    assert utila.modes((1, 1, 3)) == 1
 
 
 def test_modes_empty():

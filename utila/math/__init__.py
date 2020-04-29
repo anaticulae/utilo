@@ -81,21 +81,19 @@ def isascending(items: 'utila.math.number.Numbers') -> bool:
     return all([item >= 0 for item in diff])
 
 
-def modes(
-        data: 'utila.math.number.Numbers',
-        minimize: bool = True,
-) -> 'utila.math.number.Number':
+def modes(data: 'utila.math.number.Numbers') -> 'utila.math.number.Number':
     """Return the most common data point from discrete or nominal data.
 
-    It is possible to have multiple common data points. To extract a
-    unique point `minimize` enables to decide which number is used.
+    It is possible to have multiple common data points, there are sorted
+    ascending.
+
+    >>> modes((1,1,2,2))
+    [1, 2]
 
     See: statistics.mode
 
     Args:
         data: list of numbers
-        minimize(bool): if True the biggest common number is used, if
-                        not the smallest is used.
     Raises:
         StatisticsError: if data is empty
     Returns:
@@ -107,9 +105,22 @@ def modes(
     if len(table) == 1:
         return table[0][0]
     current = sorted([item[0] for item in table])
-    if minimize:
-        return current[0]
-    return current[-1]
+    return current
+
+
+def mode(items, minimize: bool = False):
+    """Determine single mode out of `items`.
+
+    >>> mode((1,1,2,2))
+    2
+    >>> mode((1,1,2,2), minimize=True)
+    1
+    """
+    result = modes(items)
+    try:
+        return result[0] if minimize else result[-1]
+    except TypeError:
+        return result
 
 
 def near(first, second, diff: float = 2.0) -> bool:
@@ -139,8 +150,8 @@ def diff_mode(
     Returns:
         matched items
     """
-    mode = modes(items)
-    matched = [item for item in items if math.fabs(item - mode) <= max_diff]
+    mode_ = mode(items)
+    matched = [item for item in items if math.fabs(item - mode_) <= max_diff]
     return matched
 
 
