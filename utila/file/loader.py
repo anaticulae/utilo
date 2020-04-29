@@ -51,3 +51,21 @@ def from_raw_or_path(
     if len(content.splitlines()) == 1 and os.path.isfile(content):
         content = utila.file.file_read(content)
     return content
+
+
+def yaml_from_raw_or_path(
+        content: str,
+        fname: str = None,
+        verify: callable = None,
+):
+    loaded = from_raw_or_path(content, ftype='yaml', fname=fname)
+    # TODO: Should we generally introduce this dependency?
+    try:
+        import yaml
+    except ImportError:
+        utila.error('add `yaml` package to requirements, eg. `PyYAML>=5.1`')
+        return None
+    result = yaml.load(loaded, Loader=yaml.FullLoader)
+    if verify:
+        verify(result)
+    return result
