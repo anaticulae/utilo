@@ -380,7 +380,7 @@ def files_sort(files: list) -> list:
     """Sort `files` path alphabetically. Sort file names by number if given.
 
     >>> files_sort(('/c/a', '/c/200.txt', '/c/2.txt', '/c/3', '/c/0.bmp'))
-    ('/c/0.bmp', '/c/2.txt', '/c/3', '/c/200.txt', '/c/a')
+    ['/c/0.bmp', '/c/2.txt', '/c/3', '/c/200.txt', '/c/a']
     """
     files = [forward_slash(item) for item in files]
 
@@ -396,7 +396,7 @@ def files_sort(files: list) -> list:
         return item
 
     files = sorted(files, key=number_filename)
-    return tuple(files)
+    return files
 
 
 def isfilepath(path: str) -> bool:
