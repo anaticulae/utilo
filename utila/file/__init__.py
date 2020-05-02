@@ -31,7 +31,7 @@ from utila.utils import UTF8
 from utila.utils import chdir
 
 # width of tempfile name
-MAX_NUMBER = 20
+MAX_NUMBER = 32
 SHARED_TEMP = 'SHARED_TMP'
 
 
@@ -519,18 +519,24 @@ def split_multipattern(multipattern):
     return result
 
 
+POOL = 'ABCDEFGHIJKLMNOPQRSTUVYXYZabcdefghijklmnopqrstuvyxyz0123456789'
+
+
 def tmpname(width: int = MAX_NUMBER) -> str:
     """Get random file-name with 20-ziffre, random name.
+
+    >>> len(tmpname(13)) == 13
+    True
 
     Args:
         width(int): length of tmpname
     Returns:
         filename(str): random file name
     """
-    assert width
-    max_test_number = 10**width
-
-    return str(random.randrange(max_test_number)).zfill(width)
+    assert width >= 1
+    choises = random.sample(POOL, width)
+    result = ''.join(choises)
+    return result
 
 
 def tmpfile(root):
