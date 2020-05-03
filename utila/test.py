@@ -119,7 +119,7 @@ def run_command(
 
 
 @contextlib.contextmanager
-def assert_run(command: str, cwd: str):
+def assert_run(command: str, cwd: str = None):
     completed = run(command, cwd)
     msg = '%s\n%s' % (completed.stderr, completed.stdout)
     assert completed.returncode == SUCCESS, msg
@@ -127,7 +127,7 @@ def assert_run(command: str, cwd: str):
 
 
 @contextlib.contextmanager
-def assert_run_fail(command: str, cwd: str):
+def assert_run_fail(command: str, cwd: str = None):
     completed = run(command, cwd, expect=False)
     msg = '%s\n%s' % (completed.stderr, completed.stdout)
     assert completed.returncode, msg
