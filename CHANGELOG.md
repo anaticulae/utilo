@@ -2,6 +2,21 @@
 
 Every noteable change is logged here.
 
+## v1.21.1
+
+### Feature
+
+* if no cwd is given run `assert_run` in current (c2bc31cc0eed)
+* include chars into tmp name (78a7bd10ef38)
+
+### Fix
+
+* do not convert list to tuple (24489ea96a5e)
+
+### Documentation
+
+* extend interface documentation (a99074bcc545)
+
 ## v1.21.0
 
 ### Feature
