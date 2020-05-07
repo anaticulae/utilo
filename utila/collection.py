@@ -14,11 +14,8 @@ def make_unique(items):
     Hint:
         stable algorithm which holds the previous order
     """
-    result = []
-    for item in items:
-        if item in result:
-            continue
-        result.append(item)
+    single = Single()
+    result = [item for item in items if not single.contains(item)]
     return result
 
 
