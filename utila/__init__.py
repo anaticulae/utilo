@@ -160,6 +160,7 @@ from utila.math.rectangle import rectangle_size
 # pages
 from utila.pages import parse_pages
 from utila.pages import select_page
+from utila.pages import select_pages
 from utila.pages import should_skip
 from utila.pages import sync_pages
 # process

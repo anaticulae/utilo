@@ -161,6 +161,21 @@ def select_page(
         return default
 
 
+def select_pages(
+        items: PageContent,
+        pages: tuple,
+        default: typing.Any = None,
+) -> typing.Any:
+    """Select items depending on `pages`-attribute of the item.
+
+    See: `select_page`"""
+    pages = sorted(pages)
+    result = []
+    for page in pages:
+        result.append(select_page(items, page=page, default=default))
+    return result
+
+
 def sync_pages(iterators) -> typing.Tuple[int, typing.List]:
     """Generator to synchronize a list of PageContentIterators.
 

@@ -55,6 +55,11 @@ def test_pages_select_page(minimal_pages):  # pylint:disable=W0621
     assert utila.select_page(minimal_pages, 4) == MinimalPage(4)
 
 
+def test_pages_select_pages(minimal_pages):  # pylint:disable=W0621
+    expect_sorted = [MinimalPage(1), MinimalPage(4)]
+    assert utila.select_pages(minimal_pages, (4, 1)) == expect_sorted
+
+
 def test_pages_select_page_invalid(minimal_pages):  # pylint:disable=W0621
     none = utila.select_page(minimal_pages, 10)
     assert none is None, none
