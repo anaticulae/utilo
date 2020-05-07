@@ -7,10 +7,8 @@
 # be prosecuted under federal law. Its content is company confidential.
 # =============================================================================
 
-import typing
 
-
-def make_unique(items) -> typing.List[str]:
+def make_unique(items):
     """Convert collection where every element exists only once.
 
     Hint:
