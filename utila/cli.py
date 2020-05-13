@@ -356,6 +356,7 @@ def sources(  # pylint:disable=too-complex,too-many-branches
         args,
         *,
         singleinput: bool = False,
+        use_cwd: bool = True,
         verbose: bool = False,
 ) -> tuple:
     """Parse the in- and outport from given command line args
@@ -371,6 +372,8 @@ def sources(  # pylint:disable=too-complex,too-many-branches
         args(str): arguments, passed by command line
         singleinput(bool): allow a single file instead of a directory as
                            input
+        use_cwd(bool): if True replace missing in- or outpath with
+                       current working direction. If not return None.
         verbose(bool): if True, evaluate the verbose level
     Returns:
         (input, output): path(str) to in-/ and output-location
@@ -412,9 +415,9 @@ def sources(  # pylint:disable=too-complex,too-many-branches
             else:
                 log(f'creating: {outputpath}')
     # run application in current working directory if no path's are provided
-    if not inputpaths:
+    if not inputpaths and use_cwd:
         inputpaths = [os.getcwd()]
-    if not outputpath:
+    if not outputpath and use_cwd:
         outputpath = os.getcwd()
 
     result = [inputpaths, outputpath]
