@@ -176,13 +176,18 @@ def select_pages(
     return result
 
 
-def sync_pages(iterators) -> typing.Tuple[int, typing.List]:
+def sync_pages(
+        iterators,
+        numbers: bool = True,
+) -> typing.Tuple[int, typing.List]:
     """Generator to synchronize a list of PageContentIterators.
 
     Args:
         iterators(list): list of `PageContent`-Iterators
+        numbers(bool): if True, yield (pagenumber, content)
+                       if False, yield content
     Yields:
-        pagenumber: (content of current pagenumber...)
+        pagenumber: (pagenumber, content of current pagenumber)
     """
     # ensure to have sorted iterators
     for index, iterator in enumerate(iterators):
@@ -209,7 +214,11 @@ def sync_pages(iterators) -> typing.Tuple[int, typing.List]:
             item if determine_pagenumber(item) == pagenumber else None
             for item in popped
         ]
-        yield pagenumber, tuple(deliver)
+
+        if numbers:
+            yield pagenumber, tuple(deliver)
+        else:
+            yield tuple(deliver)
 
         for index, item in enumerate(popped):
             # push back non-yielded items
