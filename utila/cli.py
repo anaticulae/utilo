@@ -445,8 +445,7 @@ def evaluate_flags(args, multiprocessed: bool = False):
         del args['profile']
 
     # evaluate multiple --pages
-    pages = ','.join(args.get(PAGES_FLAG, [ALL_PAGES]))
-    pages = parse_pages(pages)  # pylint:disable=R0204
+    pages = pages_fromargs(args)
     with contextlib.suppress(KeyError):
         del args[PAGES_FLAG]
 
