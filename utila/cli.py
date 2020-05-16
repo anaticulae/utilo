@@ -348,7 +348,6 @@ def parse(parser: argparse.ArgumentParser):
         version += parser.__version
         log(version)
         exit(SUCCESS)
-
     return args
 
 
@@ -452,6 +451,19 @@ def evaluate_flags(args, multiprocessed: bool = False):
         del args[PAGES_FLAG]
 
     return processes, failfast, pages, profiling
+
+
+def pages_fromargs(args) -> tuple:
+    """Extract list of pages number out of user input args.
+
+    >>> pages_fromargs({'pages':[0, 5,'10:15'], 'inpath':'...',})
+    (0, 5, 10, 11, 12, 13, 14)
+    """
+    pages = args.get(PAGES_FLAG, [ALL_PAGES])
+    pages = [str(item) for item in pages]
+    joined = ','.join(pages)
+    result = parse_pages(joined)  # pylint:disable=R0204
+    return result
 
 
 def isuserflag(flag: str) -> bool:
