@@ -55,6 +55,8 @@ def read_workplan(  # pylint:disable=too-many-locals
     result = []
     ret = 0
     for step in plan:
+        name = step.name
+        utila.call(f'>> {name}')
         variables = prepare_variables(variables=step.inputs, args=args)
         # optional pages flag is not allowed in workplan
         if utila.PAGES_FLAG in [item.name for item in step.inputs]:
@@ -65,7 +67,6 @@ def read_workplan(  # pylint:disable=too-many-locals
             continue
 
         inputs = prepare_inputs(step.inputs, inspace, outspace)
-        name = step.name
         try:
             caller = hooks[name]
         except KeyError:
@@ -165,7 +166,6 @@ def prepare_inputs(  # pylint:disable=too-many-locals,too-complex,too-many-branc
     Returns:
         List of located files.
     """
-
     utila.call('prepare inputs')
     result = []
     # single file input
