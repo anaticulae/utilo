@@ -2,6 +2,25 @@
 
 Every noteable change is logged here.
 
+## v1.22.0
+
+### Feature
+
+* add option `!` to disable single processing steps (663ed3607ae0)
+* use cwd if no path is given (41e969e95f86)
+* add method to parse page number from client input (e0e52b89e9c5)
+* add option to disable yielding pagenumber (07b93dbc3431)
+* add option to return None for missing in or output path (d7dc4c820111)
+* add method to select multiple pages at once (2766e77b7cd3)
+
+### Fix
+
+* ensure to handle return value correctly (8ad865a6b79f)
+
+### Documentation
+
+* fix wrong typing information (42f1639abdf8)
+
 ## v1.21.1
 
 ### Feature
