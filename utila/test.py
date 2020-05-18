@@ -201,7 +201,7 @@ def single_execution() -> bool:
 
 @contextlib.contextmanager
 def increased_filecount(
-        path: str,
+        path: str = None,
         ext: str = None,
         mindiff: int = None,
         maxdiff: int = None,
@@ -209,7 +209,7 @@ def increased_filecount(
     """Ensure that some files were created while yielded operation.
 
     Args:
-        path(str): path to check for file creation
+        path(str): path to check for file creation, if path is None use cwd
         ext(str): look for a special file extention
         mindiff(int): minimal number of created files, if None: 1 is used
         maxdiff(int): maximal number of created files, if None: utila.INF is used
@@ -218,6 +218,8 @@ def increased_filecount(
     Yields:
         None: to run file creation operation
     """
+    if path is None:
+        path = os.getcwd()
     assert os.path.exists(path), str(path)
     assert mindiff is None or mindiff >= 0, str(mindiff)
     assert maxdiff is None or maxdiff >= 0, str(maxdiff)
