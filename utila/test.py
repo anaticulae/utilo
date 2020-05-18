@@ -48,6 +48,7 @@ def run(
         cwd: str = None,
         env: dict = None,
         expect: bool = True,
+        verbose: bool = False,
 ) -> subprocess.CompletedProcess:
     """Run external process
 
@@ -59,15 +60,20 @@ def run(
         expect(bool): if True: fail on error
                       if False: fail on success
                       if None: return completed process
+        verbose(bool): log executed command and location
     Returns:
         Completed process.
     """
     cwd = cwd if cwd else os.getcwd()
     assert os.path.exists(cwd)
-    msg = 'cwd %s is not a valid directory' % cwd
+    msg = f'cwd {cwd} is not a valid directory'
     assert os.path.isdir(cwd), msg
 
     env = os.environ if env is None else env
+
+    if verbose:
+        utila.log(f'cd {cwd}')
+        utila.log(cmd)
 
     completed = subprocess.run(
         cmd,
