@@ -31,6 +31,7 @@ import argparse
 import contextlib
 import dataclasses
 import os
+import re
 import sys
 import typing
 
@@ -337,9 +338,27 @@ def create_io_ports(
     return todo
 
 
+DEACTIVATED = (None, None)
+
+
 def parse(parser: argparse.ArgumentParser):
-    """Parse arguments from sys-args and return the result as dictonary."""
+    """Parse arguments from sys-args and return the result as dictonary.
+
+    Disable -f! --flags! with acclamation mark.
+    """
+
+    # divide in activate and disable commands
+    enable, disable = split_args(sys.argv)
+    # remove disabling commands out of sys args to avoid problems with
+    # `parse_args`.
+    sys.argv = enable
+
     args = vars(parser.parse_args())
+    # use disable with None
+    args = {
+        key: value if key not in disable else DEACTIVATED
+        for key, value in args.items()
+    }
     if 'version' in args and args['version']:
         verbose = args.get('verbose', False)
         version = ''
@@ -349,6 +368,26 @@ def parse(parser: argparse.ArgumentParser):
         log(version)
         exit(SUCCESS)
     return args
+
+
+DISABLE_PATTERN = r'^[-]{1,2}(?P<text>[\w\-\_^!]+?)(?:[!])$'
+
+
+def split_args(items):
+    """Divide between activation and deactivation commands.
+
+    >>> split_args(['--enable_me', '--disable!', '-d!'])
+    (['--enable_me'], ['disable', 'd'])
+    """
+    enable, disable = [], []
+
+    for item in items:
+        matched = re.match(DISABLE_PATTERN, item)
+        if matched:
+            disable.append(matched['text'])
+        else:
+            enable.append(item)
+    return enable, disable
 
 
 def sources(  # pylint:disable=too-complex,too-many-branches

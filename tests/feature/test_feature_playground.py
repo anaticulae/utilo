@@ -168,3 +168,18 @@ def test_write_selective_datatype_multi(testdir, monkeypatch):
         assert os.path.exists(path), path
         written = utila.file_read_binary(path)
         assert written == content, written
+
+
+def test_write_binary_data_disable(testdir, monkeypatch):
+    # test writing hex file
+    run_playground('--binary!', {}, testdir, monkeypatch)
+    expected_path = os.path.join(testdir.tmpdir, 'testfield__binary_binary.hex')
+    assert not os.path.exists(expected_path)
+
+
+def test_write_binary_data_all_and_disable(testdir, monkeypatch):
+    # test writing hex file
+    with utila.increased_filecount(mindiff=3):
+        run_playground('--binary! --all', {}, testdir, monkeypatch)
+    expected_path = os.path.join(testdir.tmpdir, 'testfield__binary_binary.hex')
+    assert not os.path.exists(expected_path)

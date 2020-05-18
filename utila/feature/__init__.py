@@ -280,10 +280,22 @@ def determine_todo(args: dict, flags: list) -> typing.List[str]:
 
     args = remove_bool_flags(args, flags)
 
-    if not any(args.values()):
+    all_selected = args.get('all', False)
+    deactivated = [
+        key for key, value in args.items() if value is utila.cli.DEACTIVATED
+    ]
+    seletected = any([item for item in args.values() if item is True])
+    if not seletected or all_selected:
         # run all features
-        result = [key for key in args.keys()]
+        result = [key for key, value in args.items()]
     else:
         # True is important!
         result = [key for key, value in args.items() if value == True]  # pylint:disable=singleton-comparison
+    if deactivated or all_selected:
+        # None is important:
+        #   None means feature is activly disabled by user.
+        #   False means feature is not selected.
+        for item in deactivated + ['all']:
+            with contextlib.suppress(ValueError):
+                result.remove(item)
     return result
