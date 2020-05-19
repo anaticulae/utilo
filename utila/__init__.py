@@ -158,6 +158,11 @@ from utila.math.rectangle import Rectangles
 from utila.math.rectangle import rectangle_inside
 from utila.math.rectangle import rectangle_merge
 from utila.math.rectangle import rectangle_size
+# measure
+from utila.measure import millimeter
+from utila.measure import millimeters
+from utila.measure import point
+from utila.measure import points
 # pages
 from utila.pages import parse_pages
 from utila.pages import select_page
