@@ -36,6 +36,10 @@ def parse_pages(pattern: str, pagecount=None) -> tuple:  # pylint:disable=too-co
     (3, 4, 10, 11, 12)
     >>> parse_pages(':5')
     (0, 1, 2, 3, 4)
+    >>> parse_pages('-5:', pagecount=50)
+    (45, 46, 47, 48, 49)
+    >>> parse_pages('-1', pagecount=10)
+    (9,)
     """
 
     def parse_comma(pattern):
@@ -60,13 +64,19 @@ def parse_pages(pattern: str, pagecount=None) -> tuple:  # pylint:disable=too-co
         with contextlib.suppress(ValueError, TypeError):
             left = int(splitted[0])
             right = int(splitted[1])
+            if left < 0:
+                # -5:
+                left = right + left
             return list(range(left, right))
         return None
 
     def parse_single(pattern):
         """Pattern contains no special character"""
         try:
-            return [int(pattern)]
+            single = int(pattern)
+            if single < 0:
+                return [pagecount + single]
+            return [single]
         except ValueError:
             return None
 
