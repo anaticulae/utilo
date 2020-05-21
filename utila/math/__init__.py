@@ -165,12 +165,20 @@ def lookup(
         value: 'utila.math.number.Number',
         table: typing.List,
         strategy: Strategy = None,
+        right_outranges_none: bool = True,
+        left_outranges_none: bool = True,
 ) -> 'utila.math.number.Number':
     """Use table lookup to determine holy value.
 
     Out of Bounds:
     >>> lookup(0, [(10,10), (20, 30), (30, 0.5)])
     >>> lookup(40, [(10,10), (20, 30), (30, 0.5)])
+
+    Out of Bounds with backup:
+    >>> lookup(40, [(10,10), (20, 30), (30, 0.5)], right_outranges_none=False)
+    0.5
+    >>> lookup(0, [(10,10), (20, 30), (30, 0.5)], left_outranges_none=False)
+    10
 
     Different strategies:
     >>> lookup(30, [(10,10), (20, 30), (30, 0.5)], strategy = Strategy.UPPER)
@@ -184,6 +192,10 @@ def lookup(
         value: selector to determine holy value
         table: contains holy values to determine on given `value`.
         strategy: select left, right or linerise
+        right_outranges_none: True: if lookup outranges return None
+                              False: if lookup outrange use maxvalue
+        left_outranges_none: True: if lookup outranges return None
+                             False: if lookup outrange use minvalue
     Returns:
         determined value
     """
@@ -192,9 +204,9 @@ def lookup(
     if strategy is None:
         strategy = Strategy.LOWER
     if value < table[0][0]:
-        return None
+        return None if left_outranges_none else table[0][1]
     if value > table[-1][0]:
-        return None
+        return None if right_outranges_none else table[-1][1]
     lower, result_lower = table[0]
     for upper, result_upper in table[1:]:
         if lower <= value <= upper:
