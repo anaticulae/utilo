@@ -548,7 +548,7 @@ def tmpfile(root):
     assert os.path.exists(root)
     tmppath = tmp(root)
 
-    name = 'tmp%s' % tmpname()
+    name = tmpname()
     path = os.path.join(tmppath, name)
     if os.path.exists(path):
         # try again to find unused temp file
@@ -565,7 +565,7 @@ def tmpdir(root, create: bool = True, trys: int = 10):
     assert os.path.exists(root)
     assert trys, trys
     tmppath = tmp(root)
-    name = 'tmp%s' % tmpname()
+    name = tmpname()
     path = os.path.join(tmppath, name)
     if os.path.exists(path):
         # try again to find unused tmp dir
@@ -595,7 +595,6 @@ def make_tmpdir(root: str, remove: bool = False, max_file_guard=100):
     yield path
 
     if remove:
-        assert 'tmp' in path, path
         msg = f'do you really want to remove this recursively? {path}'
         assert len(utila.file_list(path)) < max_file_guard, msg
         shutil.rmtree(path)
