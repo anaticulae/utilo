@@ -79,6 +79,15 @@ def parse_tuple(raw: str, length: int = 4, typ=float) -> tuple:
     return items
 
 
+def from_tuple(item: tuple) -> str:
+    """Convert tuple to str.
+
+    >>> from_tuple((1.22, 5.0, 3))
+    '1.22 5.0 3'
+    """
+    return ' '.join(str(x) for x in item)
+
+
 def normalize_whitespaces(text: str) -> str:
     """Remove unnecessary white spaces.
 
