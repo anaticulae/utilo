@@ -2,6 +2,17 @@
 
 Every noteable change is logged here.
 
+## v1.22.1
+
+### Feature
+
+* add method to convert tuple to str (2c39b7df074f)
+* add optional fallback if accessing out of range (2bd60734b23e)
+* support negative indexing to access page numbers from behind (6049887ffadf)
+* add method to convert points/pixel to millimeter et vice versa (ac9a2c02a30c)
+* log step name if using verbose flag (d99c540d8576)
+* add flag to log executed command (30076860df97)
+
 ## v1.22.0
 
 ### Feature
