@@ -199,6 +199,8 @@ def add_todo_to_parser(parser, todo):
 MULTI_FLAG = 'job'
 PAGES_FLAG = 'pages'
 
+MULTI_JOBS_DEFAULT = 8
+
 
 def prepare_todo(
         todo,
@@ -229,11 +231,16 @@ def prepare_todo(
         todo.insert(0, prefixcommand)
 
     if config.multiprocessed:
-        multicmd = NumberedParameter(
+        multicmd = Parameter(
             shortcut=MULTI_FLAG[0],
-            default=1,
-            message='select number of used jobs',
-            args={'dest': MULTI_FLAG})
+            longcut=MULTI_FLAG,
+            # default=1,
+            message='select number of used jobs; use auto=os.cpu_count',
+            args={
+                'dest': MULTI_FLAG,
+                'default': 1,
+            },
+        )
         todo.insert(0, multicmd)
 
     if config.pages:
@@ -471,7 +478,10 @@ def sources(  # pylint:disable=too-complex,too-many-branches
 
 
 def evaluate_flags(args, multiprocessed: bool = False):
-    processes = 1 if not multiprocessed else args.get(MULTI_FLAG)
+    processes = 1 if not multiprocessed else int(args.get(MULTI_FLAG))
+    if processes == 'auto':
+        processes = os.cpu_count() if os.cpu_count() else MULTI_JOBS_DEFAULT
+
     with contextlib.suppress(KeyError):
         del args[MULTI_FLAG]
 
