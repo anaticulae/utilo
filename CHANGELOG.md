@@ -2,6 +2,14 @@
 
 Every noteable change is logged here.
 
+## v1.22.2
+
+### Feature
+
+* add method to create a tuple (30aa9686de26)
+* remove tmp prefix cause name indicates random file (be2e43cf0f03)
+* add auto flag to choose number of jobs automatically (30b0ce33a7e5)
+
 ## v1.22.1
 
 ### Feature
