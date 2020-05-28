@@ -145,3 +145,15 @@ def str2bool(item: str) -> bool:
     False
     """
     return str(item).lower() != 'false'
+
+
+def make_tuple(length: int, *, start: int = 0) -> tuple:
+    """Create tuple of `length` with starting point `start`.
+
+    >>> make_tuple(5)
+    (0, 1, 2, 3, 4)
+    >>> make_tuple(3, start=10)
+    (10, 11, 12)
+    """
+    assert length > 0, 'require positive length'
+    return tuple(index + start for index in range(length))
