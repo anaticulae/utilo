@@ -7,6 +7,8 @@
 # be prosecuted under federal law. Its content is company confidential.
 # =============================================================================
 
+import time
+
 import pytest
 
 import utila
@@ -64,6 +66,18 @@ def test_logger_profile_with_exception(capsys):
 
     stdout = capsys.readouterr().out
     assert 'runtime' in stdout, str(stdout)
+
+
+def test_profiler_decorator(capsys):
+
+    @utila.profile('decorated profiler')
+    def runtime():
+        time.sleep(0.1)
+
+    runtime()
+
+    stdout = capsys.readouterr().out
+    assert 'decorated profiler' in stdout, str(stdout)
 
 
 def test_logger_print_env(capsys, monkeypatch):

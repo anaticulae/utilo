@@ -178,25 +178,25 @@ def format_completed(completed: subprocess.CompletedProcess) -> str:
     return msg
 
 
-@contextlib.contextmanager
-def profile(msg: str = ''):
-    """Print runtime to logger to monitor performance
+class profile(contextlib.ContextDecorator):  # pylint:disable=C0103
+    """ContextManager and Decorator to profile method performance."""
 
-    Args:
-        msg(str): extend runtime message to differentiate multiple runtime
-    Yields:
-        None: to run commands to profile
-    Raises:
-        Exception: re raise Exception which was raised while profiling
-    """
-    start = time.time()
-    try:
-        yield
-    except Exception:
-        print_runtime(start, msg=msg)
-        raise
-    else:
-        print_runtime(start, msg=msg)
+    def __init__(self, msg: str = ''):
+        """Print runtime to logger to monitor performance
+
+        Args:
+            msg(str): extend runtime message to differentiate multiple runtime
+        """
+        self.start = None
+        self.msg = msg
+
+    def __enter__(self):
+        """Start profiler."""
+        self.start = time.time()
+
+    def __exit__(self, *exc_info):
+        """Finish profiling."""
+        print_runtime(self.start, msg=self.msg)
 
 
 class SkipCollector:
