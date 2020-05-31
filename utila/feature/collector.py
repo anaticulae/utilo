@@ -7,17 +7,22 @@
 # be prosecuted under federal law. Its content is company confidential.
 # =============================================================================
 
-import collections
+import dataclasses
 import importlib
 import os
 import typing
 
 import utila
 
-FeatureInterface = collections.namedtuple(
-    'FeatureInterface',
-    'name, help, command, action',
-)
+
+@dataclasses.dataclass
+class FeatureInterface:
+    name: str = None
+    message: str = None
+    command: utila.Command = None
+    action: callable = None
+
+
 FeatureInterfaces = typing.List[FeatureInterface]
 
 
@@ -72,7 +77,7 @@ def connect_feature_interface(current, item) -> FeatureInterface:
 
     return FeatureInterface(
         name=curname,
-        help=message,
+        message=message,
         command=curcommandline,
         action=current.work,
     )

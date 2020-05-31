@@ -10,22 +10,39 @@
 import textwrap
 
 import utila
+import utila.feature.collector
 import utila.feature.userinput
 
 
-def prepare_description(name: str, description: str, workplan: list) -> str:
+def prepare_description(
+        name: str,
+        description: str,
+        workplan: list,
+        features: 'utila.feature.collector.FeatureInterfaces',
+) -> str:
     """Create help description with in- and outports for program steps.
 
     Args:
         name(str): application name
         description(str): text which is presented in --help view
         workplan(list): list of WorkingStep's
+        features(list): list of feature step documentation
     Returns:
         Prepared description with out- and input-parameter.
     """
     result = []
-    for step in workplan:
+    for index, step in enumerate(workplan):
         result.append(f'//{step.name}')
+        if features:
+            # TODO: REPLACE WITH EMPTY ITER?
+            # add step description
+            message = features[index].message
+            if message:
+                message = [f'# {item}' for item in message.splitlines()]
+                message = '\n'.join(message)
+                result.append(message)
+                # result.append('@Parameter:')
+
         # prepare inputs
         inputs = format_inputs(step)
         result.append(inputs)

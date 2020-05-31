@@ -96,6 +96,7 @@ def featurepack(  # pylint:disable=too-many-locals
         config.name,
         config.description,
         workplan,
+        feature,
     )
     parser_configuration = utila.ParserConfiguration(
         failfastflag=config.failfastflag,

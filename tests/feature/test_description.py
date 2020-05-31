@@ -6,7 +6,9 @@
 # use or distribution is an offensive act against international law and may
 # be prosecuted under federal law. Its content is company confidential.
 # =============================================================================
+
 import tests.examples.workplan.groupme
+import utila.feature.collector
 import utila.feature.description
 
 
@@ -14,14 +16,25 @@ def test_feature_description_groupme():
     workplan = tests.examples.workplan.groupme.WORKPLAN
     name = tests.examples.workplan.groupme.ROOT
     description = ''
+    features = [
+        utila.feature.collector.FeatureInterface(
+            message='First Message\nMultiline\nMessage'),
+        utila.feature.collector.FeatureInterface(message='Second Message'),
+        utila.feature.collector.FeatureInterface(),
+        utila.feature.collector.FeatureInterface(),
+    ]
     result = utila.feature.description.prepare_description(
         name,
         description,
         workplan,
+        features,
     )
 
     first = """\
 //chapter
+# First Message
+# Multiline
+# Message
 +rawmaker__text_text.yaml
 >groupme__chapter_charls.yaml
 """
