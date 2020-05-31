@@ -14,9 +14,11 @@ import inspect
 import os
 import subprocess
 import sys
+import threading
 import time
 import traceback
 
+import utila
 from utila.string import fix_encoding
 from utila.string import forward_slash
 from utila.utils import NEWLINE
@@ -33,6 +35,9 @@ class Level(enum.IntEnum):
 LEVEL_DEFAULT = Level.LOGGING
 
 LEVEL = LEVEL_DEFAULT
+
+# define output file where logs written to. If None, do nothing.
+OUTFILE = None
 
 
 def level_setup(level: Level):
@@ -73,6 +78,7 @@ def log(msg: str = '', level: Level = Level.LOGGING, end: str = NEWLINE):
     msg = fix_encoding(msg)
     # TODO: msg = NEWLINE.join(wrap(msg, 120))
     msg = forward_slash(msg, newline=True)
+    write_log(msg)
     print(msg, end=end, file=sys.stdout, flush=True)
 
 
@@ -94,7 +100,20 @@ def error(msg: str, end: str = NEWLINE):
     msg = fix_encoding(msg)
     # use forward slash's
     msg = forward_slash(msg, newline=True)
-    print('[ERROR] %s' % msg, file=sys.stderr, flush=True, end=end)
+    msg = f'[ERROR] {msg}'
+    write_log(msg)
+    print(msg, file=sys.stderr, flush=True, end=end)
+
+
+SINGLE_LOGGING = threading.Semaphore()
+
+
+def write_log(msg: str):
+    if OUTFILE is None:
+        return
+    with SINGLE_LOGGING:
+        # ensure that only one thread writes to file
+        utila.file_append(OUTFILE, msg + utila.NEWLINE, create=True)
 
 
 def log_stacktrace():

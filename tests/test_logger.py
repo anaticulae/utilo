@@ -7,6 +7,7 @@
 # be prosecuted under federal law. Its content is company confidential.
 # =============================================================================
 
+import os
 import time
 
 import pytest
@@ -174,3 +175,22 @@ def test_logger_level_setup(monkeypatch):
         after = utila.level_current()
         assert after == setme, 'could not update log level'
     assert utila.level_current() == utila.LEVEL_DEFAULT
+
+
+def test_logger_outfile(testdir, monkeypatch):
+    logger = os.path.join(testdir.tmpdir, 'logging.txt')
+
+    with monkeypatch.context() as context:
+        context.setattr(utila.logger, 'OUTFILE', logger)
+
+        utila.log('First Line')
+        utila.log('Second Line')
+        utila.error('Third Line')
+
+    # ensure to reset OUTFILE
+    assert utila.logger.OUTFILE is None
+
+    written = utila.file_read(logger)
+    expected = 'First Line\nSecond Line\n[ERROR] Third Line\n'
+
+    assert written == expected
