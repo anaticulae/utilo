@@ -27,12 +27,12 @@ def find_features(root: str, featurepackage: str) -> FeatureInterfaces:
     Ensure that feature methods are defined. If some feature interface is not
     implemented properly, the exection ends with FAILURE.
     """
-    featurepath = os.path.join(root, featurepackage.replace('.', '/'))
     assert os.path.exists(root), root
+    featurepath = os.path.join(root, featurepackage.replace('.', '/'))
     if not os.path.exists(featurepath):
-        utila.error(
-            'wrong featurepack configuration, check `featurepackage` path')
-        utila.error('featurepath %s does not exists' % featurepath)
+        utila.error('wrong featurepack configuration, '
+                    'check `featurepackage` path')
+        utila.error(f'featurepath {featurepath} does not exists')
         exit(utila.FAILURE)
     collected = [
         item.replace('.py', '')
@@ -49,7 +49,7 @@ def find_features(root: str, featurepackage: str) -> FeatureInterfaces:
         try:
             result.append(connect_feature_interface(current, item))
         except AttributeError as exception:
-            utila.error('SKIP LOADING %s' % item)
+            utila.error(f'SKIP LOADING: {item}')
             utila.error(exception)
             ret += 1
     if ret:
@@ -58,13 +58,14 @@ def find_features(root: str, featurepackage: str) -> FeatureInterfaces:
 
 
 def connect_feature_interface(current, item) -> FeatureInterface:
-    """Ensure that feature supports `name`, `commandline` and `work`-method"""
+    """Ensure that feature supports `name`, `commandline` and
+    `work`-method."""
     curname = current.name() if hasattr(current, 'name') else item
     message = current.HELP if hasattr(current, 'HELP') else None
 
     # no commandline information is defined
     def curcommandline():
-        return utila.Flag(longcut=curname, message='export %s' % curname)
+        return utila.Flag(longcut=curname, message=f'export {curname}')
 
     if hasattr(current, 'commandline'):
         curcommandline = current.commandline
