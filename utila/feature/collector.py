@@ -7,13 +7,17 @@
 # be prosecuted under federal law. Its content is company confidential.
 # =============================================================================
 
+import collections
 import importlib
 import os
 import typing
 
 import utila
 
-FeatureInterface = typing.Tuple[str, utila.Command, callable]
+FeatureInterface = collections.namedtuple(
+    'FeatureInterface',
+    'name, help, command, action',
+)
 FeatureInterfaces = typing.List[FeatureInterface]
 
 
@@ -56,6 +60,7 @@ def find_features(root: str, featurepackage: str) -> FeatureInterfaces:
 def connect_feature_interface(current, item) -> FeatureInterface:
     """Ensure that feature supports `name`, `commandline` and `work`-method"""
     curname = current.name() if hasattr(current, 'name') else item
+    message = current.HELP if hasattr(current, 'HELP') else None
 
     # no commandline information is defined
     def curcommandline():
@@ -64,12 +69,16 @@ def connect_feature_interface(current, item) -> FeatureInterface:
     if hasattr(current, 'commandline'):
         curcommandline = current.commandline
 
-    return (curname, curcommandline, current.work)
+    return FeatureInterface(
+        name=curname,
+        help=message,
+        command=curcommandline,
+        action=current.work,
+    )
 
 
 def prepare_hooks(items: FeatureInterfaces):
     result = {}
     for item in items:
-        name, _, caller = item
-        result[name] = caller
+        result[item.name] = item.action
     return result

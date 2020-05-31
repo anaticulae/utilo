@@ -185,8 +185,8 @@ def commandline(features: Features, workplan: list) -> utila.Commands:
     """
     result = []
     # name, cmd, work
-    for _, command, _ in features:
-        commands = command()
+    for feature in features:
+        commands = feature.command()
         # one single command is iterable, testing of Iterable is not possible
         if isinstance(commands, (list, tuple)):
             # support adding commands from iterable and single command
