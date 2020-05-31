@@ -2,6 +2,15 @@
 
 Every noteable change is logged here.
 
+## v1.23.0
+
+### Feature
+
+* add flag `OUTFILE` to write all logging in single file (f479d3ae0b42)
+* add parsed description to command line interface --help (c2e78963c7f2)
+* introduce datatype to improve code style (10bf63bb00a8)
+* add option to use @profile as decorator (56c7006eb7c8)
+
 ## v1.22.2
 
 ### Feature
