@@ -121,6 +121,7 @@ from utila.logger import level_temp
 from utila.logger import log
 from utila.logger import log_args
 from utila.logger import log_stacktrace
+from utila.logger import outfile
 from utila.logger import print_env
 from utila.logger import print_runtime
 from utila.logger import profile

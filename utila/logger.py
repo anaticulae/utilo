@@ -45,6 +45,11 @@ def level_setup(level: Level):
     LEVEL = level
 
 
+def outfile(path):
+    global OUTFILE  # pylint:disable=global-statement
+    OUTFILE = path
+
+
 @contextlib.contextmanager
 def level_temp(level: Level):
     """Set logging level, yield context and reset to previous logging level."""
