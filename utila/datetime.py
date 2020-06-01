@@ -26,3 +26,15 @@ def current(seconds: bool = False) -> str:
 
 def timedate():
     return '%s %s' % (current(), today())
+
+
+def filetime():
+    """\
+    >>> len(filetime())==15
+    True
+    """
+    cur = time.localtime(time.time())
+    day = "%04d%02d%02d" % (cur.tm_year, cur.tm_mon, cur.tm_mday)
+    times = "%02d%02d%02d" % (cur.tm_hour, cur.tm_min, cur.tm_sec)
+    result = f'{day}_{times}'
+    return result

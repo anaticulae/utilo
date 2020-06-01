@@ -44,6 +44,7 @@ from utila.config import dump_config
 from utila.config import load_config
 # Time
 from utila.datetime import current
+from utila.datetime import filetime
 from utila.datetime import timedate
 from utila.datetime import today
 # Error
