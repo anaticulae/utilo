@@ -16,3 +16,5 @@ backlog
 * utila.run: add support for asyncio
 
 * uitla.file.make_absoulte: support more than one file
+
+* add --list* to select all required steps
