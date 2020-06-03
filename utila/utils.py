@@ -157,3 +157,17 @@ def make_tuple(length: int, *, start: int = 0) -> tuple:
     """
     assert length > 0, 'require positive length'
     return tuple(index + start for index in range(length))
+
+
+def isnumber(item: str) -> bool:
+    """Check if `item` is a number.
+
+    >>> isnumber('ten')
+    False
+    >>> isnumber(10.5)
+    True
+    """
+    with contextlib.suppress(ValueError):
+        _ = int(item)
+        return True
+    return False

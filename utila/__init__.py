@@ -218,6 +218,7 @@ from utila.utils import SUCCESS
 from utila.utils import UTF8
 from utila.utils import chdir
 from utila.utils import flatten
+from utila.utils import isnumber
 from utila.utils import make_tuple
 from utila.utils import nothing
 from utila.utils import select_type
