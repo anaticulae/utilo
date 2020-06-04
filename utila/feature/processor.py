@@ -186,7 +186,7 @@ def prepare_process(todo, name, processes):
     # log start of executable
     utila.log(name)
     if processes > 1:
-        utila.log(f'use multiple processes({processes})')
+        utila.log(f'use {processes} processes')
     utila.log()
     return todo
 
