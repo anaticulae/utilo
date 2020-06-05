@@ -2,6 +2,19 @@
 
 Every noteable change is logged here.
 
+## v1.23.1
+
+### Feature
+
+* add method to check if item is a number (e81fabf425b9)
+* add method to update `OUTFILE` (ccf1ba2c1ec5)
+* add method to determine current time in file useable format (01e9211139d2)
+
+### Fix
+
+* fix multiprocessing message (be916f86da32)
+* dump correct line ending (349d0163cf46)
+
 ## v1.23.0
 
 ### Feature
