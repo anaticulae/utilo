@@ -16,6 +16,10 @@ import os
 from utila.__todo__ import docu
 from utila.__todo__ import refactor
 from utila.__todo__ import todo
+# alpha
+from utila.alpha import alphabetically
+from utila.alpha import replace
+from utila.alpha import sort
 # Classificator
 from utila.classifier import common_items
 from utila.classifier import determine_cluster
@@ -160,6 +164,11 @@ from utila.math.rectangle import Rectangles
 from utila.math.rectangle import rectangle_inside
 from utila.math.rectangle import rectangle_merge
 from utila.math.rectangle import rectangle_size
+# roman
+from utila.math.roman import arabic
+from utila.math.roman import isarabic
+from utila.math.roman import isroman
+from utila.math.roman import roman
 # measure
 from utila.measure import millimeter
 from utila.measure import millimeters
