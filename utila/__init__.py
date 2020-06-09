@@ -60,6 +60,7 @@ from utila.feature import FeaturePackConfig
 from utila.feature import InterfaceMismatch
 from utila.feature import featurepack
 from utila.feature.path import connector as pathconnector
+from utila.feature.processor import select_executor
 from utila.feature.userinput import Bool
 from utila.feature.userinput import Directory
 from utila.feature.userinput import File
