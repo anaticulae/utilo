@@ -124,6 +124,12 @@ def nothing(*args, **kwargs):  # pylint:disable=W0613
 
 
 def str2int(item: str) -> int:
+    """\
+    >>> str2int('10')
+    10
+    >>> str2int('1.3')
+    1
+    """
     return int(float(item))
 
 
