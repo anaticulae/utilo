@@ -230,6 +230,7 @@ from utila.utils import flatten
 from utila.utils import isnumber
 from utila.utils import make_tuple
 from utila.utils import nothing
+from utila.utils import ranged_tuple
 from utila.utils import select_type
 from utila.utils import str2bool
 from utila.utils import str2int
