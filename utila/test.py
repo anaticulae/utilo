@@ -264,15 +264,22 @@ def simplify_testfile_names(files, ext='pdf', sort: bool = True) -> tuple:
 
     >>> simplify_testfile_names(('/c/abc/www/second.pdf', '/c/abc/def/first.pdf'))
     ('def_first', 'www_second')
+
+    to determine relative files against an resource folder, the
+    following pattern can be used:
+
+    >>> simplify_testfile_names(('/c/abc', '/c/abc/def/first.pdf'))
+    ('def_first',)
     """
     # ensure to compute prefix correctly
     assert len(set(files)) > 1, 'require at least two unique items.'
     assert isinstance(files, (list, tuple)), f'unsupported type: {type(files)}'
     files = [utila.forward_slash(item) for item in files]
     prefix = utila.forward_slash(os.path.commonpath(files))
-
     # remove prefix
     files = [item.replace(prefix, '') for item in files]
+    # remove empty path
+    files = [item for item in files if item]
     # remove first slash
     files = [item[1:] if item[0] == '/' else item for item in files]
     # remove extension
