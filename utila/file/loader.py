@@ -57,6 +57,7 @@ def yaml_from_raw_or_path(
         content: str,
         fname: str = None,
         verify: callable = None,
+        safe: bool = True,
 ):
     loaded = from_raw_or_path(content, ftype='yaml', fname=fname)
     # TODO: Should we generally introduce this dependency?
@@ -65,7 +66,10 @@ def yaml_from_raw_or_path(
     except ImportError:
         utila.error('add `yaml` package to requirements, eg. `PyYAML>=5.1`')
         return None
-    result = yaml.load(loaded, Loader=yaml.FullLoader)
+    if safe:
+        result = yaml.safe_load(loaded)
+    else:
+        result = yaml.load(loaded, Loader=yaml.FullLoader)
     if verify:
         verify(result)
     return result
