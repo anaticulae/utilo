@@ -2,6 +2,16 @@
 
 Every noteable change is logged here.
 
+## v1.24.0
+
+### Feature
+
+* enable creating test file names against root folder (d33f8f6e8278)
+* use safe loader as default yaml loader (fb7d21ef14e1)
+* extend public API (2c876c1cd15e)
+* add method to create ranged tuple (ff2dbe2f7ff6)
+* move code from texmex package (9ae2907a568c)
+
 ## v1.23.1
 
 ### Feature
