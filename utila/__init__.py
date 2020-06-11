@@ -215,6 +215,7 @@ from utila.test import skip_longrun
 from utila.test import skip_nightly
 from utila.test import skip_nonvirtual
 from utila.test import skip_virtual
+from utila.test import write_capsys
 # Typerchecker
 from utila.typechecker import Strings
 from utila.typechecker import assert_type_list
