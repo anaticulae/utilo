@@ -35,6 +35,7 @@ import re
 import sys
 import typing
 
+import utila
 from utila.file import make_absolute
 from utila.logger import error
 from utila.logger import log
@@ -478,9 +479,7 @@ def sources(  # pylint:disable=too-complex,too-many-branches
 
 
 def evaluate_flags(args, multiprocessed: bool = False):
-    processes = 1 if not multiprocessed else int(args.get(MULTI_FLAG))
-    if processes == 'auto':
-        processes = os.cpu_count() if os.cpu_count() else MULTI_JOBS_DEFAULT
+    processes = processcount(args, multiprocessed)
 
     with contextlib.suppress(KeyError):
         del args[MULTI_FLAG]
@@ -499,6 +498,29 @@ def evaluate_flags(args, multiprocessed: bool = False):
         del args[PAGES_FLAG]
 
     return processes, failfast, pages, profiling
+
+
+def processcount(args: dict, multiprocessed: bool = False) -> int:
+    """\
+    >>> processcount(dict(job=5), multiprocessed=True)
+    5
+    >>> processcount(None, multiprocessed=False)
+    1
+    """
+    processes = 1
+    if not multiprocessed:
+        return processes
+    selected = args.get(MULTI_FLAG)
+    if str(selected).lower() == 'auto':
+        # convert to string to avoid converting error when passing int
+        processes = os.cpu_count() if os.cpu_count() else MULTI_JOBS_DEFAULT
+    else:
+        try:
+            processes = int(selected)
+        except ValueError:
+            utila.error(f'invalid process count: {selected}')
+            exit(utila.INVALID_COMMAND)
+    return processes
 
 
 def pages_fromargs(args) -> tuple:
