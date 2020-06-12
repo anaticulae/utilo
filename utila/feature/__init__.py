@@ -171,6 +171,7 @@ def featurepack(  # pylint:disable=too-many-locals
         processes=processes,
         todo=current_todo,
         profiling=profiling,
+        verbose=verbose,
     )
     return completed
 

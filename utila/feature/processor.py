@@ -30,6 +30,7 @@ def process(
         *,
         failfast: bool = False,
         profiling: bool = False,
+        verbose: bool = False,
 ) -> int:
     """Process the given features. The process ignores errors in
     sub-steps and run till the end. If some error occurs, the process
@@ -46,6 +47,7 @@ def process(
         errorhook(ErrorHook): if Error occurrs write it to ErrorHook
         failfast(bool): quit after first failure
         profiling(bool): if True, runtime of every single step is logged
+        verbose(bool): if True, print more logging information(skippin steps)
     Returns:
         SUCCESS if all features process successfully, if not FAILURE
     """
@@ -64,10 +66,11 @@ def process(
             # resource, cause the excution is not done.
             results = run_level(
                 level=level,
-                todo=todo,
-                pool=pool,
                 pages=pages,
+                pool=pool,
                 profiling=profiling,
+                todo=todo,
+                verbose=verbose,
             )
             # write result
             failure += write_level_result(
@@ -81,12 +84,13 @@ def process(
     return status
 
 
-def run_level(level, todo, pool, pages, profiling):
+def run_level(level, todo, pool, pages, profiling, verbose: bool = True):
     results = []
     for step in level:
         # if todo is empty, nothing is selected, run every step
         if step.name not in todo and todo:
-            utila.log(f'skipping: {step.name}')
+            if verbose:
+                utila.log(f'skipping: {step.name}')
             continue
         future = pool.submit(
             callback,
