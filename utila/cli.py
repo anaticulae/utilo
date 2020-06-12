@@ -124,7 +124,7 @@ class ParserConfiguration:
     prefix: bool = False
     profileflag: bool = False
     quiteflag: bool = False
-    verboseflag: bool = False
+    verboseflag: bool = True
     configflag: bool = False
 
 
