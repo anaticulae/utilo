@@ -107,6 +107,8 @@ from utila.file import tmpname
 from utila.file import yaml
 from utila.file.loader import from_raw_or_path
 from utila.file.loader import yaml_from_raw_or_path
+# group
+from utila.group import groupby_none
 # likelihood
 from utila.likelihood import maxi
 from utila.likelihood import mini
