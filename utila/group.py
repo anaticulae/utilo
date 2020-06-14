@@ -25,3 +25,19 @@ def groupby_none(items):
     if collected:
         result.append(tuple(collected))
     return result
+
+
+def groupby_ascending(items) -> int:
+    """\
+    >>> groupby_ascending([1, 2, 3, 0, 1, 2, 3, 4, 0, 1])
+    [(1, 2, 3), (0, 1, 2, 3, 4), (0, 1)]
+    """
+    if not items:
+        return 0
+    result = [[items[0]]]
+    for item in items[1:]:
+        if item < result[-1][-1]:
+            result.append([item])
+        else:
+            result[-1].append(item)
+    return [tuple(item) for item in result]
