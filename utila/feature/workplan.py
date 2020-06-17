@@ -172,14 +172,14 @@ def prepare_inputs(  # pylint:disable=too-many-locals,too-complex,too-many-branc
     search_location = ' '.join(inspaces)
     for item in inputs:
         lastinput = item == inputs[-1]
-        utila.info('skipping input `%s`, require `Pattern' % str(item))
+        utila.info(f'skipping input `{item}`, require `Pattern')
         if not isinstance(item, utila.feature.userinput.Pattern):
             continue
         (name, ext) = item.name, item.ext
         for inspace in inspaces:
             if isinstance(item, utila.feature.userinput.ResultFile):
                 producer = item.producer
-                filename = '%s__%s.%s' % (producer, name, ext)
+                filename = f'{producer}__{name}.{ext}'
                 filepath = os.path.join(inspace, filename)
                 if os.path.exists(filepath) or item.optional:
                     result.append(filepath)
@@ -190,10 +190,10 @@ def prepare_inputs(  # pylint:disable=too-many-locals,too-complex,too-many-branc
                     # in other input folder
                     if inspace == inspaces[-1]:
                         recursivepath = os.path.join(outspace, filename)
-                        utila.info('recursive input %s' % recursivepath)
-                        result.append('_%s' % recursivepath)
+                        utila.info(f'recursive input: {recursivepath}')
+                        result.append(f'_{recursivepath}')
             elif isinstance(item, utila.feature.userinput.File):
-                filename = '%s.%s' % (name, ext)
+                filename = f'{name}.{ext}'
                 filepath = os.path.join(inspace, filename)
                 if os.path.exists(filepath) or item.optional:
                     result.append(filepath)
@@ -201,8 +201,8 @@ def prepare_inputs(  # pylint:disable=too-many-locals,too-complex,too-many-branc
                 else:
                     if not lastinput:
                         continue
-                    utila.error('search location: %s' % search_location)
-                    utila.error('missing input: %s' % filepath)
+                    utila.error(f'search location: {search_location}')
+                    utila.error(f'missing input: {filepath}')
             elif isinstance(item, utila.feature.userinput.Directory):
                 directory_path = os.path.join(inspace, name)
                 # Mark `?` to not check existence of folder and group
@@ -223,12 +223,12 @@ def prepare_inputs(  # pylint:disable=too-many-locals,too-complex,too-many-branc
                     break  # do not double add path
                 else:
                     ext = ext.lower()
-                    pattern = '%s/%s.%s' % (inspace, name, ext)
-                    utila.info('using pattern: %s' % pattern)
+                    pattern = f'{inspace}/{name}.{ext}'
+                    utila.info(f'using pattern: {pattern}')
                     files = glob.glob(pattern)
-                    utila.info('%s' % str(files))
+                    utila.info(f'{files}')
                     for finding in files:
-                        utila.info('FINDING %s' % finding)
+                        utila.info(f'FINDING {finding}')
                         result.append(finding)
     utila.call(f'result: {result}')
     return result
@@ -287,7 +287,7 @@ def verify_resources(inputs):
             # recursive input-definition start with _. We do not check
             # recursive inputs, because there will be generated later.
             continue
-        utila.error('File does not exists: %s' % path)
+        utila.error(f'File does not exists: {path}')
         ret += 1
     return ret
 
