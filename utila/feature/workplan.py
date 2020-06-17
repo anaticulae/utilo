@@ -181,7 +181,7 @@ def prepare_inputs(  # pylint:disable=too-many-locals,too-complex,too-many-branc
                 producer = item.producer
                 filename = f'{producer}__{name}.{ext}'
                 filepath = os.path.join(inspace, filename)
-                if os.path.exists(filepath) or item.optional:
+                if os.path.exists(filepath):
                     result.append(filepath)
                     break  # do not double add path
                 else:
@@ -195,11 +195,14 @@ def prepare_inputs(  # pylint:disable=too-many-locals,too-complex,too-many-branc
             elif isinstance(item, utila.feature.userinput.File):
                 filename = f'{name}.{ext}'
                 filepath = os.path.join(inspace, filename)
-                if os.path.exists(filepath) or item.optional:
+                if os.path.exists(filepath):
                     result.append(filepath)
                     break  # do not double add path
                 else:
                     if not lastinput:
+                        continue
+                    if item.optional:
+                        result.append(f'_{filepath}')
                         continue
                     utila.error(f'search location: {search_location}')
                     utila.error(f'missing input: {filepath}')
