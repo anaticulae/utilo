@@ -2,6 +2,12 @@
 
 Every noteable change is logged here.
 
+## v1.25.1
+
+### Fix
+
+* fix optional flag check (b1707f1fb994)
+
 ## v1.25.0
 
 ### Feature
