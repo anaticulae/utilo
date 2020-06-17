@@ -65,13 +65,15 @@ def format_inputs(step) -> str:
         elif isinstance(source, utila.feature.userinput.Bool):
             inputs.append(f'{source.name}(Bool)=True')
         elif isinstance(source, utila.feature.userinput.ResultFile):
-            inputs.append(f'{source}')
+            optional = '[?]' if source.optional else ''
+            inputs.append(f'{source}{optional}')
         else:
+            optional = '[?]' if source.optional else ''
             try:
                 fname, fending = source
             except ValueError:
                 fname, fending = source, 'yaml'
-            inputs.append(f'{fname}.{fending}')
+            inputs.append(f'{fname}.{fending}{optional}')
     inputs = sorted(inputs)
     raw = ''.join('+%s   ' % item.ljust(30, ' ') for item in inputs)
     raw = textwrap.fill(raw, 132)

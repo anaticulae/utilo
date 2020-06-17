@@ -47,6 +47,8 @@ class Value(Input):
 class Pattern(Input):
     name: str
     ext: str
+    # TODO: EXCLUDE OPTIONAL AND RECURSIVE INPUT
+    optional: bool = False
 
     def __str__(self):
         return '%s.%s' % (self.name, self.ext)
@@ -70,9 +72,10 @@ class Directory(Pattern):
 class ResultFile(File):
     producer: str = 'default'
 
-    def __init__(self, producer: str, name: str):
+    def __init__(self, producer: str, name: str, optional: bool = False):
         self.producer = producer
         self.name = name
+        self.optional = optional
 
     def __str__(self):
         return '%s__%s.%s' % (self.producer, self.name, self.ext)
