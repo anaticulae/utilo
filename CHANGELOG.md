@@ -2,6 +2,22 @@
 
 Every noteable change is logged here.
 
+## v1.25.0
+
+### Feature
+
+* add optional flag to introduce optional resources (89a5b96a9c9d)
+* add method to separate groups of ascending items (2aa5a36a5bbe)
+* add method to group list by none hole (3cf3dbb51e7f)
+* add optional separator to join tuple to string (8cb30bc75218)
+* print skipping feature step in verbose mode only (b4e3f7ee866b)
+* add default --verbose option to command line interface (7d91b5f001d0)
+* add method to write captured pytest log/error data (aad695cbb28c)
+
+### Fix
+
+* fix used processed evaluation (dd51657a5b52)
+
 ## v1.24.0
 
 ### Feature
