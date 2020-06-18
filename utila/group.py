@@ -41,3 +41,57 @@ def groupby_ascending(items) -> int:
         else:
             result[-1].append(item)
     return [tuple(item) for item in result]
+
+
+def groupby_diff(pages: tuple, *, diff=1) -> list:
+    """\
+    >>> groupby_diff((1, 5, 2, 6, 9))
+    [(1, 2), (5, 6), (9,)]
+    >>> groupby_diff(None)
+    [None]
+    >>> groupby_diff((5,))
+    [(5,)]
+    """
+    assert diff >= 0, 'negative diff'
+    if not pages:
+        return [None]
+    pages = sorted(pages)
+    result = [[pages[0]]]
+    for item in pages[1:]:
+        if item - result[-1][-1] <= diff:
+            result[-1].append(item)
+        else:
+            result.append([item])
+    result = [tuple(item) for item in result]
+    return result
+
+
+def longest(items, number: int = 1):
+    """\
+    >>> longest([(1, 2, 4), (2, 2, 2, 2), (5, 5, 5)])
+    (2, 2, 2, 2)
+    >>> longest([(1, 2, 4), (2, 2, 2, 2), (5, 5, 5)], number=3)
+    [(2, 2, 2, 2), (1, 2, 4), (5, 5, 5)]
+    """
+    if not items:
+        return []
+    items = sorted(items, key=len, reverse=True)
+    if number == 1:
+        return items[0]
+    return items[0:number]
+
+
+def shortest(items, number: int = 1):
+    """\
+    >>> shortest([(1, 2, 4), (2, 2, 2, 2), (5, 5, 5)])
+    (1, 2, 4)
+    >>> shortest([(1, 2, 4), (2, 2, 2, 2), (5, 5, 5)], number=2)
+    [(1, 2, 4), (5, 5, 5)]
+    """
+    assert number >= 1, 'invalid number'
+    if not items:
+        return []
+    items = sorted(items, key=len)
+    if number == 1:
+        return items[0]
+    return items[0:number]

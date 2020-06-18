@@ -109,7 +109,10 @@ from utila.file.loader import from_raw_or_path
 from utila.file.loader import yaml_from_raw_or_path
 # group
 from utila.group import groupby_ascending
+from utila.group import groupby_diff
 from utila.group import groupby_none
+from utila.group import longest
+from utila.group import shortest
 # likelihood
 from utila.likelihood import maxi
 from utila.likelihood import mini
