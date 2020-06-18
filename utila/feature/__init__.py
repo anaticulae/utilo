@@ -76,7 +76,7 @@ def featurepack(  # pylint:disable=too-many-locals
     """Run featurepack defined in `workplan`
 
     Args:
-        workplan: define used features with in- and outpath
+        workplan: define selected features with in- and outpath
         root(str): path to project root
         featurepackage(str): location to featurepackage releative to root
         config(FeaturePackConfig): define featurepack behavior

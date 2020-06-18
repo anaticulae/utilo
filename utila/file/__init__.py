@@ -645,11 +645,11 @@ def make_relative(path: str, root: str = None) -> str:
 
 
 def make_single(path: str, replacement='_', length: int = 40) -> str:
-    """Convert path sequence to single str which can be used as folder name.
+    """Convert path sequence to single str to use as folder name.
 
     Sometimes it is handy to shrink the path level of a folder
     hierarchie into a single flat list. This method enables to convert
-    this path into a single name which can be used to reach this goal.
+    this path into a single name.
 
     Examples:
         C:/folder/names/test.pdf        C_folder_names_test_pdf

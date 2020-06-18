@@ -364,7 +364,7 @@ def test_cli_sort_parameter():
         NumberedParameter(
             shortcut='j',
             longcut='',
-            message='select number of used jobs',
+            message='select number of jobs',
             args={
                 'dest': 'job',
                 'default': 1,

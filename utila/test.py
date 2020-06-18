@@ -265,8 +265,7 @@ def simplify_testfile_names(files, ext='pdf', sort: bool = True) -> tuple:
     >>> simplify_testfile_names(('/c/abc/www/second.pdf', '/c/abc/def/first.pdf'))
     ('def_first', 'www_second')
 
-    to determine relative files against an resource folder, the
-    following pattern can be used:
+    Determine relative files against an resource folder:
 
     >>> simplify_testfile_names(('/c/abc', '/c/abc/def/first.pdf'))
     ('def_first',)

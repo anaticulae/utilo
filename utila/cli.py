@@ -236,7 +236,7 @@ def prepare_todo(
             shortcut=MULTI_FLAG[0],
             longcut=MULTI_FLAG,
             # default=1,
-            message='select number of used jobs; use auto=os.cpu_count',
+            message='select number of jobs; use auto to select os.cpu_count',
             args={
                 'dest': MULTI_FLAG,
                 'default': 1,
@@ -407,12 +407,12 @@ def sources(  # pylint:disable=too-complex,too-many-branches
 ) -> tuple:
     """Parse the in- and outport from given command line args
 
-    The input- and output-path must be a directory. If singleinput flag is
-    activated, a file is addtionaly allowed as input.
+    The input- and output-path must be a directory. If singleinput flag
+    is activated, a file is addtionaly allowed as input.
 
-    The argparser supports multiple input locations. If the same input is
-    passed twice, only the first one is used. The inputs will returned
-    alphabetically as a list.
+    The argparser supports multiple input locations. If the same input
+    is passed twice, only the first one is used. The inputs will be
+    returned as alphabetically sorted list.
 
     Args:
         args(str): arguments, passed by command line
