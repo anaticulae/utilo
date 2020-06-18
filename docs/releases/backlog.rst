@@ -20,3 +20,5 @@ backlog
 * add --list* to select all required steps
 
 * EXCLUDE OPTIONAL AND RECURSIVE INPUT
+
+* add select_content method to select content of defined page directly
