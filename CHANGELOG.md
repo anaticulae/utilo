@@ -2,6 +2,12 @@
 
 Every noteable change is logged here.
 
+## v2.0.0
+
+### Feature
+
+* remove test code (213cd7540164)
+
 ## v1.26.0
 
 ### Feature
