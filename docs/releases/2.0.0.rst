@@ -1,0 +1,20 @@
+.. _2_0_0:
+
+RP 2.0.0
+========
+
+Split
+-----
+
+* [x] remove pytest dependency
+
+* [x] create package utilatest and move test code there
+
+quality
+-------
+
+after
+~~~~~
+
+* Total coverage: 92.70%
+* Your code has been rated at 10.0/10
