@@ -69,7 +69,7 @@ def yaml_from_raw_or_path(
     if safe:
         result = yaml.safe_load(loaded)
     else:
-        result = yaml.load(loaded, Loader=yaml.FullLoader)
+        result = yaml.load(loaded, Loader=yaml.FullLoader)  #nosec
     if verify:
         verify(result)
     return result
