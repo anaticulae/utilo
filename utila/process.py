@@ -8,8 +8,59 @@
 # =============================================================================
 
 import concurrent
+import os
+import subprocess
 
 import utila
+
+
+def run(
+        cmd: str,
+        cwd: str = None,
+        env: dict = None,
+        expect: bool = True,
+        verbose: bool = False,
+) -> subprocess.CompletedProcess:
+    """Run external process
+
+    Args:
+        cmd(str): command to run
+        cwd(str): current working directory
+        env(dict): modify environment variable for test run. If nothing is
+                   passed, the global environment variable is used.
+        expect(bool): if True: fail on error
+                      if False: fail on success
+                      if None: return completed process
+        verbose(bool): log executed command and location
+    Returns:
+        Completed process.
+    """
+    cwd = cwd if cwd else os.getcwd()
+    assert os.path.exists(cwd)
+    msg = f'cwd {cwd} is not a valid directory'
+    assert os.path.isdir(cwd), msg
+
+    env = os.environ if env is None else env
+
+    if verbose:
+        utila.log(f'cd {cwd}')
+        utila.log(cmd)
+
+    completed = subprocess.run(
+        cmd,
+        cwd=cwd,
+        env=env,
+        errors='replace',
+        shell=True,
+        stderr=subprocess.PIPE,
+        stdout=subprocess.PIPE,
+        universal_newlines=True,
+    )
+    if expect is True:
+        assert_success(completed)
+    if expect is False:
+        assert_failure(completed)
+    return completed
 
 
 def run_parallel(
@@ -31,7 +82,7 @@ def run_parallel(
     """
     ret = 0
     with concurrent.futures.ThreadPoolExecutor(max_workers=worker) as executor:
-        todo = {executor.submit(utila.run, cmd, cwd): cmd for cmd in items}
+        todo = {executor.submit(run, cmd, cwd): cmd for cmd in items}
         for future in concurrent.futures.as_completed(todo):
             current = todo[future]
             try:
@@ -45,3 +96,24 @@ def run_parallel(
     if expect is False:
         assert ret >= utila.FAILURE, str(ret)
     return ret
+
+
+def assert_success(process: subprocess.CompletedProcess):
+    """Ensure that `process` completed correctly, if not a formated
+    information is logged"""
+    assert process, str(process)
+    assert process.returncode == utila.SUCCESS, utila.format_completed(process)
+
+
+def assert_failure(process: subprocess.CompletedProcess):
+    """Ensure that `process` fails. If process completed correctly, a
+    formated information is logged."""
+    assert process, str(process)
+    assert process.returncode != utila.SUCCESS, utila.format_completed(process)
+
+
+def returncode(exeception: Exception) -> int:
+    """Determine return code raised from exit()"""
+    msg = 'process return `None` as returnvalue instead of returncode'
+    assert exeception.value is not None, msg
+    return int(str(exeception.value))

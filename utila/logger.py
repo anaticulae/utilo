@@ -256,3 +256,17 @@ class SkipCollector:
 
     def __exit__(self, exc_type, exc_value, traceback):  # pylint:disable=W0621
         self.log()
+
+
+def log_raw(content: str):
+    """Print `content` which raises an AssertError. Fix encoding if
+    non-utf8 character are printed.
+
+    Hint: Avoid using print() to reduse finding 'print' when searching
+    in code base.
+
+    Example:
+        asssert len(abc) > 100, utila.log_raw(abc)
+    """
+    content = utila.string.fix_encoding(content)
+    print(content, flush=True)

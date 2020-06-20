@@ -21,6 +21,7 @@ currently tested:
 import os
 
 import pytest
+import utilatest
 
 import tests.feature.runner
 import utila
@@ -145,7 +146,7 @@ def test_write_list_of_tuple(testdir, monkeypatch):
 
 
 def test_write_selective_datatype(testdir, monkeypatch):
-    with utila.increased_filecount(testdir.tmpdir, mindiff=2, maxdiff=2):
+    with utilatest.increased_filecount(testdir.tmpdir, mindiff=2, maxdiff=2):
         run_playground('--datatype', {}, testdir, monkeypatch)
     path = os.path.join(testdir.tmpdir, 'testfield__datatype_selected.txt')
     assert os.path.exists(path), path
@@ -160,7 +161,7 @@ def test_write_selective_datatype_multi(testdir, monkeypatch):
         (b'\x00\x11\x22', 'testfield__datatype_multi_2.png'),
     ]
 
-    with utila.increased_filecount(testdir.tmpdir, mindiff=4, maxdiff=4):
+    with utilatest.increased_filecount(testdir.tmpdir, mindiff=4, maxdiff=4):
         run_playground('--datatype_multi', {}, testdir, monkeypatch)
 
     for content, filename in expected:
@@ -179,7 +180,7 @@ def test_write_binary_data_disable(testdir, monkeypatch):
 
 def test_write_binary_data_all_and_disable(testdir, monkeypatch):
     # test writing hex file
-    with utila.increased_filecount(mindiff=3):
+    with utilatest.increased_filecount(mindiff=3):
         run_playground('--binary! --all', {}, testdir, monkeypatch)
     expected_path = os.path.join(testdir.tmpdir, 'testfield__binary_binary.hex')
     assert not os.path.exists(expected_path)

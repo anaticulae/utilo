@@ -11,6 +11,7 @@ import os
 import time
 
 import pytest
+import utilatest
 
 import utila
 import utila.logger
@@ -90,7 +91,7 @@ def test_logger_print_env(capsys, monkeypatch):
 
 
 def test_logger_format_completed():
-    completed = utila.run('pingosuperdumpa --help', expect=None)
+    completed = utilatest.run('pingosuperdumpa --help', expect=None)
     formatted = utila.format_completed(completed)
     assert len(formatted) > 150, str(formatted)
     assert 'returncode: 1' in formatted, str(formatted)
