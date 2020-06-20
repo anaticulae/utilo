@@ -22,13 +22,6 @@ import shutil
 import stat
 
 import utila
-from utila.logger import error
-from utila.string import forward_slash
-from utila.utils import FAILURE
-from utila.utils import NEWLINE
-from utila.utils import TMP
-from utila.utils import UTF8
-from utila.utils import chdir
 
 # width of tempfile name
 MAX_NUMBER = 32
@@ -55,7 +48,7 @@ def tmp(root) -> str:
         _, projectname = os.path.split(root)
         path = os.path.join(os.environ[SHARED_TEMP], projectname)
     except KeyError:
-        path = os.path.join(root, TMP)
+        path = os.path.join(root, utila.TMP)
     os.makedirs(path, exist_ok=True)
     return path
 
@@ -76,7 +69,7 @@ def file_append(path: str, content: str, create: bool = False):
     if not os.path.exists(path):
         file_create(path, content)
     else:
-        with open(path, mode='a', newline=NEWLINE, encoding=UTF8) as fp:
+        with open(path, mode='a', newline=utila.NEWLINE, encoding=utila.UTF8) as fp: # yapf:disable
             fp.write(content)
 
 
@@ -93,7 +86,7 @@ def file_create(path: str, content: str = ''):
     parent = os.path.split(path)[0]
     assert os.path.exists(parent) or not parent, f'{parent} does not exists'
     assert not os.path.exists(path), f'{path} already exists'
-    with open(path, mode='w', newline=NEWLINE, encoding=UTF8) as fp:
+    with open(path, mode='w', newline=utila.NEWLINE, encoding=utila.UTF8) as fp:
         fp.write(content)
 
 
@@ -116,7 +109,7 @@ def file_create_binary(path: str, content: bytes = b''):
 
 def file_read(path: str):
     assert os.path.exists(path), path
-    with open(path, mode='r', newline=NEWLINE, encoding=UTF8) as fp:
+    with open(path, mode='r', newline=utila.NEWLINE, encoding=utila.UTF8) as fp:
         return fp.read()
 
 
@@ -151,7 +144,7 @@ def file_replace(path: str, content: str):
     if current_content == content:
         return
 
-    with open(path, mode='w', newline=NEWLINE, encoding=UTF8) as fp:
+    with open(path, mode='w', newline=utila.NEWLINE, encoding=utila.UTF8) as fp:
         fp.write(content)
 
 
@@ -261,8 +254,8 @@ def file_copy(
         os.makedirs(parent, exist_ok=True)
         shutil.copy(source, destination)
     except OSError:
-        error(f'could not overwrite: {destination}')
-        exit(FAILURE)
+        utila.error(f'could not overwrite: {destination}')
+        exit(utila.FAILURE)
 
 
 def file_count(path: str, ext: str = None, recursive: bool = True) -> int:
@@ -336,7 +329,7 @@ def file_name(path: str) -> str:
     'ext'
     """
     assert path
-    path = forward_slash(path)
+    path = utila.forward_slash(path)
     try:
         _, name = path.rsplit('/', 1)
     except ValueError:
@@ -362,7 +355,7 @@ def file_ext(path: str) -> str:
     True
     """
     assert path
-    path = forward_slash(path)
+    path = utila.forward_slash(path)
     try:
         _, name = path.rsplit('/', 1)
     except ValueError:
@@ -382,7 +375,7 @@ def files_sort(files: list) -> list:
     >>> files_sort(('/c/a', '/c/200.txt', '/c/2.txt', '/c/3', '/c/0.bmp'))
     ['/c/0.bmp', '/c/2.txt', '/c/3', '/c/200.txt', '/c/a']
     """
-    files = [forward_slash(item) for item in files]
+    files = [utila.forward_slash(item) for item in files]
 
     def number_filename(item):
         # sort file names if they are numbers: 0,1,2,3,4,5,6,7,8,9,10
@@ -484,7 +477,7 @@ def copy_content(  # pylint:disable=R1260
 
     pattern = f'**/{pattern}' if recursive else pattern
 
-    with chdir(source):
+    with utila.chdir(source):
         selected = list(glob.glob(pattern, recursive=recursive))
 
     for item in selected:
@@ -635,8 +628,8 @@ def make_relative(path: str, root: str = None) -> str:
     """
     if root is None:
         root = os.getcwd()
-    root = forward_slash(root)
-    path = forward_slash(path)
+    root = utila.forward_slash(root)
+    path = utila.forward_slash(path)
 
     path = path.replace(root, '')
     if path[0] == '/':
@@ -695,7 +688,7 @@ def make_package(path: str, root: str = None) -> str:
     if root is not None:
         root = str(root)
         path = make_relative(path, root=root)
-    path = forward_slash(path)
+    path = utila.forward_slash(path)
     path = path.replace('.py', '')
     path = path.replace('/', '.')
     return path
@@ -717,7 +710,7 @@ def assert_file(files, filetype: str):
     raises = 0
     for item in files:
         if not item.endswith('.%s' % filetype):
-            error('No %s file: %s' % (filetype, item))
+            utila.error('No %s file: %s' % (filetype, item))
             raises += 1
     assert not raises, 'wrong file types'
 
