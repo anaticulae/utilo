@@ -131,6 +131,7 @@ from utila.logger import level_setup
 from utila.logger import level_temp
 from utila.logger import log
 from utila.logger import log_args
+from utila.logger import log_raw
 from utila.logger import log_stacktrace
 from utila.logger import outfile
 from utila.logger import print_env
@@ -188,6 +189,10 @@ from utila.pages import select_pages
 from utila.pages import should_skip
 from utila.pages import sync_pages
 # process
+from utila.process import assert_failure
+from utila.process import assert_success
+from utila.process import returncode
+from utila.process import run
 from utila.process import run_parallel
 # regex
 from utila.regex import extract_match
@@ -198,29 +203,6 @@ from utila.string import from_tuple
 from utila.string import istemplate_replaced
 from utila.string import normalize_whitespaces
 from utila.string import parse_tuple
-# Tests
-from utila.test import FASTRUN
-from utila.test import LONGRUN
-from utila.test import NIGHTLY
-from utila.test import VIRTUAL
-from utila.test import assert_failure
-from utila.test import assert_run
-from utila.test import assert_run_fail
-from utila.test import assert_success
-from utila.test import clean_install
-from utila.test import increased_filecount
-from utila.test import install_and_run
-from utila.test import log_raw
-from utila.test import open_webbrowser
-from utila.test import run
-from utila.test import run_command
-from utila.test import simplify_testfile_names
-from utila.test import single_execution
-from utila.test import skip_longrun
-from utila.test import skip_nightly
-from utila.test import skip_nonvirtual
-from utila.test import skip_virtual
-from utila.test import write_capsys
 # Typerchecker
 from utila.typechecker import Strings
 from utila.typechecker import assert_type_list
@@ -238,7 +220,6 @@ from utila.utils import isnumber
 from utila.utils import make_tuple
 from utila.utils import nothing
 from utila.utils import ranged_tuple
-from utila.utils import returncode
 from utila.utils import select_type
 from utila.utils import str2bool
 from utila.utils import str2int

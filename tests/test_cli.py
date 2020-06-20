@@ -10,9 +10,7 @@ import os
 import sys
 
 import pytest
-from pytest import fixture
-from pytest import mark
-from pytest import raises
+import utilatest
 
 import utila.cli
 from utila import INVALID_COMMAND
@@ -31,8 +29,6 @@ from utila import userflag_to_arg
 from utila.cli import ParserConfiguration
 from utila.cli import create_parser
 from utila.cli import sort
-from utila.test import run
-from utila.test import skip_nonvirtual
 
 
 def test_cli_parse_args(monkeypatch):
@@ -66,7 +62,7 @@ def test_cli_parse_args(monkeypatch):
     assert '--nothing' in args
 
 
-@mark.parametrize('prefix', [True, False])
+@pytest.mark.parametrize('prefix', [True, False])
 def test_cli_prefix_activation(monkeypatch, prefix):
     todo = [
         Flag(longcut='--longcut', message='display longcuts'),
@@ -93,7 +89,7 @@ def test_cli_prefix_activation(monkeypatch, prefix):
 def test_cli_non_existing_input(tmpdir, monkeypatch):
     """Non existing input will raise an SystemExit error with value > 0"""
     result = None
-    with raises(SystemExit) as result:
+    with pytest.raises(SystemExit) as result:
         create_and_run_parser(
             tmpdir,
             monkeypatch,
@@ -141,7 +137,7 @@ def test_cli_relative_output(tmpdir, monkeypatch):
 
 def test_cli_file_as_output(tmpdir, monkeypatch):
     file_create(os.path.join(tmpdir, 'test.txt'), 'I am a file.')
-    with raises(SystemExit) as result:
+    with pytest.raises(SystemExit) as result:
         create_and_run_parser(
             tmpdir,
             monkeypatch,
@@ -162,26 +158,26 @@ parser.parse_args()
 """
 
 
-@skip_nonvirtual
+@utilatest.skip_nonvirtual
 def test_cli_parse_required_command_missing(tmpdir):
     runner = os.path.join(tmpdir, 'run.py')
     file_create(runner, RUN_ME % forward_slash(ROOT))
 
     command = 'python "%s"' % runner
-    completed = run(command, tmpdir, expect=False)
+    completed = utilatest.run(command, tmpdir, expect=False)
 
     in_stderr = 'the following arguments are required'
     assert in_stderr in completed.stderr
     assert completed.returncode > 0, str(completed)
 
 
-@skip_nonvirtual
+@utilatest.skip_nonvirtual
 def test_cli_parse_required_command(tmpdir):
     runner = os.path.join(tmpdir, 'run.py')
     file_create(runner, RUN_ME % forward_slash(ROOT))
 
     command = 'python "%s" -a Samba' % runner
-    completed = run(command, tmpdir)
+    completed = utilatest.run(command, tmpdir)
 
     assert completed.returncode == 0, str(completed)
 
@@ -202,7 +198,7 @@ print(sources(args))
 """
 
 
-@fixture
+@pytest.fixture
 def parser_example(tmpdir):
     runner = os.path.join(tmpdir, 'empty.py')
     config = ("config=ParserConfiguration('inputparameter=True, "
@@ -213,39 +209,39 @@ def parser_example(tmpdir):
     return cwd, runner
 
 
-@skip_nonvirtual
+@utilatest.skip_nonvirtual
 def test_cli_parse_empty_parser_help(parser_example):  # pylint: disable=W0621
     """Test default parser with --help"""
     cwd, runner = parser_example
     command = 'python "%s" --help' % runner
-    completed = run(command, cwd)
+    completed = utilatest.run(command, cwd)
 
     assert completed.returncode == SUCCESS, str(completed)
 
 
-@skip_nonvirtual
+@utilatest.skip_nonvirtual
 def test_cli_parser_source_in_out(parser_example):  # pylint: disable=W0621
     """Test default parser with --help"""
     cwd, runner = parser_example
     file_append(runner, SOURCES)
 
     command = 'python "%s" -i %s -o out.file' % (runner, runner)
-    completed = run(command, cwd, expect=False)
+    completed = utilatest.run(command, cwd, expect=False)
 
     assert completed.returncode == INVALID_COMMAND, str(completed)
 
 
-@skip_nonvirtual
+@utilatest.skip_nonvirtual
 def test_cli_parse_empty_parser_version(parser_example):  # pylint: disable=W0621
     """Test default parser with --version"""
     cwd, runner = parser_example
     command = 'python "%s" --version' % runner
-    completed = run(command, cwd, expect=False)
+    completed = utilatest.run(command, cwd, expect=False)
 
     assert completed.returncode == INVALID_COMMAND, str(completed)
 
 
-@skip_nonvirtual
+@utilatest.skip_nonvirtual
 def test_cli_parse_version_parser_version(tmpdir):
     """Test version parser with --version flag"""
     version = "1.1.1"
@@ -258,11 +254,11 @@ def test_cli_parse_version_parser_version(tmpdir):
     file_create(runner, parser)
 
     cmd = f'python {runner} --version'
-    completed = run(cmd, tmpdir)
+    completed = utilatest.run(cmd, tmpdir)
     assert completed.stdout.strip() == version
 
     cmd = f'python {runner} --verbose --version '
-    completed = run(cmd, tmpdir)
+    completed = utilatest.run(cmd, tmpdir)
     assert completed.stdout.strip() == f'testo {version}'
 
 
@@ -296,7 +292,7 @@ def create_and_run_parser(
     return inpath, outpath
 
 
-@mark.parametrize('singlefile', [True, False])
+@pytest.mark.parametrize('singlefile', [True, False])
 def test_cli_singlefile_input(testdir, monkeypatch, singlefile):
     """Test reading a file direct from input
 
@@ -333,7 +329,7 @@ def test_cli_singlefile_input(testdir, monkeypatch, singlefile):
         )
         assert inpath == [filepath], 'singleinp does not deliver the right path'
     else:
-        with raises(SystemExit) as result:
+        with pytest.raises(SystemExit) as result:
             argv = ['-i', filepath, '-o', root]
             create_and_run_parser(
                 testdir,
