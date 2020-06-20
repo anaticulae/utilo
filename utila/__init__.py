@@ -212,7 +212,6 @@ from utila.test import increased_filecount
 from utila.test import install_and_run
 from utila.test import log_raw
 from utila.test import open_webbrowser
-from utila.test import returncode
 from utila.test import run
 from utila.test import run_command
 from utila.test import simplify_testfile_names
@@ -239,6 +238,7 @@ from utila.utils import isnumber
 from utila.utils import make_tuple
 from utila.utils import nothing
 from utila.utils import ranged_tuple
+from utila.utils import returncode
 from utila.utils import select_type
 from utila.utils import str2bool
 from utila.utils import str2int

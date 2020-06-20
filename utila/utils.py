@@ -185,3 +185,10 @@ def isnumber(item: str) -> bool:
         _ = int(item)
         return True
     return False
+
+
+def returncode(exeception: Exception) -> int:
+    """Determine return code raised from exit()"""
+    msg = 'process return `None` as returnvalue instead of returncode'
+    assert exeception.value is not None, msg
+    return int(str(exeception.value))

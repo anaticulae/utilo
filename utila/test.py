@@ -160,13 +160,6 @@ def install_and_run(root, package, executable=None):
     assert completed.returncode == SUCCESS, completed.stdout + completed.stderr
 
 
-def returncode(exeception: Exception) -> int:
-    """Determine return code raised from exit()"""
-    msg = 'process return `None` as returnvalue instead of returncode'
-    assert exeception.value is not None, msg
-    return int(str(exeception.value))
-
-
 def assert_success(process: subprocess.CompletedProcess):
     """Ensure that `process` completed correctly, if not a formated
     information is logged"""
