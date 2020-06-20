@@ -2,6 +2,16 @@
 
 Every noteable change is logged here.
 
+## v1.26.0
+
+### Feature
+
+* add longest, shortest and group by diff selector (a6342c47258a)
+
+### Documentation
+
+* improve text style (78694fff05af)
+
 ## v1.25.1
 
 ### Fix
