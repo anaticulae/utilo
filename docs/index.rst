@@ -19,9 +19,10 @@ Welcome to write it once
 Modules
 --------------------
 .. toctree::
+   :glob:
    :maxdepth: 2
 
-   .tmp/modules
+   .tmp/utila*
 
 Indices and tables
 ==================
