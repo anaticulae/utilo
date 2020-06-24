@@ -41,6 +41,7 @@ from utila.cli import parse
 from utila.cli import sources
 from utila.cli import userflag_to_arg
 # collection
+from utila.collection import Buckets
 from utila.collection import Single
 from utila.collection import make_unique
 # config
