@@ -38,8 +38,7 @@ def common_items(
         ]
     """
     assert min_elements >= 1, str(min_elements)
-    if selector is None:
-        selector = lambda x: x[0]
+    selector = selector if selector else lambda x: x[0]
     flat = utila.flatten(collected)
     assert all([selector(item) is not None for item in flat]), flat
 
@@ -104,8 +103,7 @@ def same_area_cluster(
         min_elements: int = 2,
         selector=None,
 ):
-    if selector is None:
-        selector = lambda x: x[0]
+    selector = selector if selector else lambda x: x[0]
 
     def classificator(candidat, clusteritem, max_difference=max_difference):
 
