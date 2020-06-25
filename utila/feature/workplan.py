@@ -352,7 +352,7 @@ def parallelize(
 REQUIREMENT_SEPARATOR = ':'
 
 
-@utila.refactor(major=2, description='extend documentation')
+# @utila.refactor(major=3, description='extend documentation')
 def input_order(plan, root):
     require = collections.defaultdict(set)
     for step in plan:
