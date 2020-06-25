@@ -7,8 +7,7 @@
 # be prosecuted under federal law. Its content is company confidential.
 # =============================================================================
 
-from utila import same_area_cluster
-from utila import three_side_equal_cluster
+import utila
 
 
 def test_classifier_same_area_cluster():
@@ -20,7 +19,8 @@ def test_classifier_same_area_cluster():
         ((250, 250, 300, 300), 'D'),
     ]
 
-    clusters = same_area_cluster(todo, max_difference=0.0)
+    clusters = utila.same_area_cluster(todo, max_difference=0.0)
+    clusters = [item[:] for item in clusters]
 
     expected = [[
         ((0, 0, 50, 50), 'A'),
@@ -40,7 +40,7 @@ def test_classifier_three_side_equal():
         ((200, 200, 250, 250), 'E'),
     ]
 
-    clusters = three_side_equal_cluster(todo)
+    clusters = utila.three_side_equal_cluster(todo)
 
     expected = [[
         ((0, 0, 50, 50), 'A'),

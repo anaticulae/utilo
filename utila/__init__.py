@@ -21,10 +21,14 @@ from utila.alpha import alphabetically
 from utila.alpha import replace
 from utila.alpha import sort
 # Classificator
-from utila.classifier import common_items
-from utila.classifier import determine_cluster
-from utila.classifier import same_area_cluster
-from utila.classifier import three_side_equal_cluster
+from utila.classifier.base import Cluster
+from utila.classifier.base import Clusters
+from utila.classifier.base import clusterme
+from utila.classifier.base import determine_cluster
+from utila.classifier.public import common_items
+from utila.classifier.public import max_distance
+from utila.classifier.public import same_area_cluster
+from utila.classifier.public import three_side_equal_cluster
 # cli
 from utila.cli import INVALID_COMMAND
 from utila.cli import PAGES_FLAG
