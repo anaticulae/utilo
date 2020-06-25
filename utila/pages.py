@@ -186,6 +186,17 @@ def select_pages(
     return result
 
 
+def select_content(
+        items: PageContent,
+        page: int,
+        default: typing.Any = None,
+) -> typing.Any:
+    selected = select_page(items, page=page)
+    if selected:
+        return selected.content
+    return default
+
+
 def sync_pages(
         iterators,
         numbers: bool = True,

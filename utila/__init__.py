@@ -190,6 +190,7 @@ from utila.measure import point
 from utila.measure import points
 # pages
 from utila.pages import parse_pages
+from utila.pages import select_content
 from utila.pages import select_page
 from utila.pages import select_pages
 from utila.pages import should_skip
