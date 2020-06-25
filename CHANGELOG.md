@@ -2,6 +2,18 @@
 
 Every noteable change is logged here.
 
+## v2.1.0
+
+### Feature
+
+* add same line cluster (929c4d85be53)
+* replace with hey cluster code (ef3c4c9445d4)
+* add bucket collector (331c59164739)
+
+### Documentation
+
+* exclude test module from central documentation (3ce6e09cfe9c)
+
 ## v2.0.0
 
 ### Feature
