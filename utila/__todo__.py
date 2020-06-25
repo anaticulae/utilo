@@ -28,8 +28,8 @@ class todo(contextlib.ContextDecorator):  # pylint:disable=C0103
     def __init__(
             self,
             version: str = None,
-            major=1,
-            minor=1,
+            major=None,
+            minor=None,
             patch=None,
             description='todo',
     ):
@@ -43,9 +43,9 @@ class todo(contextlib.ContextDecorator):  # pylint:disable=C0103
         major, minor, patch = [int(item) for item in version.split('.')]
         msg = f'{self.description}: {self.major}.{self.minor}.{self.patch}'
         assert major <= self.major, msg
-        if minor is not None and major == self.major:
+        if self.minor is not None and major == self.major:
             assert minor < self.minor, msg
-        if patch is not None and minor == self.minor:
+        if self.patch is not None and minor == self.minor:
             assert patch < self.patch, msg
 
     def __enter__(self, major=1, minor=1, patch=None):
@@ -60,8 +60,8 @@ class refactor(todo):  # pylint:disable=C0103
     def __init__(
             self,
             version=None,
-            major=1,
-            minor=1,
+            major=None,
+            minor=None,
             patch=None,
             description='time to refactor',
     ):
@@ -79,8 +79,8 @@ class docu(todo):  # pylint:disable=C0103
     def __init__(
             self,
             version=None,
-            major=1,
-            minor=1,
+            major=None,
+            minor=None,
             patch=None,
             description='extend documentation',
     ):
