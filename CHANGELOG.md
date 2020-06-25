@@ -2,6 +2,13 @@
 
 Every noteable change is logged here.
 
+## v2.1.1
+
+### Fix
+
+* fix todo decorator (ee6899fc6ced)
+* move required todo to a later release (2027faf605b9)
+
 ## v2.1.0
 
 ### Feature
