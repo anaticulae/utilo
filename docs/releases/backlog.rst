@@ -22,3 +22,5 @@ backlog
 * EXCLUDE OPTIONAL AND RECURSIVE INPUT
 
 * add select_content method to select content of defined page directly
+
+* add separate cluster project
