@@ -28,6 +28,7 @@ from utila.classifier.base import determine_cluster
 from utila.classifier.public import common_items
 from utila.classifier.public import max_distance
 from utila.classifier.public import same_area_cluster
+from utila.classifier.public import same_line_cluster
 from utila.classifier.public import three_side_equal_cluster
 # cli
 from utila.cli import INVALID_COMMAND

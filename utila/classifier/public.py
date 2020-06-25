@@ -135,3 +135,20 @@ def same_area_cluster(
         classificator,
         min_elements=min_elements,
     )
+
+
+def same_line_cluster(
+        todo,
+        max_difference: float = 10.0,
+        min_elements: int = 1,
+):
+
+    def classifier(candidat, clusteritem, max_difference=max_difference):
+
+        def matcher(candidat, clusteritem):
+            diff = math.fabs(candidat.y1 - clusteritem.y1)
+            return diff <= max_difference
+
+        return matcher(candidat, clusteritem)
+
+    return utila.determine_cluster(todo, classifier, min_elements=min_elements)
