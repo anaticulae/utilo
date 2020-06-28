@@ -173,6 +173,19 @@ def ranged_tuple(start, end) -> tuple:
     return tuple(range(start, end))
 
 
+def ranges(start: float, stop: float, step: float):
+    """\
+    >>> list(ranges(50, 90, 5))
+    [50, 55, 60, 65, 70, 75, 80, 85, 90]
+    """
+    assert start <= stop
+    assert step > 0
+
+    while start <= stop:
+        yield start
+        start += step
+
+
 def isnumber(item: str) -> bool:
     """Check if `item` is a number.
 
