@@ -21,6 +21,26 @@ def make_unique(items):
     return result
 
 
+def partition(key, items):
+    """\
+    >>> partition(key=None, items=(1, 2, 3))
+    ((1, 2, 3), [])
+    >>> partition(lambda x: x%2 == 0, [1, 2, 3, 4, 5])
+    ([2, 4], [1, 3, 5])
+    """
+    matched = []
+    not_matched = []
+    if key is None:
+        return items[:], []
+    for item in items:
+        if key(item):
+            matched.append(item)
+        else:
+            not_matched.append(item)
+
+    return matched, not_matched
+
+
 class Single:
     """Ensure to use item only once."""
 

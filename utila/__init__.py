@@ -49,6 +49,7 @@ from utila.cli import userflag_to_arg
 from utila.collection import Buckets
 from utila.collection import Single
 from utila.collection import make_unique
+from utila.collection import partition
 # config
 from utila.config import dump_config
 from utila.config import load_config
