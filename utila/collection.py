@@ -7,6 +7,8 @@
 # be prosecuted under federal law. Its content is company confidential.
 # =============================================================================
 
+import random
+
 import utila
 
 
@@ -39,6 +41,26 @@ def partition(key, items):
             not_matched.append(item)
 
     return matched, not_matched
+
+
+def choose_random(items, count: int = 5) -> list:
+    """Chose `count` random items of a collection
+
+    >>> choose_random((5, 5, 5, 5, 5, 5), count=2)
+    [5, 5]
+
+    Hint:
+        This process does not change the source collection. There are no
+        side effects.
+    Args:
+        items(list): data collection to select random items
+        count(int): number of items to retun
+    Returns:
+        `count` selected items out of collections
+    """
+    items = list(items)  # create a copy
+    random.shuffle(items)
+    return items[0:count]
 
 
 class Single:
