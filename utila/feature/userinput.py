@@ -20,11 +20,13 @@ class Input:
 
 @dataclasses.dataclass  # pylint:disable=R0903
 class Bool(Input):
+
     name: str
 
 
 @dataclasses.dataclass  # pylint:disable=R0903
 class Value(Input):
+
     name: str
     typ: str
     defaultvar: str
@@ -45,6 +47,7 @@ class Value(Input):
 
 @dataclasses.dataclass
 class Pattern(Input):
+
     name: str
     ext: str
     # TODO: EXCLUDE OPTIONAL AND RECURSIVE INPUT
@@ -60,16 +63,22 @@ class Pattern(Input):
 
 @dataclasses.dataclass  # pylint:disable=R0903
 class File(Pattern):
+
     ext: str = 'yaml'
 
 
 @dataclasses.dataclass  # pylint:disable=R0903
 class Directory(Pattern):
+
     ext: str = ''
+
+    def __str__(self):
+        return self.name
 
 
 @dataclasses.dataclass  # pylint:disable=R0903
 class ResultFile(File):
+
     producer: str = 'default'
 
     def __init__(self, producer: str, name: str, optional: bool = False):
