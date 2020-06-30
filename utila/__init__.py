@@ -123,6 +123,8 @@ from utila.group import groupby_diff
 from utila.group import groupby_none
 from utila.group import longest
 from utila.group import shortest
+# hash
+from utila.hash import freehash
 # likelihood
 from utila.likelihood import maxi
 from utila.likelihood import mini
