@@ -52,12 +52,6 @@ def fix_encoding(msg: str) -> str:
     return msg
 
 
-def extract_match(matched: re.Match) -> str:
-    """Extract content out of `re.Match`."""
-    assert isinstance(matched, re.Match), type(matched)
-    return matched.string[matched.span()[0]:matched.span()[1]]
-
-
 def normalize_whitespaces(text: str) -> str:
     r"""Remove unnecessary white spaces.
 
