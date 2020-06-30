@@ -47,6 +47,12 @@ WORKPLAN = [
             ('*', '???'),
         ],
     ),
+    utila.create_step(
+        'hashed',
+        output=[
+            ('{FILEHASH}', 'bin'),
+        ],
+    ),
     # utila.create_step(
     #     'mixed',
     #     output=[

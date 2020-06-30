@@ -11,6 +11,7 @@ import concurrent.futures
 import functools
 import inspect
 import os
+import re
 import typing
 
 import utila
@@ -238,6 +239,7 @@ def write_result_safely(
     try:
         outputstep, result = replace_datatype_pattern(outputstep, result)
         outputstep = replace_star_pattern(outputstep, result)
+        outputstep = replace_filehash_pattern(outputstep, result)
         for path, content in zip(outputstep, result):
             write_resource(path, content)
         return utila.SUCCESS
@@ -255,6 +257,7 @@ def write_resource(path, content):
         for first, second in zip(path, content):
             write_resource(first, second)
         return
+
     # Ensure that parent folder exists. It is possible to create folder
     # via `hello/folder/content.txt`.
     parent, _ = os.path.split(path)
@@ -337,6 +340,49 @@ def replace_star_pattern(outputstep, result):
                 line.append(tuple(it.replace('*', f'{index}') for it in item))
         multiple_start.append(tuple(line))
     return multiple_start
+
+
+def replace_filehash_pattern(outputstep, resultcontent):
+    result = []
+    for path, content in zip(outputstep, resultcontent):
+        if isinstance(path, str):
+            path = replace_filehash(0, path, [content])
+        else:
+            path = [
+                replace_filehash(index, item, content)
+                for index, item in enumerate(path)
+            ]
+        result.append(path)
+    return result
+
+
+def replace_filehash(index: int, path: str, content):
+    if '{FILEHASH}' in path:
+        replacement = utila.freehash(content[index])
+        path = path.replace('{FILEHASH}', replacement)
+        return path
+
+    number = filenumber(path)
+    if number is None:
+        return path
+
+    replacement = utila.freehash(content[number])
+    pattern = '{FILEHASH_' + str(number) + '}'
+    path = path.replace(pattern, replacement)
+    return path
+
+
+def filenumber(item: str) -> int:
+    """\
+    >>> filenumber('{FILEHASH_4}')
+    4
+    """
+    pattern = r'\{FILEHASH\_(?P<number>\d{1,2})\}'
+    matched = re.search(pattern, item)
+    if not matched:
+        return None
+    result = int(matched['number'])
+    return result
 
 
 def select_executor():

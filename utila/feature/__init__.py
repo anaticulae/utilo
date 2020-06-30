@@ -236,9 +236,15 @@ def determine_instance(workplan, typ):
 
 
 def variable_parameter(items: list) -> int:
-    """Count number of path contains *-pattern to replace."""
-    result = len([item for item in items if '*' in item])
+    """Count number of path contains */{FILEHASH}-pattern to replace."""
+    result = [item for item in items if '*' in item or isfilehash(item)]
+    result = len(result)
     return result
+
+
+def isfilehash(item):
+    # {FILEHASH to support {FILEHASH_NUMBER Pattern
+    return '{FILEHASH}' in item or '{FILEHASH' in item
 
 
 def variable_datatype(items: list) -> int:

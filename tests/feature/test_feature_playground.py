@@ -184,3 +184,16 @@ def test_write_binary_data_all_and_disable(testdir, monkeypatch):
         run_playground('--binary! --all', {}, testdir, monkeypatch)
     expected_path = os.path.join(testdir.tmpdir, 'testfield__binary_binary.hex')
     assert not os.path.exists(expected_path)
+
+
+def test_run_hashed_step(testdir, monkeypatch):
+    with utilatest.increased_filecount(mindiff=3):
+        run_playground('--hashed', {}, testdir, monkeypatch)
+
+    current = utila.file_list(testdir.tmpdir, include='bin')
+    assert len(current) == 2
+
+    expected_first = utila.freehash(b'second')
+    assert expected_first in current[0]
+    expected_second = utila.freehash(b'imageinfo')
+    assert expected_second in current[1]
