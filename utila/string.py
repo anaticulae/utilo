@@ -10,9 +10,6 @@
 import re
 import sys
 
-import utila.math
-import utila.utils
-
 
 def forward_slash(content: str, newline: bool = False) -> str:
     r"""Replace every backward slash \\ with an forward slash /.
@@ -61,39 +58,10 @@ def extract_match(matched: re.Match) -> str:
     return matched.string[matched.span()[0]:matched.span()[1]]
 
 
-def parse_tuple(raw: str, length: int = 4, typ=float) -> tuple:
-    """Convert `raw` to tuple of `typ`.
-
-    >>> parse_tuple('True false True False true', length=5, typ=bool)
-    (True, False, True, False, True)
-    """
-    if typ is int:
-        typ = utila.str2int
-    if typ is bool:
-        typ = utila.str2bool
-    items = (typ(item) for item in raw.split())
-    if typ is float:
-        items = utila.math.roundme(*items)
-    items = tuple(items)
-    assert len(items) == length, f'could not parse {raw}'
-    return items
-
-
-def from_tuple(item: tuple, separator: str = ' ') -> str:
-    """Convert tuple to str.
-
-    >>> from_tuple((1.22, 5.0, 3))
-    '1.22 5.0 3'
-    >>> from_tuple((5, 6, 7), separator=', ')
-    '5, 6, 7'
-    """
-    return separator.join(str(x) for x in item)
-
-
 def normalize_whitespaces(text: str) -> str:
-    """Remove unnecessary white spaces.
+    r"""Remove unnecessary white spaces.
 
-    >>> normalize_whitespaces(' make    me happy' + utila.NEWLINE)
+    >>> normalize_whitespaces(' make    me happy' + '\n')
     'make me happy'
     """
     return ' '.join(text.strip().split())

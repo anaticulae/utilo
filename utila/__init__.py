@@ -54,6 +54,8 @@ from utila.collection import partition
 # config
 from utila.config import dump_config
 from utila.config import load_config
+from utila.convert import str2bool
+from utila.convert import str2int
 # Time
 from utila.datetime import current
 from utila.datetime import filetime
@@ -208,14 +210,19 @@ from utila.regex import extract_match
 # string
 from utila.string import fix_encoding
 from utila.string import forward_slash
-from utila.string import from_tuple
 from utila.string import istemplate_replaced
 from utila.string import normalize_whitespaces
-from utila.string import parse_tuple
+# tuples
+from utila.tuples import from_tuple
+from utila.tuples import make_tuple
+from utila.tuples import parse_tuple
+from utila.tuples import ranged_tuple
+from utila.tuples import ranges
 # Typerchecker
 from utila.typechecker import Strings
 from utila.typechecker import assert_type_list
 from utila.typechecker import checkdatatype
+from utila.typechecker import isnumber
 from utila.typechecker import isstrings
 # Utils
 from utila.utils import FAILURE
@@ -226,14 +233,8 @@ from utila.utils import TMP
 from utila.utils import UTF8
 from utila.utils import chdir
 from utila.utils import flatten
-from utila.utils import isnumber
-from utila.utils import make_tuple
 from utila.utils import nothing
-from utila.utils import ranged_tuple
-from utila.utils import ranges
 from utila.utils import select_type
-from utila.utils import str2bool
-from utila.utils import str2int
 
 ROOT = os.path.abspath(os.path.join(os.path.dirname(__file__), '..'))
 PACKAGENAME = 'utila'

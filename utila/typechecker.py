@@ -7,6 +7,7 @@
 # be prosecuted under federal law. Its content is company confidential.
 # =============================================================================
 
+import contextlib
 import functools
 import inspect
 import typing
@@ -84,3 +85,17 @@ def assert_type_list(items, types):
     assert isinstance(items, list), type(items)
     verified = [isinstance(item, types) for item in items]
     assert all(verified), str(verified)
+
+
+def isnumber(item: str) -> bool:
+    """Check if `item` is a number.
+
+    >>> isnumber('ten')
+    False
+    >>> isnumber(10.5)
+    True
+    """
+    with contextlib.suppress(ValueError):
+        _ = int(item)
+        return True
+    return False

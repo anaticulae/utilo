@@ -11,7 +11,6 @@ import contextlib
 import os
 
 import utila
-import utila.utils
 
 
 def read(config: str) -> dict:
@@ -35,7 +34,7 @@ def read(config: str) -> dict:
             utila.error(f'could not parse {item}')
             continue
         if value.lower() in ('true', 'false'):
-            result[name] = utila.utils.str2bool(value)
+            result[name] = utila.str2bool(value)
             continue
         with contextlib.suppress(ValueError):
             value = int(value)

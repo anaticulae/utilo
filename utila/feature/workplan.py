@@ -132,9 +132,9 @@ def prepare_variables(variables, args):
         typ = variable.typ
         if typ is bool:
             # convert cause every non empty string is converted to true
-            typ = utila.utils.str2bool
+            typ = utila.str2bool
         if typ is int:
-            typ = utila.utils.str2int
+            typ = utila.str2int
         try:
             values = args[variable.name]
             defaultvalues = typ(variable.defaultvar)
