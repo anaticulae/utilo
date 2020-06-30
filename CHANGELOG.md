@@ -2,6 +2,21 @@
 
 Every noteable change is logged here.
 
+## v2.2.0
+
+### Feature
+
+* add {FILEHASH} to make file name dependent on file content (772e838fe003)
+* add freehash to simplify hashing non secure data (bae9d80f267e)
+* add method to choose random items (2a56320e917c)
+* add partition method to divide iterator (1b2d8bbf22cf)
+* add ranges method with float steps (a960ca6e617a)
+* add method to select page content directly (1b97938b4fd4)
+
+### Fix
+
+* fix directory pattern (9ed0721a6fd6)
+
 ## v2.1.1
 
 ### Fix
