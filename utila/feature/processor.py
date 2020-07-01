@@ -246,7 +246,7 @@ def write_result_safely(
     except TypeError as msg:
         utila.error(f'while processing {processstep}')
         utila.error('wrong return value')
-        utila.error(f'current return value: {result}')
+        utila.error(utila.shrink(result, maxlength=100))
         utila.error(msg)
         return utila.FAILURE
 
