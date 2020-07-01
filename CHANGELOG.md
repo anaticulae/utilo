@@ -2,6 +2,19 @@
 
 Every noteable change is logged here.
 
+## v2.3.0
+
+### Feature
+
+* add support for multiple directory groups (b6b892be5918)
+* shrink output error of failing cli processes (2c7dd8612253)
+* add method to shrink string to maximum length (ec82c7d4e5c8)
+
+### Fix
+
+* fix logging of wrong pattern (3f378090d4ae)
+* hash non bytes, non str data correctly (3df10219f130)
+
 ## v2.2.0
 
 ### Feature
