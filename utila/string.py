@@ -84,10 +84,18 @@ def shrink(content: str, maxlength: int = 300) -> str:
     'bytes[...]bytes'
     >>> shrink('abcdefg')
     'abcdefg'
+
+    without converting list to str, this example would produce a longt
+    string, cause max length will check against list length:
+    >>> shrink(['a'*1000]*5, 6)
+    "['a[...]a']"
     """
     assert maxlength >= 0, str(maxlength)
     if isinstance(content, bytes):
         content = content.decode('utf8', errors='replace')
+    else:
+        # convert list, int etc. to str
+        content = str(content)
     if len(content) <= maxlength:
         return content
     half = int(maxlength / 2)
