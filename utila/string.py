@@ -74,3 +74,24 @@ def istemplate_replaced(text: str):
     if '%}' in text:
         return False
     return True
+
+
+def shrink(content: str, maxlength: int = 300) -> str:
+    """\
+    >>> shrink('abcdefg', maxlength=6)
+    'abc[...]efg'
+    >>> shrink(b'bytesbytesbytes', maxlength=10)
+    'bytes[...]bytes'
+    >>> shrink('abcdefg')
+    'abcdefg'
+    """
+    assert maxlength >= 0, str(maxlength)
+    if isinstance(content, bytes):
+        content = content.decode('utf8', errors='replace')
+    if len(content) <= maxlength:
+        return content
+    half = int(maxlength / 2)
+    before = content[0:half]
+    after = content[-half:]
+    result = f'{before}[...]{after}'
+    return result

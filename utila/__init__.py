@@ -214,6 +214,7 @@ from utila.string import fix_encoding
 from utila.string import forward_slash
 from utila.string import istemplate_replaced
 from utila.string import normalize_whitespaces
+from utila.string import shrink
 # tuples
 from utila.tuples import from_tuple
 from utila.tuples import make_tuple
