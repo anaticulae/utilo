@@ -101,19 +101,30 @@ def read_workplan(  # pylint:disable=too-many-locals
 def group_multiple_directories(inputs: list) -> list:
     """Merge morge than one directory into the first directory bucket."""
     result = []
-    first_directory = None
-    for index, item in enumerate(inputs):
-        if item[0] == '?':
-            # remove question mark to convert to useable path.
-            item = item[1:]
-            if first_directory is None:
-                first_directory = index
-                result.append([item])
-            else:
-                result[first_directory].append(item)
+    multiple_bucket = collections.defaultdict(list)
+    for item in inputs:
+        counted = count_questionsmarks(item)
+        if not counted:
+            result.append(item)
             continue
-        result.append(item)
+        if not multiple_bucket[counted]:
+            # add new multiple bucket
+            result.append(multiple_bucket[counted])
+        # remove questions marks
+        without_questionmarks = item[counted:]
+        # insert into correct multiple bucket
+        multiple_bucket[counted].append(without_questionmarks)
     return result
+
+
+def count_questionsmarks(item: str):
+    """\
+    >>> count_questionsmarks('????C:/datum/info.xml')
+    4
+
+    TODO: We do not ignore questions marks in path
+    """
+    return item.count('?')
 
 
 def prepare_variables(variables, args):
@@ -169,7 +180,7 @@ def prepare_inputs(  # pylint:disable=too-many-locals,too-complex,too-many-branc
     result = []
     # single file input
     search_location = ' '.join(inspaces)
-    for item in inputs:
+    for index, item in enumerate(inputs, start=1):
         lastinput = item == inputs[-1]
         if not isinstance(item, utila.feature.userinput.Pattern):
             utila.info(f'skipping input `{item}`, require `Pattern')
@@ -210,7 +221,8 @@ def prepare_inputs(  # pylint:disable=too-many-locals,too-complex,too-many-branc
                 # Mark `?` to not check existence of folder and group
                 # multiple directories which are produced by -i flags to a
                 # single entry.
-                result.append(f'?{directory_path}')
+                question_group = '?' * index
+                result.append(f'{question_group}{directory_path}')
             else:
                 _, filename = os.path.split(inspace)
                 if '.' in filename and filename[0] != '.':  # .tmp
