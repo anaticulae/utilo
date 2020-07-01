@@ -320,6 +320,12 @@ def replace_star_pattern(outputstep, result):
     variable_returnvalues = utila.feature.variable_parameter(outputstep)
     if not variable_returnvalues:
         return outputstep
+    starpattern = [item for item in outputstep if '*' in item]  # HACK
+    if not starpattern:
+        # TODO: REMOVE THIS HACK, CHANGE CHECK IN VARIABLE PARAMETER
+        # THIS HACK IS REQUIRED CAUSE START PATTEN RESOLVER HANDLES STEPS
+        # WITH VARIABLE EXTENTION NOT CORRECTLY
+        return outputstep
     # Create parent folder if required:
     # cli_example__multistep_pages/view_*.html
     # adding list of files in parent folder is possible.
