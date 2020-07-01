@@ -19,7 +19,11 @@ def freehash(data: bytes, digits=16) -> str:
     '2635759800462057793e'
     >>> freehash('this is string data', digits=5)
     '89299ad12d'
+    >>> freehash(13371337, digits=20)
+    'c4352ad929a1a77871951c66835d0b3975df24d8'
     """
+    if not isinstance(data, (bytes, str)):
+        data = str(data)
     if isinstance(data, str):
         # convert to byte
         data = data.encode('utf8', errors='ignore')
