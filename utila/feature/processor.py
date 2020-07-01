@@ -266,8 +266,13 @@ def write_resource(path, content):
     # write content to file.
     if isinstance(content, str):
         utila.file_replace(path, content)
+        return
     if isinstance(content, bytes):
         utila.file_replace_binary(path, content)
+        return
+    utila.error(f'invalid content type: {type(content)}')
+    utila.error(utila.shrink(content))
+    exit(utila.FAILURE)
 
 
 def replace_datatype_pattern(outputstep, result):  # pylint:disable=R1260
