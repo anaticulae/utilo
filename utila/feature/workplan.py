@@ -93,7 +93,6 @@ def read_workplan(  # pylint:disable=too-many-locals
         function_call = functools.partial(caller, *inputs)
 
         result.append(utila.feature.WorkStep(name, function_call, outputs))
-
     if ret and verify:
         exit(utila.FAILURE)
     return result
@@ -172,8 +171,8 @@ def prepare_inputs(  # pylint:disable=too-many-locals,too-complex,too-many-branc
     search_location = ' '.join(inspaces)
     for item in inputs:
         lastinput = item == inputs[-1]
-        utila.info(f'skipping input `{item}`, require `Pattern')
         if not isinstance(item, utila.feature.userinput.Pattern):
+            utila.info(f'skipping input `{item}`, require `Pattern')
             continue
         (name, ext) = item.name, item.ext
         for inspace in inspaces:
