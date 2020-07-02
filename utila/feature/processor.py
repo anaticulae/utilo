@@ -276,6 +276,16 @@ def write_resource(path, content):
 
 
 def replace_datatype_pattern(outputstep, result):  # pylint:disable=R1260
+
+    def replace_ext(path, ext):
+        if '???' not in path:
+            return path
+        # TODO: THIS IS JUST A HACK, WHICH PREVENT PROBLEMS IN PATTERN
+        # REPLACER
+        path = path.replace('{FILEHASHS}', '{FILEHASH}')
+        result = path.replace('???', ext)
+        return result
+
     # TODO: DIRTY
     datatype = utila.feature.variable_datatype(outputstep)
     parameter = utila.feature.variable_parameter(outputstep)
@@ -283,7 +293,7 @@ def replace_datatype_pattern(outputstep, result):  # pylint:disable=R1260
         if len(outputstep) == 1:
             if isinstance(result, tuple):
                 result, ext = result
-                outputstep = [outputstep[0].replace('???', ext)]
+                outputstep = [replace_ext(outputstep[0], ext)]
                 result = (result,)
         else:
             assert 0, 'not handled'
@@ -293,7 +303,7 @@ def replace_datatype_pattern(outputstep, result):  # pylint:disable=R1260
             for index, item in enumerate(result):
                 content, ext = item
                 path = outputstep[0].replace('*', f'{index}')
-                path = path.replace('???', ext)
+                path = replace_ext(path, ext)
                 out.append(path)
                 res.append(content)
             outputstep, result = out, res
@@ -307,7 +317,7 @@ def replace_datatype_pattern(outputstep, result):  # pylint:disable=R1260
                 path = step.replace('*', f'{index}')
                 if not isinstance(content, (str, bytes)):
                     content, ext = content
-                    path = path.replace('???', ext)
+                    path = replace_ext(path, ext)
                 path_line.append(path)
                 res_line.append(content)
             out.append(path_line)

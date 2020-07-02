@@ -217,3 +217,20 @@ def test_run_hashed_multi_step(testdir, monkeypatch):
         assert len(current) == len(expected)
         content = {utila.file_read_binary(item) for item in current}
     assert content == expected
+
+
+def test_run_hashed_list_ext(testdir, monkeypatch):
+    with utilatest.increased_filecount(mindiff=3):
+        run_playground('--hashed_list_ext', {}, testdir, monkeypatch)
+
+    expected = set([
+        b'content',
+        b'second content',
+        b'third content',
+    ])
+
+    with utila.chdir('testfield__hashed_list_ext_figures'):
+        current = utila.file_list('.')
+        assert len(current) == len(expected)
+        content = {utila.file_read_binary(item) for item in current}
+    assert content == expected

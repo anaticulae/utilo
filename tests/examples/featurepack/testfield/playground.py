@@ -60,6 +60,12 @@ WORKPLAN = [
             ('figures/{FILEHASHS}', '???'),
         ],
     ),
+    utila.create_step(
+        'hashed_list_ext',
+        output=[
+            ('figures/{FILEHASHS}', '???'),
+        ],
+    ),
 ]
 
 
