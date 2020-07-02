@@ -167,8 +167,8 @@ def run_hook_safely(
     if isinstance(result, (str, bytes)):
         result = [result]
     # Verify result
-    variable_returnvalues = utila.feature.variable_parameter(stepoutput)
-    variable_datatype = utila.feature.variable_datatype(stepoutput)
+    variable_returnvalues = utila.feature.outpath.variable_parameter(stepoutput)
+    variable_datatype = utila.feature.outpath.variable_datatype(stepoutput)
     result_length = len(result) - variable_datatype
     if all((
             result,

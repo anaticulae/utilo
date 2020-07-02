@@ -334,7 +334,7 @@ def verify_interface(inputs, outputs, worker, stepname):
     supported = ('str', 'bytes')
     return_count = sum([return_parameter.count(typ) for typ in supported])
 
-    variable_returnvalues = utila.feature.variable_parameter(outputs)
+    variable_returnvalues = utila.feature.outpath.variable_parameter(outputs)
     if not len(outputs) == return_count and not variable_returnvalues:
         utila.error(f'missing output resources: '
                     f'interface error {return_parameter} != {outputs}')

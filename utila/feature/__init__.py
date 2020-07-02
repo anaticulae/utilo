@@ -235,24 +235,6 @@ def determine_instance(workplan, typ):
     return result
 
 
-def variable_parameter(items: list) -> int:
-    """Count number of path contains */{FILEHASH}-pattern to replace."""
-    result = [item for item in items if '*' in item or isfilehash(item)]
-    result = len(result)
-    return result
-
-
-def isfilehash(item):
-    # {FILEHASH to support {FILEHASH_NUMBER Pattern
-    return '{FILEHASH}' in item or '{FILEHASH' in item
-
-
-def variable_datatype(items: list) -> int:
-    """Count number of path ends with ???-pattern to replace datatype."""
-    result = len([item for item in items if item.endswith('???')])
-    return result
-
-
 def determine_todo(args: dict, flags: list) -> typing.List[str]:
     """Remove flags from feature todo list
 

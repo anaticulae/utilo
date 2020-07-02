@@ -22,8 +22,8 @@ def prepare_outputpath(outputstep, result):
 
 def replace_datatype_pattern(outputstep, result):  # pylint:disable=R1260
     # TODO: DIRTY
-    datatype = utila.feature.variable_datatype(outputstep)
-    parameter = utila.feature.variable_parameter(outputstep)
+    datatype = variable_datatype(outputstep)
+    parameter = variable_parameter(outputstep)
     if datatype and not parameter:
         if len(outputstep) == 1:
             if isinstance(result, tuple):
@@ -62,7 +62,7 @@ def replace_datatype_pattern(outputstep, result):  # pylint:disable=R1260
 
 
 def replace_star_pattern(outputstep, result):
-    variable_returnvalues = utila.feature.variable_parameter(outputstep)
+    variable_returnvalues = variable_parameter(outputstep)
     if not variable_returnvalues:
         return outputstep
     starpattern = [
@@ -152,4 +152,22 @@ def filenumber(item: str) -> int:
     if not matched:
         return None
     result = int(matched['number'])
+    return result
+
+
+def variable_parameter(items: list) -> int:
+    """Count number of path contains */{FILEHASH}-pattern to replace."""
+    result = [item for item in items if '*' in item or isfilehash(item)]
+    result = len(result)
+    return result
+
+
+def isfilehash(item):
+    # {FILEHASH to support {FILEHASH_NUMBER Pattern
+    return '{FILEHASH}' in item or '{FILEHASH' in item
+
+
+def variable_datatype(items: list) -> int:
+    """Count number of path ends with ???-pattern to replace datatype."""
+    result = len([item for item in items if item.endswith('???')])
     return result
