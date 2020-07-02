@@ -257,12 +257,11 @@ def write_resource(path, content):
         for first, second in zip(path, content):
             write_resource(first, second)
         return
-
     # Ensure that parent folder exists. It is possible to create folder
     # via `hello/folder/content.txt`.
     parent, _ = os.path.split(path)
     os.makedirs(parent, exist_ok=True)
-    utila.info('write %s' % path)
+    utila.info(f'write {path}')
     # write content to file.
     if isinstance(content, str):
         utila.file_replace(path, content)
