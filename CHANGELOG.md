@@ -2,6 +2,19 @@
 
 Every noteable change is logged here.
 
+## v2.4.0
+
+### Feature
+
+* add {FILEHASHS} to express multiple result value like *-pattern (4022c20eb93e)
+* increase verbose cli log readability (46441034e50d)
+* let cli fail when step produces invalid data type result (cfeb53bdffb4)
+
+### Fix
+
+* handle variable return type correctly (03d2f0a5fe64)
+* ensure correct max length for container with string content (dc755c0f40d3)
+
 ## v2.3.0
 
 ### Feature
