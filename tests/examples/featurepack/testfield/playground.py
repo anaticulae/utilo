@@ -50,18 +50,16 @@ WORKPLAN = [
     utila.create_step(
         'hashed',
         output=[
-            ('{FILEHASH}', 'bin'),
+            ('{FILEHASHS}', 'bin'),
         ],
     ),
-    # utila.create_step(
-    #     'mixed',
-    #     output=[
-    #         ('single',),
-    #         ('*_info', 'yaml'),
-    #         ('binary', 'hex'),
-    #         ('*', '???'),
-    #     ],
-    # ),
+    utila.create_step(
+        'hashed_multi',
+        output=[
+            ('figures/{FILEHASH_1}', 'yaml'),
+            ('figures/{FILEHASHS}', '???'),
+        ],
+    ),
 ]
 
 

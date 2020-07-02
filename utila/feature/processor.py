@@ -320,7 +320,9 @@ def replace_star_pattern(outputstep, result):
     variable_returnvalues = utila.feature.variable_parameter(outputstep)
     if not variable_returnvalues:
         return outputstep
-    starpattern = [item for item in outputstep if '*' in item]  # HACK
+    starpattern = [
+        item for item in outputstep if '*' in item or '{FILEHASHS}' in item
+    ]  # HACK
     if not starpattern:
         # TODO: REMOVE THIS HACK, CHANGE CHECK IN VARIABLE PARAMETER
         # THIS HACK IS REQUIRED CAUSE START PATTEN RESOLVER HANDLES STEPS
@@ -368,6 +370,8 @@ def replace_filehash_pattern(outputstep, resultcontent):
 
 
 def replace_filehash(index: int, path: str, content):
+    # support multiple file HASHS pattern
+    path = path.replace('{FILEHASHS}', '{FILEHASH}')
     if '{FILEHASH}' in path:
         replacement = utila.freehash(content[index])
         path = path.replace('{FILEHASH}', replacement)

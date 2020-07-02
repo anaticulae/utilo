@@ -197,3 +197,23 @@ def test_run_hashed_step(testdir, monkeypatch):
     assert expected_first in current[0]
     expected_second = utila.freehash(b'imageinfo')
     assert expected_second in current[1]
+
+
+def test_run_hashed_multi_step(testdir, monkeypatch):
+    with utilatest.increased_filecount(mindiff=6):
+        run_playground('--hashed_multi', {}, testdir, monkeypatch)
+
+    expected = set([
+        b'info: yaml',
+        b'content',
+        b'second: yaml',
+        b'second content',
+        b'third yaml',
+        b'third content',
+    ])
+
+    with utila.chdir('testfield__hashed_multi_figures'):
+        current = utila.file_list('.')
+        assert len(current) == len(expected)
+        content = {utila.file_read_binary(item) for item in current}
+    assert content == expected
