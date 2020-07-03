@@ -176,9 +176,10 @@ def select_pages(
         pages: tuple,
         default: typing.Any = None,
 ) -> typing.Any:
-    """Select items depending on `pages`-attribute of the item.
+    """Select items depending on `page`-attribut of the item.
 
     See: `select_page`"""
+    assert len(pages) == len(set(pages)), f'duplicated pages: {pages}'
     pages = sorted(pages)
     result = []
     for page in pages:
