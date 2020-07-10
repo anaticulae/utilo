@@ -7,6 +7,7 @@
 # be prosecuted under federal law. Its content is company confidential.
 # =============================================================================
 
+import math
 import random
 
 import utila
@@ -61,6 +62,21 @@ def choose_random(items, count: int = 5) -> list:
     items = list(items)  # create a copy
     random.shuffle(items)
     return items[0:count]
+
+
+def chunks(items, size: int = 1) -> list:
+    """\
+    >>> chunks((1, 2, 3, 4, 5, 6, 7, 8, 9, 10), size=3)
+    [(1, 2, 3), (4, 5, 6), (7, 8, 9), (10,)]
+    >>> chunks([1, 2, 3], size=10)
+    [[1, 2, 3]]
+    >>> chunks([1, 2, 3], size=1)
+    [[1], [2], [3]]
+    """
+    result = []
+    for index in range(math.ceil(len(items) / size)):
+        result.append(items[index * size:(index + 1) * size])
+    return result
 
 
 class Single:

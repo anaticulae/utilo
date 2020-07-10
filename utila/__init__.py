@@ -49,6 +49,7 @@ from utila.cli import userflag_to_arg
 from utila.collection import Buckets
 from utila.collection import Single
 from utila.collection import choose_random
+from utila.collection import chunks
 from utila.collection import make_unique
 from utila.collection import partition
 # config
