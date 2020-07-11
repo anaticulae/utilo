@@ -12,7 +12,7 @@ import functools
 import inspect
 import typing
 
-from utila.logger import error
+import utila
 
 
 def checkdatatype(func) -> callable:
@@ -40,9 +40,9 @@ def checkdatatype(func) -> callable:
             errors.append(str(current))
         if errors:
             uf_name = func.__name__
-            error('invalid function input `%s`' % uf_name)
+            utila.error('invalid function input `%s`' % uf_name)
             for item in errors:
-                error(item)
+                utila.error(item)
             raise ValueError('invalid function input %s' % uf_name)
         return func(*args, **kwargs)
 
