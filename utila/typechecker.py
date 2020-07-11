@@ -94,8 +94,12 @@ def isnumber(item: str) -> bool:
     False
     >>> isnumber(10.5)
     True
+    >>> isnumber('3.5')
+    True
+    >>> isnumber(None)
+    False
     """
     with contextlib.suppress(ValueError):
-        _ = int(item)
+        _ = float(str(item))
         return True
     return False
