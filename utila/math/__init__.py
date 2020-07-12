@@ -130,17 +130,6 @@ def mode(items, minimize: bool = False):
         return result
 
 
-def near(first, second, diff: float = 2.0) -> bool:
-    """Test that two items are close together.
-
-    >>> near(2.1,-0.9, diff=3.0)
-    True
-    >>> near(1.0, 10, diff=1.0)
-    False
-    """
-    return math.fabs(first - second) <= diff
-
-
 def diff_mode(
         items: 'utila.math.number.Numbers',
         max_diff: float = 2.0,

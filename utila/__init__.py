@@ -158,7 +158,6 @@ from utila.math import isascending
 from utila.math import lookup
 from utila.math import mode
 from utila.math import modes
-from utila.math import near
 from utila.math import roundme
 from utila.math.const import isinf
 from utila.math.const import iszero
@@ -172,6 +171,7 @@ from utila.math.line import length
 from utila.math.line import round_line
 from utila.math.line import unique_lines
 # math:near
+from utila.math.near import near
 from utila.math.near import near_dims
 # math:number
 from utila.math.number import Floats
