@@ -180,6 +180,7 @@ from utila.math.number import limit
 from utila.math.number import maxs
 from utila.math.number import mins
 from utila.math.number import numbers
+from utila.math.number import threshold
 from utila.math.rectangle import Rectangle
 from utila.math.rectangle import Rectangles
 from utila.math.rectangle import rectangle_inside

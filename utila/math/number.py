@@ -7,6 +7,7 @@
 # be prosecuted under federal law. Its content is company confidential.
 # =============================================================================
 
+import math
 import typing
 
 Number = typing.TypeVar('Number', int, float)  # pylint:disable=C0103
@@ -93,3 +94,17 @@ def least(*items: Numbers, minvalue: Number) -> Number:
     10
     """
     return maxs(*items, minvalue)
+
+
+def threshold(item, diff: float, center: float = 0.0) -> float:
+    """\
+    >>> threshold(7.5, diff=3.0, center=5.0)
+    5.0
+    >>> threshold(2.0, diff=3.0, center=5.0)
+    5.0
+    >>> threshold(2.5, diff=5.0, center=0.0)
+    0.0
+    """
+    if math.fabs(center - item) <= diff:
+        return center
+    return item
