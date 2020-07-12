@@ -175,6 +175,7 @@ from utila.math.number import Floats
 from utila.math.number import Ints
 from utila.math.number import Number
 from utila.math.number import Numbers
+from utila.math.number import between
 from utila.math.number import least
 from utila.math.number import limit
 from utila.math.number import maxs

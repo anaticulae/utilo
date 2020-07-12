@@ -10,6 +10,8 @@
 import math
 import typing
 
+import utila
+
 Number = typing.TypeVar('Number', int, float)  # pylint:disable=C0103
 Numbers = typing.List[Number]  # pylint:disable=C0103
 
@@ -108,3 +110,19 @@ def threshold(item, diff: float, center: float = 0.0) -> float:
     if math.fabs(center - item) <= diff:
         return center
     return item
+
+
+def between(border: list, func: callable = None):
+    """\
+    >>> between([10, 17, 23])
+    (13.5, 20.0)
+    """
+    assert utila.isascending(border), str(border)
+    if func is None:
+        func = lambda first, second: (first + second) / 2
+    result = [
+        func(first, second) for first, second in zip(border[:-1], border[1:])
+    ]
+    result = tuple(result)
+    result = utila.roundme(result, convert=False)
+    return result
