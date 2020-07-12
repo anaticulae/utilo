@@ -171,6 +171,9 @@ from utila.math.line import isdot
 from utila.math.line import length
 from utila.math.line import round_line
 from utila.math.line import unique_lines
+# math:near
+from utila.math.near import near_dims
+# math:number
 from utila.math.number import Floats
 from utila.math.number import Ints
 from utila.math.number import Number
