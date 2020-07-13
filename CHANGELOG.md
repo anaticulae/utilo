@@ -2,6 +2,21 @@
 
 Every noteable change is logged here.
 
+## v2.5.0
+
+### Feature
+
+* add algorithm to determine near for multiple dimension (02c8de13696c)
+* add method to determine border between 2 neighbors (4c205e6af8d9)
+* add strict parameter to ascending checker (cc01c914de45)
+* add method chunks to separate container into smaller parts (ed931c0f52af)
+* raises AssertionError when using duplicate pages (d1f14aa4a545)
+
+### Fix
+
+* fix number type checker (b2e6413b10d9)
+* add workaround to solve FILEHASHS and ??? ext bug (bc47a5662f4d)
+
 ## v2.4.0
 
 ### Feature
