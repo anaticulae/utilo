@@ -7,6 +7,7 @@
 # be prosecuted under federal law. Its content is company confidential.
 # =============================================================================
 
+import difflib
 import re
 import sys
 
@@ -103,3 +104,31 @@ def shrink(content: str, maxlength: int = 300) -> str:
     after = content[-half:]
     result = f'{before}[...]{after}'
     return result
+
+
+def similar(expected: str, current: str, maxdiff=0.6) -> bool:
+    """\
+    >>> similar('Abbildungsverzeichnis', 'ab_ildungsverzeichnis')
+    True
+    >>> similar('Helm', 'Konrad')
+    False
+    >>> similar(['Abbildungsverzeichnis', 'Abbildungen'], 'Abbildung', maxdiff=0.1)
+    True
+    """
+    if isinstance(expected, (list, tuple)):
+        for item in expected:
+            if similar(item, current, maxdiff):
+                return True
+        return False
+    expected, current = expected.lower(), current.lower()
+    if expected == current:
+        return True
+    matched = difflib.get_close_matches(
+        current,
+        [expected],
+        n=1,
+        cutoff=maxdiff,
+    )
+    if matched:
+        return True
+    return False
