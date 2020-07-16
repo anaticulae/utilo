@@ -23,7 +23,12 @@ def near(first, second, diff: float = 2.0) -> bool:
     return math.fabs(first - second) <= diff
 
 
-def near_dims(item: tuple, dims: tuple, nears: tuple) -> bool:
+def near_dims(
+        item: tuple,
+        dims: tuple,
+        nears: tuple,
+        allow_none: bool = False,
+) -> bool:
     """\
     >>> near_dims((5, 5), [(4, 6), (4, 7), (10, 10)], [(1, 1), (1, 1), (0, 0)])
     0
@@ -45,7 +50,10 @@ def near_dims(item: tuple, dims: tuple, nears: tuple) -> bool:
         old_news, nears = nears, []
         old_matches, matches = matches, []
         for dim, near_, match in zip(old_dims, old_news, old_matches):
-            if not utila.near(dim[index], check, near_[index]):
+            if dim[index] is None or check is None and allow_none:
+                # None item always pass the test
+                pass
+            elif not utila.near(dim[index], check, near_[index]):
                 continue
             dims.append(dim)
             nears.append(near_)
