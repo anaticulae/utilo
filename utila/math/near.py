@@ -23,6 +23,32 @@ def near(first, second, diff: float = 2.0) -> bool:
     return math.fabs(first - second) <= diff
 
 
+def pnear(
+        reference,
+        current,
+        rel_tol: float = 0.0,
+        abs_tol: float = 0.05,
+) -> bool:
+    """\
+    >>> pnear(10, 8, 0.2)
+    True
+    >>> pnear(10, 8, 0.19)
+    False
+    >>> pnear(0, 0.1, rel_tol=0.02, abs_tol=0.1)
+    True
+    """
+    # TODO: UNIT WITH NEAR?
+    lower = reference * (1 - rel_tol)
+    upper = reference * (1 + rel_tol)
+    if lower <= current <= upper:
+        return True
+    lower = reference - abs_tol
+    upper = reference + abs_tol
+    if lower <= current <= upper:
+        return True
+    return False
+
+
 def near_dims(
         item: tuple,
         dims: tuple,
