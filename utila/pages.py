@@ -8,6 +8,7 @@
 # =============================================================================
 
 import contextlib
+import math
 import typing
 
 import utila.math
@@ -121,6 +122,12 @@ def should_skip(page: PageNumbers, pages: tuple) -> bool:  # pylint:disable=W062
     True
     >>> should_skip((4, 5, 6), [1, 2, 3, 4, 5])
     True
+    >>> should_skip((0.0, 0.5), (0, 1, 2, 3))
+    False
+    >>> should_skip((0.0, 0.5), (0,))
+    True
+    >>> should_skip((0.0, 0.5), (0, 1))
+    False
     """
     if pages is None:
         return False
@@ -130,6 +137,7 @@ def should_skip(page: PageNumbers, pages: tuple) -> bool:  # pylint:disable=W062
     if isinstance(page, tuple):
         # ensure that all (page..) are in range, all selected and all inside
         start, end = min(page), max(page)
+        start, end = math.floor(start), math.ceil(end)
         return any([should_skip(pp, pages) for pp in range(start, end + 1)])
     return not page in pages
 
