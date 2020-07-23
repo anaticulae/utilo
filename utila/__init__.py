@@ -211,6 +211,7 @@ from utila.pages import sync_pages
 # process
 from utila.process import assert_failure
 from utila.process import assert_success
+from utila.process import fork
 from utila.process import returncode
 from utila.process import run
 from utila.process import run_parallel

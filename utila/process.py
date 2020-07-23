@@ -8,6 +8,7 @@
 # =============================================================================
 
 import concurrent
+import concurrent.futures
 import os
 import subprocess  # nosec
 
@@ -96,6 +97,24 @@ def run_parallel(
     if expect is False:
         assert ret >= utila.FAILURE, str(ret)
     return ret
+
+
+def fork(*runnables, worker: int = 6, process: bool = False) -> int:
+    """Run methods in parallel."""
+    failure = 0
+    executor = concurrent.futures.ThreadPoolExecutor
+    if process:
+        executor = utila.select_executor()
+    with executor(max_workers=worker) as pool:
+        futures = {pool.submit(item): item for item in runnables}
+        for future in concurrent.futures.as_completed(futures):
+            try:
+                future.result()
+            except Exception as error:  # pylint:disable=broad-except
+                utila.error(f'{future} failed.')
+                utila.error(error)
+                failure += 1
+    return failure
 
 
 def assert_success(process: subprocess.CompletedProcess):
