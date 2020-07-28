@@ -10,6 +10,7 @@
 import typing
 
 import utila
+import utila.classifier.strategy as ucs
 
 
 class Cluster:
@@ -47,12 +48,15 @@ def determine_cluster(
         classifier: callable,
         min_elements: int = 2,
         ctor: Cluster = None,
+        strategy: 'MatchStrategy' = None,
 ) -> Clusters:
     """Determine cluster out of `todo`.
 
     Sort clustered result by length of cluster descending.
     """
     assert min_elements >= 1, str(min_elements)
+    if strategy is None:
+        strategy = ucs.MatchStrategy.FIRST
     if not todo:
         return []
     if ctor is None:
@@ -63,7 +67,7 @@ def determine_cluster(
     # Cluster till cluster move does not change the result
     single = utila.Single()
     while True:
-        result = clusterme(result, classifier=classifier)
+        result = clusterme(result, classifier=classifier, strategy=strategy)
         if len(result) == 1:
             # all elements are in the same group
             break
@@ -75,24 +79,16 @@ def determine_cluster(
     return clusters
 
 
-def match(cluster: Cluster, todo: Clusters, classifier: callable) -> int:
-    for clusterindex, candiat in enumerate(todo):
-        matched = classifier(
-            candidat=candiat.center,
-            clusteritem=cluster.center,
-        )
-        if not matched:
-            continue
-        return clusterindex
-    return None
-
-
-def clusterme(clusters: Clusters, classifier: callable) -> Clusters:
+def clusterme(
+        clusters: Clusters,
+        classifier: callable,
+        strategy: 'MatchStrategy' = None,
+) -> Clusters:
     current, todo = clusters[0], clusters[1:]
     result = [current]
     while todo:
         test = todo.pop()
-        index = match(test, result, classifier)
+        index = ucs.match(test, result, classifier, strategy=strategy)
         if index is None:
             # No match, create new cluster
             result.insert(0, test)
