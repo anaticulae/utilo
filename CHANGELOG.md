@@ -2,6 +2,17 @@
 
 Every noteable change is logged here.
 
+## v2.6.0
+
+### Feature
+
+* add strategy argument to select matching strategy (9b7a8e718c7c)
+* add method to parallelize methods calls (b6820ba1cacd)
+* add pnear to compute percentage diff between two numbers (4e9d7aed8a35)
+* add support for non decimal page numbers (aac3f722c984)
+* add flag to always accept item in near_dims (7eb6c9a431c8)
+* add method to detect if two elements are similar (f8f82a4eb7ce)
+
 ## v2.5.0
 
 ### Feature
