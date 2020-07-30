@@ -165,10 +165,20 @@ def select_page(
     Examples:
     >>> select_page(items={0 : 'first', 1 : 'second'}, page=1)
     'second'
+
+    >>> import collections
+    >>> PageItem = collections.namedtuple('PageItem', 'page, content')
+
+    >>> select_page(items=[None, PageItem(1, 'content')], page=1)
+    Traceback (most recent call last):
+        ...
+    ValueError: `items` contain `None` pages: ...
     """
     if items is None:
         raise ValueError('no items provided')
     if not isinstance(items, dict):
+        if any(item is None for item in items):
+            raise ValueError(f'`items` contain `None` pages: {items}')
         pages = sorted([item.page for item in items])
         items = {item.page: item for item in items}
         if len(items) != len(pages):
