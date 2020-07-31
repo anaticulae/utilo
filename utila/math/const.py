@@ -13,16 +13,18 @@ NEAR_ZERO = 0.0000001
 NEAR_INF = 10.0**64
 
 
-def iszero(item) -> bool:
+def iszero(item: float, diff: float = NEAR_ZERO) -> bool:
     """Check if `item` is near zero.
+
     >>> iszero(0.000000001)
     True
     """
-    return math.fabs(item) <= NEAR_ZERO
+    return math.fabs(item) <= diff
 
 
-def isinf(item) -> bool:
+def isinf(item: float) -> bool:
     """Check if `item` is near inf.
+
     >>> isinf(10**104)
     True
     """
