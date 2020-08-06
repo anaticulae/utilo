@@ -21,3 +21,15 @@ def test_process_run_parallel():
     failures = ['wasd']
     error = utila.run_parallel(failures, expect=False)
     assert error >= utila.FAILURE
+
+
+def test_fork():
+
+    def first():
+        pass
+
+    def second():
+        assert 0
+
+    completed = utila.fork(first, second, worker=3)
+    assert completed != utila.SUCCESS
