@@ -52,7 +52,7 @@ def run_playground(
 def test_feature_playground_cli_profile(cmd, testdir, monkeypatch, capsys):
     """Print runtime for each working step."""
     stdout, _, = run_playground(
-        cmd,
+        f'{cmd} -VV' if cmd else cmd,
         {'profileflag': True},
         testdir,
         monkeypatch,
@@ -93,7 +93,7 @@ def test_feature_playground_pass_config_file(testdir, monkeypatch, capsys):
         """)
     cmd = f'-c {config}'
     stdout, _, = run_playground(
-        cmd,
+        f'{cmd} -VV',
         {},
         testdir,
         monkeypatch,

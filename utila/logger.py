@@ -162,9 +162,9 @@ def print_runtime(before: int, msg: str = ''):
     """
     time_diff = time.time() - before
     if msg:
-        log('runtime(%s): %.2f secs' % (msg, time_diff))
+        info('runtime(%s): %.2f secs' % (msg, time_diff))
     else:
-        log('runtime: %.2f secs' % time_diff)
+        info('runtime: %.2f secs' % time_diff)
 
 
 def print_env():
