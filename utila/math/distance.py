@@ -9,6 +9,8 @@
 
 import math
 
+import utila
+
 
 def norm(x0, y0, x1, y1) -> float:
     """Determine `norm` distance.
@@ -28,3 +30,15 @@ def manhatten(x0, y0, x1, y1) -> float:
     assert x0 <= x1, f'{x0}<={x1}'
     assert y0 <= y1, f'{y0}<={y1}'
     return (x1 - x0) + (y1 - y0)
+
+
+def norms(first, second, digits: int = 2) -> float:
+    """\
+    >>> norms((1, 2, 3), (0, 0, 0))
+    3.74
+    """
+    assert digits >= 0, digits
+    assert len(first) == len(second), f'len({first})!=len({second})'
+    sums = sum(pow(left - right, 2) for left, right in zip(first, second))
+    result = utila.roundme(pow(sums, 0.5), digits=digits)
+    return result

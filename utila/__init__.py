@@ -164,6 +164,7 @@ from utila.math.const import isinf
 from utila.math.const import iszero
 from utila.math.distance import manhatten
 from utila.math.distance import norm
+from utila.math.distance import norms
 from utila.math.line import IndenticalLineError
 from utila.math.line import equal_lines
 from utila.math.line import intersecting_lines
