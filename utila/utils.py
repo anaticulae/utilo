@@ -121,3 +121,11 @@ def nothing(*args, **kwargs):  # pylint:disable=W0613
             pass
     """
     yield
+
+
+def not_none(items):
+    """\
+    >>> not_none([1, 2, None, 0, '', 4, None])
+    [1, 2, 0, '', 4]
+    """
+    return [item for item in items if item is not None]

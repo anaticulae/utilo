@@ -246,6 +246,7 @@ from utila.utils import TMP
 from utila.utils import UTF8
 from utila.utils import chdir
 from utila.utils import flatten
+from utila.utils import not_none
 from utila.utils import nothing
 from utila.utils import select_type
 
