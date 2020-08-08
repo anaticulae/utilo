@@ -21,6 +21,10 @@ def common_items(
 ) -> list:
     """Cluster items due `same_area_cluster`.
 
+    Hint: The number returning in cluster result, names the number of
+    passed data container. Keep this in mind when passing non zero
+    indexed data.
+
     Args:
         collected: items to cluster
         max_difference(float): upper bound of differences which is accepted
