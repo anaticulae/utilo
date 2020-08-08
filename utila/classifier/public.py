@@ -28,7 +28,7 @@ def common_items(
     Args:
         collected: items to cluster
         max_difference(float): upper bound of differences which is accepted
-                               by classificator as same item.
+                               by classifier as same item.
         min_elements(int): smallest accepted cluster
         selector(callable): select property to cluster
     Returns:
@@ -80,7 +80,7 @@ def max_distance(items, diff: float = 1.0, min_elements=2):
 
 def three_side_equal_cluster(todo):
 
-    def classificator(candidat, clusteritem):
+    def classifier(candidat, clusteritem):
 
         def matcher(candidat, clusteritem):
             candidat_pos, _ = candidat
@@ -96,7 +96,7 @@ def three_side_equal_cluster(todo):
 
     return utila.classifier.base.determine_cluster(
         todo,
-        classificator,
+        classifier,
         min_elements=2,
     )
 
@@ -109,7 +109,7 @@ def same_area_cluster(
 ):
     selector = selector if selector else lambda x: x[0]
 
-    def classificator(candidat, clusteritem, max_difference=max_difference):
+    def classifier(candidat, clusteritem, max_difference=max_difference):
 
         def distance(x0, y0, x1, y1):
             return math.sqrt(pow((x1 - x0), 2) + pow((y1 - y0), 2))
@@ -134,7 +134,7 @@ def same_area_cluster(
 
     return utila.classifier.base.determine_cluster(
         todo,
-        classificator,
+        classifier,
         min_elements=min_elements,
     )
 
