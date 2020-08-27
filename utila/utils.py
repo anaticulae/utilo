@@ -129,3 +129,43 @@ def not_none(items):
     [1, 2, 0, '', 4]
     """
     return [item for item in items if item is not None]
+
+
+@contextlib.contextmanager
+def unset_env(
+        var: str,
+        skip: bool = True,
+):
+    """Temporary disable enviroment variable.
+
+    Args:
+        var(str): name to disable
+        skip(bool): if True, do not raise KeyError if environment variable
+                    does not exists
+    Yields:
+        None: if env var exists before or skip is True
+    Raises:
+        KeyError: if skip is False and env variable does not exists
+        Exception: if user code does not work properly
+    """
+    # TODO: ADD MULTIPLE UNSET
+    assert var, 'invalid environment variable'
+    before = None
+    if not skip and var not in os.environ:
+        # TODO: not thread safe
+        raise KeyError(f'missing env var: `{var}`')
+    with contextlib.suppress(KeyError):
+        before = os.environ[var]
+    if before is not None:
+        del os.environ[var]
+    try:
+        # run user code
+        yield
+    except Exception as error:
+        if before is not None:
+            # restore enviromental variable
+            os.environ[var] = before
+        raise error
+    else:
+        if before is not None:
+            os.environ[var] = before

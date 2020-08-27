@@ -81,3 +81,21 @@ def test_chdir_to_filepath(testdir):
     with pytest.raises(AssertionError):
         with utila.chdir(filepath):
             pass
+
+
+def test_unset_env(monkeypatch):
+    with monkeypatch.context() as context:
+        context.setattr(os, 'environ', {})
+        os.environ['abc'] = '10'
+        with utila.unset_env('abc'):
+            assert not 'abc' in os.environ
+        assert 'abc' in os.environ
+        del os.environ['abc']
+
+
+def test_unset_env_keyerror(monkeypatch):
+    with monkeypatch.context() as context:
+        context.setattr(os, 'environ', {})
+        with pytest.raises(KeyError):
+            with utila.unset_env('abc', skip=False):
+                pass
