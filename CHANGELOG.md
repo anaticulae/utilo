@@ -2,6 +2,12 @@
 
 Every noteable change is logged here.
 
+## v2.8.0
+
+### Feature
+
+* add contextmanager to temporary disable environment variables (0031c862f9ae)
+
 ## v2.7.0
 
 ### Feature
