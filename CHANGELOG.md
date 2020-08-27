@@ -2,6 +2,23 @@
 
 Every noteable change is logged here.
 
+## v2.7.0
+
+### Feature
+
+* add method to compute length of vector (ce5d97fb192a)
+* add method to remove none elements (14c83a9062c1)
+* add option to change max diff of zero checker (7e5235ba8e72)
+
+### Fix
+
+* reduce verbosity of logging (a689274031e9)
+
+### Documentation
+
+* add hint how to use common cluster (259a99fd29d9)
+* extend interface documentation (c92ea6048474)
+
 ## v2.6.0
 
 ### Feature
