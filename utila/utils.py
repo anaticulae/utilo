@@ -169,3 +169,13 @@ def unset_env(
     else:
         if before is not None:
             os.environ[var] = before
+
+
+def ifnone(value, default):
+    """\
+    >>> ifnone(None, 10)
+    10
+    >>> ifnone(0, 5)
+    0
+    """
+    return default if value is None else value
