@@ -86,3 +86,42 @@ def rectangle_inside(first, second, diff: float = 0):
         ((x0 - diff) <= x00 <= x11 <= (x1 + diff)),
         ((y0 - diff) <= y00 <= y11 <= (y1 + diff)),
     ))
+
+
+class RectangleCheck:
+    """Verify if a rectangle is inside a group of rectangles.
+
+    >>> check = RectangleCheck()
+    >>> check.extend(50, 50, 100, 100)
+    >>> check.extend(0, 0, 50, 100)
+    >>> check.shrink()
+    >>> assert check.contains(25, 25, 50, 50)
+    >>> assert check.contains(75, 75, 100, 100)
+    >>> assert not check.contains(100, 100, 150, 150)
+    """
+
+    def __init__(self, max_diff: float = 0.0):
+        self.max_diff = max_diff
+        self.content = []
+
+    def extend(self, x0, y0, x1, y1):
+        self.content.append((x0, y0, x1, y1))
+
+    def contains(self, x0, y0, x1, y1) -> bool:
+        diff = self.max_diff / 2
+        for x00, y00, x11, y11 in self.content:
+            if all(((x00 - diff) <= x0 <= x1 <= (x11 + diff),
+                    (y00 - diff) <= y0 <= y1 <= (y11 + diff))):
+                return True
+        return False
+
+    def shrink(self):
+        """Reduce checking rectangles to minimal required. Remove
+        rectangle is there are included in a parent rectangle."""
+        self.content = rectangle_merge(self.content)
+
+    def __getitem__(self, index):
+        return self.content[index]
+
+    def __len__(self):
+        return len(self.content)

@@ -189,6 +189,7 @@ from utila.math.number import mins
 from utila.math.number import numbers
 from utila.math.number import threshold
 from utila.math.rectangle import Rectangle
+from utila.math.rectangle import RectangleCheck
 from utila.math.rectangle import Rectangles
 from utila.math.rectangle import rectangle_inside
 from utila.math.rectangle import rectangle_merge
