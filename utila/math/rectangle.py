@@ -88,6 +88,19 @@ def rectangle_inside(first, second, diff: float = 0):
     ))
 
 
+def rectangle_max(items: list) -> tuple:
+    """\
+    >>> rectangle_max(((-20, 0, 100, 100), (50, 50, 120, 124)))
+    (-20, 0, 120, 124)
+    """
+    assert items, 'no rectangles given'
+    x0 = utila.mins(item[0] for item in items)
+    x1 = utila.maxs(item[2] for item in items)
+    y0 = utila.mins(item[1] for item in items)
+    y1 = utila.maxs(item[3] for item in items)
+    return x0, y0, x1, y1
+
+
 class RectangleCheck:
     """Verify if a rectangle is inside a group of rectangles.
 
