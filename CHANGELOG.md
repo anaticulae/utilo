@@ -2,6 +2,18 @@
 
 Every noteable change is logged here.
 
+## v2.9.0
+
+### Feature
+
+* add method to create maximum bounding (2aa202f964cd)
+* add checker to check if a rectangle is inside (61b27db33130)
+* add method to use default value if value is None (30f48f977343)
+
+### Fix
+
+* fix group empty data (626e70c585d6)
+
 ## v2.8.0
 
 ### Feature
