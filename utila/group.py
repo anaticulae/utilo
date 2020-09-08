@@ -47,14 +47,14 @@ def groupby_diff(pages: tuple, *, diff=1) -> list:
     """\
     >>> groupby_diff((1, 5, 2, 6, 9))
     [(1, 2), (5, 6), (9,)]
-    >>> groupby_diff(None)
-    [None]
     >>> groupby_diff((5,))
     [(5,)]
+    >>> groupby_diff([])
+    []
     """
     assert diff >= 0, 'negative diff'
     if not pages:
-        return [None]
+        return []
     pages = sorted(pages)
     result = [[pages[0]]]
     for item in pages[1:]:
