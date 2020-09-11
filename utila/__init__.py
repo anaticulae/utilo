@@ -211,6 +211,7 @@ from utila.pages import select_content
 from utila.pages import select_page
 from utila.pages import select_pages
 from utila.pages import should_skip
+from utila.pages import simplify_pages
 from utila.pages import sync_pages
 # process
 from utila.process import assert_failure
