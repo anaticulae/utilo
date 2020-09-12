@@ -95,7 +95,7 @@ def modes(data: 'utila.math.number.Numbers') -> 'utila.math.number.Number':
     It is possible to have multiple common data points, there are sorted
     ascending.
 
-    >>> modes((1,1,2,2))
+    >>> modes((1, 1, 2, 2))
     [1, 2]
 
     See: statistics.mode
