@@ -52,7 +52,7 @@ def pnear(
 def near_dims(
         item: tuple,
         dims: tuple,
-        nears: tuple,
+        diffs: tuple,
         allow_none: bool = False,
 ) -> bool:
     """\
@@ -60,20 +60,20 @@ def near_dims(
     0
     >>> near_dims((5, 5, 5),
     ...           dims=[(4, 6, 10), (4, 7, 30), (10, 10, 50)],
-    ...           nears=[(1, 1, 0), (1, 1, 0), (5, 5, 45)])
+    ...           diffs=[(1, 1, 0), (1, 1, 0), (5, 5, 45)])
     2
     >>> near_dims((5, 5), [(4,6), (4, 7)], [(0, 0), (0, 0)]) is None
     True
     """
     assert_equal_dim(item, dims)
     dims = list(dims)
-    nears = list(nears)
+    diffs = list(diffs)
     matches = utila.make_tuple(len(dims))
     for index, check in enumerate(item):
         if not dims:
             return None
         old_dims, dims = dims, []
-        old_news, nears = nears, []
+        old_news, diffs = diffs, []
         old_matches, matches = matches, []
         for dim, near_, match in zip(old_dims, old_news, old_matches):
             if dim[index] is None or check is None and allow_none:
@@ -82,7 +82,7 @@ def near_dims(
             elif not utila.near(dim[index], check, near_[index]):
                 continue
             dims.append(dim)
-            nears.append(near_)
+            diffs.append(near_)
             matches.append(match)
     if matches:
         matches = matches[0] if len(matches) == 1 else matches
