@@ -175,6 +175,7 @@ from utila.math.line import unique_lines
 # math:near
 from utila.math.near import near
 from utila.math.near import near_dims
+from utila.math.near import nears
 from utila.math.near import pnear
 # math:number
 from utila.math.number import Floats

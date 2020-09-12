@@ -23,6 +23,19 @@ def near(first, second, diff: float = 2.0) -> bool:
     return math.fabs(first - second) <= diff
 
 
+def nears(firsts, seconds, diff: float = 2.0) -> bool:
+    """Test that two n-items are close together.
+
+    >>> nears((1, 2, 3), (0.5, 1.5, 3.5), diff=0.5)
+    True
+    >>> nears((1, 2), (0.5, 1.5), diff=0.3)
+    False
+    """
+    result = (utila.near(left, right, diff=diff)
+              for left, right in zip(firsts, seconds))
+    return all(result)
+
+
 def pnear(
         reference,
         current,
