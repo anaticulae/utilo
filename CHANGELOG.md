@@ -2,6 +2,13 @@
 
 Every noteable change is logged here.
 
+## v2.10.0
+
+### Feature
+
+* add method to compare two vectors (6db33674f4f4)
+* add method to simplify pages representation (f986e12f7526)
+
 ## v2.9.0
 
 ### Feature
