@@ -285,9 +285,13 @@ def simplify_pages(numbers: tuple) -> str:
     '1:5'
     >>> simplify_pages([1, 3, 5, 6, 7])
     '1,3,5:7'
+    >>> simplify_pages(None)
+    ':'
     """
     if isinstance(numbers, int):
         numbers = [numbers]
+    if not numbers:
+        return ':'
     diffed = utila.groupby_diff(numbers, diff=1)
     result = []
     for item in diffed:
