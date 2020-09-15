@@ -270,10 +270,7 @@ def prepare_todo(
 
     if config.verboseflag:
         todo.append(
-            Flag(
-                args={
-                    'action': 'count',
-                },
+            FlagCounted(
                 longcut=VERBOSE,
                 message='define verbose level of logging',
                 shortcut='V',
