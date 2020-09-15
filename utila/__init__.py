@@ -40,6 +40,7 @@ from utila.cli import Flag
 from utila.cli import FlagCounted
 from utila.cli import NumberedParameter
 from utila.cli import Parameter
+from utila.cli import ParameterAppended
 from utila.cli import ParserConfiguration
 from utila.cli import RequiredCommand
 from utila.cli import isuserflag

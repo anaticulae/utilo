@@ -98,6 +98,15 @@ class Parameter(Command):
 
 
 @dataclasses.dataclass
+class ParameterAppended(Parameter):
+
+    def __post_init__(self):
+        super().__post_init__()
+        self.args['default'] = []  # pylint:disable=E1137
+        self.args['action'] = 'append'  # pylint:disable=E1137
+
+
+@dataclasses.dataclass
 class NumberedParameter(Parameter):
 
     default: int = 1
