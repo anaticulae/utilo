@@ -75,6 +75,16 @@ class Flag(Command):
 
 
 @dataclasses.dataclass
+class FlagCounted(Flag):
+    """\
+    Example: -VV => --verbose level 2
+    """
+
+    def __post_init__(self):
+        self.args['action'] = 'count'  # pylint:disable=E1137
+
+
+@dataclasses.dataclass
 class Parameter(Command):
     """A Parameter needs data as a second argument
 
