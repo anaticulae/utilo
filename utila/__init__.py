@@ -261,4 +261,4 @@ from utila.utils import select_type
 from utila.utils import unset_env
 
 ROOT = os.path.abspath(os.path.join(os.path.dirname(__file__), '..'))
-PACKAGENAME = 'utila'
+PACKAGE = 'utila'
