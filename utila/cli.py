@@ -36,12 +36,6 @@ import sys
 import typing
 
 import utila
-from utila.file import make_absolute
-from utila.logger import error
-from utila.logger import log
-from utila.pages import parse_pages
-from utila.utils import ALL_PAGES
-from utila.utils import SUCCESS
 
 INVALID_COMMAND = 2
 """Returncode when application is invoked with invalid command.
@@ -380,8 +374,8 @@ def parse(parser: argparse.ArgumentParser):
         if verbose:
             version = f'{parser.prog} '
         version += parser.__version
-        log(version)
-        exit(SUCCESS)
+        utila.log(version)
+        exit(utila.SUCCESS)
     return args
 
 
@@ -440,23 +434,23 @@ def sources(  # pylint:disable=too-complex,too-many-branches
 
     if inputpaths:
         # make path absolute
-        inputpaths = [make_absolute(item) for item in inputpaths]
+        inputpaths = [utila.make_absolute(item) for item in inputpaths]
         # make unique and sort alphabetically
         inputpaths = sorted(list(set(inputpaths)))
         for inputpath in inputpaths:
             if not singleinput:
                 if os.path.isfile(inputpath):
-                    error('Input %s must be a directory' % inputpath)
+                    utila.error('Input %s must be a directory' % inputpath)
                     exit(INVALID_COMMAND)
             if not os.path.exists(inputpath):
-                error('Input %s does not exists' % inputpath)
+                utila.error('Input %s does not exists' % inputpath)
                 exit(INVALID_COMMAND)
 
     if outputpath:
         if not os.path.isabs(outputpath):
             outputpath = os.path.join(cwd, outputpath)
         if os.path.isfile(outputpath):
-            error('Output %s must be a directory' % outputpath)
+            utila.error('Output %s must be a directory' % outputpath)
             exit(INVALID_COMMAND)
         if not os.path.exists(outputpath):
             try:
@@ -464,9 +458,9 @@ def sources(  # pylint:disable=too-complex,too-many-branches
             except FileExistsError:
                 # avoid race condition if some other thread creates this
                 # folder before.
-                log(f'use: {outputpath}')
+                utila.log(f'use: {outputpath}')
             else:
-                log(f'creating: {outputpath}')
+                utila.log(f'creating: {outputpath}')
     # run application in current working directory if no path's are provided
     if not inputpaths and use_cwd:
         inputpaths = [os.getcwd()]
@@ -536,10 +530,10 @@ def pages_fromargs(args) -> tuple:
     >>> pages_fromargs({'pages':[0, 5,'10:15'], 'inpath':'...',})
     (0, 5, 10, 11, 12, 13, 14)
     """
-    pages = args.get(PAGES_FLAG, [ALL_PAGES])
+    pages = args.get(PAGES_FLAG, [utila.ALL_PAGES])
     pages = [str(item) for item in pages]
     joined = ','.join(pages)
-    result = parse_pages(joined)  # pylint:disable=R0204
+    result = utila.parse_pages(joined)  # pylint:disable=R0204
     return result
 
 
