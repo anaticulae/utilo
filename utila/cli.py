@@ -265,14 +265,9 @@ def prepare_todo(
     if config.pages:
         # TODO: pages flag in def work is only possible as the last parameter
         # BUG
-        page = Parameter(
+        page = ParameterAppended(
             longcut=PAGES_FLAG,
             message='run computation on given pages',
-            args={
-                'dest': PAGES_FLAG,
-                'default': [],
-                'action': 'append',  # support multiple --pages
-            },
         )
         todo.insert(0, page)
 
