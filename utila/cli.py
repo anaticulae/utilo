@@ -93,8 +93,7 @@ class Parameter(Command):
     """
 
     def __post_init__(self):
-        #pylint:disable=unsupported-assignment-operation
-        self.args['dest'] = self.longcut
+        self.args['dest'] = self.longcut  # pylint:disable=E1137
 
 
 @dataclasses.dataclass
