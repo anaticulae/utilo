@@ -245,6 +245,7 @@ from utila.typechecker import checkdatatype
 from utila.typechecker import isnumber
 from utila.typechecker import isstrings
 # Utils
+from utila.utils import ALL_PAGES
 from utila.utils import FAILURE
 from utila.utils import INF
 from utila.utils import NEWLINE
