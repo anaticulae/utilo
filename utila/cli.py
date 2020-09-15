@@ -324,13 +324,10 @@ def create_io_ports(
 ):
     todo = []
     if infile:
-        input_command = Command(
+        input_command = ParameterAppended(
             shortcut='i',
+            longcut='input',
             message='read input data from path',
-            args={
-                'dest': 'input',
-                'action': 'append'  # support multiple -i
-            },
         )
         todo.append(input_command)
 
