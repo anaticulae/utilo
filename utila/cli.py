@@ -441,8 +441,8 @@ def sources(  # pylint:disable=too-complex,too-many-branches
     """
     cwd = os.path.abspath(os.getcwd())
     # multiple inputs are possible
-    inputpaths = args.get('input')  # if key is not present, return None
-    outputpath = args.get('output')
+    inputpaths = args.get('input', None)
+    outputpath = args.get('output', None)
 
     prefix = args.get('prefix', False)
 
