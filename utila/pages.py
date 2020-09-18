@@ -39,7 +39,7 @@ def parse_pages(pattern: str, pagecount=None) -> tuple:  # pylint:disable=too-co
     (0, 1, 2, 3, 4)
     >>> parse_pages('-5:', pagecount=50)
     (45, 46, 47, 48, 49)
-    >>> parse_pages('-1', pagecount=10)
+    >>> parse_pages('-1', pagecount=10) # TODO: CHECK THIS TEST
     (9,)
     """
 
