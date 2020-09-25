@@ -145,6 +145,10 @@ def same_line_cluster(
         min_elements: int = 1,
         matcher: callable = None,
 ):
+    """\
+    >>> len(same_line_cluster([(0, 50, 100, 55), (70, 49, 140, 52), (0, 400, 100, 401)]))
+    2
+    """
     if not matcher:
         matcher = lambda bounding: bounding[3]
 
