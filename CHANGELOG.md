@@ -2,6 +2,22 @@
 
 Every noteable change is logged here.
 
+## v2.11.0
+
+### Feature
+
+* add key field to sort content of cluster before returning (883aa9320f88)
+* add methods to sort rectangles/boundings (f22dd9774f42)
+* add matcher field to cluster more complex data types (637879d1ff43)
+* add None to simplify_pages (c3dca78e5963)
+* extend public API (dddf76731281)
+* add ParameterAppended (c6eca5b6e73a)
+* add FlagCounted to express -DD-Flags easier (55708318523a)
+
+### Documentation
+
+* extend interface documentation (8b581a84720b)
+
 ## v2.10.0
 
 ### Feature
