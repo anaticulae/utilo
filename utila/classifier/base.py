@@ -49,6 +49,7 @@ def determine_cluster(
         min_elements: int = 2,
         ctor: Cluster = None,
         strategy: 'MatchStrategy' = None,
+        key: callable = None,
 ) -> Clusters:
     """Determine cluster out of `todo`.
 
@@ -75,6 +76,8 @@ def determine_cluster(
             break
     # A cluster must have at least 2 items
     clusters = [item for item in result if len(item) >= min_elements]
+    if key:
+        clusters = [sorted(cluster, key=key) for cluster in clusters]
     clusters = sorted(clusters, key=len, reverse=True)
     return clusters
 
