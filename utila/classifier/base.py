@@ -54,6 +54,16 @@ def determine_cluster(
     """Determine cluster out of `todo`.
 
     Sort clustered result by length of cluster descending.
+
+    Args:
+        todo: items to cluster
+        classifier: determine if two elements are in the same cluster
+        min_elements: min size of valid cluster
+        ctor: use different classes to reprenent cluster
+        strategy: use different strategies to select the right cluster
+        key: sort items of cluster before returning them
+    Returns:
+        List of clusters.
     """
     assert min_elements >= 1, str(min_elements)
     if strategy is None:
