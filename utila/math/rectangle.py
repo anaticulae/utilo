@@ -138,3 +138,29 @@ class RectangleCheck:
 
     def __len__(self):
         return len(self.content)
+
+
+def sort_leftright_topdown(items):
+    """Sort top down by y1 component.
+
+    >>> sort_leftright_topdown([(0, 0, 50, 50), (20, 20, 40, 40), (-50, -10, 0, 40)])
+    [(-50, -10, 0, 40), (20, 20, 40, 40), (0, 0, 50, 50)]
+    """
+    # left to right
+    items = sorted(items, key=operator.itemgetter(0))
+    # top down
+    items = sorted(items, key=operator.itemgetter(3))
+    return items
+
+
+def sort_leftright_topdown_upper(items):
+    """Sort top down by y0 component.
+
+    >>> sort_leftright_topdown_upper([(0, 0, 50, 50), (20, 20, 40, 40), (-50, -10, 0, 40)])
+    [(-50, -10, 0, 40), (0, 0, 50, 50), (20, 20, 40, 40)]
+    """
+    # left to right
+    items = sorted(items, key=operator.itemgetter(0))
+    # top down
+    items = sorted(items, key=operator.itemgetter(1))
+    return items
