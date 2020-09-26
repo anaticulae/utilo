@@ -444,6 +444,8 @@ def copy_content(  # pylint:disable=R1260
                       missing.
         verbose(bool): explain what is being done
     """
+    assert source, str(source)
+    assert destination, str(destination)
     if os.path.isfile(source):
         if not isfilepath(destination):
             destination = os.path.join(destination, os.path.basename(source))
