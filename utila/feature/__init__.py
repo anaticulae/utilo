@@ -162,17 +162,19 @@ def featurepack(  # pylint:disable=too-many-locals
     os.makedirs(outputpath, exist_ok=True)
 
     current_todo = determine_todo(args, config.flags)
-    completed = utila.feature.processor.process(
-        prepared_workplan,
-        config.name,
-        errorhook=config.errorhook,
-        failfast=failfast,
-        pages=pages,
-        processes=processes,
-        todo=current_todo,
-        profiling=profiling,
-        verbose=verbose,
-    )
+
+    with utila.profile(config.name) if profiling else utila.nothing():
+        completed = utila.feature.processor.process(
+            prepared_workplan,
+            config.name,
+            errorhook=config.errorhook,
+            failfast=failfast,
+            pages=pages,
+            processes=processes,
+            todo=current_todo,
+            profiling=profiling,
+            verbose=verbose,
+        )
     return completed
 
 
