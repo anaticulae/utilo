@@ -132,14 +132,13 @@ def callback(
         stepoutput=output,
         pages=pages,
     )
-    try:
-        contextmanager = utila.profile if profiling else utila.nothing
-        with contextmanager(msg=stepname):
+    with utila.profile(msg=stepname) if profiling else utila.nothing():
+        try:
             result = runnable()
             utila.log(f'completed: {stepname}')
-    except Exception as exception:  # pylint:disable=broad-except
-        utila.error(f'failed: {stepname}')
-        result = exception  # pylint:disable=R0204
+        except Exception as exception:  # pylint:disable=broad-except
+            utila.error(f'failed: {stepname}')
+            result = exception  # pylint:disable=R0204
     return [result, stepname, output]
 
 
