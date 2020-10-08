@@ -2,6 +2,19 @@
 
 Every noteable change is logged here.
 
+## v2.12.0
+
+### Feature
+
+* make sorting before grouping optional (5c5dff22f70f)
+* extend public API (02a0170707fa)
+* decrease required log level (a6cfdd82534c)
+* add profile step to profile complete step (5827bb887e1f)
+
+### Documentation
+
+* extend interface documentation (1d86040a4cf8)
+
 ## v2.11.0
 
 ### Feature
