@@ -170,6 +170,7 @@ from utila.math.distance import norm
 from utila.math.distance import norms
 from utila.math.line import IndenticalLineError
 from utila.math.line import equal_lines
+from utila.math.line import intersecting_ending
 from utila.math.line import intersecting_lines
 from utila.math.line import isdot
 from utila.math.line import length
