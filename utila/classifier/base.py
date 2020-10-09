@@ -10,7 +10,7 @@
 import typing
 
 import utila
-import utila.classifier.strategy as ucs
+import utila.classifier.strategy
 
 
 class Cluster:
@@ -67,7 +67,7 @@ def determine_cluster(
     """
     assert min_elements >= 1, str(min_elements)
     if strategy is None:
-        strategy = ucs.MatchStrategy.FIRST
+        strategy = utila.classifier.strategy.MatchStrategy.FIRST
     if not todo:
         return []
     if ctor is None:
@@ -101,7 +101,12 @@ def clusterme(
     result = [current]
     while todo:
         test = todo.pop()
-        index = ucs.match(test, result, classifier, strategy=strategy)
+        index = utila.classifier.strategy.match(
+            test,
+            result,
+            classifier,
+            strategy=strategy,
+        )
         if index is None:
             # No match, create new cluster
             result.insert(0, test)
