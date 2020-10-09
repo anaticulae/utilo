@@ -15,6 +15,7 @@ class MatchStrategy(enum.Enum):
     MAX = enum.auto()
     MIN = enum.auto()
     LAST = enum.auto()
+    ANY = enum.auto()
 
 
 def match(
@@ -30,6 +31,8 @@ def match(
         decider = match_min
     elif strategy == MatchStrategy.MAX:
         decider = match_max
+    elif strategy == MatchStrategy.ANY:
+        decider = match_any
     return decider(cluster, todo, classifier)
 
 
@@ -90,3 +93,16 @@ def match_max(cluster: 'Cluster', todo: 'Clusters', classifier: callable):
         maxvalue = matched
         result = clusterindex
     return result
+
+
+def match_any(cluster: 'Cluster', todo: 'Clusters', classifier: callable):
+    for clusterindex, candiat in enumerate(todo):
+        for cluster_item in cluster.content:
+            for candiat_item in candiat.content:
+                matched = classifier(
+                    candidat=candiat_item,
+                    clusteritem=cluster_item,
+                )
+                if matched:
+                    return clusterindex
+    return None
