@@ -218,6 +218,7 @@ def select_content(
 
 def sync_pages(
         iterators,
+        *,
         numbers: bool = True,
 ) -> typing.Tuple[int, typing.List]:
     """Generator to synchronize a list of PageContentIterators.
