@@ -347,16 +347,7 @@ def test_cli_userflag_to_arg(flag):
 
 
 def test_cli_sort_parameter():
-    parameter = [
-        Parameter(
-            shortcut='',
-            longcut='pages',
-            message='run computation on given pages',
-            args={
-                'dest': 'pages',
-                'default': ':'
-            },
-        ),
+    expected = [
         NumberedParameter(
             shortcut='j',
             longcut='',
@@ -368,11 +359,17 @@ def test_cli_sort_parameter():
             },
             default=1,
         ),
-        Parameter(
+        Flag(
+            shortcut='V',
+            longcut='verbose',
+            message='define verbose level of logging',
+            args={'action': 'count'},
+        ),
+        Flag(
             shortcut='',
-            longcut='prefix',
-            message='add prefix to separate different output files',
-            args={'dest': 'prefix'},
+            longcut='all',
+            message='',
+            args={},
         ),
         Flag(
             shortcut='',
@@ -382,29 +379,28 @@ def test_cli_sort_parameter():
         ),
         Flag(
             shortcut='',
-            longcut='all',
-            message='',
-            args={},
-        ),
-        Flag(
-            shortcut='V',
-            longcut='verbose',
-            message='define verbose level of logging',
-            args={'action': 'count'},
-        ),
-        Flag(
-            shortcut='',
             longcut='ff',
             message='failfast: quit after the first error',
             args={},
         ),
+        Parameter(
+            shortcut='',
+            longcut='pages',
+            message='run computation on given pages',
+            args={
+                'dest': 'pages',
+                'default': ':'
+            },
+        ),
+        Parameter(
+            shortcut='',
+            longcut='prefix',
+            message='add prefix to separate different output files',
+            args={'dest': 'prefix'},
+        ),
     ]
-    result = sort(parameter)
-    items = [
-        item.longcut.lower() if item.longcut else item.shortcut.lower()
-        for item in result
-    ]
-    assert sorted(items) == items, 'is not sorted correctly'
+    result = sort(expected)
+    assert result == expected, 'is not sorted correctly'
 
 
 def test_evaluate_multiple_pages_flags():

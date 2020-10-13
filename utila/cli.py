@@ -303,10 +303,13 @@ def flags_to_parameter(flags):
 
 
 def sort(items):
-    """Sort commands alphabetically. Sort by show- or longcut."""
-    sorter = lambda item: item.shortcut.lower()\
-                          if item.shortcut\
-                          else item.longcut.lower()
+    """Sort commands alphabetically. Sort short and longcut after."""
+
+    def sorter(item):
+        if item.shortcut:
+            return f'--{item.shortcut.lower()}'
+        return f'-{item.longcut.lower()}'
+
     result = sorted(items, key=sorter)
     return result
 
