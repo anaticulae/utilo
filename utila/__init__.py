@@ -122,6 +122,7 @@ from utila.file import tmpname
 from utila.file import yaml
 from utila.file.loader import from_raw_or_path
 from utila.file.loader import yaml_from_raw_or_path
+from utila.file.utils import exists
 # group
 from utila.group import groupby_ascending
 from utila.group import groupby_diff
