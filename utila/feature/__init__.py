@@ -142,12 +142,10 @@ def featurepack(  # pylint:disable=too-many-locals
             level = utila.Level.ERROR
     utila.level_setup(level)
 
-    hooks = utila.feature.collector.prepare_hooks(features)
-
     prepared_workplan = utila.feature.workplan.read_workplan(
         workplan,
         process_=config.name,
-        hooks=hooks,
+        features=features,
         inspace=inputpath,
         outspace=outputpath,
         args=args,

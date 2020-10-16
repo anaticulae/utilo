@@ -66,7 +66,7 @@ def connect_feature_interface(current, item) -> FeatureInterface:
     """Ensure that feature supports `name`, `commandline` and
     `work`-method."""
     curname = current.name() if hasattr(current, 'name') else item
-    message = current.HELP if hasattr(current, 'HELP') else None
+    message = getattr(current, 'HELP', None)
 
     # no commandline information is defined
     def curcommandline():
@@ -81,10 +81,3 @@ def connect_feature_interface(current, item) -> FeatureInterface:
         command=curcommandline,
         action=current.work,
     )
-
-
-def prepare_hooks(items: FeatureInterfaces):
-    result = {}
-    for item in items:
-        result[item.name] = item.action
-    return result

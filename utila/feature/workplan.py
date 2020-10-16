@@ -23,7 +23,7 @@ import utila.feature.userinput
 def read_workplan(  # pylint:disable=too-many-locals
         plan: list,
         process_: str,
-        hooks: dict,
+        features: 'Features',
         inspace: str,
         outspace: str = None,
         args: dict = None,
@@ -36,7 +36,7 @@ def read_workplan(  # pylint:disable=too-many-locals
     Args:
         plan: list of working steps
         process_: step name to print on console
-        hooks: dict of name and callable function
+        features: list auf Features
         inspace(str or list): list of input spaces
         outspace(str): absolute path to write output
         args: dict of additonal arguments
@@ -51,6 +51,8 @@ def read_workplan(  # pylint:disable=too-many-locals
     # if no outspace is defined, use the first passed inspace to write output
     outspace = outspace if outspace else inspace[0]
     prefix = '%s_' % prefix if prefix else ''
+
+    hooks = {item.name: item.action for item in features}
 
     result = []
     ret = 0

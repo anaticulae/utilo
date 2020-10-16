@@ -95,7 +95,7 @@ def run_level(level, todo, pool, pages, profiling, verbose: bool = True):
             continue
         future = pool.submit(
             callback,
-            step.inputs,
+            hook=step.inputs,
             stepname=step.name,
             output=step.outputs,
             pages=pages,
