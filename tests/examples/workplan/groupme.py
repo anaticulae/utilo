@@ -9,7 +9,7 @@
 
 from utila import ResultFile
 from utila import create_step as step
-from utila.feature import WorkStep
+from utila.feature import WorkPlanStep
 
 ROOT = 'groupme'
 
@@ -50,17 +50,17 @@ WORKPLAN = [
 ]
 
 PLAN_WITH_PATH = [
-    WorkStep(
+    WorkPlanStep(
         name='chapter',
         inputs=['C:\\restruct\\rawmaker__text_text.yaml)'],
         outputs=['C:\\restruct\\groupme__chapter_chapter.yaml'],
     ),
-    WorkStep(
+    WorkPlanStep(
         name='toc',
         inputs=['C:\\restruct\\rawmaker__text_text.yaml)'],
         outputs=['C:\\restruct\\groupme__toc_toc.yaml'],
     ),
-    WorkStep(
+    WorkPlanStep(
         name='pagenumbers',
         inputs=[
             'C:\\restruct\\rawmaker__text_text.yaml',
@@ -68,7 +68,7 @@ PLAN_WITH_PATH = [
         ],
         outputs=['C:\\restruct\\groupme__pagenumbers_pagenumbers.yaml'],
     ),
-    WorkStep(
+    WorkPlanStep(
         name='footer',
         inputs=[
             'C:\\restruct\\rawmaker__text_text.yaml',

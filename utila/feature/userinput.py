@@ -94,8 +94,8 @@ def create_step(
         name: str,
         inputs: typing.List['Input'] = None,
         output: typing.Tuple[str] = None,
-) -> 'WorkStep':
-    """Create a WorkStep from definition.
+) -> 'WorkPlanStep':
+    """Create a WorkPlanStep from definition.
 
     Example:
 
@@ -117,4 +117,4 @@ def create_step(
         assert isinstance(item, Input), f'{index} {item}'
     msg = '%s %s' % (type(output), str(output))
     assert isinstance(output, (tuple, list)), msg
-    return utila.feature.WorkStep(name, inputs, output)
+    return utila.feature.WorkPlanStep(name, inputs, output)

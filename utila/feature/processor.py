@@ -22,7 +22,7 @@ ErrorHook = typing.Tuple[Exception, str]
 
 
 def process(
-        workplan: 'utila.feature.WorkSteps',
+        workplan: 'utila.feature.WorkPlanSteps',
         name: str = None,
         todo: typing.List = None,
         processes: int = 1,
@@ -39,7 +39,7 @@ def process(
     every single step is processed.
 
     Args:
-        workplan(WorkSteps): list of defined WorkStep's
+        workplan(WorkPlanSteps): list of defined WorkPlanStep's
         name(str): name of executable
         todo: list with steps to run, if no steps are None, every step is
               executed.

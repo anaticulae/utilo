@@ -20,7 +20,7 @@ import utila.feature
 import utila.feature.userinput
 
 
-def read_workplan(  # pylint:disable=too-many-locals
+def create_runtime(  # pylint:disable=too-many-locals
         plan: list,
         process_: str,
         features: 'Features',
@@ -30,7 +30,7 @@ def read_workplan(  # pylint:disable=too-many-locals
         prefix: str = None,
         verify: bool = False,
         used_processes: int = 1,
-) -> 'typing.List[WorkStep]':
+) -> 'WorkPlanSteps':
     """Parse user defined workplan
 
     Args:
@@ -95,7 +95,7 @@ def read_workplan(  # pylint:disable=too-many-locals
         function_call = functools.partial(caller, *inputs)
 
         result.append(
-            utila.feature.WorkStep(
+            utila.feature.WorkPlanStep(
                 name=name,
                 inputs=function_call,
                 outputs=outputs,

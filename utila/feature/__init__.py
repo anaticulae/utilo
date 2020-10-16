@@ -36,13 +36,13 @@ import utila.feature.userinput
 
 
 @dataclasses.dataclass
-class WorkStep:
+class WorkPlanStep:
     name: str
     inputs: list = dataclasses.field(default_factory=list)
     outputs: list = dataclasses.field(default_factory=list)
 
 
-WorkSteps = typing.List[WorkStep]
+WorkPlanSteps = typing.List[WorkPlanStep]
 
 Name = str
 CommandLineInterface = typing.List[utila.Command]
@@ -75,7 +75,7 @@ class FeaturePackConfig:
 
 @utila.saveme(systemexit=True)
 def featurepack(  # pylint:disable=too-many-locals
-        workplan: WorkSteps,
+        workplan: WorkPlanSteps,
         root: str,
         featurepackage: str,
         config: FeaturePackConfig = None,
@@ -149,7 +149,7 @@ def featurepack(  # pylint:disable=too-many-locals
             level = utila.Level.ERROR
     utila.level_setup(level)
 
-    prepared_workplan = utila.feature.workplan.read_workplan(
+    runtime = utila.feature.workplan.create_runtime(
         workplan,
         process_=config.name,
         features=features,
@@ -170,7 +170,7 @@ def featurepack(  # pylint:disable=too-many-locals
 
     with utila.profile(config.name) if profiling else utila.nothing():
         completed = utila.feature.processor.process(
-            prepared_workplan,
+            runtime,
             config.name,
             errorhook=config.errorhook,
             failfast=failfast,
