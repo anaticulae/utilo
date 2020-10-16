@@ -89,14 +89,14 @@ def featurepack(  # pylint:disable=too-many-locals
     if not workplan:
         utila.error('empty workplan - nothing todo - abort!')
         return utila.FAILURE
-    feature = utila.feature.collector.find_features(root, featurepackage)
-    commands = commandline(feature, workplan)
+    features = utila.feature.collector.find_features(root, featurepackage)
+    commands = commandline(features, workplan)
 
     description = utila.feature.description.prepare_description(
         config.name,
         config.description,
         workplan,
-        feature,
+        features,
     )
     parser_configuration = utila.ParserConfiguration(
         failfastflag=config.failfastflag,
@@ -142,7 +142,7 @@ def featurepack(  # pylint:disable=too-many-locals
             level = utila.Level.ERROR
     utila.level_setup(level)
 
-    hooks = utila.feature.collector.prepare_hooks(feature)
+    hooks = utila.feature.collector.prepare_hooks(features)
 
     prepared_workplan = utila.feature.workplan.read_workplan(
         workplan,
