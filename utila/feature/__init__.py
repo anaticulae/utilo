@@ -69,6 +69,8 @@ class InterfaceMismatch(TypeError):
 class FeaturePackConfig:
     description: str = None
     errorhook: 'utila.feature.processor.ErrorHook' = None
+    before: callable = None
+    after: callable = None
     failfastflag: bool = True
     flags: list = dataclasses.field(default_factory=list)
     multiprocessed: bool = False
@@ -183,6 +185,8 @@ def featurepack(  # pylint:disable=too-many-locals
             runtime,
             config.name,
             errorhook=config.errorhook,
+            before=config.before,
+            after=config.after,
             failfast=failfast,
             pages=pages,
             processes=processes,

@@ -21,13 +21,15 @@ import utila.feature.workplan
 ErrorHook = typing.Tuple[Exception, str]
 
 
-def process(
+def process(  # pylint:disable=R0914
         workplan: 'utila.feature.ProcessSteps',
         name: str = None,
         todo: typing.List = None,
         processes: int = 1,
         pages: list = None,
         errorhook: ErrorHook = None,
+        before: callable = None,
+        after: callable = None,
         *,
         failfast: bool = False,
         profiling: bool = False,
@@ -46,6 +48,8 @@ def process(
         processes(int): maximal parallel exection steps
         pages(list): list with processed pages
         errorhook(ErrorHook): if Error occurrs write it to ErrorHook
+        before(callable): run before process plan
+        after(callable): run before process plan
         failfast(bool): quit after first failure
         profiling(bool): if True, runtime of every single step is logged
         verbose(bool): if True, print more logging information(skippin steps)
@@ -61,6 +65,13 @@ def process(
     executor = select_executor()
     with executor(max_workers=processes) as pool:
         failure = 0
+        if before:
+            befored = before()
+            if befored:
+                utila.error('could not complete before')
+                failure += befored
+            if failfast and failure:
+                return utila.FAILURE
         for level in workplan:
             # wait that level finishes without waiting, a next level which
             # require resource of the current may will not find the
@@ -81,6 +92,11 @@ def process(
             )
             if failfast and failure:
                 return utila.FAILURE
+        if after:
+            aftered = after()
+            if aftered:
+                utila.error('could not complete after')
+                failure += aftered
     status = utila.FAILURE if failure else utila.SUCCESS
     return status
 

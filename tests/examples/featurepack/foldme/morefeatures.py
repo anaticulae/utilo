@@ -49,6 +49,8 @@ def main(**kwargs):
         pages=True,
         singleinput=True,
         configflag=True,
+        before=before_global,
+        after=after_global,
         version=VERSION,
         **kwargs,
     )
@@ -58,3 +60,11 @@ def main(**kwargs):
         root=ROOT,
         workplan=WORKPLAN,
     )
+
+
+def before_global():
+    pass
+
+
+def after_global():
+    pass

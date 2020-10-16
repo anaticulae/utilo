@@ -32,6 +32,8 @@ def main():
         pages=True,
         singleinput=True,
         version=VERSION,
+        before=before,
+        after=after,
     )
     utila.featurepack(
         config=config,
@@ -42,4 +44,12 @@ def main():
 
 
 def errorhook(name, exception):  # pylint:disable=W0613
+    pass
+
+
+def before():
+    pass
+
+
+def after():
     pass
