@@ -29,9 +29,8 @@ FeatureInterfaces = typing.List[FeatureInterface]
 def find_features(root: str, featurepackage: str) -> FeatureInterfaces:
     """Locate all feautures in given path
 
-    Ensure that feature methods are defined. If some feature interface is not
-    implemented properly, the exection ends with FAILURE.
-    """
+    Ensure that feature methods are defined. If some feature interface
+    is not implemented properly, the execution ends with FAILURE."""
     assert os.path.exists(root), root
     featurepath = os.path.join(root, featurepackage.replace('.', '/'))
     if not os.path.exists(featurepath):
@@ -52,7 +51,8 @@ def find_features(root: str, featurepackage: str) -> FeatureInterfaces:
             featurepackage,
         )
         try:
-            result.append(connect_feature_interface(current, item))
+            connected = connect_feature_interface(current, item)
+            result.append(connected)
         except AttributeError as exception:
             utila.error(f'SKIP LOADING: {item}')
             utila.error(exception)
