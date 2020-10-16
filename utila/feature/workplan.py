@@ -389,20 +389,6 @@ def input_order(plan, root):
         else:
             items = step.hooks.work.args
         inputs = [str(item) for item in items]
-
-        def remove_common_path(inputs):
-            """Remove common path, which is equal for every inputs but
-            destroy the required file analysis in `determine_order`.
-
-            'C:\\restruct\\rawmaker__text_positions.yaml',
-            'C:\\restruct\\groupme__pagenumbers_pagenumbers.yaml'
-
-            'rawmaker__text_positions.yaml',
-            'groupme__pagenumbers_pagenumbers.yaml'
-            """
-            inputs = [os.path.split(item)[1] for item in inputs]
-            return inputs
-
         inputs = remove_common_path(inputs)
         if not inputs:
             # no required input - for example a random number generator
@@ -422,3 +408,17 @@ def input_order(plan, root):
                 require[name].add(item)
     order = utila.utils.determine_order(require, flat=False)
     return order
+
+
+def remove_common_path(inputs):
+    """Remove common path, which is equal for every inputs but
+    destroy the required file analysis in `determine_order`.
+
+    'C:\\restruct\\rawmaker__text_positions.yaml',
+    'C:\\restruct\\groupme__pagenumbers_pagenumbers.yaml'
+
+    'rawmaker__text_positions.yaml',
+    'groupme__pagenumbers_pagenumbers.yaml'
+    """
+    inputs = [os.path.split(item)[1] for item in inputs]
+    return inputs
