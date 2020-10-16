@@ -52,7 +52,7 @@ def read_workplan(  # pylint:disable=too-many-locals
     outspace = outspace if outspace else inspace[0]
     prefix = '%s_' % prefix if prefix else ''
 
-    hooks = {item.name: item.action for item in features}
+    hooks = {item.name: item.hooks for item in features}
 
     result = []
     ret = 0
@@ -70,7 +70,7 @@ def read_workplan(  # pylint:disable=too-many-locals
 
         inputs = prepare_inputs(step.inputs, inspace, outspace)
         try:
-            caller = hooks[name]
+            caller = hooks[name].work
         except KeyError:
             utila.error('missing hook with name %s' % name)
             ret += 1

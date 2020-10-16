@@ -16,11 +16,19 @@ import utila
 
 
 @dataclasses.dataclass
+class FeatureHooks:
+    before: callable = None
+    work: callable = None
+    after: callable = None
+    error: callable = None
+
+
+@dataclasses.dataclass
 class FeatureInterface:
     name: str = None
     message: str = None
     command: utila.Command = None
-    action: callable = None
+    hooks: FeatureHooks = None
 
 
 FeatureInterfaces = typing.List[FeatureInterface]
@@ -75,9 +83,16 @@ def connect_feature_interface(current, item) -> FeatureInterface:
     if hasattr(current, 'commandline'):
         curcommandline = current.commandline
 
+    hooks = FeatureHooks(
+        before=None,
+        work=current.work,
+        after=None,
+        error=None,
+    )
+
     return FeatureInterface(
         name=curname,
         message=message,
         command=curcommandline,
-        action=current.work,
+        hooks=hooks,
     )
