@@ -76,6 +76,14 @@ def connect_feature_interface(current, item) -> FeatureInterface:
     curname = current.name() if hasattr(current, 'name') else item
     message = getattr(current, 'HELP', None)
 
+    before = getattr(current, 'before', None)
+    after = getattr(current, 'after', None)
+    error = getattr(current, 'error', None)
+
+    assert before is None or callable(before), f'require callable, {current}'
+    assert after is None or callable(after), f'require callable, {current}'
+    assert error is None or callable(error), f'require callable, {current}'
+
     # no commandline information is defined
     def curcommandline():
         return utila.Flag(longcut=curname, message=f'export {curname}')
@@ -84,10 +92,10 @@ def connect_feature_interface(current, item) -> FeatureInterface:
         curcommandline = current.commandline
 
     hooks = FeatureHooks(
-        before=None,
+        before=before,
         work=current.work,
-        after=None,
-        error=None,
+        after=after,
+        error=error,
     )
 
     return FeatureInterface(

@@ -138,6 +138,8 @@ def callback(
             utila.log(f'completed: {stepname}')
         except Exception as exception:  # pylint:disable=broad-except
             utila.error(f'failed: {stepname}')
+            if hook.error:
+                hook.error(stepname, exception)
             result = exception  # pylint:disable=R0204
     return [result, stepname, output]
 
@@ -153,11 +155,17 @@ def run_hook_safely(
     """
     sig = inspect.signature(hook.work)
     try:
+        # run optional before hook before running work
+        if hook.before:
+            hook.before()
         if utila.PAGES_FLAG in sig.parameters:
             # optional page numbers flag
             result = hook.work(pages=pages)
         else:
             result = hook.work()
+        # run optional after hook after completing work
+        if hook.after:
+            hook.after()
     except Exception:  # pylint: disable=broad-except
         utila.error('while processing %s' % name)
         utila.log_stacktrace()

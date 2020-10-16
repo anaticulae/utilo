@@ -10,3 +10,11 @@
 
 def work() -> bytes:
     return b'I Love Binaries.'
+
+
+def before():
+    pass
+
+
+def after():
+    pass
