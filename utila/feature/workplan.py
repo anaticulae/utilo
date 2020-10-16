@@ -94,7 +94,12 @@ def read_workplan(  # pylint:disable=too-many-locals
             continue
         function_call = functools.partial(caller, *inputs)
 
-        result.append(utila.feature.WorkStep(name, function_call, outputs))
+        result.append(
+            utila.feature.WorkStep(
+                name=name,
+                inputs=function_call,
+                outputs=outputs,
+            ))
     if ret and verify:
         exit(utila.FAILURE)
     return result

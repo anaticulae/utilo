@@ -20,7 +20,7 @@ requirements
 .. note :: TODO: SUPPORT ONLY ONE VARIABLE INPUT AND OUTPUT PARAMETER?
 
 """
-import collections
+
 import contextlib
 import dataclasses
 import os
@@ -34,7 +34,14 @@ import utila.feature.description
 import utila.feature.processor
 import utila.feature.userinput
 
-WorkStep = collections.namedtuple('WorkStep', 'name inputs outputs')
+
+@dataclasses.dataclass
+class WorkStep:
+    name: str
+    inputs: list = dataclasses.field(default_factory=list)
+    outputs: list = dataclasses.field(default_factory=list)
+
+
 WorkSteps = typing.List[WorkStep]
 
 Name = str
