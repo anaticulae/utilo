@@ -30,7 +30,7 @@ def create_runtime(  # pylint:disable=too-many-locals
         prefix: str = None,
         verify: bool = False,
         used_processes: int = 1,
-) -> 'WorkPlanSteps':
+) -> 'utila.feature.ProcessSteps':
     """Parse user defined workplan
 
     Args:
@@ -93,11 +93,15 @@ def create_runtime(  # pylint:disable=too-many-locals
             ret += 1
             continue
         function_call = functools.partial(caller, *inputs)
-
         result.append(
-            utila.feature.WorkPlanStep(
+            utila.feature.ProcessStep(
                 name=name,
-                inputs=function_call,
+                hooks=utila.feature.collector.FeatureHooks(
+                    work=function_call,
+                    before=hooks[name].before,
+                    after=hooks[name].after,
+                    error=hooks[name].error,
+                ),
                 outputs=outputs,
             ))
     if ret and verify:
@@ -379,12 +383,12 @@ def input_order(plan, root):
     require = collections.defaultdict(set)
     for step in plan:
         name = f'{root}{REQUIREMENT_SEPARATOR}{step.name}'
-        try:
-            # TODO: ADD MORE DOCS HERE
-            # determine args out of  partial.method?
-            inputs = [str(item) for item in step.inputs.args]
-        except AttributeError:
-            inputs = [str(item) for item in step.inputs]
+
+        if isinstance(step, utila.feature.WorkPlanStep):
+            items = step.inputs
+        else:
+            items = step.hooks.work.args
+        inputs = [str(item) for item in items]
 
         def remove_common_path(inputs):
             """Remove common path, which is equal for every inputs but

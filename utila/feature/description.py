@@ -10,7 +10,6 @@
 import textwrap
 
 import utila
-import utila.feature.collector
 import utila.feature.userinput
 
 

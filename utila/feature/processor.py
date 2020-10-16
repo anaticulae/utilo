@@ -22,7 +22,7 @@ ErrorHook = typing.Tuple[Exception, str]
 
 
 def process(
-        workplan: 'utila.feature.WorkPlanSteps',
+        workplan: 'utila.feature.ProcessSteps',
         name: str = None,
         todo: typing.List = None,
         processes: int = 1,
@@ -95,7 +95,7 @@ def run_level(level, todo, pool, pages, profiling, verbose: bool = True):
             continue
         future = pool.submit(
             callback,
-            hook=step.inputs,
+            hook=step.hooks,
             stepname=step.name,
             output=step.outputs,
             pages=pages,
@@ -151,13 +151,13 @@ def run_hook_safely(
     """Verify interface, run hook and catch Exception and log problem if
     required.
     """
-    sig = inspect.signature(hook)
+    sig = inspect.signature(hook.work)
     try:
         if utila.PAGES_FLAG in sig.parameters:
             # optional page numbers flag
-            result = hook(pages=pages)
+            result = hook.work(pages=pages)
         else:
-            result = hook()
+            result = hook.work()
     except Exception:  # pylint: disable=broad-except
         utila.error('while processing %s' % name)
         utila.log_stacktrace()

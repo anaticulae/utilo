@@ -51,6 +51,16 @@ Feature = typing.Tuple[Name, CommandLineInterface, Worker]
 Features = typing.List[Feature]
 
 
+@dataclasses.dataclass
+class ProcessStep:
+    name: str = None
+    outputs: list = dataclasses.field(default_factory=list)
+    hooks: 'utila.feature.collector.FeatureHooks' = None
+
+
+ProcessSteps = typing.List[ProcessStep]
+
+
 class InterfaceMismatch(TypeError):
     pass
 
