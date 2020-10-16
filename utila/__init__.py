@@ -214,6 +214,8 @@ from utila.measure import millimeter
 from utila.measure import millimeters
 from utila.measure import point
 from utila.measure import points
+# optimizer
+from utila.optimizer import zip_optimizer
 # pages
 from utila.pages import parse_pages
 from utila.pages import select_content
