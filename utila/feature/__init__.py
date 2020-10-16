@@ -161,7 +161,7 @@ def featurepack(  # pylint:disable=too-many-locals
         verify=True,
     )
     # ensure to handle selected steps correctly
-    remove_workplan_flags(workplan, args)
+    args = remove_workplan_flags(args, workplan)
 
     # Ensure to have output folder
     os.makedirs(outputpath, exist_ok=True)
@@ -217,9 +217,10 @@ def commandline(features: Features, workplan: list) -> utila.Commands:
     return result
 
 
-def remove_workplan_flags(plan, args):
+def remove_workplan_flags(args, plan):
     """Remove `Bool`-Flags which are part of the workplan steps to
     evaluate selected steps correctly."""
+    args = {key: value for key, value in args.items()}
     collected = set()
     for step in plan:
         for variable in step.inputs:
@@ -227,6 +228,7 @@ def remove_workplan_flags(plan, args):
                 collected.add(variable.name)
     for item in collected:
         del args[item]
+    return args
 
 
 def determine_instance(workplan, typ):
