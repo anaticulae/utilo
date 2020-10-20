@@ -78,17 +78,23 @@ def max_distance(items, diff: float = 1.0, min_elements=2):
     )
 
 
-def three_side_equal_cluster(todo):
+def three_side_equal_cluster(
+        todo,
+        min_elements: int = 2,
+        max_diff=2.0,
+        selector=None,
+):
+    selector = selector if selector else lambda x: x[0]
 
     def classifier(candidat, clusteritem):
 
         def matcher(candidat, clusteritem):
-            candidat_pos, _ = candidat
-            cluster_pos, _ = clusteritem
+            bounding_cluster = selector(clusteritem)
+            bounding_test = selector(candidat)
 
             eqaul = sum([
-                abs(first - second) < 0.001  # float difference is allowed
-                for (first, second) in zip(candidat_pos, cluster_pos)
+                utila.near(first, second, diff=max_diff)
+                for (first, second) in zip(bounding_test, bounding_cluster)
             ])
             return eqaul >= 3
 
@@ -97,7 +103,7 @@ def three_side_equal_cluster(todo):
     return utila.classifier.base.determine_cluster(
         todo,
         classifier,
-        min_elements=2,
+        min_elements=min_elements,
     )
 
 
