@@ -78,10 +78,12 @@ def isascending(
     True
     >>> isascending((5, 2.2, 5))
     False
+    >>> isascending((0.6, 0.8, 1.0))
+    True
     >>> isascending([1, 2, 2, 2, 3], strict=False)
     True
     """
-    items = [int(item) for item in items]
+    items = [float(item) for item in items]
     diff = [
         (after - current) for (current, after) in zip(items[:-1], items[1:])
     ]
