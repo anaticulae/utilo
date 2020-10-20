@@ -69,6 +69,7 @@ def roundme(
 
 def isascending(
         items: 'utila.math.number.Numbers',
+        *,
         strict: bool = True,
 ) -> bool:
     """Check that `items` are ascending numbers.
