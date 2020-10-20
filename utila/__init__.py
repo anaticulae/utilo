@@ -175,6 +175,8 @@ from utila.math.line import intersecting_ending
 from utila.math.line import intersecting_lines
 from utila.math.line import isdot
 from utila.math.line import length
+from utila.math.line import line_raising
+from utila.math.line import merge_lines
 from utila.math.line import round_line
 from utila.math.line import unique_lines
 # math:near

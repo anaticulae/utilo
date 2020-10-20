@@ -8,6 +8,7 @@
 # =============================================================================
 
 import math
+import operator
 
 import utila
 import utila.math.const
@@ -195,3 +196,73 @@ def intersecting_ending(first: tuple, second: tuple, tol: float = 3.0) -> bool:
         return True
 
     return False
+
+
+def merge_lines(items, diff: float = 3.0):
+    """Some pdf printer prints long lines as a couple of short lines.
+    For analysis it is required, that these lines are merged to single
+    lines to work with correct length and positon.
+
+    This algorithm merges lines which are:
+     - connected in two points
+     - have the same raising.
+
+    As a requirement, the lines are sorted top down and left right.
+
+    >>> merge_lines([(328.18, 373.08, 329.68, 373.83),
+    ...              (329.68, 373.08, 416.03, 373.83),
+    ...              (416.02, 373.08, 416.77, 373.83),
+    ...              (416.77, 373.08, 502.39, 373.83),
+    ...              (502.40, 373.08, 504.65, 373.83),])
+    [(328.18, 373.08, 504.65, 373.83)]
+
+    >>> merge_lines([(257.58, 440.65 ,259.08 ,442.15),
+    ...              (259.08, 440.65 ,328.18 ,442.15),
+    ...              (328.18, 440.65 ,329.68 ,442.15),
+    ...              (329.68, 440.65 ,416.03 ,441.40),
+    ...              (416.02, 440.65 ,416.77 ,442.15),
+    ...              (416.77, 440.65 ,502.39 ,441.40),
+    ...              (502.40, 440.65 ,504.65 ,442.15)])
+    [(257.58, 440.65, 504.65, 442.15)]
+    """
+    if not items:
+        return []
+    result = [items[0]]
+    for item in items[1:]:
+        last_x1, last_y1 = result[-1][2], result[-1][3]
+        x0, y0 = item[0], item[1]
+        if not all((
+                utila.near(last_x1, x0, diff=diff),
+                utila.near(last_y1, y0, diff=diff),
+                utila.near(
+                    line_raising(item, diff),
+                    line_raising(result[-1], diff),
+                    diff=diff,
+                ),
+        )):
+            result.append(item)
+        else:
+            # unite
+            new = (result[-1][0], result[-1][1], item[2], item[3])
+            result.pop()
+            result.append(new)
+
+    # sort item top down; left right after merging
+    result = sorted(result, key=operator.itemgetter(1, 0))
+    return result
+
+
+def line_raising(item, diff=1.0) -> float:
+    """\
+    >>> line_raising((0, 0, 50, 50))
+    1.0
+    >>> line_raising((0, 0, 0, 100)) # inf line_raising
+    2147483647
+    """
+    xdiff = (item[2] - item[0])
+    ydiff = (item[3] - item[1])
+    if -diff <= ydiff <= diff:
+        return 0.0
+    if -diff <= xdiff <= diff:
+        return utila.INF
+    return xdiff / ydiff
