@@ -296,12 +296,17 @@ def file_list(
     # make unique and ?fast?
     include = set(include)
     exclude = set(exclude)
-
     result = []
     with utila.chdir(path):
-        for item in glob.glob('**/*.*', recursive=recursive):
+        for item in glob.glob('**/*', recursive=recursive):
+            if not os.path.isfile(item):
+                continue
             filepath = utila.forward_slash(item)
-            ext = filepath.rsplit('.', maxsplit=1)[1]
+            try:
+                ext = filepath.rsplit('.', maxsplit=1)[1]
+            except IndexError:
+                # file without extension
+                ext = None
             if include:
                 if ext not in include:
                     continue
