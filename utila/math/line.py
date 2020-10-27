@@ -19,7 +19,7 @@ def length(x0, y0, x1, y1) -> float:
     return utila.math.distance.norm(x0, y0, x1, y1)
 
 
-def round_line(x0, y0, x1, y1, max_noise=4.0) -> tuple:
+def round_line(x0, y0, x1, y1, digits: int = 1, max_noise=4.0) -> tuple:
     """Ensure that a nearly horizontal or vertical line contains no noise.
 
     >>> round_line(*(10.9, 100, 9.8, 200))
@@ -31,7 +31,7 @@ def round_line(x0, y0, x1, y1, max_noise=4.0) -> tuple:
     if math.fabs(y0 - y1) < max_noise:
         y1 = (y1 + y0) / 2
         y0 = y1
-    x0, y0, x1, y1 = utila.roundme(x0, y0, x1, y1, digits=1)
+    x0, y0, x1, y1 = utila.roundme(x0, y0, x1, y1, digits=digits)
     return (x0, y0, x1, y1)
 
 
