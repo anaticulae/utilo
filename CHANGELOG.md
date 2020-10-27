@@ -2,6 +2,30 @@
 
 Every noteable change is logged here.
 
+## v2.13.0
+
+### Feature
+
+* add files without extension to file_list (011aace27d3b)
+* extend ascending test to support floats (76e0d5675007)
+* improve three side equal cluster (2c6f0923ced2)
+* add method to merge lines to single line(s) (d72957b3b588)
+* add global before and after hooks (dae70f371a31)
+* add before, after and error hook to feature processor (518160051455)
+* add ProcessStep data type to represent created runtime (74167dc76adb)
+* add zip optimizer (2e32f1909d18)
+* add wrapper for os.path.exists to reduce amount of code (a7558070acb6)
+* add ANY strategy (1fda6f628b98)
+* add method to check intersecting ending of two lines (b76acb0bdd7c)
+
+### Fix
+
+* sort shortcut before longcut (d7c317e22bfb)
+
+### Documentation
+
+* extend interface documentation (f5cf03e93d43)
+
 ## v2.12.0
 
 ### Feature
