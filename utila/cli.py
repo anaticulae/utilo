@@ -358,7 +358,6 @@ def parse(parser: argparse.ArgumentParser):
 
     Disable -f! --flags! with acclamation mark.
     """
-
     # divide in activate and disable commands
     enable, disable = split_args(sys.argv)
     # remove disabling commands out of sys args to avoid problems with
