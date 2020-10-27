@@ -1,0 +1,40 @@
+# =============================================================================
+# C O P Y R I G H T
+# -----------------------------------------------------------------------------
+# Copyright (c) 2020 by Helmut Konrad Fahrendholz. All rights reserved.
+# This file is property of Helmut Konrad Fahrendholz. Any unauthorized copy,
+# use or distribution is an offensive act against international law and may
+# be prosecuted under federal law. Its content is company confidential.
+# =============================================================================
+
+import os
+
+import utila
+
+
+def file_hash(path: str) -> str:
+    assert os.path.exists(path), str(path)
+    content = utila.file_read_binary(path)
+    hashed = utila.freehash(content)
+    return hashed
+
+
+def directory_hash(paths: str, *, ftype='yaml') -> str:
+    paths = [paths] if isinstance(paths, str) else paths
+    collected = []
+    for path in paths:
+        if os.path.isfile(path):
+            files = [path]
+        else:
+            files = utila.file_list(
+                path,
+                include=ftype,
+                recursive=True,
+            )
+        for filepath in files:
+            hashed = file_hash(filepath)
+            collected.append(hashed)
+    if not files:
+        return None
+    merged = utila.NEWLINE.join(collected)
+    return utila.freehash(merged)

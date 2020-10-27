@@ -120,6 +120,10 @@ from utila.file import tmpdir
 from utila.file import tmpfile
 from utila.file import tmpname
 from utila.file import yaml
+# hashed
+from utila.file.hashed import directory_hash
+from utila.file.hashed import file_hash
+# loader
 from utila.file.loader import from_raw_or_path
 from utila.file.loader import yaml_from_raw_or_path
 from utila.file.utils import exists
