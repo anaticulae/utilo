@@ -7,8 +7,11 @@
 # be prosecuted under federal law. Its content is company confidential.
 # =============================================================================
 
+import contextlib
 import os
 import re
+import sys
+import zipfile
 
 import utila
 
@@ -62,3 +65,56 @@ def datapackage(call: str, version: str) -> str:
     parameter = utila.freehash(parameter)
     cached = os.path.join(cached, program, version, hashed, parameter)
     return cached
+
+
+def use_cache(program, version) -> int:
+    call = ' '.join([program] + sys.argv[1:])
+    cached = utila.datapackage(call, version=version)
+    if not cached:
+        # no cache
+        utila.debug('no cache')
+        return False
+    if not os.path.exists(cached):
+        return False
+    utila.log('use cache')
+    outpath = output(call)
+    if not outpath:
+        outpath = os.getcwd()
+
+    os.makedirs(outpath, exist_ok=True)
+    todo = f'python -m zipfile -e {cached} {outpath}'
+    extracted = utila.run(todo)
+    return extracted.returncode == utila.SUCCESS
+
+
+def write_cache(program, version):
+    call = ' '.join([program] + sys.argv[1:])
+    cached = utila.datapackage(call, version=version)
+    if not cached:
+        # no cache
+        utila.debug('no cache')
+        return False
+    if os.path.exists(cached):
+        # TODO: ADD OPTION TO UPDATE CACHE
+        return True
+    outpath = output(call)
+    if not outpath:
+        outpath = os.getcwd()
+    parent_cache = utila.forward_slash(os.path.split(cached)[0])
+    os.makedirs(parent_cache, exist_ok=True)
+    collected = utila.file_list(
+        outpath,
+        include=['yaml', 'png'],
+    )
+    with zipfile.ZipFile(cached, 'w') as archive:
+        for item in collected:
+            archive.write(item, arcname=item)
+
+
+@contextlib.contextmanager
+def cacheme(program, version):
+    if use_cache(program, version=version):
+        yield True
+    else:
+        yield False
+    write_cache(program, version)

@@ -24,10 +24,13 @@ requirements
 import contextlib
 import dataclasses
 import os
+import sys
 import typing
+import zipfile
 
 import utila
 import utila.cli
+import utila.feature.cache
 import utila.feature.collector
 import utila.feature.config
 import utila.feature.description
@@ -180,20 +183,26 @@ def featurepack(  # pylint:disable=too-many-locals
 
     current_todo = determine_todo(args, config.flags)
 
-    with utila.profile(config.name) if profiling else utila.nothing():
-        completed = utila.feature.processor.process(
-            runtime,
-            config.name,
-            errorhook=config.errorhook,
-            before=config.before,
-            after=config.after,
-            failfast=failfast,
-            pages=pages,
-            processes=processes,
-            todo=current_todo,
-            profiling=profiling,
-            verbose=verbose,
-        )
+    usecache = False
+    cache = utila.feature.cache.cacheme if usecache else utila.nothing
+    with cache(config.name, config.version) as done:
+        if done:
+            # already cached
+            return utila.SUCCESS
+        with utila.profile(config.name) if profiling else utila.nothing():
+            completed = utila.feature.processor.process(
+                runtime,
+                config.name,
+                errorhook=config.errorhook,
+                before=config.before,
+                after=config.after,
+                failfast=failfast,
+                pages=pages,
+                processes=processes,
+                todo=current_todo,
+                profiling=profiling,
+                verbose=verbose,
+            )
     return completed
 
 
