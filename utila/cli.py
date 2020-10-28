@@ -138,6 +138,7 @@ class ParserConfiguration:
     quiteflag: bool = False
     verboseflag: bool = True
     configflag: bool = False
+    cacheflag: bool = True
 
 
 def create_parser(
@@ -168,6 +169,9 @@ def create_parser(
         formatter_class=argparse.RawDescriptionHelpFormatter,
         prog=prog,
     )
+
+    if config.cacheflag:
+        todo.append(Flag('--cache', message='use cached data.'))
 
     if version:
         todo.append(Flag('-v', 'version', 'show version and exit.'))

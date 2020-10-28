@@ -183,7 +183,7 @@ def featurepack(  # pylint:disable=too-many-locals
 
     current_todo = determine_todo(args, config.flags)
 
-    usecache = False
+    usecache = args.get('cache', False)
     cache = utila.feature.cache.cacheme if usecache else utila.nothing
     with cache(config.name, config.version) as done:
         if done:
