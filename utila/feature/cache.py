@@ -21,33 +21,40 @@ def simple_call(call: str) -> str:
 
     >>> simple_call('rawmaker -j=auto -i C:/toc.pdf -o C:/master_page_ --char_margin=3.1 --boxes_f')
     'rawmaker --boxes_f --char_margin=3.1'
+    >>> simple_call('rawmaker -i privacy_data_protection_whitepaper-de.pdf')
+    'rawmaker'
     """
     # remove processor number
-    call = re.sub(r'-j(=|\s{0,5})(auto|\d{1,2})', '', call)
+    call = re.sub(r'-j(=|\s{1,5})(auto|\d{1,2})', '', call)
     # remove input and output
-    call = re.sub(r'-(i|o)(=|\s{0,5})[^ ]+\b', '', call)
-    program, parameter = call.split(maxsplit=1)
-    parameter = ' '.join(sorted(parameter.split()))
-    return f'{program} {parameter}'
+    call = re.sub(r'-(i|o)(=|\s{1,5})[^ ]+\b', '', call)
+    if ' ' in call.strip():
+        program, parameter = call.split(maxsplit=1)
+        parameter = ' '.join(sorted(parameter.split()))
+    else:
+        program, parameter = call, ''
+    return f'{program} {parameter}'.strip()
 
 
 def inputs(call: str) -> list:
     """\
     >>> inputs('rawmaker -j=auto -i C:/page_72_noimages_toc.pdf -o C:/noimages_toc -i=/c/input --boxes_f')
     ['C:/page_72_noimages_toc.pdf', '/c/input']
+    >>> inputs('rawmaker -i privacy_data_protection_whitepaper-de.pdf --images')
+    ['privacy_data_protection_whitepaper-de.pdf']
     """
     result = []
-    for item in re.finditer(r'-i(=|\s{0,5})(?P<source>[^ ]+)\b', call):
+    for item in re.finditer(r'-i(=|\s{1,5})(?P<source>[^ ]+)\b', call):
         result.append(item['source'])
     return result
 
 
 def output(call: str) -> str:
     """\
-    >>> inputs('rawmaker -j=auto -i C:/page_72_noimages_toc.pdf -o C:/noimages_toc -i=/c/input --boxes_f')
+    >>> output('rawmaker -j=auto -i C:/page_72_noimages_toc.pdf -o C:/noimages_toc -i=/c/input --boxes_f')
     'C:/noimages_toc'
     """
-    matched = re.match(r'-o(=|\s{0,5})(?P<output>[^ ]+)\b', call)
+    matched = re.search(r'-o(=|\s{1,5})(?P<output>[^ ]+)\b', call)
     if not matched:
         return None
     return matched['output']
@@ -59,9 +66,12 @@ def datapackage(call: str, version: str) -> str:
     except KeyError:
         return None
     sources = inputs(call)
-    hashed = utila.directory_hash(sources)
+    hashed = utila.directory_hash(sources, ftype=('yaml', 'png', 'pdf'))
     simple = simple_call(call)
-    program, parameter = simple.split(maxsplit=1)
+    if ' ' in simple.strip():
+        program, parameter = simple.strip().split(maxsplit=1)
+    else:
+        program, parameter = simple, ''
     parameter = utila.freehash(parameter)
     cached = os.path.join(cached, program, version, hashed, parameter)
     return cached
@@ -87,7 +97,7 @@ def use_cache(program, version) -> int:
     return extracted.returncode == utila.SUCCESS
 
 
-def write_cache(program, version):
+def write_cache(program, version) -> bool:
     call = ' '.join([program] + sys.argv[1:])
     cached = utila.datapackage(call, version=version)
     if not cached:
@@ -109,6 +119,7 @@ def write_cache(program, version):
     with zipfile.ZipFile(cached, 'w') as archive:
         for item in collected:
             archive.write(item, arcname=item)
+    return True
 
 
 @contextlib.contextmanager

@@ -21,6 +21,8 @@ def file_hash(path: str) -> str:
 
 def directory_hash(paths: str, *, ftype='yaml') -> str:
     paths = [paths] if isinstance(paths, str) else paths
+    if not paths:
+        return None
     collected = []
     for path in paths:
         if os.path.isfile(path):
