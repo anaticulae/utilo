@@ -166,3 +166,20 @@ def same_line_cluster(
         )
 
     return utila.determine_cluster(todo, classifier, min_elements=min_elements)
+
+
+def intersecting_rectangle_cluster(
+        todo,
+        min_elements: int = 1,
+        bounding: callable = None,
+):
+    if not bounding:
+        bounding = lambda item: item
+
+    def classifier(candidat, clusteritem):
+        return utila.intersecting_rectangle(
+            bounding(candidat),
+            bounding(clusteritem),
+        )
+
+    return utila.determine_cluster(todo, classifier, min_elements=min_elements)
