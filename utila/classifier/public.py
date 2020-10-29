@@ -117,18 +117,15 @@ def same_area_cluster(
 
     def classifier(candidat, clusteritem, max_difference=max_difference):
 
-        def distance(x0, y0, x1, y1):
-            return math.sqrt(pow((x1 - x0), 2) + pow((y1 - y0), 2))
-
         def matcher(candidat, clusteritem):
             testbox = selector(candidat)
             goalbox = selector(clusteritem)
-            equality = distance(
+            equality = utila.norm(
                 testbox[2],
                 testbox[3],
                 goalbox[2],
                 goalbox[3],
-            ) + distance(
+            ) + utila.norm(
                 testbox[0],
                 testbox[1],
                 goalbox[0],
