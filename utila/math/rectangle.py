@@ -11,6 +11,7 @@ import math
 import operator
 import typing
 
+import utila
 import utila.math
 
 # x0, y0, x1, y1
@@ -164,3 +165,44 @@ def sort_leftright_topdown_upper(items):
     # top down
     items = sorted(items, key=operator.itemgetter(1))
     return items
+
+
+def intersecting_rectangle(first: tuple, second: tuple) -> bool:
+    """Check if two rectangles intersect at any point.
+
+    >>> intersecting_rectangle((0, 45, 55, 100), (45, 0, 55, 100))
+    True
+    >>> intersecting_rectangle((0, 0, 50, 50), (55, 55, 100, 100))
+    False
+    >>> intersecting_rectangle((0, 0, 50, 50), (0, 0, 50, 50)) # identical
+    True
+    """
+    for first_line in rectangle_border(first):
+        for second_line in rectangle_border(second):
+            try:
+                if utila.intersecting_lines(first_line, second_line):
+                    return True
+            except utila.IndenticalLineError:
+                return True
+    return False
+
+
+def rectangle_border(rectangle: tuple):
+    """Generator to run round trip on rectangle border.
+
+    Visit: (left,top), (right, top), (right, bottom), (left, bottom), (left, top)
+
+    >>> list(rectangle_border((0,0, 55, 50)))
+    [(0, 0, 55, 0), (55, 0, 55, 50), (0, 50, 55, 50), (0, 0, 0, 50)]
+
+    Hint: Left coordiante is always smaller equal than right coordiate
+    """
+    x0, y0, x1, y1 = rectangle
+    # left -> right
+    yield (x0, y0, x1, y0)
+    # right, top bottom
+    yield (x1, y0, x1, y1)
+    # right, right <- left
+    yield (x0, y1, x1, y1)
+    # left, bottom up
+    yield (x0, y0, x0, y1)
