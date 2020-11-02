@@ -134,5 +134,5 @@ def assert_failure(process: subprocess.CompletedProcess):
 def returncode(exeception: Exception) -> int:
     """Determine return code raised from exit()"""
     msg = 'process return `None` as returnvalue instead of returncode'
-    assert exeception.value is not None, msg
+    assert exeception.value not in (None, 'None'), msg
     return int(str(exeception.value))
