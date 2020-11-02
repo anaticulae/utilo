@@ -103,3 +103,18 @@ def isnumber(item: str) -> bool:
         _ = float(str(item))
         return True
     return False
+
+
+def equal_length(*items) -> bool:
+    """\
+    >>> equal_length([1, 2], (2,), [3, 3, 3])
+    False
+    >>> equal_length((1,), (2,))
+    True
+    >>> equal_length([3, 3, 3], [3, 3, 3])
+    True
+    """
+    length = [len(item) for item in items]
+    if len(set(length)) > 1:
+        return False
+    return True
