@@ -24,10 +24,22 @@ def make_tuple(length: int, *, start: int = 0) -> tuple:
 
 def ranged_tuple(start, end) -> tuple:
     """\
-    >>> ranged_tuple(10,15)
+    >>> ranged_tuple(10, 15)
     (10, 11, 12, 13, 14)
     """
+    if end is None:
+        start, end = 0, start
     return tuple(range(start, end))
+
+
+def ranged_list(start, end=None) -> tuple:
+    """\
+    >>> ranged_list(5)
+    [0, 1, 2, 3, 4]
+    >>> ranged_list(5, 7)
+    [5, 6]
+    """
+    return list(ranged_tuple(start, end))
 
 
 def ranges(start: float, stop: float, step: float):

@@ -258,6 +258,7 @@ from utila.string import similar
 from utila.tuples import from_tuple
 from utila.tuples import make_tuple
 from utila.tuples import parse_tuple
+from utila.tuples import ranged_list
 from utila.tuples import ranged_tuple
 from utila.tuples import ranges
 # Typerchecker
