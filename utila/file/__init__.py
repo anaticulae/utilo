@@ -427,16 +427,6 @@ def copy_content(  # pylint:disable=R1260
     """Copy the content from `source` to `destination` folder. If
     `destination` folder does not exists, it will be created.
 
-    Pattern-Syntax:
-        In the current implementation only one multiple field is
-        possible. The multiple pattern group is inside brackets and is
-        separated by |. For example: (rawmaker|groupme)__*.yaml, copies
-        rawmaker and groupme yaml files.
-
-    Hint:
-        Why not using shutil.copytree?: Copy tree expect that
-        destination does not exists, but we need this.
-
     Args:
         source(str): file or directory to copy
         destination(str): directory to copy source item(s)
@@ -448,6 +438,16 @@ def copy_content(  # pylint:disable=R1260
                       destination file or when the destination file is
                       missing.
         verbose(bool): explain what is being done
+
+    Pattern-Syntax:
+        In the current implementation only one multiple field is
+        possible. The multiple pattern group is inside brackets and is
+        separated by |. For example: (rawmaker|groupme)__*.yaml, copies
+        rawmaker and groupme yaml files.
+
+    Hint:
+        Why not using shutil.copytree?: Copy tree expect that
+        destination does not exists, but we need this.
     """
     assert source, str(source)
     assert destination, str(destination)
