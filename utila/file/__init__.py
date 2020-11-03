@@ -236,6 +236,7 @@ def file_copy(
         source: str,
         destination: str,
         update: bool = True,
+        exception: bool = False,
 ):
     """Copy a single `source` file to `destination` file or folder.
 
@@ -245,6 +246,11 @@ def file_copy(
         update(bool): copy only when the source file is different than
                       the destination file or when the destination file
                       is missing.
+        exception(bool): if True  raise exception if copying is not possible
+                         if False log error and raise exit
+    Raises:
+        OSError: if coping is not possible and exception is True
+        SameFileError: if source and destination is equal
     """
     assert os.path.exists(source), f'"{source}" does not exists'
     try:
@@ -253,8 +259,10 @@ def file_copy(
         parent, _ = os.path.split(destination)
         os.makedirs(parent, exist_ok=True)
         shutil.copy(source, destination)
-    except OSError:
+    except OSError as error:
         utila.error(f'could not overwrite: {destination}')
+        if exception:
+            raise error
         exit(utila.FAILURE)
 
 
@@ -422,6 +430,7 @@ def copy_content(  # pylint:disable=R1260
         *,
         recursive: bool = False,
         update: bool = False,
+        skip_equal: bool = False,
         verbose: bool = False,
 ):
     """Copy the content from `source` to `destination` folder. If
@@ -437,6 +446,8 @@ def copy_content(  # pylint:disable=R1260
         update(bool): move only when the source file is newer than the
                       destination file or when the destination file is
                       missing.
+        skip_equal(bool): if True, do not raise Error if source and
+                          destination is equal.
         verbose(bool): explain what is being done
 
     Pattern-Syntax:
@@ -451,16 +462,19 @@ def copy_content(  # pylint:disable=R1260
     """
     assert source, str(source)
     assert destination, str(destination)
+    suppress = contextlib.suppress if skip_equal else utila.nothing
     if os.path.isfile(source):
         if not isfilepath(destination):
             destination = os.path.join(destination, os.path.basename(source))
         if verbose:
             utila.log(f'cp: {source} -> {destination}')
-        file_copy(
-            source,
-            destination,
-            update=update,
-        )
+        with suppress(shutil.SameFileError):
+            utila.file_copy(
+                source,
+                destination,
+                update=update,
+                exception=skip_equal,
+            )
         return
 
     if pattern is None:
@@ -472,14 +486,16 @@ def copy_content(  # pylint:disable=R1260
             utila.log(f'split pattern: {pattern} -> {multiple}')
         for converted_pattern in multiple:
             # run multiple operation
-            copy_content(
-                source,
-                destination,
-                pattern=converted_pattern,
-                recursive=recursive,
-                update=update,
-                verbose=verbose,
-            )
+            with suppress(shutil.SameFileError):
+                copy_content(
+                    source,
+                    destination,
+                    pattern=converted_pattern,
+                    recursive=recursive,
+                    skip_equal=skip_equal,
+                    update=update,
+                    verbose=verbose,
+                )
         return
 
     pattern = f'**/{pattern}' if recursive else pattern
@@ -493,7 +509,13 @@ def copy_content(  # pylint:disable=R1260
         if os.path.isfile(source_):
             if verbose:
                 utila.log(f'cp: {source_} -> {dest_}')
-            file_copy(source_, dest_, update=update)
+            with suppress(shutil.SameFileError):
+                utila.file_copy(
+                    source_,
+                    dest_,
+                    update=update,
+                    exception=skip_equal,
+                )
         else:
             if verbose:
                 utila.log(f'mkdir: {dest_}')
