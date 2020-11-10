@@ -10,7 +10,7 @@
 import hashlib
 
 
-def freehash(data: bytes, digits=16) -> str:
+def freehash(data: bytes, digits: int = 16) -> str:
     """Hash data to ease using.
 
     Hint: Use this for non secure approaches only.
