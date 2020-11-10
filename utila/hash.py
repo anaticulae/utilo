@@ -30,3 +30,8 @@ def freehash(data: bytes, digits: int = 16) -> str:
     hashed = hashlib.blake2b(data, digest_size=digits)
     result = hashed.hexdigest()
     return result
+
+
+def secure_hash(data: bytes, digits: int = 256, salt: str = None) -> str: # pylint:disable=W0613
+    # TODO: INTRODUCE SECURE ONE
+    return freehash(data, digits=digits)

@@ -141,6 +141,7 @@ from utila.group import longest
 from utila.group import shortest
 # hash
 from utila.hash import freehash
+from utila.hash import secure_hash
 # likelihood
 from utila.likelihood import maxi
 from utila.likelihood import mini
