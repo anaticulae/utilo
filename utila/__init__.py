@@ -60,6 +60,8 @@ from utila.collection import partition
 # config
 from utila.config import dump_config
 from utila.config import load_config
+# convert
+from utila.convert import simplify
 from utila.convert import str2bool
 from utila.convert import str2int
 # Time

@@ -7,6 +7,8 @@
 # be prosecuted under federal law. Its content is company confidential.
 # =============================================================================
 
+import enum
+
 
 def str2int(item: str) -> int:
     """\
@@ -36,3 +38,19 @@ def str2bool(item: str) -> bool:
     False
     """
     return str(item).lower() != 'false'
+
+
+def simplify(item):
+    if isinstance(item, enum.Enum):
+        return item.value
+    if isinstance(item, list):
+        return [simplify(it) for it in item]
+    if isinstance(item, tuple):
+        return tuple([simplify(it) for it in item])
+    try:
+        item = vars(item)
+    except TypeError:
+        return item
+    for key, value in item.items():
+        item[key] = simplify(value)
+    return item
