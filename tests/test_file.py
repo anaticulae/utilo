@@ -6,6 +6,7 @@
 # use or distribution is an offensive act against international law and may
 # be prosecuted under federal law. Its content is company confidential.
 #==============================================================================
+
 import os
 import shutil
 
@@ -543,3 +544,11 @@ def test_make_tmpdir_remove(testdir):
         os.makedirs(os.path.join(tmp_dir, 'recursive_path'))
         utila.file_create(os.path.join(tmp_dir, 'helm.txt'))
     assert not os.path.exists(tmp_dir), tmp_dir
+
+
+def test_directory_list(testdir):
+    os.makedirs('abc')
+    os.makedirs('abcd')
+    utila.file_create('abc.txt')
+    listed = utila.directory_list(testdir.tmpdir)
+    assert len(listed) == 2
