@@ -67,6 +67,7 @@ from utila.convert import str2int
 # Time
 from utila.datetime import current
 from utila.datetime import filetime
+from utila.datetime import now
 from utila.datetime import timedate
 from utila.datetime import today
 # Error

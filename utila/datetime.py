@@ -38,3 +38,8 @@ def filetime():
     times = "%02d%02d%02d" % (cur.tm_hour, cur.tm_min, cur.tm_sec)
     result = f'{day}_{times}'
     return result
+
+
+def now():
+    result = int(time.time())
+    return result
