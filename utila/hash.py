@@ -32,6 +32,6 @@ def freehash(data: bytes, digits: int = 16) -> str:
     return result
 
 
-def secure_hash(data: bytes, digits: int = 256, salt: str = None) -> str: # pylint:disable=W0613
+def secure_hash(data: bytes, digits: int = 256, salt: str = None) -> str:  # pylint:disable=W0613
     # TODO: INTRODUCE SECURE ONE
     return freehash(data, digits=digits)
