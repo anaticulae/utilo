@@ -10,22 +10,39 @@
 import time
 
 
-def today() -> str:
-    """Determine date in `german` format"""
+def today(sortable: bool = True) -> str:
+    """Determine date in `German` format.
+
+    Args:
+        sortable(bool): if True, use (year, month, day)
+    Returns:
+        Date of today in YYYY:MM:DD
+    """
     cur = time.localtime(time.time())
+    if sortable:
+        return "%04d.%02d.%02d" % (cur.tm_year, cur.tm_mon, cur.tm_mday)
     return "%02d.%02d.%04d" % (cur.tm_mday, cur.tm_mon, cur.tm_year)
 
 
 def current(seconds: bool = False) -> str:
-    """Determine time in `german` format"""
+    """Determine time in `German` format."""
     cur = time.localtime(time.time())
     if seconds:
         return "%02d:%02d:%02d" % (cur.tm_hour, cur.tm_min, cur.tm_sec)
     return "%02d:%02d" % (cur.tm_hour, cur.tm_min)
 
 
-def timedate():
-    return '%s %s' % (current(), today())
+def timedate(sortable: bool = True) -> str:
+    """Determine date in `German` format.
+
+    Args:
+        sortable(bool): if True, use (year, month, day)
+    Returns:
+        Date of and time today in YYYY:MM:DD hh:mm:ss
+    """
+    if sortable:
+        return f'{today()} {current()}'
+    return f'{current()} {today()} '
 
 
 def filetime():
