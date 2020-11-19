@@ -105,16 +105,20 @@ def fork(*runnables, worker: int = 6, process: bool = False) -> int:
     executor = concurrent.futures.ThreadPoolExecutor
     if process:
         executor = utila.select_executor()
+    result = [None] * len(runnables)
     with executor(max_workers=worker) as pool:
         futures = {pool.submit(item): item for item in runnables}
         for future in concurrent.futures.as_completed(futures):
+            index = runnables.index(futures[future])
             try:
-                future.result()
+                result[index] = future.result()
             except Exception as error:  # pylint:disable=broad-except
-                utila.error(f'{future} failed.')
+                utila.error(f'future number: {index}; {future} failed.')
                 utila.error(error)
                 failure += 1
-    return failure
+    if failure:
+        return failure
+    return result
 
 
 def assert_success(process: subprocess.CompletedProcess):
