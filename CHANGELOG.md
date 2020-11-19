@@ -2,6 +2,36 @@
 
 Every noteable change is logged here.
 
+## v2.14.0
+
+### Feature
+
+* add parameter to generate sortable dates (83fd562b4764)
+* add now to determine current unix time (6d9df643aa5c)
+* add method to list directories (a50146b9f512)
+* add method to simplify data structure (34e85c3a61a6)
+* introduce method interface to determine secure hash's (ae1cefc867e0)
+* add ranged_list method (cd7cde195a0a)
+* add flag how handle file copy conflict (01692a5ea448)
+* add method to check equal length (5b79c2444a92)
+* add classifier to merge rectangle (bd0da1b643cd)
+* add method to check if two rectangle intersect each other (101b46978f3b)
+* add option to add --cache flag (12d9f197248e)
+* add first draft to use cache in feature pack (fcf43997250a)
+* add feature result cache (faed13311e70)
+* add method to determine hash of file/directory (607a86920027)
+* add digits parameter to round line (b189834a4919)
+
+### Fix
+
+* improve assert check (5123b9eaa92f)
+* improve cache selector (a05d0c3d6743)
+
+### Documentation
+
+* extend interface documentation (5885f3b0f7f6)
+* sort doc by importance (2b1044518d71)
+
 ## v2.13.0
 
 ### Feature
