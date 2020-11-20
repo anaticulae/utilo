@@ -45,10 +45,9 @@ def mini(items) -> list:
     return _max_mini(items, method=min)
 
 
-def _uniform_list(items):
-    assert isinstance(items, list), type(items)
+def _uniform_list(items: list):
+    assert isinstance(items, (list, tuple)), type(items)
     assert all([isinstance(item, (int, float)) for item in items])
-
     features = sum(items)
     if not features:
         return None
@@ -62,7 +61,6 @@ def _uniform_dict(items: dict) -> dict:
     uniformed = _uniform_list(values)
     if uniformed is None:
         return None
-
     result = {key: value for key, value in zip(items.keys(), uniformed)}
     return result
 
@@ -71,7 +69,6 @@ def _max_mini(items, method=max):
     uniformed = uniform_result(items)
     if uniformed is None:
         return None
-
     if isinstance(items, dict):
         finding = method(uniformed.values())
         selected = {
