@@ -41,8 +41,8 @@ def timedate(sortable: bool = True) -> str:
         Date of and time today in YYYY:MM:DD hh:mm:ss
     """
     if sortable:
-        return f'{today()} {current()}'
-    return f'{current()} {today()} '
+        return f'{today(sortable)} {current()}'
+    return f'{current()} {today(sortable)} '
 
 
 def filetime():
