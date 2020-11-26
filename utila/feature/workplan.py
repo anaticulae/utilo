@@ -40,8 +40,8 @@ def create_runtime(  # pylint:disable=too-many-locals
         inspace(str or list): list of input spaces
         outspace(str): absolute path to write output
         args: dict of additonal arguments
-        prefix(str): to distingush different parameterization written in the
-                     same folder
+        prefix(str): to distingush different parameterization written in
+                     the same folder
         verify(bool): if True, let execution failed on workplan error
         used_processes(int): maximum parallel used processes
     Returns:
@@ -50,7 +50,7 @@ def create_runtime(  # pylint:disable=too-many-locals
     assert used_processes >= 1, 'invalid process count %d' % used_processes
     # if no outspace is defined, use the first passed inspace to write output
     outspace = outspace if outspace else inspace[0]
-    prefix = '%s_' % prefix if prefix else ''
+    prefix = f'{prefix}_' if prefix else ''
 
     hooks = {item.name: item.hooks for item in features}
 
