@@ -8,6 +8,7 @@
 # =============================================================================
 
 import collections
+import contextlib
 import functools
 import glob
 import inspect
@@ -51,6 +52,9 @@ def create_runtime(  # pylint:disable=too-many-locals
     # if no outspace is defined, use the first passed inspace to write output
     outspace = outspace if outspace else inspace[0]
     prefix = f'{prefix}_' if prefix else ''
+
+    if prefix:
+        plan = prefix_workplan(plan, prefix, process_)
 
     hooks = {item.name: item.hooks for item in features}
 
@@ -107,6 +111,20 @@ def create_runtime(  # pylint:disable=too-many-locals
     if ret and verify:
         exit(utila.FAILURE)
     return result
+
+
+def prefix_workplan(
+        workplan: 'utila.feature.WorkPlanSteps',
+        prefix: str,
+        executor: str,
+):
+    for item in workplan:
+        for insignal in item.inputs:
+            with contextlib.suppress(AttributeError):
+                if insignal.producer == executor:
+                    # modify own produced file
+                    insignal.name = f'{prefix}{insignal.name}'
+    return workplan
 
 
 def group_multiple_directories(inputs: list) -> list:
@@ -398,8 +416,14 @@ def input_order(plan, root):
             try:
                 item = item.replace('.yaml', '')
                 producer, file_ = item.split('__', maxsplit=1)
+                # TODO: THINK ABOUT EXTETERNAL FILE WHICH CONTAINS DUNDER _
                 if '_' in file_:
-                    step, _ = file_.split('_', maxsplit=1)
+                    if file_.count('_') == 2:
+                        # with prefix
+                        _, step, __ = file_.split('_', maxsplit=2)
+                    else:
+                        # without prefix
+                        step, _ = file_.split('_', maxsplit=1)
                 else:
                     step = file_
                 require[name].add(f'{producer}{REQUIREMENT_SEPARATOR}{step}')
