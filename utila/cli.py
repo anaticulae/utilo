@@ -265,7 +265,7 @@ def prepare_todo(
         # BUG
         page = ParameterAppended(
             longcut=PAGES_FLAG,
-            message='run computation on given pages',
+            message='shrink to given pages',
         )
         todo.insert(0, page)
 

@@ -386,7 +386,7 @@ def test_cli_sort_parameter():
         Parameter(
             shortcut='',
             longcut='pages',
-            message='run computation on given pages',
+            message='shrink to given pages',
             args={
                 'dest': 'pages',
                 'default': ':'
