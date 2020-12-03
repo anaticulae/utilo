@@ -29,6 +29,7 @@ def prepare_description(
     Returns:
         Prepared description with out- and input-parameter.
     """
+    description = description or ''  # convert None to empty
     result = []
     for index, step in enumerate(workplan):
         result.append(f'//{step.name}')
