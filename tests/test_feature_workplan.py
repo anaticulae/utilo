@@ -179,3 +179,9 @@ def test_feature_input_order():
     assert len(order) == 2, utila.log_raw(order)
     assert len(order[0]) == 3, utila.log_raw(order)
     assert len(order[1]) == 1, utila.log_raw(order)
+
+
+def test_reserved_workstep_names():
+    """Do not allow reserved workstep names."""
+    with pytest.raises(AssertionError):
+        utila.create_step('all')
