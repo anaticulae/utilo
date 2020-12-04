@@ -2,6 +2,21 @@
 
 Every noteable change is logged here.
 
+## v2.15.0
+
+### Feature
+
+* do not allow reserved work step names (1d4e1ef5a64a)
+* enable using result of fork (e8c57c612c2d)
+
+### Fix
+
+* handle None description correctly (e53663065a17)
+* change default feature step message (93e60c3f990a)
+* ensure that prefix work schedule is executed correctly (169fc57531b6)
+* ease data type check (91856cb43b6c)
+* pass missing sortable parameter (37fdc0d65aaa)
+
 ## v2.14.0
 
 ### Feature
