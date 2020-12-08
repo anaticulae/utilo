@@ -60,7 +60,6 @@ def yaml_from_raw_or_path(
         safe: bool = True,
 ):
     loaded = from_raw_or_path(content, ftype='yaml', fname=fname)
-    # TODO: Should we generally introduce this dependency?
     try:
         import yaml
     except ImportError:
