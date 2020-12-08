@@ -130,9 +130,9 @@ class ParserConfiguration:
     failfastflag: bool = False
     flags: list = dataclasses.field(default_factory=list)
     inputparameter: bool = False
-    multiprocessed: bool = False
+    multiprocessed: bool = True
     outputparameter: bool = False
-    pages: bool = False
+    pages: bool = True
     prefix: bool = False
     profileflag: bool = False
     quiteflag: bool = False

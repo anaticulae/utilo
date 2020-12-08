@@ -55,8 +55,8 @@ def test_cli_parse_args(monkeypatch):
         context.setattr(sys, 'argv', argv)
         parser.print_help()
         args = parse(parser)
-    # for verbose level --verbose, --prefix, --ff --cache
-    verbose_prefix_failfast = 4
+    # for verbose level --verbose, --prefix, --ff, --cache, --pages, --j
+    verbose_prefix_failfast = 6
     assert len(args) == len(todo) + verbose_prefix_failfast
     assert '--alls' in args
     assert '--nothing' in args
