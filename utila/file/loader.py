@@ -38,7 +38,7 @@ def from_raw_or_path(
     try:
         isdir = utila.NEWLINE not in content and os.path.isdir(content)
     except ValueError:
-        # File name is to long, cause testing yaml content as file content.
+        # File name is too long, cause testing yaml content as file content.
         isdir = False
     if fname and isdir:
         # use default file path if exists
