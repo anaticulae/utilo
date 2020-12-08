@@ -11,6 +11,7 @@ import os
 import shutil
 
 import pytest
+import yaml
 
 import utila
 import utila.file
@@ -65,6 +66,19 @@ def test_file_from_path_or_raw_default_not_exists(testdir):
 def test_file_from_path_or_raw_not_exists():
     with pytest.raises(FileNotFoundError):
         utila.from_raw_or_path('/c/test.yaml')
+
+
+def test_yaml_from_path(testdir):
+    dumped = yaml.dump(['test', 'data'])
+    utila.file_create('test.yaml', dumped)
+
+    def verify(item):
+        assert len(item) == 2
+
+    loaded = utila.yaml_from_raw_or_path('test.yaml', verify=verify)
+    assert len(loaded) == 2
+    loaded = utila.yaml_from_raw_or_path('test.yaml', safe=False)
+    assert len(loaded) == 2
 
 
 def test_file_tmpname():
