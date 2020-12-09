@@ -2,6 +2,15 @@
 
 Every noteable change is logged here.
 
+## v2.16.0
+
+### Feature
+
+* add method to select none empty items (e4b5fa36c2bc)
+* add option to not raise error if item in flatten is already flat (194e7269f3e1)
+* add German umlaut to sorting (5b0ac1f97645)
+* enable pages and multi flag (d36942ba0636)
+
 ## v2.15.0
 
 ### Feature
