@@ -286,6 +286,7 @@ from utila.utils import chdir
 from utila.utils import flatten
 from utila.utils import ifnone
 from utila.utils import not_none
+from utila.utils import notempty
 from utila.utils import nothing
 from utila.utils import select_type
 from utila.utils import unset_env

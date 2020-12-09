@@ -146,6 +146,15 @@ def not_none(items):
     return [item for item in items if item is not None]
 
 
+def notempty(items):
+    """Remove None, [] and '' out of `items`.
+
+    >>> notempty(['', 0, 'items', None])
+    [0, 'items']
+    """
+    return [item for item in items if item or item == 0]
+
+
 @contextlib.contextmanager
 def unset_env(
         var: str,
