@@ -9,6 +9,7 @@
 
 import collections
 import contextlib
+import copy
 import functools
 import glob
 import inspect
@@ -118,6 +119,9 @@ def prefix_workplan(
         prefix: str,
         executor: str,
 ):
+    # TODO: REPLACE COPY WITH OWN CONSTRUCT
+    # avoid side effects to other workplans
+    workplan = copy.deepcopy(workplan)
     for item in workplan:
         for insignal in item.inputs:
             with contextlib.suppress(AttributeError):
