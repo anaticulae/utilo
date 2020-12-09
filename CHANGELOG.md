@@ -2,6 +2,12 @@
 
 Every noteable change is logged here.
 
+## v2.16.1
+
+### Fix
+
+* avoid side effects to other work plans (643d4c0dbe46)
+
 ## v2.16.0
 
 ### Feature

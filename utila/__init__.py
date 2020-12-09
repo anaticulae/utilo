@@ -7,7 +7,7 @@
 # be prosecuted under federal law. Its content is company confidential.
 #==============================================================================
 
-__version__ = '2.16.0'
+__version__ = '2.16.1'
 
 import os
 
@@ -292,7 +292,7 @@ from utila.utils import select_type
 from utila.utils import unset_env
 
 # TODO: REMOVE LATER AND INCREASE MAJOR VERSION NUMBER
-not_none = notnone # pylint:disable=C0103
+not_none = notnone  # pylint:disable=C0103
 
 ROOT = os.path.abspath(os.path.join(os.path.dirname(__file__), '..'))
 PACKAGE = 'utila'
