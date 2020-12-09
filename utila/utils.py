@@ -22,11 +22,26 @@ INF = (1 << 31) - 1
 ALL_PAGES = ':'
 
 
-def flatten(lists):
-    """Chain lists of list to one list"""
+def flatten(lists, append: bool = False) -> list:
+    """Chain lists of list to one list.
+
+    Args:
+        lists(iter): content to chain
+        append(bool): if True do not raise TypeError if item is not iterable
+    Returns:
+        List of chained items
+    Raises:
+        TypeError: if append is False and item to chain is not iterable
+    """
     result = []
     for item in lists:
-        result.extend(item)
+        try:
+            result.extend(item)
+        except TypeError:
+            if append:
+                result.append(item)
+            else:
+                raise
     return result
 
 
