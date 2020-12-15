@@ -268,9 +268,8 @@ def file_copy(
 
 def file_count(path: str, ext: str = None, recursive: bool = True) -> int:
     assert os.path.exists(path), path
-    pattern = '**/*.*' if ext is None else f'**/*.{ext}'
-    with utila.chdir(path):
-        collected = list(glob.glob(pattern, recursive=recursive))
+    pattern = f'{path}/**/*.*' if ext is None else f'{path}/**/*.{ext}'
+    collected = list(glob.glob(pattern, recursive=recursive))
     return len(collected)
 
 
