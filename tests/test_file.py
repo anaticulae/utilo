@@ -544,6 +544,14 @@ def test_file_list():
     assert len(exclude_txt) == (len(files) - len(txt))
 
 
+def test_file_list_relative(testdir):
+    utila.file_create('test.txt')
+    files = utila.file_list(testdir.tmpdir)
+    assert files == ['test.txt']
+    files = utila.file_list(testdir.tmpdir, absolute=True)
+    assert files != ['test.txt']
+
+
 def test_make_tmpdir(testdir):
     root = testdir.tmpdir
     with utila.make_tmpdir(root) as tmp_dir:
