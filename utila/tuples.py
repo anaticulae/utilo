@@ -42,7 +42,7 @@ def ranged_list(start, end=None) -> list:
     return list(ranged_tuple(start, end))
 
 
-def ranges(start: float, stop: float, step: float):
+def ranges(start: float, stop: float, step: float = 1):
     """\
     >>> list(ranges(50, 90, 5))
     [50, 55, 60, 65, 70, 75, 80, 85, 90]
