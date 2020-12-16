@@ -32,7 +32,7 @@ def ranged_tuple(start, end) -> tuple:
     return tuple(range(start, end))
 
 
-def ranged_list(start, end=None) -> tuple:
+def ranged_list(start, end=None) -> list:
     """\
     >>> ranged_list(5)
     [0, 1, 2, 3, 4]
