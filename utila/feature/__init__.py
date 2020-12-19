@@ -37,7 +37,10 @@ import utila.feature.description
 import utila.feature.processor
 import utila.feature.userinput
 
-RESERVED_WORKPLAN_NAMES = {'all', 'cache', 'ff', 'pages', 'prefix'}
+RESERVED_WORKPLAN_NAMES = {
+    'all', 'cache', 'ff', 'i', 'input', 'j', 'jobs', 'o', 'output', 'pages',
+    'prefix'
+}
 
 
 @dataclasses.dataclass
