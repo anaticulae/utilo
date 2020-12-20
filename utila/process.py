@@ -116,7 +116,7 @@ def fork(*runnables, worker: int = 6, process: bool = False) -> int:
                 utila.error(f'future number: {index}; {future} failed.')
                 utila.error(error)
                 failure += 1
-    if failure:
+    if failure or returncode:
         return failure
     return result
 
