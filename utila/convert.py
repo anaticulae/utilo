@@ -10,14 +10,21 @@
 import enum
 
 
-def str2int(item: str) -> int:
+def str2int(item: str, default=None) -> int:
     """\
     >>> str2int('10')
     10
     >>> str2int('1.3')
     1
+    >>> str2int('ABC', default=13)
+    13
     """
-    return int(float(item))
+    try:
+        return int(float(item))
+    except ValueError as error:
+        if default is None:
+            raise error
+    return default
 
 
 def str2bool(item: str) -> bool:
