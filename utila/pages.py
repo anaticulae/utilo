@@ -283,9 +283,9 @@ def simplify_pages(numbers: tuple) -> str:
     >>> simplify_pages(10)
     '10'
     >>> simplify_pages((1, 2, 3, 4, 5))
-    '1:5'
+    '1:6'
     >>> simplify_pages([1, 3, 5, 6, 7])
-    '1,3,5:7'
+    '1,3,5:8'
     >>> simplify_pages(None)
     ':'
     """
@@ -299,5 +299,5 @@ def simplify_pages(numbers: tuple) -> str:
         if len(item) == 1:
             result.append(str(item[0]))
         else:
-            result.append(f'{item[0]}:{item[-1]}')
+            result.append(f'{item[0]}:{item[-1]+1}')
     return ','.join(result)
