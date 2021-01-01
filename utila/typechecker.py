@@ -135,3 +135,17 @@ def isfloat(*floats) -> bool:
         if not isinstance(item, float):
             return False
     return True
+
+
+def asserts(item, typ):
+    """\
+    >>> asserts('hello', int)
+    Traceback (most recent call last):
+        ...
+    AssertionError: require: <class 'int'>, got: <class 'str'>, raw:
+    'hello'
+    """
+    if isinstance(item, typ):
+        return
+    msg = f'require: {typ}, got: {type(item)}, raw:\n{item!r}'
+    raise AssertionError(msg)
