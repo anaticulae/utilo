@@ -272,6 +272,7 @@ from utila.typechecker import Strings
 from utila.typechecker import assert_type_list
 from utila.typechecker import checkdatatype
 from utila.typechecker import equal_length
+from utila.typechecker import isfloat
 from utila.typechecker import isnumber
 from utila.typechecker import isstrings
 # Utils

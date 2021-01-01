@@ -118,3 +118,20 @@ def equal_length(*items) -> bool:
     if len(set(length)) > 1:
         return False
     return True
+
+
+def isfloat(*floats) -> bool:
+    """\
+    >>> isfloat(1.0)
+    True
+    >>> isfloat(1)
+    False
+    >>> isfloat(1.5, 'test')
+    False
+    >>> isfloat(1.5, 3.0, -0.3)
+    True
+    """
+    for item in floats:
+        if not isinstance(item, float):
+            return False
+    return True
