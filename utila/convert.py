@@ -19,12 +19,8 @@ def str2int(item: str, default=None) -> int:
     >>> str2int('ABC', default=13)
     13
     """
-    try:
-        return int(float(item))
-    except ValueError as error:
-        if default is None:
-            raise error
-    return default
+    item = str2float(item, default=default)
+    return item if item is None else int(item)
 
 
 def str2float(item: str, default=None) -> float:
