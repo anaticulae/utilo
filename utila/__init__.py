@@ -63,6 +63,7 @@ from utila.config import load_config
 # convert
 from utila.convert import simplify
 from utila.convert import str2bool
+from utila.convert import str2float
 from utila.convert import str2int
 # Time
 from utila.datetime import current

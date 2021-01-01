@@ -27,6 +27,23 @@ def str2int(item: str, default=None) -> int:
     return default
 
 
+def str2float(item: str, default=None) -> float:
+    """\
+    >>> str2float('10')
+    10.0
+    >>> str2float('1.3')
+    1.3
+    >>> str2float('ABC', default=13)
+    13
+    """
+    try:
+        return float(item)
+    except ValueError as error:
+        if default is None:
+            raise error
+    return default
+
+
 def str2bool(item: str) -> bool:
     """Convert string to bool. Every string except of `False` and
     `false` are converted to True.
