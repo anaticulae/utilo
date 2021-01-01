@@ -248,7 +248,7 @@ from utila.pages import sync_pages
 from utila.process import assert_failure
 from utila.process import assert_success
 from utila.process import fork
-from utila.process import returncode
+from utila.process import returnvalue as returncode
 from utila.process import run
 from utila.process import run_parallel
 # regex

@@ -99,8 +99,24 @@ def run_parallel(
     return ret
 
 
-def fork(*runnables, worker: int = 6, process: bool = False) -> int:
-    """Run methods in parallel."""
+def fork(
+        *runnables,
+        worker: int = 6,
+        process: bool = False,
+        returncode: bool = False,
+) -> int:
+    """Run methods in parallel.
+
+    Args:
+        runnables(callable): callables to run
+        worker(int): number of worker
+        process(bool): if True use Process- instead of ThreadPool
+        returncode(bool): always return `returncode` instead of computed
+                          result
+    Returns:
+        returncode if error occurs or returncode=True
+        result of computation if no error occurs or returncode is not used
+    """
     failure = 0
     executor = concurrent.futures.ThreadPoolExecutor
     if process:
@@ -135,7 +151,7 @@ def assert_failure(process: subprocess.CompletedProcess):
     assert process.returncode != utila.SUCCESS, utila.format_completed(process)
 
 
-def returncode(exeception: Exception) -> int:
+def returnvalue(exeception: Exception) -> int:
     """Determine return code raised from exit()"""
     msg = 'process return `None` as returnvalue instead of returncode'
     assert exeception.value not in (None, 'None'), msg
