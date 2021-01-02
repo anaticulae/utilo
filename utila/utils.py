@@ -203,3 +203,18 @@ def ifnone(value, default):
     0
     """
     return default if value is None else value
+
+
+def index_max(*items):
+    """\
+    >>> index_max(2, 3, 3, 1)
+    1
+    >>> index_max(1, 2, 3, 4)
+    3
+    """
+    if not items:
+        return None
+    best = 0
+    for index, _ in enumerate(items[1:], start=1):
+        best = best if items[best] >= items[index] else index
+    return best
