@@ -117,6 +117,7 @@ def similar(expected: str, current: str, maxdiff=0.6) -> bool:
     >>> similar({'WWW', 'HTTP', 'SSH'}, 'http')
     True
     """
+    # TODO: SWITCH EXPECTED AND CURRENT PARAMETER AND INCREASE MAJOR VERSION
     if isinstance(expected, (list, tuple, set)):
         for item in expected:
             if similar(item, current, maxdiff):
