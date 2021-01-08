@@ -114,8 +114,10 @@ def similar(expected: str, current: str, maxdiff=0.6) -> bool:
     False
     >>> similar(['Abbildungsverzeichnis', 'Abbildungen'], 'Abbildung', maxdiff=0.1)
     True
+    >>> similar({'WWW', 'HTTP', 'SSH'}, 'http')
+    True
     """
-    if isinstance(expected, (list, tuple)):
+    if isinstance(expected, (list, tuple, set)):
         for item in expected:
             if similar(item, current, maxdiff):
                 return True
