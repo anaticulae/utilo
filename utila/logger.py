@@ -87,15 +87,15 @@ def log(msg: str = '', level: Level = Level.LOGGING, end: str = NEWLINE):
     print(msg, end=end, file=sys.stdout, flush=True)
 
 
-def call(msg: str, end: str = NEWLINE):
+def call(msg: str = '', end: str = NEWLINE):
     log('  %s' % msg, Level.CALLS, end=end)
 
 
-def info(msg: str, end: str = NEWLINE):
+def info(msg: str = '', end: str = NEWLINE):
     log('    %s' % msg, Level.INFORMATION, end=end)
 
 
-def debug(msg: str, end: str = NEWLINE):
+def debug(msg: str = '', end: str = NEWLINE):
     log('      %s' % msg, Level.DEBUG, end=end)
 
 
