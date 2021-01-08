@@ -140,3 +140,15 @@ def lower(*items):
     ['helmut', 'manfred']
     """
     return [item.lower() for item in items]
+
+
+def splitlines(raw: str, lowers: bool = True) -> set:
+    r"""Split string by newlines and convert to set.
+
+    >>> splitlines('First\nThird\nSecond')
+    {'third', 'second', 'first'}
+    """
+    splitted = raw.splitlines()
+    if lowers:
+        splitted = lower(*splitted)
+    return set(splitted)

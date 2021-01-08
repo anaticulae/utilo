@@ -262,6 +262,7 @@ from utila.string import lower
 from utila.string import normalize_whitespaces
 from utila.string import shrink
 from utila.string import similar
+from utila.string import splitlines
 # tuples
 from utila.tuples import from_tuple
 from utila.tuples import make_tuple
