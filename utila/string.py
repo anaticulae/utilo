@@ -132,3 +132,11 @@ def similar(expected: str, current: str, maxdiff=0.6) -> bool:
     if matched:
         return True
     return False
+
+
+def lower(*items):
+    """Lowercase list of strings.
+    >>> lower('Helmut', 'MANFRED')
+    ['helmut', 'manfred']
+    """
+    return [item.lower() for item in items]
