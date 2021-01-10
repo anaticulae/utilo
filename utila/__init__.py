@@ -183,9 +183,13 @@ from utila.math import modes
 from utila.math import roundme
 from utila.math.const import isinf
 from utila.math.const import iszero
+# math:distance
 from utila.math.distance import manhatten
 from utila.math.distance import norm
 from utila.math.distance import norms
+# math:func
+from utila.math.func import ranged_exp
+# math:line
 from utila.math.line import IndenticalLineError
 from utila.math.line import equal_lines
 from utila.math.line import intersecting_ending
