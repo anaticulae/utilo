@@ -2,6 +2,37 @@
 
 Every noteable change is logged here.
 
+## v2.17.0
+
+### Feature
+
+* add function to evaluate exp between two points (6b3e7f95a0bd)
+* add default value to log newlines (4545b6370dc1)
+* add set support for similar check (fe487a4723cc)
+* add method to split string into set of string (3c60aa2835fb)
+* add method to lowercase list of strings (52b3744449ed)
+* add method to determine max value index in collection (3edf628a1d16)
+* add method to convert str to float (07d9a23d5321)
+* add method to verify data type (ba2110be4538)
+* add method to verify float type (643563db665f)
+* add default value to str2int (31cecdfc83bf)
+* add flag to always return returncode (cf3c60e31064)
+* extend reserved workplan steps (c251e8ac4dad)
+* add default step size (88f86ada7cec)
+
+### Fix
+
+* do not change datatype for single item (a9b580619df8)
+* replace with python range syntax (7b14a1f8f9b2)
+* make file_count thread safe (1438100ec3d2)
+* make file list thread safe (b470d2f86825)
+
+### Documentation
+
+* Happy New Year! (ce7522704e15)
+* add fork documentation (673ba60dc5a2)
+* fix return type (1c77ce0ccce5)
+
 ## v2.16.1
 
 ### Fix
