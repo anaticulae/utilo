@@ -7,6 +7,8 @@
 # be prosecuted under federal law. Its content is company confidential.
 # =============================================================================
 
+import utilatest
+
 import utila
 
 
@@ -33,3 +35,20 @@ def test_fork():
 
     completed = utila.fork(first, second, worker=3)
     assert completed != utila.SUCCESS
+
+
+def test_georg_fork(capsys):
+
+    def first(a, b):  # pylint:disable=C0103
+        utila.log(f'{a} {b}')
+
+    def second(c, d=13):  # pylint:disable=C0103
+        utila.log(f'{c} {d}')
+
+    with utila.GeorgFork() as todo:
+        todo.fork(first, a=10, b=10)
+        todo.fork(second, c=5)
+
+    stdout = utilatest.stdout(capsys)
+    assert '10 10' in stdout
+    assert '5 13' in stdout
