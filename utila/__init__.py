@@ -223,9 +223,11 @@ from utila.math.rectangle import RectangleCheck
 from utila.math.rectangle import Rectangles
 from utila.math.rectangle import intersecting_rectangle
 from utila.math.rectangle import rectangle_border
+from utila.math.rectangle import rectangle_ensure_bounding
 from utila.math.rectangle import rectangle_inside
 from utila.math.rectangle import rectangle_max
 from utila.math.rectangle import rectangle_merge
+from utila.math.rectangle import rectangle_roundsmall
 from utila.math.rectangle import rectangle_size
 from utila.math.rectangle import sort_leftright_topdown
 from utila.math.rectangle import sort_leftright_topdown_upper

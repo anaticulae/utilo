@@ -206,3 +206,36 @@ def rectangle_border(rectangle: tuple):
     yield (x0, y1, x1, y1)
     # left, bottom up
     yield (x0, y0, x0, y1)
+
+
+def rectangle_roundsmall(rectangle: Rectangle) -> Rectangle:
+    """Round border in direction to the center of the rectangle to get a
+    `smaller` rectangle which fit in more parent rectangles.
+
+    >>> rectangle_roundsmall((5.596, 5.3360, 10.339, 10.222))
+    (5.6, 5.34, 10.34, 10.22)
+    """
+    # round to move coordinate in center direction of page
+    rounding = [
+        math.ceil,  # x0
+        math.ceil,  # y0
+        math.floor,  # x1
+        math.floor,  # y1
+    ]
+    result = [method(rectangle[index]) for index, method in enumerate(rounding)]
+    # rounding to the middle can flip min and max. Therefore we have to
+    # ensure x0/x1 and y0/y1 constraint.
+    # TODO: VERY SMALL RECTANGLE?
+    result = rectangle_ensure_bounding(rectangle)
+    return tuple(result)
+
+
+def rectangle_ensure_bounding(rectangle: Rectangle) -> Rectangle:
+    """ensure x0/x1 and y0/y1 constraint."""
+    result = (
+        min(rectangle[0], rectangle[2]),
+        min(rectangle[1], rectangle[3]),
+        max(rectangle[0], rectangle[2]),
+        max(rectangle[1], rectangle[3]),
+    )
+    return utila.roundme(result)
