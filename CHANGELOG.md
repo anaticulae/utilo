@@ -2,6 +2,12 @@
 
 Every noteable change is logged here.
 
+## v2.18.1
+
+### Feature
+
+* add live flag to directly log to stdout/err (f81df6225b2f)
+
 ## v2.18.0
 
 ### Feature
