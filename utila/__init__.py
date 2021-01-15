@@ -71,6 +71,10 @@ from utila.datetime import filetime
 from utila.datetime import now
 from utila.datetime import timedate
 from utila.datetime import today
+# decorator
+from utila.decorator import decorateme
+from utila.decorator import decorators
+from utila.decorator import isdecorated
 # Error
 from utila.error import CANCELLED_BY_USER
 from utila.error import handle_error
