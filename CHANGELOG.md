@@ -2,6 +2,14 @@
 
 Every noteable change is logged here.
 
+## v2.18.0
+
+### Feature
+
+* add method to decorate and verify decoration (4dc2892efb30)
+* add method to manipulate rectangle (bb2152360c5f)
+* add GeorgFork context manager to run methods in parallel (caa73286da41)
+
 ## v2.17.0
 
 ### Feature
