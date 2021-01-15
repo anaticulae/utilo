@@ -9,6 +9,8 @@
 
 import concurrent
 import concurrent.futures
+import contextlib
+import functools
 import os
 import subprocess  # nosec
 
@@ -135,6 +137,36 @@ def fork(
     if failure or returncode:
         return failure
     return result
+
+class GeorgFork(contextlib.AbstractContextManager):
+    """Fork methods to run in parallel."""
+
+    def __init__(
+            self,
+            process: bool = True,
+            returncode: bool = True,
+            worker: int = None,
+    ):
+        self.process = process
+        self.worker = worker
+        self.returncode = returncode
+        self.todo = []
+        self.result = None
+
+    def fork(self, method, **kwargs):
+        runme = functools.partial(method, **kwargs)
+        self.todo.append(runme)
+
+    def __exit__(self, exc_type, exc_value, traceback):
+        worker = len(self.todo) if self.worker is None else self.worker
+        # run schedule
+        self.result = utila.fork(
+            *self.todo,
+            process=self.process,
+            returncode=self.returncode,
+            worker=worker,
+        )
+
 
 
 def assert_success(process: subprocess.CompletedProcess):
