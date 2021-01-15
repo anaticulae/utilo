@@ -23,6 +23,7 @@ def run(
         env: dict = None,
         expect: bool = True,
         verbose: bool = False,
+        live: bool = False,
 ) -> subprocess.CompletedProcess:
     """Run external process
 
@@ -35,6 +36,7 @@ def run(
                       if False: fail on success
                       if None: return completed process
         verbose(bool): log executed command and location
+        live(bool): if True log to stdout and stderr
     Returns:
         Completed process.
     """
@@ -55,8 +57,8 @@ def run(
         env=env,
         errors='replace',
         shell=True,
-        stderr=subprocess.PIPE,
-        stdout=subprocess.PIPE,
+        stderr=None if live else subprocess.PIPE,
+        stdout=None if live else subprocess.PIPE,
         universal_newlines=True,
     )
     if expect is True:
@@ -138,6 +140,7 @@ def fork(
         return failure
     return result
 
+
 class GeorgFork(contextlib.AbstractContextManager):
     """Fork methods to run in parallel."""
 
@@ -166,7 +169,6 @@ class GeorgFork(contextlib.AbstractContextManager):
             returncode=self.returncode,
             worker=worker,
         )
-
 
 
 def assert_success(process: subprocess.CompletedProcess):
