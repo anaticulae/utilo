@@ -20,10 +20,11 @@ def groupby_none(items):
             collected.append(item)
         else:
             if collected:
-                result.append(tuple(collected))
+                result.append(collected)
                 collected = []
     if collected:
-        result.append(tuple(collected))
+        result.append(collected)
+    result = [tuple(item) for item in result]
     return result
 
 
