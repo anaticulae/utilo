@@ -10,13 +10,13 @@
 
 def groupby_none(items):
     """\
-    >>> groupby_none([1, 2, None, 1, None, 3, 4, 5, None])
-    [(1, 2), (1,), (3, 4, 5)]
+    >>> groupby_none([0, 1, 2, None, 1, None, 3, 4, 5, None])
+    [(0, 1, 2), (1,), (3, 4, 5)]
     """
     result = []
     collected = []
     for item in items:
-        if item:
+        if item is not None:
             collected.append(item)
         else:
             if collected:
