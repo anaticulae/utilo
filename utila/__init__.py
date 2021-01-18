@@ -146,6 +146,7 @@ from utila.file.utils import exists
 # group
 from utila.group import groupby_ascending
 from utila.group import groupby_diff
+from utila.group import groupby_neighbors
 from utila.group import groupby_none
 from utila.group import longest
 from utila.group import shortest

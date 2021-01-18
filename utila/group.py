@@ -28,6 +28,27 @@ def groupby_none(items):
     return result
 
 
+def groupby_neighbors(items: list) -> list:
+    """\
+    >>> groupby_neighbors(([], [1, 2, 3], [], [], None, [5], [6], [7]))
+    [[1, 2, 3], [5, 6, 7]]
+    """
+    if not items:
+        return items
+    result = []
+    collected = []
+    for item in items:
+        if item not in (None, [], ''):
+            collected.extend(item)
+        else:
+            if collected:
+                result.append(collected)
+                collected = []
+    if collected:
+        result.append(collected)
+    return result
+
+
 def groupby_ascending(items) -> int:
     """\
     >>> groupby_ascending([1, 2, 3, 0, 1, 2, 3, 4, 0, 1])
