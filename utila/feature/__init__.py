@@ -39,7 +39,7 @@ import utila.feature.userinput
 
 RESERVED_WORKPLAN_NAMES = {
     'all', 'cache', 'ff', 'i', 'input', 'j', 'jobs', 'o', 'output', 'pages',
-    'prefix'
+    'prefix', 'wait'
 }
 
 
@@ -154,7 +154,7 @@ def featurepack(  # pylint:disable=too-many-locals
     # general flags (profiling, failfast, etc.).
     utila.feature.config.overwrite(args)
 
-    processes, failfast, pages, profiling = utila.cli.evaluate_flags(
+    processes, failfast, pages, profiling, wait = utila.cli.evaluate_flags(
         args,
         config.multiprocessed,
     )
@@ -211,6 +211,7 @@ def featurepack(  # pylint:disable=too-many-locals
                 todo=current_todo,
                 profiling=profiling,
                 verbose=verbose,
+                wait=wait,
             )
     return completed
 

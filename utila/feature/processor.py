@@ -11,6 +11,7 @@ import concurrent.futures
 import functools
 import inspect
 import os
+import time
 import typing
 
 import utila
@@ -34,6 +35,7 @@ def process(  # pylint:disable=R0914
         failfast: bool = False,
         profiling: bool = False,
         verbose: bool = False,
+        wait: int = 0,
 ) -> int:
     """Process the given features. The process ignores errors in
     sub-steps and run till the end. If some error occurs, the process
@@ -53,6 +55,7 @@ def process(  # pylint:disable=R0914
         failfast(bool): quit after first failure
         profiling(bool): if True, runtime of every single step is logged
         verbose(bool): if True, print more logging information(skippin steps)
+        wait(int): if required, wait till incoming resources are ready
     Returns:
         SUCCESS if all features process successfully, if not FAILURE
     """
@@ -83,6 +86,7 @@ def process(  # pylint:disable=R0914
                 profiling=profiling,
                 todo=todo,
                 verbose=verbose,
+                wait=wait,
             )
             # write result
             failure += write_level_result(
@@ -101,7 +105,15 @@ def process(  # pylint:disable=R0914
     return status
 
 
-def run_level(level, todo, pool, pages, profiling, verbose: bool = True):
+def run_level(
+        level,
+        todo,
+        pool,
+        pages,
+        profiling,
+        verbose: bool = True,
+        wait: int = 0,
+):
     results = []
     for step in level:
         # if todo is empty, nothing is selected, run every step
@@ -116,6 +128,7 @@ def run_level(level, todo, pool, pages, profiling, verbose: bool = True):
             output=step.outputs,
             pages=pages,
             profiling=profiling,
+            wait=wait,
         )
         results.append(future)
     return results
@@ -127,6 +140,7 @@ def callback(
         output,
         pages: list,
         profiling: bool,
+        wait: int = 0,
 ) -> tuple:
     """Run processing step.
 
@@ -136,10 +150,17 @@ def callback(
         output(str): path to write step output
         pages(list): list of pages to processed
         profiling(bool): if True log callback runtime
+        wait(int): seconds to wait for required input-resources
     Returns:
         Tuple of result, stepname and output
     """
     utila.log(f'processing: {stepname}')
+
+    # wait = -1 run forever
+    while require_wait(hook.work.args) and not wait:
+        utila.log('.', end='')
+        wait -= 1
+        time.sleep(1)
     # run runnable
     runnable = functools.partial(
         run_hook_safely,
@@ -158,6 +179,13 @@ def callback(
                 hook.error(stepname, exception)
             result = exception  # pylint:disable=R0204
     return [result, stepname, output]
+
+
+def require_wait(inputs: list) -> bool:
+    for item in inputs:
+        if not utila.exists(item):
+            return True
+    return False
 
 
 def run_hook_safely(

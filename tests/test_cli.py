@@ -55,8 +55,8 @@ def test_cli_parse_args(monkeypatch):
         context.setattr(sys, 'argv', argv)
         parser.print_help()
         args = parse(parser)
-    # for verbose level --verbose, --prefix, --ff, --cache, --pages, --j
-    verbose_prefix_failfast = 6
+    # for verbose level --verbose, --prefix, --ff, --cache, --pages, --j, --wait
+    verbose_prefix_failfast = 7
     assert len(args) == len(todo) + verbose_prefix_failfast
     assert '--alls' in args
     assert '--nothing' in args
@@ -405,7 +405,7 @@ def test_cli_sort_parameter():
 
 def test_evaluate_multiple_pages_flags():
     args = {'pages': ['5:10', '9', '19', '50:58']}
-    _, __, pages, ___ = utila.cli.evaluate_flags(args)
+    _, __, pages, ___, ____ = utila.cli.evaluate_flags(args)
 
     expected = (5, 6, 7, 8, 9, 19, 50, 51, 52, 53, 54, 55, 56, 57)
     assert pages == expected
@@ -413,5 +413,5 @@ def test_evaluate_multiple_pages_flags():
 
 def test_evaluate_multiple_pages_flags_empty():
     args = {'pages': []}
-    _, __, pages, ___ = utila.cli.evaluate_flags(args)
+    _, __, pages, ____, _____ = utila.cli.evaluate_flags(args)
     assert pages is None, pages

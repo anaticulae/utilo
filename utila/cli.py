@@ -139,6 +139,7 @@ class ParserConfiguration:
     verboseflag: bool = True
     configflag: bool = False
     cacheflag: bool = True
+    waitingflag: bool = True
 
 
 def create_parser(
@@ -172,6 +173,14 @@ def create_parser(
 
     if config.cacheflag:
         todo.append(Flag('--cache', message='use cached data.'))
+
+    if config.waitingflag:
+        todo.append(
+            NumberedParameter(
+                longcut='wait',
+                message='wait(seconds) if required resources are not ready yet',
+                default=0,  # seconds
+            ))
 
     if version:
         todo.append(Flag('-v', 'version', 'show version and exit.'))
@@ -499,12 +508,16 @@ def evaluate_flags(args, multiprocessed: bool = False):
     with contextlib.suppress(KeyError):
         del args['profile']
 
+    wait = args.get('wait', 0)
+    with contextlib.suppress(KeyError):
+        del args['wait']
+
     # evaluate multiple --pages
     pages = pages_fromargs(args)
     with contextlib.suppress(KeyError):
         del args[PAGES_FLAG]
 
-    return processes, failfast, pages, profiling
+    return processes, failfast, pages, profiling, wait
 
 
 def processcount(args: dict, multiprocessed: bool = False) -> int:
