@@ -12,7 +12,6 @@ import operator
 import typing
 
 import utila
-import utila.math
 
 # x0, y0, x1, y1
 Rectangle = typing.Tuple[float, float, float, float]
@@ -84,7 +83,7 @@ def rectangle_size(rectangle: Rectangle) -> float:
     width = rectangle_width(rectangle)
     height = rectangle_height(rectangle)
     area = math.fabs(width * height)
-    area = utila.math.roundme(area)
+    area = utila.roundme(area)
     return area
 
 
