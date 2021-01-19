@@ -61,6 +61,7 @@ from utila.collection import partition
 from utila.config import dump_config
 from utila.config import load_config
 # convert
+from utila.convert import parse_numbers
 from utila.convert import simplify
 from utila.convert import str2bool
 from utila.convert import str2float

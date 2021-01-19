@@ -8,6 +8,7 @@
 # =============================================================================
 
 import enum
+import re
 
 
 def str2int(item: str, default=None) -> int:
@@ -74,3 +75,16 @@ def simplify(item):
     for key, value in item.items():
         item[key] = simplify(value)
     return item
+
+
+def parse_numbers(text):
+    """\
+    >>> parse_numbers('Helmut')
+    []
+    >>> parse_numbers('This is 1 number an 50 apple')
+    [1, 50]
+    """
+    result = []
+    for number in re.findall(r'\d+', text):
+        result.append(int(number))
+    return result
