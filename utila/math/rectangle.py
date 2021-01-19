@@ -59,6 +59,22 @@ def rectangle_merge(rectangles):
     return current
 
 
+def rectangle_width(rectangle: Rectangle) -> float:
+    """\
+    >>> rectangle_width((5, 20, 40, 50))
+    35
+    """
+    return utila.roundme(rectangle[2] - rectangle[0])
+
+
+def rectangle_height(rectangle: Rectangle) -> float:
+    """\
+    >>> rectangle_height((15, 20, 40, 50))
+    30
+    """
+    return utila.roundme(rectangle[3] - rectangle[1])
+
+
 def rectangle_size(rectangle):
     """Determine area size of rectangle.
 
