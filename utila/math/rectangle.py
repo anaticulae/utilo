@@ -81,8 +81,8 @@ def rectangle_size(rectangle: Rectangle) -> float:
     >>> rectangle_size((50, 50, 100, 100))
     2500.0
     """
-    width = rectangle[2] - rectangle[0]
-    height = rectangle[3] - rectangle[1]
+    width = rectangle_width(rectangle)
+    height = rectangle_height(rectangle)
     area = math.fabs(width * height)
     area = utila.math.roundme(area)
     return area
