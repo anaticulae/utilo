@@ -19,7 +19,7 @@ Rectangle = typing.Tuple[float, float, float, float]
 Rectangles = typing.List[Rectangle]
 
 
-def rectangle_merge(rectangles):
+def rectangle_merge(rectangles: Rectangles) -> Rectangles:
     """Reduce list of rectangles to the minimal list to describe the
     covered area. Remove rectangle when there have a parent rectangle
     which covers them.
@@ -75,7 +75,7 @@ def rectangle_height(rectangle: Rectangle) -> float:
     return utila.roundme(rectangle[3] - rectangle[1])
 
 
-def rectangle_size(rectangle):
+def rectangle_size(rectangle: Rectangle) -> float:
     """Determine area size of rectangle.
 
     >>> rectangle_size((50, 50, 100, 100))
