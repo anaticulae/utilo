@@ -84,3 +84,15 @@ def from_tuple(item: tuple, separator: str = ' ') -> str:
     '5, 6, 7'
     """
     return separator.join(str(x) for x in item)
+
+
+def update_tuple(data: tuple, value, index: int) -> tuple:
+    """\
+    >>> update_tuple((1, 2, 3, 4, 5), 5, 2)
+    (1, 2, 5, 4, 5)
+    >>> update_tuple((1, 2, 5), 3, 2)
+    (1, 2, 3)
+    >>> update_tuple((1, 2, 5), 10, 1)
+    (1, 10, 5)
+    """
+    return (*data[0:index], value, *data[index + 1:])

@@ -285,6 +285,7 @@ from utila.tuples import parse_tuple
 from utila.tuples import ranged_list
 from utila.tuples import ranged_tuple
 from utila.tuples import ranges
+from utila.tuples import update_tuple
 # Typerchecker
 from utila.typechecker import Strings
 from utila.typechecker import assert_type_list
