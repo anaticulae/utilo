@@ -21,6 +21,8 @@ import utila.feature.workplan
 
 ErrorHook = typing.Tuple[Exception, str]
 
+NO_RESULT = object()
+
 
 def process(  # pylint:disable=R0914
         workplan: 'utila.feature.ProcessSteps',
@@ -308,6 +310,9 @@ def write_resource(path, content):
         # multiple resource
         for first, second in zip(path, content):
             write_resource(first, second)
+        return
+    if content == NO_RESULT:
+        utila.log(f'no result, skip writing: {path}')
         return
     # Ensure that parent folder exists. It is possible to create folder
     # via `hello/folder/content.txt`.

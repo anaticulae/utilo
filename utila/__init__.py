@@ -89,6 +89,7 @@ from utila.feature.cache import datapackage
 # path
 from utila.feature.path import connector as pathconnector
 # processor
+from utila.feature.processor import NO_RESULT
 from utila.feature.processor import select_executor
 # userinput
 from utila.feature.userinput import Bool
