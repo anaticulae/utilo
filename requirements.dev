@@ -7,6 +7,6 @@
 # be prosecuted under federal law. Its content is company confidential.
 # =============================================================================
 
-utilatest==0.2.2
+utilatest==0.3.2
 
 PyYAML==5.1
