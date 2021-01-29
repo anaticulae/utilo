@@ -2,6 +2,26 @@
 
 Every noteable change is logged here.
 
+## v2.19.0
+
+### Feature
+
+* add optional cli plus hook (b54541b212fe)
+* add option to skip writing result (982b61fdf8df)
+* update value in tuple (7940726b8c26)
+* add method to determine width and height of rectangle (70d24aac35db)
+* add method to parse numbers (67e8803d3243)
+* add wait option to wait till resources are ready (dc5bc4ab676a)
+* add method to group content lists together (fd9a51ecfb47)
+
+### Fix
+
+* group zero or '' correctly (ad79c95307b3)
+
+### Documentation
+
+* extend interface documentation (aed53f97b034)
+
 ## v2.18.1
 
 ### Feature
