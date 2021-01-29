@@ -23,6 +23,7 @@ requirements
 
 import contextlib
 import dataclasses
+import inspect
 import os
 import sys
 import typing
@@ -85,6 +86,7 @@ class FeaturePackConfig:
     after: callable = None
     failfastflag: bool = True
     flags: list = dataclasses.field(default_factory=list)
+    cli_hook: tuple = None
     multiprocessed: bool = False
     name: str = None
     pages: bool = False
@@ -95,6 +97,16 @@ class FeaturePackConfig:
     verboseflag: bool = True
     configflag: bool = False
     version: str = None
+
+    def __post_init__(self):
+        if self.cli_hook:
+            install, run = self.cli_hook  # pylint:disable=E0633
+            install_signature = list(inspect.signature(install).parameters.keys()) # yapf:disable
+            run_signature = list(inspect.signature(run).parameters.keys())
+            msg = f'cli_hook: require `def install(parser):` hook {install_signature}'
+            assert len(install_signature) >= 1, msg
+            msg = f'cli_hook: require `def run(args):` hook {run_signature}'
+            assert len(run_signature) >= 1, msg
 
 
 @utila.saveme(systemexit=True)
@@ -149,7 +161,18 @@ def featurepack(  # pylint:disable=too-many-locals
         prog=config.name,
         version=config.version,
     )
+    if config.cli_hook:
+        install, run = config.cli_hook
+    else:
+        install, run = None, None
+    if install:
+        # install optional parser steps
+        install(parser)
+    # evaluate create parser
     args = utila.parse(parser)
+    if run:
+        # run optional parser steps
+        run(args)  # pylint:disable=E1102
     # overwrite input as fast as possible. This is required to overwrite
     # general flags (profiling, failfast, etc.).
     utila.feature.config.overwrite(args)

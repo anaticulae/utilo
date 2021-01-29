@@ -439,3 +439,28 @@ def test_error_hook(hook, failfast, testdir, monkeypatch):
 
     assert utila.returncode(result) == utila.FAILURE
     assert not hook or errorhook.hooked
+
+
+def test_featurepack_config_valid():
+
+    def install(parser):  # pylint:disable=W0613
+        pass
+
+    def run(args):  # pylint:disable=W0613
+        pass
+
+    hook = install, run
+    utila.FeaturePackConfig(cli_hook=hook)
+
+
+def test_featurepack_config_invalid():
+
+    def install(parser):  # pylint:disable=W0613
+        pass
+
+    def run():  # pylint:disable=W0613
+        pass
+
+    hook = install, run
+    with pytest.raises(AssertionError):
+        utila.FeaturePackConfig(cli_hook=hook)
