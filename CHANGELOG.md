@@ -2,6 +2,13 @@
 
 Every noteable change is logged here.
 
+## v2.20.0
+
+### Feature
+
+* introduce simple timeout behavior (1a2566a531a3)
+* add timeout parameter to limit runtime of `run` (a1adf3cb8e12)
+
 ## v2.19.0
 
 ### Feature
