@@ -38,7 +38,7 @@ def run(
                       if None: return completed process
         verbose(bool): log executed command and location
         live(bool): if True log to stdout and stderr
-        timeout(Timeout): limit maximum runtime
+        timeout(Timeout): limit maximum runtime, may use float instead/
     Returns:
         Completed process.
     Raises:
@@ -62,16 +62,16 @@ def run(
         stdout=None if live else subprocess.PIPE,
         universal_newlines=True,
     )
+    timeout, gracefully, ontimeout = determine_timeout(timeout)
     try:
-        timeout_ = timeout.seconds if timeout is not None else None
-        stdout, stderr = proc.communicate(timeout=timeout_)
+        stdout, stderr = proc.communicate(timeout=timeout)
     except subprocess.TimeoutExpired as error:
         proc.kill()
-        if not timeout.gracefully:
+        if not gracefully:
             raise error
-        if timeout.ontimeout:
+        if ontimeout:
             # run timeout callback
-            timeout.ontimeout()
+            ontimeout()
         return error
     completed = subprocess.CompletedProcess(
         args=cmd,
@@ -84,6 +84,14 @@ def run(
     if expect is False:
         assert_failure(completed)
     return completed
+
+
+def determine_timeout(timeout):
+    if timeout is None:
+        return None, None, None
+    if isinstance(timeout, (float, int)):
+        return timeout, True, None
+    return timeout.seconds, timeout.gracefully, timeout.ontimeout
 
 
 def run_parallel(
