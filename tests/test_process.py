@@ -7,6 +7,9 @@
 # be prosecuted under federal law. Its content is company confidential.
 # =============================================================================
 
+import subprocess  # nosec
+
+import pytest
 import utilatest
 
 import utila
@@ -52,3 +55,21 @@ def test_georg_fork(capsys):
     stdout = utilatest.stdout(capsys)
     assert '10 10' in stdout
     assert '5 13' in stdout
+
+
+def test_run_timeout_complex(testdir):
+    cmd = 'sleep 2'
+    error = utila.run(cmd, timeout=utila.Timeout(seconds=0))
+    assert isinstance(error, subprocess.TimeoutExpired)
+
+
+def test_run_timeout_float(testdir):
+    cmd = 'sleep 2'
+    error = utila.run(cmd, timeout=0.0)
+    assert isinstance(error, subprocess.TimeoutExpired)
+
+
+def test_run_timeout_not_gracefully():
+    cmd = 'sleep 2'
+    with pytest.raises(subprocess.TimeoutExpired):
+        utila.run(cmd, timeout=utila.Timeout(seconds=0, gracefully=False))
