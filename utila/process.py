@@ -52,7 +52,7 @@ def run(
     if verbose:
         utila.log(f'cd {cwd}')
         utila.log(cmd)
-    proc = subprocess.Popen( # nosec
+    proc = subprocess.Popen(  # nosec
         cmd,
         cwd=cwd,
         env=env,
