@@ -220,6 +220,20 @@ def returnvalue(exeception: Exception) -> int:
 
 @dataclasses.dataclass
 class Timeout:
+    """\
+    >>> Timeout(seconds=10) + 30
+    40
+    >>> 10 + Timeout(seconds=10)
+    20
+    """
     seconds: int = None
     gracefully: bool = True
     ontimeout: callable = None
+
+    def __add__(self, value):
+        # ease handling with numbers
+        return self.seconds + value
+
+    def __radd__(self, value):
+        # ease handling with numbers
+        return self.seconds + value
