@@ -66,6 +66,7 @@ def run(
     try:
         stdout, stderr = proc.communicate(timeout=timeout)
     except subprocess.TimeoutExpired as error:
+        utila.error(f'timeout: {cmd} !failed!')
         proc.kill()
         if not gracefully:
             raise error
