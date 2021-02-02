@@ -7,9 +7,9 @@
 # be prosecuted under federal law. Its content is company confidential.
 # =============================================================================
 
-import concurrent
 import concurrent.futures
 import contextlib
+import dataclasses
 import functools
 import os
 import subprocess  # nosec
@@ -24,6 +24,7 @@ def run(
         expect: bool = True,
         verbose: bool = False,
         live: bool = False,
+        timeout: 'Timeout' = None,
 ) -> subprocess.CompletedProcess:
     """Run external process
 
@@ -37,21 +38,21 @@ def run(
                       if None: return completed process
         verbose(bool): log executed command and location
         live(bool): if True log to stdout and stderr
+        timeout(Timeout): limit maximum runtime
     Returns:
         Completed process.
+    Raises:
+        TimeoutExpired: if timeout is defined and gracefully flag is not set
     """
     cwd = cwd if cwd else os.getcwd()
     assert os.path.exists(cwd)
     msg = f'cwd {cwd} is not a valid directory'
     assert os.path.isdir(cwd), msg
-
     env = os.environ if env is None else env
-
     if verbose:
         utila.log(f'cd {cwd}')
         utila.log(cmd)
-
-    completed = subprocess.run(  #nosec
+    proc = subprocess.Popen( # nosec
         cmd,
         cwd=cwd,
         env=env,
@@ -60,6 +61,23 @@ def run(
         stderr=None if live else subprocess.PIPE,
         stdout=None if live else subprocess.PIPE,
         universal_newlines=True,
+    )
+    try:
+        timeout_ = timeout.seconds if timeout is not None else None
+        stdout, stderr = proc.communicate(timeout=timeout_)
+    except subprocess.TimeoutExpired as error:
+        proc.kill()
+        if not timeout.gracefully:
+            raise error
+        if timeout.ontimeout:
+            # run timeout callback
+            timeout.ontimeout()
+        return error
+    completed = subprocess.CompletedProcess(
+        args=cmd,
+        returncode=proc.returncode,
+        stderr=stderr,
+        stdout=stdout,
     )
     if expect is True:
         assert_success(completed)
@@ -190,3 +208,10 @@ def returnvalue(exeception: Exception) -> int:
     msg = 'process return `None` as returnvalue instead of returncode'
     assert exeception.value not in (None, 'None'), msg
     return int(str(exeception.value))
+
+
+@dataclasses.dataclass
+class Timeout:
+    seconds: int = None
+    gracefully: bool = True
+    ontimeout: callable = None
