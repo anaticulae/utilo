@@ -77,14 +77,18 @@ def simplify(item):
     return item
 
 
-def parse_numbers(text):
+def parse_numbers(text, maxcount=None) -> list:
     """\
     >>> parse_numbers('Helmut')
     []
     >>> parse_numbers('This is 1 number an 50 apple')
     [1, 50]
+    >>> parse_numbers('133 134 135', maxcount=2)
+    [133, 134]
     """
     result = []
     for number in re.findall(r'\d+', text):
         result.append(int(number))
-    return result
+    if maxcount is None:
+        return result
+    return result[0:maxcount]
