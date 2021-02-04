@@ -19,7 +19,6 @@ def dump_config(config: dict) -> str:
     """
     if not config:
         return None
-
     isflat = isinstance(list(config.values())[0], dict) is False
     result = []
     if isflat:
@@ -44,6 +43,7 @@ def load_config(raw: str, flat: bool = False) -> dict:
     >>> load_config('first = 1\nsecond=2', flat=True)
     {'first': '1', 'second': '2'}
     """
+    raw = utila.from_raw_or_path(raw, ftype='ini')
     config = configparser.ConfigParser(allow_no_value=True)
     try:
         config.read_string(raw)
