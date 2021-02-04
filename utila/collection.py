@@ -138,3 +138,6 @@ class Buckets:
         if not self.sorting:
             return data
         return sorted(data, key=self.selector)
+
+    def __len__(self):
+        return len(self.bucket)
