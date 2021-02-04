@@ -6,17 +6,15 @@
 # use or distribution is an offensive act against international law and may
 # be prosecuted under federal law. Its content is company confidential.
 #==============================================================================
+
 import contextlib
 import typing
 
-from utila.logger import error
-from utila.logger import log
-from utila.logger import log_stacktrace
-from utila.utils import FAILURE
+import utila
 
 
 @contextlib.contextmanager
-def handle_error(*exceptions: typing.Tuple, code: int = FAILURE):
+def handle_error(*exceptions: typing.Tuple, code: int = None):
     """Catch given `exceptions` and print there message to `stderr`.
     Exit system with given `code`.
 
@@ -32,7 +30,8 @@ def handle_error(*exceptions: typing.Tuple, code: int = FAILURE):
     try:
         yield
     except exceptions as msg:
-        error(msg)
+        utila.error(msg)
+        code = code if code is not None else utila.FAILURE
         exit(code)
 
 
@@ -56,12 +55,12 @@ def saveme(func=None, *, systemexit=True) -> callable:
             try:
                 ret = user_function(*args, **kwds)
             except KeyboardInterrupt:
-                log('\nOperation cancelled by user')
+                utila.log('\nOperation cancelled by user')
                 ret = CANCELLED_BY_USER
             except Exception as msg:  # pylint: disable=broad-except
-                error(msg)
-                log_stacktrace()
-                ret = FAILURE
+                utila.error(msg)
+                utila.log_stacktrace()
+                ret = utila.FAILURE
             if systemexit:
                 exit(ret)
             return ret
