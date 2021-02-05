@@ -63,7 +63,7 @@ def level_current() -> Level:
     return LEVEL
 
 
-def log(msg: str = '', level: Level = Level.LOGGING, end: str = NEWLINE):
+def log(msg: str = '', *, level: Level = Level.LOGGING, end: str = NEWLINE):
     """Write message to logger
 
     Args:
@@ -87,19 +87,19 @@ def log(msg: str = '', level: Level = Level.LOGGING, end: str = NEWLINE):
     print(msg, end=end, file=sys.stdout, flush=True)
 
 
-def call(msg: str = '', end: str = NEWLINE):
-    log('  %s' % msg, Level.CALLS, end=end)
+def call(msg: str = '', *, end: str = NEWLINE):
+    log('  %s' % msg, level=Level.CALLS, end=end)
 
 
-def info(msg: str = '', end: str = NEWLINE):
-    log('    %s' % msg, Level.INFORMATION, end=end)
+def info(msg: str = '', *, end: str = NEWLINE):
+    log('    %s' % msg, level=Level.INFORMATION, end=end)
 
 
-def debug(msg: str = '', end: str = NEWLINE):
-    log('      %s' % msg, Level.DEBUG, end=end)
+def debug(msg: str = '', *, end: str = NEWLINE):
+    log('      %s' % msg, level=Level.DEBUG, end=end)
 
 
-def error(msg: str, end: str = NEWLINE):
+def error(msg: str, *, end: str = NEWLINE):
     """Print error-message to stderr and add [ERROR]-tag"""
     # avoid problems when using with windows console(cp1252)
     msg = fix_encoding(msg)
