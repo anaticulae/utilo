@@ -9,6 +9,8 @@
 
 import os
 
+PATH_MAX_LENGTH = 512
+
 
 def exists(path: str) -> bool:
     """Wrapper for os.path.exists with checking None and convert path to
@@ -23,5 +25,5 @@ def exists(path: str) -> bool:
     """
     if path is None:
         return False
-    path = str(path)
+    path = str(path)[0:PATH_MAX_LENGTH]
     return os.path.exists(path)
