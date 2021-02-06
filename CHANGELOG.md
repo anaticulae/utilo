@@ -2,6 +2,12 @@
 
 Every noteable change is logged here.
 
+## v2.20.1
+
+### Feature
+
+* limit file length in file path check (a1df55b9ac49)
+
 ## v2.20.0
 
 ### Feature
