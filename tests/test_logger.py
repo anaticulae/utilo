@@ -197,3 +197,8 @@ def test_logger_outfile(testdir, monkeypatch):
     expected = 'First Line\nSecond Line\n[ERROR] Third Line\n'
 
     assert written == expected
+
+
+def test_logger_multi_string(capsys):
+    utila.log('helm', 'schelm', end='')
+    assert utilatest.stdout(capsys) == 'helm schelm'

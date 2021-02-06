@@ -63,7 +63,7 @@ def level_current() -> Level:
     return LEVEL
 
 
-def log(msg: str = '', *, level: Level = Level.LOGGING, end: str = NEWLINE):
+def log(*msg: str, level: Level = Level.LOGGING, end: str = NEWLINE):
     """Write message to logger
 
     Args:
@@ -74,6 +74,7 @@ def log(msg: str = '', *, level: Level = Level.LOGGING, end: str = NEWLINE):
     Hint:
         Logging with default arguments will log a newline
     """
+    msg = utila.from_tuple(msg) if isinstance(msg, tuple) else msg
     if level == Level.ERROR:
         error(msg)
         return
@@ -87,16 +88,19 @@ def log(msg: str = '', *, level: Level = Level.LOGGING, end: str = NEWLINE):
     print(msg, end=end, file=sys.stdout, flush=True)
 
 
-def call(msg: str = '', *, end: str = NEWLINE):
-    log('  %s' % msg, level=Level.CALLS, end=end)
+def call(*msg: str, end: str = NEWLINE):
+    msg = utila.from_tuple(msg) if isinstance(msg, tuple) else msg
+    log(f'  {msg}', level=Level.CALLS, end=end)
 
 
-def info(msg: str = '', *, end: str = NEWLINE):
-    log('    %s' % msg, level=Level.INFORMATION, end=end)
+def info(*msg: str, end: str = NEWLINE):
+    msg = utila.from_tuple(msg) if isinstance(msg, tuple) else msg
+    log(f'    {msg}', level=Level.INFORMATION, end=end)
 
 
-def debug(msg: str = '', *, end: str = NEWLINE):
-    log('      %s' % msg, level=Level.DEBUG, end=end)
+def debug(*msg: str, end: str = NEWLINE):
+    msg = utila.from_tuple(msg) if isinstance(msg, tuple) else msg
+    log(f'      {msg}', level=Level.DEBUG, end=end)
 
 
 def error(msg: str, *, end: str = NEWLINE):
@@ -142,10 +146,10 @@ def log_args(func) -> callable:
         if LEVEL >= MIN_LEVEL:
             signature = inspect.signature(func)
             parameter = list(signature.parameters.items())
-            log(msg=f'call({func.__qualname__}) with:', level=MIN_LEVEL)
+            log(f'call({func.__qualname__}) with:', level=MIN_LEVEL)
             for para, content in zip(parameter, args):
                 content = str(content)[0:150]
-                log(msg=f'  {para[0]}: {content}', level=MIN_LEVEL)
+                log(f'  {para[0]}: {content}', level=MIN_LEVEL)
             log('', level=MIN_LEVEL)
         return func(*args, **kwargs)
 
