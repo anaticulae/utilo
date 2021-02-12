@@ -80,15 +80,27 @@ def chunks(items, size: int = 1) -> list:
 
 
 class Single:
-    """Ensure to use item only once."""
+    """Ensure to use item only once.
+
+    >>> container = Single()
+    >>> container.contains(1, mark=False)
+    False
+    >>> container.contains(1, mark=True)
+    False
+    >>> container.contains(1)
+    True
+    """
 
     def __init__(self):
         self.visited = set()
 
-    def contains(self, item) -> bool:
+    def contains(self, item: object, mark: bool = True) -> bool:
         """Check if items contains Single container and add item
         afterwards.
 
+        Args:
+            item(object): data to verify
+            mark(bool): if True add to visited list
         Returns:
             True  if item was already added due contains
             False if item was not added. Add item afterwards
@@ -100,7 +112,8 @@ class Single:
             hashed = hash(str(item))
         if hashed in self.visited:
             return True
-        self.visited.add(hashed)
+        if mark:
+            self.visited.add(hashed)
         return False
 
 
