@@ -307,6 +307,7 @@ from utila.utils import TMP
 from utila.utils import UTF8
 from utila.utils import chdir
 from utila.utils import flatten
+from utila.utils import flatten_content
 from utila.utils import ifnone
 from utila.utils import index_max
 from utila.utils import notempty

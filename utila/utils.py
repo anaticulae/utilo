@@ -45,6 +45,13 @@ def flatten(lists, append: bool = False) -> list:
     return result
 
 
+def flatten_content(items: 'iamraw.PageContents') -> list:
+    result = []
+    for item in items:
+        result.extend(item.content)
+    return result
+
+
 def select_type(items, selector) -> list:
     """Select items which are instance of `selector`
 
