@@ -2,6 +2,34 @@
 
 Every noteable change is logged here.
 
+## v2.21.0
+
+### Feature
+
+* support negative page numbers (e5502ff25f4a)
+* improve simplify converter (99c17cc5f8ae)
+* add method to remove keys out of dict (0760d56dc98c)
+* add notnone check for dictionaries (91ba783d1863)
+* add method flatten_content (afb2992e0494)
+* add mark flag, add option to change container (68662dadf555)
+* add multiple input for logging interface (5126863c1174)
+* make interface more explicit (c686ededcbd3)
+* add option to load ini config from file (10d683ea3200)
+* add __len__ method (f9bccb5549bc)
+* add max count to numbers parser (d82769cc306a)
+* log timeout error to stderr (72d6a50900dd)
+* simplify math when using Timeout (8b846fcffb23)
+
+### Fix
+
+* fix Single hashing mechanism (d9696023400f)
+* return clean reference to avoid side effects (28f30516351a)
+
+### Documentation
+
+* describe how to handle negative page numbers (5e17f1cf9425)
+* clarify doc test (91b7fad1596e)
+
 ## v2.20.1
 
 ### Feature
