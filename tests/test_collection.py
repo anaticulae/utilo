@@ -6,6 +6,9 @@
 # use or distribution is an offensive act against international law and may
 # be prosecuted under federal law. Its content is company confidential.
 # =============================================================================
+
+import pytest
+
 import utila
 
 
@@ -25,3 +28,12 @@ def test_single_contains_unhashable():
     single = utila.Single()
     assert not single.contains(set())
     assert single.contains(set())
+
+
+@pytest.mark.xfail(reason='hashing bug')
+def test_single_equal_hash():
+    assert hash(-2) == hash(-1)
+
+    single = utila.Single()
+    assert not single.contains(-2)
+    assert not single.contains(-1)

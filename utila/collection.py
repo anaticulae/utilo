@@ -89,6 +89,10 @@ class Single:
     False
     >>> container.contains(1)
     True
+
+    TODO: HIGH PRIORITY
+    TODO: NOT SAFE AGAINST DIFFERENT ITEMS HAVE EQUAL HASH!!!
+    TODO: hash(-2) == hash(-1)
     """
 
     def __init__(self):
