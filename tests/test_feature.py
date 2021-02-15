@@ -11,6 +11,7 @@ import os
 import sys
 
 import pytest
+import utilatest
 from pytest import fixture
 from pytest import mark
 from pytest import raises
@@ -173,6 +174,7 @@ def test_featurepack_with_broken_feature(featureexample, monkeypatch):
         'worker_with_pages',
     ],
 )
+@utilatest.longrun
 def test_featurepack_with_different_worker(  #pylint:disable=W0621
         featureexample,
         monkeypatch,
@@ -255,6 +257,7 @@ def create_example(
     create_worker(stepname, worker, featurepath)
 
 
+@utilatest.longrun
 def test_feature_featurepack_workplan_pdf_parser(testdir, monkeypatch):
     """Test featurepack with multiple input via `*.PDF`
 
@@ -351,6 +354,7 @@ def work(pdf : str, result: str, char_margin : float, char_align : float) -> str
     assert written == '1.00 50.50', str(written)
 
 
+@utilatest.longrun
 def test_feature_featurepack_help_with_variable(testdir, monkeypatch, capsys):
     # TODO: DIRTY CODE
     root = str(testdir)
@@ -416,6 +420,7 @@ def work(pdf : str, result: str, char_margin : float, char_align : float) -> str
     (False, False),
     (False, True),
 ])
+@utilatest.longrun
 def test_error_hook(hook, failfast, testdir, monkeypatch):
     """Test passing exception to error hook and without hook"""
     import tests.examples.featurepack.withexception.withexception as exe

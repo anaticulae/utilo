@@ -49,6 +49,7 @@ def run_playground(
 
 
 @pytest.mark.parametrize('cmd', ['', '--profile'])
+@utilatest.longrun
 def test_feature_playground_cli_profile(cmd, testdir, monkeypatch, capsys):
     """Print runtime for each working step."""
     stdout, _, = run_playground(
@@ -62,6 +63,7 @@ def test_feature_playground_cli_profile(cmd, testdir, monkeypatch, capsys):
 
 
 @pytest.mark.parametrize('quite', ['', '--quite'])
+@utilatest.longrun
 def test_feature_playground_cli_quite(quite, testdir, monkeypatch, capsys):
     """Test to suppress logging when using --quite flag."""
     with monkeypatch.context() as context:
@@ -106,6 +108,7 @@ def test_feature_playground_pass_config_file(testdir, monkeypatch, capsys):
 
 
 @pytest.mark.parametrize('flag', [True, False])
+@utilatest.longrun
 def test_feature_playground_pass_flag(flag, testdir, monkeypatch, capsys):
     cmd = '--sync' if flag else ''
     stdout, _, = run_playground(
@@ -171,6 +174,7 @@ def test_write_selective_datatype_multi(testdir, monkeypatch):
         assert written == content, written
 
 
+@utilatest.longrun
 def test_write_binary_data_disable(testdir, monkeypatch):
     # test writing hex file
     run_playground('--binary!', {}, testdir, monkeypatch)
@@ -178,6 +182,7 @@ def test_write_binary_data_disable(testdir, monkeypatch):
     assert not os.path.exists(expected_path)
 
 
+@utilatest.longrun
 def test_write_binary_data_all_and_disable(testdir, monkeypatch):
     # test writing hex file
     with utilatest.increased_filecount(mindiff=3):
