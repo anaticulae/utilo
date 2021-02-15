@@ -149,7 +149,14 @@ def notnone(items):
     """\
     >>> notnone([1, 2, None, 0, '', 4, None])
     [1, 2, 0, '', 4]
+    >>> notnone({'first': None, 'second': 0, 'third': 'hello'})
+    {'second': 0, 'third': 'hello'}
     """
+    if isinstance(items, dict):
+        items = {
+            key: value for key, value in items.items() if value is not None
+        }
+        return items
     return [item for item in items if item is not None]
 
 
