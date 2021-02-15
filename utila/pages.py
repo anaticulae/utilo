@@ -53,7 +53,6 @@ def parse_pages(pattern: str, pagecount=None) -> tuple:  # pylint:disable=too-co
     >>> parse_pages('_5:_2')
     (-5, -4, -3)
     """
-
     pattern = pattern.strip()
     if not pattern:
         return None
@@ -65,7 +64,9 @@ def parse_pages(pattern: str, pagecount=None) -> tuple:  # pylint:disable=too-co
         parsed = parse_single(pattern, pagecount)
     if not parsed:
         return None
-    parsed = utila.make_unique(parsed)
+    # make unique
+    parsed = set(parsed)
+    # parsed = utila.make_unique(parsed) # TODO: ENABLE LATER
     parsed = sorted(parsed)
     return tuple(parsed)
 
@@ -80,8 +81,12 @@ def parse_comma(pattern, pagecount):
     return result
 
 
-def parse_collon(pattern, pagecount):
-    """Pattern contains `:`"""
+def parse_collon(pattern, pagecount=None):
+    """Pattern contains `:`
+
+    >>> parse_collon('_5:2')
+    [-5, -4, -3, -2, -1, 0, 1]
+    """
     if len(pattern) == 1:
         # single :
         return []
@@ -89,15 +94,25 @@ def parse_collon(pattern, pagecount):
     # Example 50:
     splitted[1] = pagecount if splitted[1] == '' else splitted[1]
     # Example :5
-    splitted[0] = 0 if splitted[0] == '' else splitted[0]
+    splitted[0] = '0' if splitted[0] == '' else splitted[0]
     with contextlib.suppress(ValueError, TypeError):
-        left = int(splitted[0])
-        right = int(splitted[1])
-        if left < 0:
+        left = parse_special_pagenumber(splitted[0])
+        right = parse_special_pagenumber(splitted[1])
+        specialpattern = '_' in splitted[0]
+        if left < 0 and not specialpattern:
             # -5:
             left = right + left
         return list(range(left, right))
     return None
+
+
+def parse_special_pagenumber(item: str) -> int:
+    """\
+    >>> parse_special_pagenumber('_5')
+    -5
+    """
+    item = str(item).replace('_', '-')
+    return int(item)
 
 
 def parse_single(pattern, pagecount):
