@@ -89,10 +89,6 @@ class Single:
     False
     >>> container.contains(1)
     True
-
-    TODO: HIGH PRIORITY
-    TODO: NOT SAFE AGAINST DIFFERENT ITEMS HAVE EQUAL HASH!!!
-    TODO: hash(-2) == hash(-1)
     """
 
     def __init__(self):
@@ -108,16 +104,18 @@ class Single:
         Returns:
             True  if item was already added due contains
             False if item was not added. Add item afterwards
-         """
+        """
         try:
-            hashed = hash(item)
+            # Try that hashing is possible. We do not store hash value
+            # cause -1 and -2 can have the same hash value.
+            hash(item)
         except TypeError:
-            # unhashable
-            hashed = hash(str(item))
-        if hashed in self.visited:
+            # unhashable, str is always hashable
+            item = str(item)
+        if item in self.visited:
             return True
         if mark:
-            self.visited.add(hashed)
+            self.visited.add(item)
         return False
 
 
