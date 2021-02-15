@@ -315,16 +315,21 @@ def simplify_pages(numbers: tuple) -> str:
     '1,3,5:8'
     >>> simplify_pages(None)
     ':'
+    >>> simplify_pages((-3, -2, -1, 0, 1, 2))
+    '_3:3'
     """
     if isinstance(numbers, int):
         numbers = [numbers]
     if not numbers:
         return ':'
     diffed = utila.groupby_diff(numbers, diff=1)
-    result = []
+    collected = []
     for item in diffed:
         if len(item) == 1:
-            result.append(str(item[0]))
+            collected.append(str(item[0]))
         else:
-            result.append(f'{item[0]}:{item[-1]+1}')
-    return ','.join(result)
+            collected.append(f'{item[0]}:{item[-1]+1}')
+    joined = ','.join(collected)
+    # replace with special pattern
+    result = joined.replace('-', '_')
+    return result
