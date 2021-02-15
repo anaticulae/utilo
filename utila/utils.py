@@ -169,6 +169,15 @@ def notempty(items):
     return [item for item in items if item or item == 0]
 
 
+def removekeys(items: dict, keys: set) -> dict:
+    """\
+    >>> removekeys({'first': None, 'second': 0, 'third': 'hello'}, keys=['third'])
+    {'first': None, 'second': 0}
+    """
+    items = {key: value for key, value in items.items() if key not in keys}
+    return items
+
+
 @contextlib.contextmanager
 def unset_env(
         var: str,
