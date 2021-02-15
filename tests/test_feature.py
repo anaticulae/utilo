@@ -12,9 +12,6 @@ import sys
 
 import pytest
 import utilatest
-from pytest import fixture
-from pytest import mark
-from pytest import raises
 
 import utila
 from utila import FAILURE
@@ -97,7 +94,7 @@ def pack(plan, root, featurepackage):
     return executed
 
 
-@fixture
+@pytest.fixture
 def featureexample(testdir):
     root = str(testdir)
     featurepackage = 'feedback.features.border'
@@ -138,7 +135,7 @@ def test_featurepack_without_input(featureexample, monkeypatch):
     with monkeypatch.context() as context:
         context.setattr(sys, 'argv', [PROCESS_NAME])
         context.syspath_prepend(root)
-        with raises(SystemExit) as result:
+        with pytest.raises(SystemExit) as result:
             pack(workplan(), root=root, featurepackage=package)
         assert returncode(result) == SUCCESS
 
@@ -152,12 +149,12 @@ def test_featurepack_with_broken_feature(featureexample, monkeypatch):
     with monkeypatch.context() as context:
         context.setattr(sys, 'argv', [PROCESS_NAME, '-i', root, '-o', root])
         context.syspath_prepend(root)
-        with raises(SystemExit) as result:
+        with pytest.raises(SystemExit) as result:
             pack(workplan(), root=root, featurepackage=package)
         assert returncode(result) == FAILURE
 
 
-@mark.parametrize(
+@pytest.mark.parametrize(
     'name,worker,expected_result',
     [
         ('worker_with_exception', WORKER_WITH_EXCEPTION, FAILURE),
@@ -193,7 +190,7 @@ def test_featurepack_with_different_worker(  #pylint:disable=W0621
         context.setattr(sys, 'argv', [PROCESS_NAME, '-i', root, '-o', root])
         context.syspath_prepend(root)
 
-        with raises(SystemExit) as result:
+        with pytest.raises(SystemExit) as result:
             pack(workplan(name), root=root, featurepackage=package)
         assert returncode(result) == expected_result, str(result)
 
@@ -203,7 +200,7 @@ def test_featurepack(featureexample, monkeypatch):  #pylint:disable=W0621
     with monkeypatch.context() as context:
         context.setattr(sys, 'argv', [PROCESS_NAME, '-i', root, '-o', root])
         context.syspath_prepend(root)
-        with raises(SystemExit) as result:
+        with pytest.raises(SystemExit) as result:
             pack(workplan(), root=root, featurepackage=package)
         assert returncode(result) == SUCCESS, str(result)
 
@@ -213,7 +210,7 @@ def test_featurepack_wrong_featurepath(featureexample, monkeypatch, capsys):  #p
     with monkeypatch.context() as context:
         context.setattr(sys, 'argv', [PROCESS_NAME, '-i', root, '-o', root])
         context.syspath_prepend(root)
-        with raises(SystemExit) as result:
+        with pytest.raises(SystemExit) as result:
             pack(workplan(), root=root, featurepackage='features.wrongpath')
         assert returncode(result) == FAILURE, str(result)
         _, err = capsys.readouterr()
@@ -340,7 +337,7 @@ def work(pdf : str, result: str, char_margin : float, char_align : float) -> str
             singleinput=True,
             version='1.0.0',
         )
-        with raises(SystemExit) as result:
+        with pytest.raises(SystemExit) as result:
             context.syspath_prepend(root)
             featurepack(
                 config=config,
@@ -398,7 +395,7 @@ def work(pdf : str, result: str, char_margin : float, char_align : float) -> str
             version='1.0.0',
             singleinput=True,
         )
-        with raises(SystemExit) as result:
+        with pytest.raises(SystemExit) as result:
             context.syspath_prepend(root)
             featurepack(
                 config=config,
