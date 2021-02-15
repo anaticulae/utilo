@@ -10,6 +10,8 @@
 import enum
 import re
 
+import utila
+
 
 def str2int(item: str, default=None) -> int:
     """\
@@ -61,19 +63,23 @@ def str2bool(item: str) -> bool:
     return str(item).lower() != 'false'
 
 
-def simplify(item):
+def simplify(item, not_none: bool = True, removes: set = None):
     if isinstance(item, enum.Enum):
         return item.value
     if isinstance(item, list):
-        return [simplify(it) for it in item]
+        return [simplify(it, not_none=not_none, removes=removes) for it in item]
     if isinstance(item, tuple):
-        return tuple([simplify(it) for it in item])
+        return (simplify(it, not_none=not_none, removes=removes) for it in item)
     try:
         item = vars(item)
     except TypeError:
         return item
     for key, value in item.items():
-        item[key] = simplify(value)
+        item[key] = simplify(value, not_none=not_none, removes=removes)
+    if not_none:
+        item = utila.notnone(item)
+    if removes:
+        item = utila.removekeys(item, keys=removes)
     return item
 
 
