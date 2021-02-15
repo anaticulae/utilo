@@ -43,6 +43,15 @@ def parse_pages(pattern: str, pagecount=None) -> tuple:  # pylint:disable=too-co
     Python range syntax, -1 means 10-1:10; more simple 9:10; 9
     >>> parse_pages('-1', pagecount=10)
     (9,)
+
+    How to handle negative page numbers? Use `_` to signal that a page
+    number is negative to avoid strugles with python range syntax -3:10,
+    eg 7:10.
+
+    >>> parse_pages('_5:2')
+    (-5, -4, -3, -2, -1, 0, 1)
+    >>> parse_pages('_5:_2')
+    (-5, -4, -3)
     """
 
     pattern = pattern.strip()
