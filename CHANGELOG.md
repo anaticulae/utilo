@@ -2,6 +2,12 @@
 
 Every noteable change is logged here.
 
+## v2.21.1
+
+### Feature
+
+* add special pattern to simplify pager (4977dbce582a)
+
 ## v2.21.0
 
 ### Feature
