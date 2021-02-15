@@ -64,10 +64,8 @@ def parse_pages(pattern: str, pagecount=None) -> tuple:  # pylint:disable=too-co
         parsed = parse_single(pattern, pagecount)
     if not parsed:
         return None
-    # make unique
-    parsed = set(parsed)
-    # parsed = utila.make_unique(parsed) # TODO: ENABLE LATER
-    parsed = sorted(parsed)
+    # make unique and sorted
+    parsed = sorted(set(parsed))
     return tuple(parsed)
 
 
