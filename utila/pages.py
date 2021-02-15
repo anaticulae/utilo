@@ -45,58 +45,61 @@ def parse_pages(pattern: str, pagecount=None) -> tuple:  # pylint:disable=too-co
     (9,)
     """
 
-    def parse_comma(pattern):
-        """Pattern contains `,`"""
-        splitted = pattern.split(',')
-        result = [parse_pages(item, pagecount) for item in splitted]
-        if [item for item in result if item is None]:
-            return None
-        result = utila.flatten(result)
-        return result
-
-    def parse_collon(pattern):
-        """Pattern contains `:`"""
-        if len(pattern) == 1:
-            # single :
-            return []
-        splitted = pattern.split(':')
-        # Example 50:
-        splitted[1] = pagecount if splitted[1] == '' else splitted[1]
-        # Example :5
-        splitted[0] = 0 if splitted[0] == '' else splitted[0]
-        with contextlib.suppress(ValueError, TypeError):
-            left = int(splitted[0])
-            right = int(splitted[1])
-            if left < 0:
-                # -5:
-                left = right + left
-            return list(range(left, right))
-        return None
-
-    def parse_single(pattern):
-        """Pattern contains no special character"""
-        try:
-            single = int(pattern)
-            if single < 0:
-                return [pagecount + single]
-            return [single]
-        except ValueError:
-            return None
-
     pattern = pattern.strip()
     if not pattern:
         return None
     if ',' in pattern:
-        parsed = parse_comma(pattern)
+        parsed = parse_comma(pattern, pagecount)
     elif ':' in pattern:
-        parsed = parse_collon(pattern)
+        parsed = parse_collon(pattern, pagecount)
     else:
-        parsed = parse_single(pattern)
+        parsed = parse_single(pattern, pagecount)
     if not parsed:
         return None
     parsed = utila.make_unique(parsed)
     parsed = sorted(parsed)
     return tuple(parsed)
+
+
+def parse_comma(pattern, pagecount):
+    """Pattern contains `,`"""
+    splitted = pattern.split(',')
+    result = [parse_pages(item, pagecount) for item in splitted]
+    if [item for item in result if item is None]:
+        return None
+    result = utila.flatten(result)
+    return result
+
+
+def parse_collon(pattern, pagecount):
+    """Pattern contains `:`"""
+    if len(pattern) == 1:
+        # single :
+        return []
+    splitted = pattern.split(':')
+    # Example 50:
+    splitted[1] = pagecount if splitted[1] == '' else splitted[1]
+    # Example :5
+    splitted[0] = 0 if splitted[0] == '' else splitted[0]
+    with contextlib.suppress(ValueError, TypeError):
+        left = int(splitted[0])
+        right = int(splitted[1])
+        if left < 0:
+            # -5:
+            left = right + left
+        return list(range(left, right))
+    return None
+
+
+def parse_single(pattern, pagecount):
+    """Pattern contains no special character"""
+    try:
+        single = int(pattern)
+        if single < 0:
+            return [pagecount + single]
+        return [single]
+    except ValueError:
+        return None
 
 
 PageNumbers = typing.TypeVar('PageNumbers', int, tuple)
