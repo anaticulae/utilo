@@ -69,7 +69,8 @@ def simplify(item, not_none: bool = True, removes: set = None):
     if isinstance(item, list):
         return [simplify(it, not_none=not_none, removes=removes) for it in item]
     if isinstance(item, tuple):
-        return (simplify(it, not_none=not_none, removes=removes) for it in item)
+        raw = [simplify(it, not_none=not_none, removes=removes) for it in item]
+        return tuple(raw)
     try:
         item = vars(item)
     except TypeError:
