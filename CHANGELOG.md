@@ -2,6 +2,12 @@
 
 Every noteable change is logged here.
 
+## v2.21.2
+
+### Fix
+
+* could not serialize generator expression (b6467640ce1e)
+
 ## v2.21.1
 
 ### Feature
