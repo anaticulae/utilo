@@ -183,7 +183,10 @@ def sort_leftright_topdown_upper(items):
 
 
 def intersecting_rectangle(first: tuple, second: tuple) -> bool:
-    """Check if two rectangles intersect at any point.
+    """Check if two rectangles intersets at any point.
+
+    Determine middle point of two rectangle and check if that middle
+    point is inside of `first` or `second` rectangle.
 
     >>> intersecting_rectangle((0, 45, 55, 100), (45, 0, 55, 100))
     True
@@ -192,14 +195,24 @@ def intersecting_rectangle(first: tuple, second: tuple) -> bool:
     >>> intersecting_rectangle((0, 0, 50, 50), (0, 0, 50, 50)) # identical
     True
     """
-    for first_line in rectangle_border(first):
-        for second_line in rectangle_border(second):
-            try:
-                if utila.intersecting_lines(first_line, second_line):
-                    return True
-            except utila.IndenticalLineError:
-                return True
+    x = [first[0], first[2], second[0], second[2]]
+    y = [first[1], first[3], second[1], second[3]]
+    middle = sum(x) / 4, sum(y) / 4
+    if dot_in_rectangle(first, middle):
+        return True
+    if dot_in_rectangle(second, middle):
+        return True
     return False
+
+
+def dot_in_rectangle(rectangle, dot) -> bool:
+    x0, y0, x1, y1 = rectangle
+    xx, yy = dot
+    if xx < x0 or xx > x1:
+        return False
+    if yy < y0 or yy > y1:
+        return False
+    return True
 
 
 def rectangle_border(rectangle: tuple):
