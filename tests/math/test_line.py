@@ -20,7 +20,6 @@ import utila
     pytest.param((10, 10, 0, 10), (5, 10, 5, 5), (5, 10), id='m_inf_switched'),
 ])
 def test_math_intersecting_lines(first, second, expected):
-
     match = utila.intersecting_lines(first, second)
     assert match == expected, match
 
@@ -40,3 +39,19 @@ def test_math_intersecting_line_with_offset():
 
     with_error = utila.intersecting_lines(first, second, max_diff=5.0)
     assert with_error
+
+
+@pytest.fixture
+def lines():
+    count = 1024 * 1024 * 4
+    generator = utila.numbers_random(count=count, mins=0, maxs=500)
+    lines = []
+    for _ in range(int(count / 4)):
+        lines.append(tuple(next(generator) for _ in range(4)))
+    return lines
+
+
+def test_intersecting_timeit(lines):
+    """Measure intersecting line times."""
+    for first, second in zip(lines[0::2], lines[1::2]):
+        utila.intersecting_lines(first, second)
