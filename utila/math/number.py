@@ -8,6 +8,7 @@
 # =============================================================================
 
 import math
+import random
 import typing
 
 import utila
@@ -126,3 +127,26 @@ def between(border: list, func: callable = None):
     result = tuple(result)
     result = utila.roundme(result, convert=False)
     return result
+
+
+def numbers_random(
+        count: int = 1,
+        mins: float = 0.0,
+        maxs: float = 1.0,
+        seed: float = None,
+):
+    """Generate random numbers.
+
+    >>> list(numbers_random(count=2, mins=10, maxs=35, seed=1.0))
+    [13.3591..., 31.185...]
+
+    # >>> numbers_random(count=1, seed=1.0)
+    # 0.134...
+    """
+    generator = random
+    if seed is not None:
+        generator = random.Random(seed)
+    if count == 1:
+        return mins + (generator.random() * (maxs - mins))
+    for _ in range(count):
+        yield mins + generator.random() * (maxs - mins)
