@@ -2,6 +2,21 @@
 
 Every noteable change is logged here.
 
+## v2.22.0
+
+### Feature
+
+* add intersecting lines cluster (8ee80076a8cc)
+* reduce execution time by factor 4 (b996115c2c5d)
+* add method to check if item is in range (d9fffe69e837)
+* add numeric equal test method (b02adf876db8)
+* add method to generate random numbers (06bb86db8c45)
+* simplify rectangle check (83d36ad4dde7)
+
+### Fix
+
+* remove linter warnings (82863d005b43)
+
 ## v2.21.2
 
 ### Fix
