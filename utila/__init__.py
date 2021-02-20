@@ -188,6 +188,7 @@ from utila.math import lookup
 from utila.math import mode
 from utila.math import modes
 from utila.math import roundme
+from utila.math.const import isequal
 from utila.math.const import isinf
 from utila.math.const import iszero
 # math:distance

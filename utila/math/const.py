@@ -9,6 +9,8 @@
 
 import math
 
+import utila
+
 NEAR_ZERO = 0.0000001
 NEAR_INF = 10.0**64
 
@@ -29,3 +31,8 @@ def isinf(item: float) -> bool:
     True
     """
     return math.fabs(item) >= NEAR_INF
+
+
+def isequal(first: float, second: float) -> bool:
+    # TODO: CONST PACKAGE IS NOT THE RIGHT PLACE
+    return utila.near(first, second, diff=NEAR_ZERO)
