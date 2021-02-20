@@ -53,3 +53,8 @@ def test_classifier_three_side_equal():
 
     sorted_result = sorted(clusters[0], key=lambda item: item[1])
     assert sorted_result == expected[0], sorted_result
+
+
+def test_intersecting_line_cluster(thousand_lines):
+    clustered = utila.intersecting_line_cluster(thousand_lines)
+    assert len(clustered) == 1

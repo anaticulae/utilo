@@ -11,6 +11,7 @@ import math
 
 import utila
 import utila.classifier.base
+import utila.classifier.strategy
 
 
 def common_items(
@@ -179,4 +180,22 @@ def intersecting_rectangle_cluster(
             bounding(clusteritem),
         )
 
-    return utila.determine_cluster(todo, classifier, min_elements=min_elements)
+    return utila.determine_cluster(
+        todo,
+        classifier,
+        min_elements=min_elements,
+        strategy=utila.classifier.strategy.MatchStrategy.ANY,
+    )
+
+
+def intersecting_line_cluster(todo, min_elements: int = 1):
+
+    def classifier(candidat, clusteritem):
+        return utila.intersecting_lines(candidat, clusteritem)
+
+    return utila.determine_cluster(
+        todo,
+        classifier,
+        min_elements=min_elements,
+        strategy=utila.classifier.strategy.MatchStrategy.ANY,
+    )
