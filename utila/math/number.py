@@ -129,15 +129,15 @@ def between(border: list, func: callable = None):
     return result
 
 
-def numbers_random(
+def numbers_random(  # pylint:disable=inconsistent-return-statements
         count: int = 1,
-        mins: float = 0.0,
-        maxs: float = 1.0,
+        mini: float = 0.0,
+        maxi: float = 1.0,
         seed: float = None,
 ):
     """Generate random numbers.
 
-    >>> list(numbers_random(count=2, mins=10, maxs=35, seed=1.0))
+    >>> list(numbers_random(count=2, mini=10, maxi=35, seed=1.0))
     [13.3591..., 31.185...]
 
     # >>> numbers_random(count=1, seed=1.0)
@@ -145,8 +145,8 @@ def numbers_random(
     """
     generator = random
     if seed is not None:
-        generator = random.Random(seed)
+        generator: 'Random' = random.Random(seed)  # nosec
     if count == 1:
-        return mins + (generator.random() * (maxs - mins))
+        return mini + (generator.random() * (maxi - mini))
     for _ in range(count):
-        yield mins + generator.random() * (maxs - mins)
+        yield mini + generator.random() * (maxi - mini)

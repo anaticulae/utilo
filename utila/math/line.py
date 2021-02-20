@@ -129,9 +129,8 @@ def intersecting_lines(first, second, max_diff=0.0):  # pylint:disable=R1260,R09
     py = (a * (y3y4) - (y1y2) * b) / d
 
     if utila.isoutside(px, first[0], first[2], maxdiff=maxdiff) or\
-       utila.isoutside(px, second[0], second[2], maxdiff=maxdiff):
-        return None
-    if utila.isoutside(py, first[1], first[3], maxdiff=maxdiff) or\
+       utila.isoutside(px, second[0], second[2], maxdiff=maxdiff) or\
+       utila.isoutside(py, first[1], first[3], maxdiff=maxdiff) or\
        utila.isoutside(py, second[1], second[3], maxdiff=maxdiff):
         return None
     return px, py

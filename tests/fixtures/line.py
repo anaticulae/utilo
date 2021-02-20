@@ -13,11 +13,11 @@ import utila
 
 
 def linecount(count):
-    generator = utila.numbers_random(count=count, mins=0, maxs=768, seed=1.0)
-    lines = []
+    generator = utila.numbers_random(count=count, mini=0, maxi=768, seed=1.0)
+    result = []
     for _ in range(int(count / 4)):
-        lines.append(tuple(next(generator) for _ in range(4)))
-    return lines
+        result.append(tuple(next(generator) for _ in range(4)))
+    return result
 
 
 @pytest.fixture
