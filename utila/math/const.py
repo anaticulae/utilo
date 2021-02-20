@@ -36,3 +36,16 @@ def isinf(item: float) -> bool:
 def isequal(first: float, second: float) -> bool:
     # TODO: CONST PACKAGE IS NOT THE RIGHT PLACE
     return utila.near(first, second, diff=NEAR_ZERO)
+
+
+def isoutside(
+        value: float,
+        left: float,
+        right: float,
+        maxdiff: float = 0.0,
+) -> bool:
+    if left - maxdiff <= value <= right + maxdiff:
+        return False
+    if right - maxdiff <= value <= left + maxdiff:
+        return False
+    return True
