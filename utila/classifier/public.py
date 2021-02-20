@@ -171,8 +171,7 @@ def intersecting_rectangle_cluster(
         min_elements: int = 1,
         bounding: callable = None,
 ):
-    if not bounding:
-        bounding = lambda item: item
+    bounding = bounding if bounding else lambda item: item
 
     def classifier(candidat, clusteritem):
         return utila.intersecting_rectangle(
