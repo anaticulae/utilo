@@ -83,80 +83,72 @@ def intersecting_lines(first, second, max_diff=0.0):  # pylint:disable=R1260,R09
     >>> not intersecting_lines((0, 0, 100,0), (0, 100, 100, 100))
     True
     >>> intersecting_lines((0, 0, 0, 100), (0, 100, 100, 100))
-    (0.0, 100.0)
+    (-0.0, 100.0)
     >>> not intersecting_lines((0, 100, 100, 100), (0, 0, 50, 50))
     True
     >>> not intersecting_lines((0, 100, 100, 100), (0, 200, 100, 200)) # two horizontal lines
     True
     """
-    if utila.iszero(length(*first)) or utila.iszero(length(*second)):
-        raise ValueError(f"it's not a line it's a dot {first}; {second}")
-
     # disable short math names
     # pylint:disable=C0103
+    maxdiff = max_diff / 2
     x0, y0, x1, y1 = first
     x00, y00, x11, y11 = second
 
-    try:
-        m0 = (x0 - x1) / (y0 - y1)
-    except ZeroDivisionError:
-        m0 = 0.0
-    try:
-        m1 = (x00 - x11) / (y00 - y11)
-    except ZeroDivisionError:
-        m1 = 0.0
+    if x0 < x1 + maxdiff < x00 < x11 or x00 < x11 + maxdiff < x0 < x1:
+        # no possible intersection
+        return None
+    if y0 < (y1 + maxdiff) < y00 < y11 or y00 < (y11 + maxdiff) < y0 < y1:
+        # no possible intersection
+        return None
 
-    if utila.iszero(x0 - x1):
-        m0 = utila.math.const.NEAR_INF
-    if utila.iszero(x00 - x11):
-        m1 = utila.math.const.NEAR_INF
+    # if utila.iszero(length(*first)) or utila.iszero(length(*second)):
+    #     raise ValueError(f"it's not a line it's a dot {first}; {second}")
 
-    n0 = y0 - m0 * x0
-    n1 = y00 - m1 * x00
+    x1, x2, x3, x4 = x0, x1, x00, x11
+    y1, y2, y3, y4 = y0, y1, y00, y11
 
-    x0, x1 = min([x0, x1]), max([x0, x1])
-    y0, y1 = min([y0, y1]), max([y0, y1])
-    x00, x11 = min([x00, x11]), max([x00, x11])
-    y00, y11 = min([y00, y11]), max([y00, y11])
-
-    if utila.iszero(n0 - n1) and utila.iszero(m0 - m1):
-        if y0 == y00 and y1 == y11:
+    x1x2 = x1 - x2
+    x3x4 = x3 - x4
+    y1y2 = y1 - y2
+    y3y4 = y3 - y4
+    # D = (x1 - x2) * (y3 - y4) - (y1 - y2) * (x3 - x4)
+    d = (x1x2) * (y3y4) - (y1y2) * (x3x4)
+    if utila.iszero(d):
+        matched = matching_endings(first, second, maxdiff=maxdiff)
+        if matched:
+            return matched
+        if utila.isequal(first[1], second[1]) and utila.isequal(first[3], second[3]): # yapf:disable
             raise IndenticalLineError(f'identical lines {first} {second}')
-
-    if m0 == m1 and not utila.isinf(m0):
-        # 2 never matching lines
         return None
-    try:
-        xmatch = (n1 + n0) / (m0 - m1)
-    except ZeroDivisionError:
-        xmatch = None
+    # Px = ((x1 * y2 - y1 * x2) * (x3x4) - (x1x2) * (x3 * y4 - y3 * x4)) / D
+    # Py = ((x1 * y2 - y1 * x2) * (y3y4) - (y1y2) * (x3 * y4 - y3 * x4)) / D
+    a = x1 * y2 - y1 * x2
+    b = x3 * y4 - y3 * x4
+    px = (a * (x3x4) - (x1x2) * b) / d
+    py = (a * (y3y4) - (y1y2) * b) / d
 
-    if not xmatch:
-        if max_diff:
-            potential = [
-                (x0, y0, x00, y00),
-                (x0, y0, x11, y11),
-                (x1, y1, x00, y00),
-                (x1, y1, x11, y11),
-            ]
-            for item in potential:
-                if length(*item) < max_diff:
-                    return (item[0], item[1])
+    if utila.isoutside(px, first[0], first[2], maxdiff=maxdiff) or\
+       utila.isoutside(px, second[0], second[2], maxdiff=maxdiff):
         return None
-
-    ymatch = xmatch * m0 + n0
-    xmatch = utila.roundme(xmatch)
-
-    inside = all([
-        -max_diff / 2 + x0 <= xmatch <= x1 + max_diff / 2,
-        -max_diff / 2 + x00 <= xmatch <= x11 + max_diff / 2,
-        -max_diff / 2 + y0 <= ymatch <= y1 + max_diff / 2,
-        -max_diff / 2 + y00 <= ymatch <= y11 + max_diff / 2,
-    ])
-    if not inside:
+    if utila.isoutside(py, first[1], first[3], maxdiff=maxdiff) or\
+       utila.isoutside(py, second[1], second[3], maxdiff=maxdiff):
         return None
+    return px, py
 
-    return xmatch, ymatch
+
+def matching_endings(first, second, maxdiff):
+    x1, y1, x2, y2 = first
+    x3, y3, x4, y4 = second
+    if length(x1, y1, x3, y3) < maxdiff:
+        return (x1, y1)
+    if length(x1, y1, x4, y4) < maxdiff:
+        return (x1, y1)
+    if length(x2, y2, x3, y3) < maxdiff:
+        return (x2, y2)
+    if length(x2, y2, x4, y4) < maxdiff:
+        return (x2, y2)
+    return None
 
 
 def intersecting_ending(first: tuple, second: tuple, tol: float = 3.0) -> bool:
