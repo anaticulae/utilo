@@ -7,4 +7,7 @@
 # be prosecuted under federal law. Its content is company confidential.
 # =============================================================================
 
+from tests.fixtures.line import lines  # pylint:disable=W0611
+from tests.fixtures.line import thousand_lines  # pylint:disable=W0611
+
 pytest_plugins = ['pytester', 'xdist']  # pylint: disable=invalid-name

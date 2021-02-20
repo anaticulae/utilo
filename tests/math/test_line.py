@@ -41,16 +41,6 @@ def test_math_intersecting_line_with_offset():
     assert with_error
 
 
-@pytest.fixture
-def lines():
-    count = 1024 * 1024 * 4
-    generator = utila.numbers_random(count=count, mins=0, maxs=500)
-    lines = []
-    for _ in range(int(count / 4)):
-        lines.append(tuple(next(generator) for _ in range(4)))
-    return lines
-
-
 def test_intersecting_timeit(lines):
     """Measure intersecting line times."""
     for first, second in zip(lines[0::2], lines[1::2]):
