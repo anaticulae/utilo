@@ -177,6 +177,7 @@ def callback(
             utila.log(f'completed: {stepname}')
         except Exception as exception:  # pylint:disable=broad-except
             utila.error(f'failed: {stepname}')
+            utila.error(exception)
             if hook.error:
                 hook.error(stepname, exception)
             result = exception  # pylint:disable=R0204
@@ -217,7 +218,7 @@ def run_hook_safely(
         utila.log_stacktrace()
         raise
 
-    if isinstance(result, (str, bytes)):
+    if isinstance(result, (str, bytes)) or result == NO_RESULT:
         result = [result]
     # Verify result
     variable_returnvalues = utila.feature.outpath.variable_parameter(stepoutput)
@@ -311,7 +312,7 @@ def write_resource(path, content):
         for first, second in zip(path, content):
             write_resource(first, second)
         return
-    if content == NO_RESULT:
+    if content.__class__.__name__ == 'object':
         utila.log(f'no result, skip writing: {path}')
         return
     # Ensure that parent folder exists. It is possible to create folder
@@ -325,6 +326,8 @@ def write_resource(path, content):
         return
     if isinstance(content, bytes):
         utila.file_replace_binary(path, content)
+        return
+    if content == [NO_RESULT]:
         return
     utila.error(f'invalid content type: {type(content)}')
     utila.error(utila.shrink(content))
