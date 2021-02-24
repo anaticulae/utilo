@@ -2,6 +2,12 @@
 
 Every noteable change is logged here.
 
+## v2.22.1
+
+### Fix
+
+* handle NO_RESULT correctly (4db23527a0bb)
+
 ## v2.22.0
 
 ### Feature
