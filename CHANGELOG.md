@@ -2,6 +2,12 @@
 
 Every noteable change is logged here.
 
+## v2.22.2
+
+### Feature
+
+* add verbose flag to log cmd process (670b4b63ce0f)
+
 ## v2.22.1
 
 ### Fix
