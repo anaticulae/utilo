@@ -100,6 +100,7 @@ def run_parallel(
         cwd: str = None,
         worker: int = 8,
         expect: bool = True,
+        verbose: bool = False,
 ) -> int:
     """Run `items` as list of commands in parallel.
 
@@ -107,14 +108,23 @@ def run_parallel(
         items: list of cmds to run
         cwd: select current working directory
         worker: number of used threads
-        expect: if True: fail on error, if False: fail on success, if None:
-                return accumulated return code of executed processes.
+        expect: if True: fail on error
+                if False: fail on success
+                if None: return accumulated return code of executed processes
+        verbose: inform about start and end of cmd execution
     Returns:
         Accumulated return code of executed processes.
     """
     ret = 0
     with concurrent.futures.ThreadPoolExecutor(max_workers=worker) as executor:
-        todo = {executor.submit(run, cmd, cwd): cmd for cmd in items}
+        todo = {
+            executor.submit(
+                run,
+                cmd=cmd,
+                cwd=cwd,
+                verbose=verbose,
+            ): cmd for cmd in items
+        }
         for future in concurrent.futures.as_completed(todo):
             current = todo[future]
             try:
