@@ -222,11 +222,15 @@ def assert_failure(process: subprocess.CompletedProcess):
     assert process.returncode != utila.SUCCESS, utila.format_completed(process)
 
 
-def returnvalue(exeception: Exception) -> int:
+def returnvalue(exception: Exception) -> int:
     """Determine return code raised from exit()"""
     msg = 'process return `None` as returnvalue instead of returncode'
-    assert exeception.value not in (None, 'None'), msg
-    return int(str(exeception.value))
+    assert exception.value not in (None, 'None'), msg
+    try:
+        return int(str(exception.value))
+    except ValueError as error:
+        utila.error(f'process does not providate exit value: {exception}')
+        raise error
 
 
 @dataclasses.dataclass
