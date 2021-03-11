@@ -2,6 +2,13 @@
 
 Every noteable change is logged here.
 
+## v2.23.0
+
+### Feature
+
+* add method to join dicts (2f7102293563)
+* inform user about missing return value from process (556cab405aba)
+
 ## v2.22.2
 
 ### Feature
