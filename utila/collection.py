@@ -156,3 +156,16 @@ class Buckets:
 
     def __len__(self):
         return len(self.bucket)
+
+
+def dicts_united(*items):
+    """\
+    >>> dicts_united({'first': 10}, {'second': 20})
+    {'first': 10, 'second': 20}
+    >>> dicts_united({'first': 10}, {'second': 20}, {'second': 15})
+    {'first': 10, 'second': 15}
+    """
+    result = {}
+    for item in items:
+        result.update(item)
+    return result
