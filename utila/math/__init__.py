@@ -7,6 +7,7 @@
 # be prosecuted under federal law. Its content is company confidential.
 # =============================================================================
 
+import collections
 import enum
 import math
 import operator
@@ -98,7 +99,7 @@ def modes(data: 'utila.math.number.Numbers') -> 'utila.math.number.Number':
     It is possible to have multiple common data points, there are sorted
     ascending.
 
-    >>> modes((1, 1, 2, 2))
+    >>> modes((1, 1, 2, 2, 3))
     [1, 2]
 
     See: statistics.mode
@@ -112,11 +113,26 @@ def modes(data: 'utila.math.number.Numbers') -> 'utila.math.number.Number':
     """
     if not data:
         raise statistics.StatisticsError('no mode for empty data')
-    table = statistics._counts(data)  # pylint:disable=W0212
+    table = _counts(data)
     if len(table) == 1:
         return table[0][0]
     current = sorted([item[0] for item in table])
     return current
+
+
+def _counts(data):
+    # HINT: COPIED FROM PYTHON
+    # Generate a table of sorted (value, frequency) pairs.
+    table = collections.Counter(iter(data)).most_common()
+    if not table:
+        return table
+    # Extract the values with the highest frequency.
+    maxfreq = table[0][1]
+    for i in range(1, len(table)):  # pylint:disable=C0103
+        if table[i][1] != maxfreq:
+            table = table[:i]
+            break
+    return table
 
 
 def mode(items, minimize: bool = False):
