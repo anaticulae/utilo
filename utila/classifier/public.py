@@ -93,11 +93,11 @@ def three_side_equal_cluster(
             bounding_cluster = selector(clusteritem)
             bounding_test = selector(candidat)
 
-            eqaul = sum([
+            equal = sum([
                 utila.near(first, second, diff=max_diff)
                 for (first, second) in zip(bounding_test, bounding_cluster)
             ])
-            return eqaul >= 3
+            return equal >= 3
 
         return matcher(candidat, clusteritem)
 

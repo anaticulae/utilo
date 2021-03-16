@@ -43,7 +43,7 @@ def roundme(
 
     Args:
         items: list of floats or a single float
-        digits(int): amout of numbers after dot
+        digits(int): amount of numbers after dot
         convert(bool): convert single iter item to float
     Raises:
         ValueError: if no float or list/tuple of numbers is passed
@@ -207,7 +207,7 @@ def lookup(
     Args:
         value: selector to determine holy value
         table: contains holy values to determine on given `value`.
-        strategy: select left, right or linerise
+        strategy: select left, right or linearise
         right_outranges_none: True: if lookup outranges return None
                               False: if lookup outrange use maxvalue
         left_outranges_none: True: if lookup outranges return None

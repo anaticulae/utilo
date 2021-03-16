@@ -72,15 +72,15 @@ def _max_mini(items, method=max):
     if isinstance(items, dict):
         finding = method(uniformed.values())
         selected = {
-            value: occurence
-            for value, occurence in uniformed.items()
-            if occurence == finding
+            value: occurrence
+            for value, occurrence in uniformed.items()
+            if occurrence == finding
         }
     else:
         finding = method(uniformed)
         selected = [
-            value for value, occurence in zip(items, uniformed)
-            if occurence == finding
+            value for value, occurrence in zip(items, uniformed)
+            if occurrence == finding
         ]
     if len(selected) == 1 and isinstance(selected, list):
         return selected[0]

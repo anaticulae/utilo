@@ -293,7 +293,7 @@ def test_file_copy_content_access_error(
 
     def copy(source, dest):
         if source == notdouble:
-            # notdouble is not locked, therefore no error is raised
+            # not double is not locked, therefore no error is raised
             return
         raise OSError()
 

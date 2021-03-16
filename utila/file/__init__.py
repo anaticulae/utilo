@@ -9,7 +9,7 @@
 """File
 ====
 
-TODO: add tmp, path, verify/valiate module
+TODO: add tmp, path, verify/validate module
 
 """
 
@@ -31,9 +31,9 @@ SHARED_TEMP = 'SHARED_TMP'
 def tmp(root) -> str:
     """Return path to temporary folder. If not exists, create folder
 
-    To redirect the tempbase, define `KIWI_TEMPBASE` as a global envionment
-    variable. The temp folder is created in this folder under the name of the
-    given project, defined in `root` variable.
+    To redirect the temp base, define `KIWI_TEMPBASE` as a global
+    environment variable. The temp folder is created in this folder
+    under the name of the given project, defined in `root` variable.
 
     Args:
         root(str): project root
@@ -172,7 +172,7 @@ def file_replace_binary(path: str, content: bytes):
 def file_compare(first: str, second: str) -> bool:
     """Compare the content of `first` and `second`
 
-    If least one file not exists, there are not eqaul
+    If least one file not exists, there are not equal
 
     Args:
         first(str): path to first file
@@ -602,11 +602,11 @@ def tmpdir(root, create: bool = True, trys: int = 10):
 @contextlib.contextmanager
 def make_tmpdir(root: str, remove: bool = False, max_file_guard=100):
     """\
-    root: project root as backup for tmporary path. This path will be
-    used im SHARED_TEMP does not exists.
+    root: project root as backup for temporary path. This path will be
+    used if SHARED_TEMP does not exists.
 
     Yields:
-        str: created temporay directory
+        str: created temporary directory
     """
     assert os.path.exists(root), root
     path = tmpdir(root, create=False)
@@ -650,7 +650,7 @@ def make_relative(path: str, root: str = None) -> str:
     'main/examples'
 
     Hint:
-        Convert path to forwards slashs.
+        Convert path to forwards slash's.
     See:
         os.path.relpath
     """
@@ -669,7 +669,7 @@ def make_single(path: str, replacement='_', length: int = 40) -> str:
     """Convert path sequence to single str to use as folder name.
 
     Sometimes it is handy to shrink the path level of a folder
-    hierarchie into a single flat list. This method enables to convert
+    hierarchy into a single flat list. This method enables to convert
     this path into a single name.
 
     Examples:
@@ -770,7 +770,7 @@ def assert_json(files):
 
 
 def yaml(filename: str) -> str:
-    """Add `yaml` file extention if required.
+    """Add `yaml` file extension if required.
 
     Args:
         filename(str): add `yaml` file ending if not ends with

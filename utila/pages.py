@@ -45,7 +45,7 @@ def parse_pages(pattern: str, pagecount=None) -> tuple:  # pylint:disable=too-co
     (9,)
 
     How to handle negative page numbers? Use `_` to signal that a page
-    number is negative to avoid strugles with python range syntax -3:10,
+    number is negative to avoid struggle with python range syntax -3:10,
     eg 7:10.
 
     >>> parse_pages('_5:2')
@@ -221,7 +221,7 @@ def select_pages(
         pages: tuple,
         default: typing.Any = None,
 ) -> typing.Any:
-    """Select items depending on `page`-attribut of the item.
+    """Select items depending on `page`-attribute of the item.
 
     See: `select_page`"""
     assert len(pages) == len(set(pages)), f'duplicated pages: {pages}'

@@ -105,7 +105,7 @@ def run_parallel(
     """Run `items` as list of commands in parallel.
 
     Args:
-        items: list of cmds to run
+        items: list of cmd's to run
         cwd: select current working directory
         worker: number of used threads
         expect: if True: fail on error
@@ -209,7 +209,7 @@ class GeorgFork(contextlib.AbstractContextManager):
 
 
 def assert_success(process: subprocess.CompletedProcess):
-    """Ensure that `process` completed correctly, if not a formated
+    """Ensure that `process` completed correctly, if not a formatted
     information is logged"""
     assert process, str(process)
     assert process.returncode == utila.SUCCESS, utila.format_completed(process)
@@ -217,7 +217,7 @@ def assert_success(process: subprocess.CompletedProcess):
 
 def assert_failure(process: subprocess.CompletedProcess):
     """Ensure that `process` fails. If process completed correctly, a
-    formated information is logged."""
+    formatted information is logged."""
     assert process, str(process)
     assert process.returncode != utila.SUCCESS, utila.format_completed(process)
 

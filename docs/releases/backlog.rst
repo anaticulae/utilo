@@ -9,7 +9,7 @@ backlog
 
 * file:copy_content: add flag to log but not execute copy operation
 
-* file_list extend pattern to check more than file extention
+* file_list extend pattern to check more than file extension
 
 * utila.test: add method to evaluate capsys from pytest
 

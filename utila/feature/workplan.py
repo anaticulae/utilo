@@ -38,11 +38,11 @@ def create_runtime(  # pylint:disable=too-many-locals
     Args:
         plan: list of working steps
         process_: step name to print on console
-        features: list auf Features
+        features: list of Features
         inspace(str or list): list of input spaces
         outspace(str): absolute path to write output
-        args: dict of additonal arguments
-        prefix(str): to distingush different parameterization written in
+        args: dict of additional arguments
+        prefix(str): to distinguish different parametrization written in
                      the same folder
         verify(bool): if True, let execution failed on workplan error
         used_processes(int): maximum parallel used processes
@@ -132,7 +132,7 @@ def prefix_workplan(
 
 
 def group_multiple_directories(inputs: list) -> list:
-    """Merge morge than one directory into the first directory bucket."""
+    """Merge more than one directory into the first directory bucket."""
     result = []
     multiple_bucket = collections.defaultdict(list)
     for item in inputs:

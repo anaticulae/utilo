@@ -83,7 +83,7 @@ def test_invoking_exception_without_system_exit():
 
 
 def test_error_handle_error():
-    """Catch raised errror and return specified return code `37`"""
+    """Catch raised error and return specified return code `37`"""
     with raises(SystemExit) as exception:
         with handle_error(ValueError, code=37):
             raise ValueError()

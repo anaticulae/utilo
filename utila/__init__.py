@@ -12,7 +12,7 @@ __version__ = '2.23.1'
 import os
 
 # Public API:
-# Todos
+# to do
 from utila.__todo__ import docu
 from utila.__todo__ import refactor
 from utila.__todo__ import todo
@@ -20,7 +20,7 @@ from utila.__todo__ import todo
 from utila.alpha import alphabetically
 from utila.alpha import replace
 from utila.alpha import sort
-# Classificator
+# classifier
 from utila.classifier.base import Cluster
 from utila.classifier.base import Clusters
 from utila.classifier.base import clusterme
@@ -93,7 +93,7 @@ from utila.feature.path import connector as pathconnector
 # processor
 from utila.feature.processor import NO_RESULT
 from utila.feature.processor import select_executor
-# userinput
+# user input
 from utila.feature.userinput import Bool
 from utila.feature.userinput import Directory
 from utila.feature.userinput import File
@@ -293,7 +293,7 @@ from utila.tuples import ranged_list
 from utila.tuples import ranged_tuple
 from utila.tuples import ranges
 from utila.tuples import update_tuple
-# Typerchecker
+# type-checker
 from utila.typechecker import Strings
 from utila.typechecker import assert_type_list
 from utila.typechecker import asserts
@@ -302,7 +302,7 @@ from utila.typechecker import equal_length
 from utila.typechecker import isfloat
 from utila.typechecker import isnumber
 from utila.typechecker import isstrings
-# Utils
+# utile
 from utila.utils import ALL_PAGES
 from utila.utils import FAILURE
 from utila.utils import INF

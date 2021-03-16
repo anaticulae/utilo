@@ -29,7 +29,7 @@ import contextlib
 
 
 def sort(*items):
-    """Sort words included greek letter alphabetically.
+    """Sort words included Greek letter alphabetically.
 
     >>> sort('Alpha', 'α', 'Gamma', 'beta')
     ['α', 'Alpha', 'beta', 'Gamma']
@@ -40,7 +40,7 @@ def sort(*items):
 
 
 def replace(*items):
-    """Convert to ascii.
+    """Convert to ASCII.
 
     >>> replace('α', 'χ', '²', 'Abc')
     ['a', 'c', '2', 'Abc']

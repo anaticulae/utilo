@@ -35,7 +35,7 @@ FeatureInterfaces = typing.List[FeatureInterface]
 
 
 def find_features(root: str, featurepackage: str) -> FeatureInterfaces:
-    """Locate all feautures in given path
+    """Locate all features in given path
 
     Ensure that feature methods are defined. If some feature interface
     is not implemented properly, the execution ends with FAILURE."""
@@ -84,7 +84,7 @@ def connect_feature_interface(current, item) -> FeatureInterface:
     assert after is None or callable(after), f'require callable, {current}'
     assert error is None or callable(error), f'require callable, {current}'
 
-    # no commandline information is defined
+    # no command line information is defined
     def curcommandline():
         return utila.Flag(longcut=curname, message=f'export {curname}')
 

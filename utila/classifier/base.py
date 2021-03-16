@@ -59,7 +59,7 @@ def determine_cluster(
         todo: items to cluster
         classifier: determine if two elements are in the same cluster
         min_elements: min size of valid cluster
-        ctor: use different classes to reprenent cluster
+        ctor: use different classes to represent cluster
         strategy: use different strategies to select the right cluster
         key: sort items of cluster before returning them
     Returns:

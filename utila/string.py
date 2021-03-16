@@ -16,10 +16,10 @@ def forward_slash(content: str, newline: bool = False) -> str:
     r"""Replace every backward slash \\ with an forward slash /.
 
     Args:
-        content(str): content with backslashs
+        content(str): content with backslash's
         newline(bool): if True, do not convert \n to /n
     Returns:
-        content without backslashs
+        content without backslash's
 
     Examples:
     >>> forward_slash('\\helm\nelm', newline=True)
@@ -86,7 +86,7 @@ def shrink(content: str, maxlength: int = 300) -> str:
     >>> shrink('abcdefg')
     'abcdefg'
 
-    without converting list to str, this example would produce a longt
+    without converting list to str, this example would produce a long
     string, cause max length will check against list length:
     >>> shrink(['a'*1000]*5, 6)
     "['a[...]a']"

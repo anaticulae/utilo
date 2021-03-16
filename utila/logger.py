@@ -188,7 +188,7 @@ def format_completed(completed: subprocess.CompletedProcess) -> str:
     Args:
         completed(subprocess.Completed): completed process
     Returns:
-        formated process
+        formatted process
     Format:
         args: ...
         stdout: ...
@@ -266,11 +266,11 @@ def log_raw(content: str):
     """Print `content` which raises an AssertError. Fix encoding if
     non-utf8 character are printed.
 
-    Hint: Avoid using print() to reduse finding 'print' when searching
+    Hint: Avoid using print() to reduce finding 'print' when searching
     in code base.
 
     Example:
-        asssert len(abc) > 100, utila.log_raw(abc)
+        assert len(abc) > 100, utila.log_raw(abc)
     """
     content = utila.string.fix_encoding(content)
     print(content, flush=True)

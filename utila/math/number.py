@@ -22,7 +22,7 @@ Ints = typing.List[int]
 
 def numbers(items: typing.List) -> Numbers:
     """Convert iterable `items` to list of int's. Replace none
-    convertable items to `None`.
+    convertible items to `None`.
 
     Args:
         items: iterable with items to convert

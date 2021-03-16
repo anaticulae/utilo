@@ -121,7 +121,7 @@ def featurepack(  # pylint:disable=too-many-locals
     Args:
         workplan: define selected features with in- and outpath
         root(str): path to project root
-        featurepackage(str): location to featurepackage releative to root
+        featurepackage(str): location to featurepackage relative to root
         config(FeaturePackConfig): define featurepack behavior
     Returns:
         return SUCCESS or FAILURE
@@ -258,11 +258,11 @@ def commandline(features: Features, workplan: list) -> utila.Commands:
             result.extend(commands)
         else:
             result.append(commands)
-    # add sorted, unique parameter as parameterization point
+    # add sorted, unique parameter as parametrization point
     variables = determine_instance(workplan, utila.feature.userinput.Value)
     for item in sorted(variables):
         result.append(utila.Parameter(longcut=item))
-    # add sorted, unique flag as parameterization point
+    # add sorted, unique flag as parametrization point
     flags = determine_instance(workplan, utila.feature.userinput.Bool)
     for item in sorted(flags):
         result.append(utila.Flag(longcut=item))
@@ -308,7 +308,7 @@ def determine_todo(args: dict, flags: list) -> typing.List[str]:
 
     Args:
         args(dict): user defined command line arguments
-        flags(tuple or str): possible bool flag args for examle `--linter`
+        flags(tuple or str): possible bool flag args for example `--linter`
     Returns:
         args list without possible flag-args
     """
@@ -348,7 +348,7 @@ def determine_todo(args: dict, flags: list) -> typing.List[str]:
         result = [key for key, value in args.items() if value == True]  # pylint:disable=singleton-comparison
     if deactivated or all_selected:
         # None is important:
-        #   None means feature is activly disabled by user.
+        #   None means feature is actively disabled by user.
         #   False means feature is not selected.
         for item in deactivated + ['all']:
             with contextlib.suppress(ValueError):

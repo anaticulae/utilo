@@ -62,7 +62,7 @@ def test_logger_profile(capsys, message):
 
 
 def test_logger_profile_with_exception(capsys):
-    """Catch error while running profling"""
+    """Catch error while running profiling"""
     with pytest.raises(ValueError):
         with utila.level_temp(utila.Level.INFORMATION):
             with utila.profile():

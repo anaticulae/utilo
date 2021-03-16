@@ -177,7 +177,7 @@ def intersecting_ending(first: tuple, second: tuple, tol: float = 3.0) -> bool:
     second_distance = min(length(x2, y2, x3, y3), length(x2, y2, x1, y1))
 
     if first_distance < 0.00001 and second_distance < 0.00001:
-        # intersecting with themself
+        # intersecting with themselves
         return None
 
     if first_distance <= tol:
@@ -192,7 +192,7 @@ def intersecting_ending(first: tuple, second: tuple, tol: float = 3.0) -> bool:
 def merge_lines(items, diff: float = 3.0):
     """Some pdf printer prints long lines as a couple of short lines.
     For analysis it is required, that these lines are merged to single
-    lines to work with correct length and positon.
+    lines to work with correct length and position.
 
     This algorithm merges lines which are:
      - connected in two points

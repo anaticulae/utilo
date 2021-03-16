@@ -78,7 +78,7 @@ def roman(*items) -> str:
 
 
 def arabic(*items) -> int:
-    """Converst Roman to Arabic numbers.
+    """Converts Roman to Arabic numbers.
 
     >>> arabic('XII')
     12

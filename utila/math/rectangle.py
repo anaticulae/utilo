@@ -23,7 +23,7 @@ def rectangle_merge(rectangles: Rectangles) -> Rectangles:
     covered area. Remove rectangle when there have a parent rectangle
     which covers them.
 
-    Note: This algoritm does not determine the optimal count of
+    Note: This algorithm does not determine the optimal count of
     rectangles, if two rectangle cover the area of a third one, all
     three rectangle will be saved.
 
@@ -183,7 +183,7 @@ def sort_leftright_topdown_upper(items):
 
 
 def intersecting_rectangle(first: tuple, second: tuple) -> bool:
-    """Check if two rectangles intersets at any point.
+    """Check if two rectangles intersects at any point.
 
     Determine middle point of two rectangle and check if that middle
     point is inside of `first` or `second` rectangle.
@@ -223,7 +223,7 @@ def rectangle_border(rectangle: tuple):
     >>> list(rectangle_border((0,0, 55, 50)))
     [(0, 0, 55, 0), (55, 0, 55, 50), (0, 50, 55, 50), (0, 0, 0, 50)]
 
-    Hint: Left coordiante is always smaller equal than right coordiate
+    Hint: Left coordinate is always smaller equal than right coordinate
     """
     x0, y0, x1, y1 = rectangle
     # left -> right

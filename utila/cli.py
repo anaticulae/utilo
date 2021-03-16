@@ -149,14 +149,14 @@ def create_parser(
         prog: str = '',
         version=None,
 ) -> argparse.ArgumentParser:
-    """Create parser out of defined dictonary with command-line-definiton.
+    """Create parser out of defined dictionary with command-line-definition.
 
     Args:
         config(ParserConfiguration): collections of creation flags
         description(str): description text of --help invocation
         prog(str): name of application `prog --help`
         todo(list): extend default parser with todo list
-        version(str): current version of parser applicatin
+        version(str): current version of parser application
     Returns:
         Created argparser.
     """
@@ -367,7 +367,7 @@ DEACTIVATED = (None, None)
 
 
 def parse(parser: argparse.ArgumentParser):
-    """Parse arguments from sys-args and return the result as dictonary.
+    """Parse arguments from sys-args and return the result as dictionary.
 
     Disable -f! --flags! with acclamation mark.
     """
@@ -424,7 +424,7 @@ def sources(  # pylint:disable=too-complex,too-many-branches
     """Parse the in- and outport from given command line args
 
     The input- and output-path must be a directory. If singleinput flag
-    is activated, a file is addtionaly allowed as input.
+    is activated, a file is additionally allowed as input.
 
     The argparser supports multiple input locations. If the same input
     is passed twice, only the first one is used. The inputs will be

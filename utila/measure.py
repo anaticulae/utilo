@@ -34,7 +34,7 @@ A6 = (104, 148)
 
 import utila
 
-INC_TO_MILI = 25.4  # militmeter
+INC_TO_MILI = 25.4  # millimeter
 PT = 1 / 72
 
 

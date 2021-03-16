@@ -9,7 +9,7 @@
 """T0D0-List
 =========
 
-The T0D0-List aims to use code to descripe t0d0s and make them more
+The T0D0-List aims to use code to describe t0d0s and make them more
 important.
 
 Hint: This special module name ensures that the code is loaded very

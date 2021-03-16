@@ -47,7 +47,7 @@ def from_raw_or_path(
             content = newpath
         else:
             raise FileNotFoundError(f'directory not found: {newpath}')
-    # filepath must not have any linebreaks
+    # filepath must not have any line breaks
     if len(content.splitlines()) == 1 and os.path.isfile(content):
         content = utila.file.file_read(content)
     return content

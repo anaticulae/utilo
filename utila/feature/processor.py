@@ -49,14 +49,14 @@ def process(  # pylint:disable=R0914
         name(str): name of executable
         todo: list with steps to run, if no steps are None, every step is
               executed.
-        processes(int): maximal parallel exection steps
+        processes(int): maximal parallel execution steps
         pages(list): list with processed pages
-        errorhook(ErrorHook): if Error occurrs write it to ErrorHook
+        errorhook(ErrorHook): if Error occurs write it to ErrorHook
         before(callable): run before process plan
         after(callable): run before process plan
         failfast(bool): quit after first failure
         profiling(bool): if True, runtime of every single step is logged
-        verbose(bool): if True, print more logging information(skippin steps)
+        verbose(bool): if True, print more logging information(skipped steps)
         wait(int): if required, wait till incoming resources are ready
     Returns:
         SUCCESS if all features process successfully, if not FAILURE
@@ -80,7 +80,7 @@ def process(  # pylint:disable=R0914
         for level in workplan:
             # wait that level finishes without waiting, a next level which
             # require resource of the current may will not find the
-            # resource, cause the excution is not done.
+            # resource, cause the execution is not done.
             results = run_level(
                 level=level,
                 pages=pages,

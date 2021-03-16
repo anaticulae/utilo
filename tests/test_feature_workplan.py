@@ -93,7 +93,7 @@ def test_parallelize_workplan():
     )
     assert len(single_processed) == 5, str(single_processed)
 
-    # multilevel limited by required resoure
+    # multilevel limited by required resource
     multi_processed = utila.parallelize_workplan(
         PLAN,
         root=PROCESS,
@@ -101,7 +101,7 @@ def test_parallelize_workplan():
     )
     assert len(multi_processed) == 3, str(multi_processed)
 
-    # multilevel limited by required resoure and limited by cores
+    # multilevel limited by required resource and limited by cores
     multi_processed = utila.parallelize_workplan(
         PLAN,
         root=PROCESS,

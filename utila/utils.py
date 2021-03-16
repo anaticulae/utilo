@@ -106,16 +106,16 @@ def determine_order(requirements, flat=True):
 def chdir(path: str) -> typing.NoReturn:
     """Contextmanager to change current working directory. Exceptions
     which where raised during accessing contextmanager are re-raised
-    after changing current working directroy back to orgin.
+    after changing current working directory back to origin.
 
     Args:
         path(str): path to change current working directory
     Yields:
         NoReturn: to run command in `path`
     Raises:
-        Exception: if Exception occurrs while running contextmanager,
+        Exception: if Exception occurs while running contextmanager,
         the current working directory is changed back to location
-        `before` and the occurred excetion is re raised after.
+        `before` and the occurred exception is re raised after.
     Example:
         with utila.chdir(path):
             pass
@@ -183,7 +183,7 @@ def unset_env(
         var: str,
         skip: bool = True,
 ):
-    """Temporary disable enviroment variable.
+    """Temporary disable environment variable.
 
     Args:
         var(str): name to disable
@@ -210,7 +210,7 @@ def unset_env(
         yield
     except Exception as error:
         if before is not None:
-            # restore enviromental variable
+            # restore environmental variable
             os.environ[var] = before
         raise error
     else:

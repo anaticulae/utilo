@@ -19,7 +19,7 @@ import utila
 
 
 def test_likelihood_uniform_result_list():
-    """Determine uniformed occurence of item in `list` collection."""
+    """Determine uniformed occurrence of item in `list` collection."""
     items = [10, 20, 20, 50]
 
     result = utila.uniform_result(items)
@@ -29,7 +29,7 @@ def test_likelihood_uniform_result_list():
 
 
 def test_likelihood_uniform_result_dict():
-    """Determine uniformed occurence of item in `dict` collection."""
+    """Determine uniformed occurrence of item in `dict` collection."""
     items = {
         'A': 100,
         'B': 20,

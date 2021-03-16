@@ -55,7 +55,7 @@ def choose_random(items, count: int = 5) -> list:
         side effects.
     Args:
         items(list): data collection to select random items
-        count(int): number of items to retun
+        count(int): number of items to return
     Returns:
         `count` selected items out of collections
     """
