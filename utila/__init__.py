@@ -195,7 +195,7 @@ from utila.math.const import isinf
 from utila.math.const import isoutside
 from utila.math.const import iszero
 # math:distance
-from utila.math.distance import manhatten
+from utila.math.distance import manhattan
 from utila.math.distance import norm
 from utila.math.distance import norms
 # math:func
@@ -324,6 +324,7 @@ from utila.utils import unset_env
 
 # TODO: REMOVE LATER AND INCREASE MAJOR VERSION NUMBER
 not_none = notnone  # pylint:disable=C0103
+manhatten = manhattan  # pylint:disable=C0103
 
 ROOT = os.path.abspath(os.path.join(os.path.dirname(__file__), '..'))
 PACKAGE = 'utila'

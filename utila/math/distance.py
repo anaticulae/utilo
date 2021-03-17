@@ -21,10 +21,10 @@ def norm(x0, y0, x1, y1) -> float:
     return math.sqrt(pow(x1 - x0, 2) + pow(y1 - y0, 2))
 
 
-def manhatten(x0, y0, x1, y1) -> float:
-    """Determine manhatten distance.
+def manhattan(x0, y0, x1, y1) -> float:
+    """Determine Manhattan distance.
 
-    >>> manhatten(*(10,10,25,25))
+    >>> manhattan(*(10,10,25,25))
     30
     """
     assert x0 <= x1, f'{x0}<={x1}'
