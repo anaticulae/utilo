@@ -2,6 +2,13 @@
 
 Every noteable change is logged here.
 
+## v2.23.2
+
+### Fix
+
+* do not wait if requested waiting is zero/deactivated (4228c7abd861)
+* fix API spelling error (72e6855b9ee0)
+
 ## v2.23.1
 
 ## v2.23.0
