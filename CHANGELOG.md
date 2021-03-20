@@ -2,6 +2,12 @@
 
 Every noteable change is logged here.
 
+## v2.24.0
+
+### Feature
+
+* add path verification decorator (c0dc24e86a08)
+
 ## v2.23.2
 
 ### Fix
