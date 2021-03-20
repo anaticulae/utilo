@@ -7,6 +7,7 @@
 # be prosecuted under federal law. Its content is company confidential.
 # =============================================================================
 
+import inspect
 import os
 
 PATH_MAX_LENGTH = 512
@@ -27,3 +28,27 @@ def exists(path: str) -> bool:
         return False
     path = str(path)[0:PATH_MAX_LENGTH]
     return os.path.exists(path)
+
+
+def pathexists(func=None) -> callable:
+
+    def decorating_function(user_function):
+
+        def wrapper(*args, **kwds):
+            sig = inspect.signature(user_function)
+            try:
+                path = kwds['path']
+            except KeyError:
+                parameter = [item for item in sig.parameters]
+                try:
+                    pos = [item for item in parameter].index('path')
+                except ValueError:
+                    raise TypeError(f'no `path` in {parameter}') from None
+                path = args[pos]
+            assert os.path.exists(path), str(path)
+            ret = user_function(*args, **kwds)
+            return ret
+
+        return wrapper
+
+    return decorating_function(func)

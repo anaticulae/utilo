@@ -146,7 +146,9 @@ from utila.file.hashed import file_hash
 # loader
 from utila.file.loader import from_raw_or_path
 from utila.file.loader import yaml_from_raw_or_path
+# utile
 from utila.file.utils import exists
+from utila.file.utils import pathexists
 # group
 from utila.group import groupby_ascending
 from utila.group import groupby_diff
