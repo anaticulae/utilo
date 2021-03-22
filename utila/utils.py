@@ -52,6 +52,17 @@ def flatten_content(items: 'iamraw.PageContents') -> list:
     return result
 
 
+def minus(first, second):
+    """\
+    >>> minus([1, 2, 3, 4], [3, 4])
+    [1, 2]
+    """
+    result = first[:]
+    for item in second:
+        result.remove(item)
+    return result
+
+
 def select_type(items, selector) -> list:
     """Select items which are instance of `selector`
 

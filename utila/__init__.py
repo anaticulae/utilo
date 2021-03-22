@@ -317,6 +317,7 @@ from utila.utils import flatten
 from utila.utils import flatten_content
 from utila.utils import ifnone
 from utila.utils import index_max
+from utila.utils import minus
 from utila.utils import notempty
 from utila.utils import nothing
 from utila.utils import notnone
