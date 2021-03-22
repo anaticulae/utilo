@@ -2,6 +2,12 @@
 
 Every noteable change is logged here.
 
+## v2.24.1
+
+### Feature
+
+* add method to subtract list from list (99b3c86b83f8)
+
 ## v2.24.0
 
 ### Feature
