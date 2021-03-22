@@ -56,10 +56,13 @@ def minus(first, second):
     """\
     >>> minus([1, 2, 3, 4], [3, 4])
     [1, 2]
+    >>> minus([3, 4], [5, 6])
+    [3, 4]
     """
     result = first[:]
     for item in second:
-        result.remove(item)
+        with contextlib.suppress(ValueError):  # item is not in list
+            result.remove(item)
     return result
 
 
