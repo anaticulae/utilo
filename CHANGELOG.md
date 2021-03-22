@@ -2,6 +2,12 @@
 
 Every noteable change is logged here.
 
+## v2.24.2
+
+### Fix
+
+* skip not existing items (9b4bd2fc96dd)
+
 ## v2.24.1
 
 ### Feature
