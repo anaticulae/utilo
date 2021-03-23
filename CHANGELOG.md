@@ -2,6 +2,12 @@
 
 Every noteable change is logged here.
 
+## v2.24.3
+
+### Feature
+
+* add method to split and shuffle (44ff32d8e284)
+
 ## v2.24.2
 
 ### Fix
