@@ -64,6 +64,21 @@ def choose_random(items, count: int = 5) -> list:
     return items[0:count]
 
 
+def split_shuffle(items, length, seed=0.0):
+    """Split collection into two lists and shuffle data.
+
+    >>> split_shuffle([0, 1, 2, 3, 4, 5], length=0.3, seed=5.0)
+    ([1, 0], [3, 5, 2, 4])
+    """
+    # avoid side effects
+    items = items[:]
+    generator: 'Random' = random.Random(seed)  # nosec
+    generator.shuffle(items)
+    left = items[0:math.ceil(len(items) * length)]
+    right = items[len(left):]
+    return left, right
+
+
 def chunks(items, size: int = 1) -> list:
     """\
     >>> chunks((1, 2, 3, 4, 5, 6, 7, 8, 9, 10), size=3)

@@ -59,6 +59,7 @@ from utila.collection import chunks
 from utila.collection import dicts_united
 from utila.collection import make_unique
 from utila.collection import partition
+from utila.collection import split_shuffle
 # config
 from utila.config import dump_config
 from utila.config import load_config
