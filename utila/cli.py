@@ -173,7 +173,7 @@ def create_parser(
     )
 
     if config.cacheflag:
-        todo.append(Flag('--cache', message='use cached data.'))
+        todo.append(Flag('--cache', message='use cached data'))
 
     if config.waitingflag:
         todo.append(
@@ -184,7 +184,7 @@ def create_parser(
             ))
 
     if version:
-        todo.append(Flag('-v', 'version', 'show version and exit.'))
+        todo.append(Flag('-v', 'version', 'show version and exit'))
         parser.__version = version
 
     io_ports = create_io_ports(
