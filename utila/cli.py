@@ -384,8 +384,8 @@ def parse(parser: argparse.ArgumentParser):
 
     # verify version and/or verbose before parsing to avoid conflicts with
     # required resources when using e.g. `abel --version --verbose`
-    if '--version' in sys.argv or  '-v' in sys.argv :
-        verbose = '-V' in sys.argv or  '--verbose' in sys.argv
+    if '--version' in sys.argv or '-v' in sys.argv:
+        verbose = '-V' in sys.argv or '--verbose' in sys.argv
         version = ''
         if verbose:
             version = f'{parser.prog} '
