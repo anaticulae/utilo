@@ -2,6 +2,16 @@
 
 Every noteable change is logged here.
 
+## v2.24.4
+
+### Feature
+
+* add singleinput flag to make file required (494b8afde6c3)
+
+### Fix
+
+* verify version and verbose before required resources (39f52ba39548)
+
 ## v2.24.3
 
 ### Feature
