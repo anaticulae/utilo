@@ -382,20 +382,23 @@ def parse(parser: argparse.ArgumentParser):
     # `parse_args`.
     sys.argv = enable
 
-    args = vars(parser.parse_args())
-    # use disable with None
-    args = {
-        key: value if key not in disable else DEACTIVATED
-        for key, value in args.items()
-    }
-    if 'version' in args and args['version']:
-        verbose = args.get('verbose', False)
+    # verify version and/or verbose before parsing to avoid conflicts with
+    # required resources when using e.g. `abel --version --verbose`
+    if '--version' in sys.argv or  '-v' in sys.argv :
+        verbose = '-V' in sys.argv or  '--verbose' in sys.argv
         version = ''
         if verbose:
             version = f'{parser.prog} '
         version += parser.__version
         utila.log(version)
         exit(utila.SUCCESS)
+
+    args = vars(parser.parse_args())
+    # use disable with None
+    args = {
+        key: value if key not in disable else DEACTIVATED
+        for key, value in args.items()
+    }
     return args
 
 
