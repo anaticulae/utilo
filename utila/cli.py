@@ -130,6 +130,7 @@ class ParserConfiguration:
     failfastflag: bool = False
     flags: list = dataclasses.field(default_factory=list)
     inputparameter: bool = False
+    singleinput: bool = False
     multiprocessed: bool = True
     outputparameter: bool = False
     pages: bool = True
@@ -190,6 +191,7 @@ def create_parser(
         config.inputparameter,
         config.outputparameter,
         config.configflag,
+        config.singleinput,
     )
     if io_ports:
         # set io ports to the top
@@ -331,6 +333,7 @@ def create_io_ports(
         infile: bool = False,
         outfile: bool = False,
         config: bool = False,
+        singleinput: bool = False,
 ):
     todo = []
     if infile:
@@ -339,6 +342,8 @@ def create_io_ports(
             longcut='input',
             message='read input data from path',
         )
+        if singleinput:
+            input_command.args['required'] = True  # pylint:disable=E1137
         todo.append(input_command)
 
     if outfile:
