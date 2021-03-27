@@ -8,6 +8,7 @@
 # =============================================================================
 
 import collections
+import contextlib
 import enum
 import math
 import operator
@@ -144,10 +145,9 @@ def mode(items, minimize: bool = False):
     1
     """
     result = modes(items)
-    try:
+    with contextlib.suppress(TypeError):
         return result[0] if minimize else result[-1]
-    except TypeError:
-        return result
+    return result
 
 
 def diff_mode(
