@@ -7,6 +7,8 @@
 # be prosecuted under federal law. Its content is company confidential.
 # =============================================================================
 
+import itertools
+
 import utila
 
 
@@ -28,9 +30,14 @@ def nears(currents, expects, diff: float = 2.0) -> bool:
     True
     >>> nears((1, 2), (0.5, 1.5), diff=0.3)
     False
+    >>> nears((5, 2), (6, 4), diff=(1, 2))
+    True
+    >>> nears((5, 2), (6, 4), diff=1)
+    False
     """
+    diffs = itertools.cycle((diff,)) if isinstance(diff, (int, float)) else diff
     result = (utila.near(expect, current, diff=diff)
-              for expect, current in zip(expects, currents))
+              for expect, current, diff in zip(expects, currents, diffs))
     return all(result)
 
 
