@@ -2,6 +2,14 @@
 
 Every noteable change is logged here.
 
+## v2.25.0
+
+### Feature
+
+* enable nones as valid value (d3c61d76dca5)
+* enable multiple diff tolerance (efdd1d5cec83)
+* clarify interface (d3b9cfc18476)
+
 ## v2.24.4
 
 ### Feature
