@@ -7,12 +7,10 @@
 # be prosecuted under federal law. Its content is company confidential.
 # =============================================================================
 
-import math
-
 import utila
 
 
-def near(first, second, diff: float = 2.0) -> bool:
+def near(current, expected, diff: float = 2.0) -> bool:
     """Test that two items are close together.
 
     >>> near(2.1,-0.9, diff=3.0)
@@ -20,10 +18,10 @@ def near(first, second, diff: float = 2.0) -> bool:
     >>> near(1.0, 10, diff=1.0)
     False
     """
-    return math.fabs(first - second) <= diff
+    return expected - diff <= current <= expected + diff
 
 
-def nears(firsts, seconds, diff: float = 2.0) -> bool:
+def nears(currents, expects, diff: float = 2.0) -> bool:
     """Test that two n-items are close together.
 
     >>> nears((1, 2, 3), (0.5, 1.5, 3.5), diff=0.5)
@@ -31,8 +29,8 @@ def nears(firsts, seconds, diff: float = 2.0) -> bool:
     >>> nears((1, 2), (0.5, 1.5), diff=0.3)
     False
     """
-    result = (utila.near(left, right, diff=diff)
-              for left, right in zip(firsts, seconds))
+    result = (utila.near(expect, current, diff=diff)
+              for expect, current in zip(expects, currents))
     return all(result)
 
 
