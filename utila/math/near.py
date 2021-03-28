@@ -12,18 +12,29 @@ import itertools
 import utila
 
 
-def near(current, expected, diff: float = 2.0) -> bool:
+def near(current, expected, diff: float = 2.0, none: bool = False) -> bool:
     """Test that two items are close together.
 
     >>> near(2.1,-0.9, diff=3.0)
     True
     >>> near(1.0, 10, diff=1.0)
     False
+    >>> near(None, None, none=True)
+    True
+    >>> near(None, None, none=False)
+    Traceback (most recent call last):
+        ...
+    TypeError: ...
     """
-    return expected - diff <= current <= expected + diff
+    try:
+        return expected - diff <= current <= expected + diff
+    except TypeError as error:
+        if not none:
+            raise error from None
+    return current == expected
 
 
-def nears(currents, expects, diff: float = 2.0) -> bool:
+def nears(currents, expects, diff: float = 2.0, none: bool = False) -> bool:
     """Test that two n-items are close together.
 
     >>> nears((1, 2, 3), (0.5, 1.5, 3.5), diff=0.5)
@@ -36,7 +47,7 @@ def nears(currents, expects, diff: float = 2.0) -> bool:
     False
     """
     diffs = itertools.cycle((diff,)) if isinstance(diff, (int, float)) else diff
-    result = (utila.near(expect, current, diff=diff)
+    result = (utila.near(expect, current, diff=diff, none=none)
               for expect, current, diff in zip(expects, currents, diffs))
     return all(result)
 
