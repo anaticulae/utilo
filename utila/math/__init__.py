@@ -139,9 +139,9 @@ def _counts(data):
 def mode(items, minimize: bool = False):
     """Determine single mode out of `items`.
 
-    >>> mode((1,1,2,2))
+    >>> mode((1, 1, 2, 2))
     2
-    >>> mode((1,1,2,2), minimize=True)
+    >>> mode((1, 1, 2, 2), minimize=True)
     1
     """
     result = modes(items)
