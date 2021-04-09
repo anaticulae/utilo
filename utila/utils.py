@@ -232,11 +232,11 @@ def unset_env(
             os.environ[var] = before
 
 
-def ifnone(value, default):
+def ifnone(value, *, default):
     """\
-    >>> ifnone(None, 10)
+    >>> ifnone(None, default=10)
     10
-    >>> ifnone(0, 5)
+    >>> ifnone(0, default=5)
     0
     """
     return default if value is None else value
