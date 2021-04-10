@@ -7,6 +7,7 @@
 # be prosecuted under federal law. Its content is company confidential.
 # =============================================================================
 
+import collections
 import os
 
 import pytest
@@ -99,3 +100,45 @@ def test_unset_env_keyerror(monkeypatch):
         with pytest.raises(KeyError):
             with utila.unset_env('abc', skip=False):
                 pass
+
+
+def test_selbstwirksamkeit_all():
+    Driver = collections.namedtuple('Driver', 'first second third')
+    data = Driver(10, 15, 20)
+
+    @utila.selbstwirksamkeit
+    def method(first, second):
+        return first + second
+
+    # tuple access
+    result = method(data)  # pylint:disable=E1120
+    assert result == 25
+
+    # dict access
+    data = dict(first=10, second=15, third=20)  # pylint:disable=R0204
+    result = method(data)  # pylint:disable=E1120
+    assert result == 25
+
+
+def test_selbstwirksamkeit_missing():
+    Driver = collections.namedtuple('Driver', 'first second third')
+    data = Driver(10, 15, 20)
+
+    @utila.selbstwirksamkeit
+    def method(first, missing):  # pylint:disable=W0613
+        return first
+
+    with pytest.raises(AttributeError, match='is not provided by data'):
+        method(data)  # pylint:disable=E1120
+
+
+def test_selbstwirksamkeit_replace():
+    Driver = collections.namedtuple('Driver', 'first second third')
+    data = Driver(10, 15, 20)
+
+    @utila.selbstwirksamkeit(usenone=True)
+    def method(first, missing):
+        assert missing is None
+        return first
+
+    assert method(data) == 10  # pylint:disable=E1120

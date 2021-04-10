@@ -8,6 +8,7 @@
 #==============================================================================
 
 import contextlib
+import inspect
 import os
 import typing
 
@@ -255,3 +256,46 @@ def index_max(*items):
     for index, _ in enumerate(items[1:], start=1):
         best = best if items[best] >= items[index] else index
     return best
+
+
+def selbstwirksamkeit(func=None, *, usenone=False) -> callable:
+    """Let decorator decide which data should be passed to the function."""
+
+    def decorator(user_func):
+
+        def wrapper(*args, **kwds):  # pylint:disable=W0613
+            data = args[0]
+            sig = inspect.signature(user_func)
+            required = sig.parameters.keys()
+            collected = collect_data(data, required, usenone)
+            return user_func(*collected)
+
+        return wrapper
+
+    # support @decorator() and @decorator
+    if func is None:
+        return decorator
+    return decorator(func)
+
+
+def collect_data(data, required, usenone) -> list:
+    # TODO: WE HAVE TO EXTEND THIS ACCESS LATER
+    if isinstance(data, tuple):
+        given = data._fields  # pylint:disable=W0212
+        if usenone:
+            access = lambda x: getattr(data, x, None)
+        else:
+            access = lambda x: getattr(data, x)
+    else:
+        given = data.keys()
+        if usenone:
+            access = lambda x: data.get(x, None)
+        else:
+            access = data.get
+    try:
+        collected = [access(name) for name in required]
+    except AttributeError as error:
+        msg = (f'attribute of defined function {required} is not '
+               f'provided by data {given}')
+        raise AttributeError(msg) from error
+    return collected
