@@ -2,6 +2,16 @@
 
 Every noteable change is logged here.
 
+## v2.26.0
+
+### Feature
+
+* add method to let method decide which data is required (94b2ddca2752)
+
+### Documentation
+
+* enforce using parameter name (6c3992641e12)
+
 ## v2.25.0
 
 ### Feature
