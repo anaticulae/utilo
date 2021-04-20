@@ -145,6 +145,7 @@ from utila.file.directory import directory_list
 from utila.file.hashed import directory_hash
 from utila.file.hashed import file_hash
 # loader
+from utila.file.loader import LazyFile
 from utila.file.loader import from_raw_or_path
 from utila.file.loader import yaml_from_raw_or_path
 # utile

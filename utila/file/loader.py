@@ -72,3 +72,30 @@ def yaml_from_raw_or_path(
     if verify:
         verify(result)
     return result
+
+
+class LazyFile:
+    """\
+    >>> me = LazyFile(__file__)
+    >>> assert len(me) > 3000
+    >>> assert me == me
+    """
+
+    def __init__(self, path):
+        self.path = path
+        self.content = None
+
+    def lazy(self):
+        if self.content is not None:
+            return self.content
+        self.content = utila.file_read(self.path).strip()
+        return self.content
+
+    def __eq__(self, value):
+        return str(self) == value
+
+    def __str__(self):
+        return self.lazy()
+
+    def __len__(self):
+        return len(str(self))
