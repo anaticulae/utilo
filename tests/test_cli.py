@@ -158,7 +158,7 @@ parser.parse_args()
 """
 
 
-@utilatest.skip_nonvirtual
+@utilatest.nonvirtual
 def test_cli_parse_required_command_missing(tmpdir):
     runner = os.path.join(tmpdir, 'run.py')
     file_create(runner, RUN_ME % forward_slash(ROOT))
@@ -171,7 +171,7 @@ def test_cli_parse_required_command_missing(tmpdir):
     assert completed.returncode > 0, str(completed)
 
 
-@utilatest.skip_nonvirtual
+@utilatest.nonvirtual
 def test_cli_parse_required_command(tmpdir):
     runner = os.path.join(tmpdir, 'run.py')
     file_create(runner, RUN_ME % forward_slash(ROOT))
@@ -209,7 +209,7 @@ def parser_example(tmpdir):
     return cwd, runner
 
 
-@utilatest.skip_nonvirtual
+@utilatest.nonvirtual
 def test_cli_parse_empty_parser_help(parser_example):  # pylint: disable=W0621
     """Test default parser with --help"""
     cwd, runner = parser_example
@@ -219,7 +219,7 @@ def test_cli_parse_empty_parser_help(parser_example):  # pylint: disable=W0621
     assert completed.returncode == SUCCESS, str(completed)
 
 
-@utilatest.skip_nonvirtual
+@utilatest.nonvirtual
 def test_cli_parser_source_in_out(parser_example):  # pylint: disable=W0621
     """Test default parser with --help"""
     cwd, runner = parser_example
@@ -231,7 +231,7 @@ def test_cli_parser_source_in_out(parser_example):  # pylint: disable=W0621
     assert completed.returncode == INVALID_COMMAND, str(completed)
 
 
-@utilatest.skip_nonvirtual
+@utilatest.nonvirtual
 def test_cli_parse_empty_parser_version(parser_example):  # pylint: disable=W0621
     """Test default parser with --version"""
     cwd, runner = parser_example
@@ -241,7 +241,7 @@ def test_cli_parse_empty_parser_version(parser_example):  # pylint: disable=W062
     assert completed.returncode == INVALID_COMMAND, str(completed)
 
 
-@utilatest.skip_nonvirtual
+@utilatest.nonvirtual
 def test_cli_parse_version_parser_version(tmpdir):
     """Test version parser with --version flag"""
     version = "1.1.1"
