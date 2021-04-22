@@ -144,6 +144,7 @@ from utila.file.directory import directory_list
 # hashed
 from utila.file.hashed import directory_hash
 from utila.file.hashed import file_hash
+from utila.file.info import file_line_length
 # loader
 from utila.file.loader import LazyFile
 from utila.file.loader import from_raw_or_path
