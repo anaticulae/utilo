@@ -139,6 +139,8 @@ from utila.file import tmpdir
 from utila.file import tmpfile
 from utila.file import tmpname
 from utila.file import yaml
+# file:action
+from utila.file.action import file_read_lines
 # directory
 from utila.file.directory import directory_list
 # hashed
