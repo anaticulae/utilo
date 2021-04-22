@@ -2,6 +2,18 @@
 
 Every noteable change is logged here.
 
+## v2.27.0
+
+### Feature
+
+* add method to read part of file lines (beffed4b3a90)
+* add method to count file line length (c3972ea85ef2)
+* add LazyFile (0f383ced3580)
+
+### Fix
+
+* inform user about missing version flag (ec4288989289)
+
 ## v2.26.0
 
 ### Feature
