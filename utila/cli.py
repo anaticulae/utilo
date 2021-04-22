@@ -389,7 +389,11 @@ def parse(parser: argparse.ArgumentParser):
         version = ''
         if verbose:
             version = f'{parser.prog} '
-        version += parser.__version
+        try:
+            version += parser.__version
+        except AttributeError:
+            utila.error('missing version flag')
+            exit(utila.INVALID_COMMAND)
         utila.log(version)
         exit(utila.SUCCESS)
 
