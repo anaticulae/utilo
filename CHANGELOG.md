@@ -2,6 +2,16 @@
 
 Every noteable change is logged here.
 
+## v2.28.0
+
+### Feature
+
+* add lower cased set (caab273c5813)
+
+### Fix
+
+* add option to support multiple choices (aeb21da92bef)
+
 ## v2.27.0
 
 ### Feature
