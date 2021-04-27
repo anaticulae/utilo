@@ -66,3 +66,9 @@ def test_parse_tuple_convert_int():
     raw = '1.0 2.0 3.0 4.01'
     parsed = utila.parse_tuple(raw, typ=int)
     assert parsed == (1, 2, 3, 4), str(parsed)
+
+
+def test_similar():
+    expected = ['Inhalt', 'Inhaltsverzeichnis', 'Contents']
+    current = ['Inhaltsverzeichnis', 'Vorwort']
+    assert utila.similar(expected=expected, current=current)

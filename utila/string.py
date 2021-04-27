@@ -11,6 +11,8 @@ import difflib
 import re
 import sys
 
+import utila
+
 
 def forward_slash(content: str, newline: bool = False) -> str:
     r"""Replace every backward slash \\ with an forward slash /.
@@ -106,6 +108,9 @@ def shrink(content: str, maxlength: int = 300) -> str:
     return result
 
 
+# Hint: Do not add string
+ITERABLE = (list, tuple, set)
+
 def similar(expected: str, current: str, maxdiff=0.6) -> bool:
     """\
     >>> similar('Abbildungsverzeichnis', 'ab_ildungsverzeichnis')
@@ -118,17 +123,17 @@ def similar(expected: str, current: str, maxdiff=0.6) -> bool:
     True
     """
     # TODO: SWITCH EXPECTED AND CURRENT PARAMETER AND INCREASE MAJOR VERSION
-    if isinstance(expected, (list, tuple, set)):
-        for item in expected:
-            if similar(item, current, maxdiff):
+    if not isinstance(expected, ITERABLE):
+        expected = [expected]
+    expected = utila.lower(*expected)
+    if isinstance(current, ITERABLE):
+        for item in current:
+            if similar(expected=expected, current=item, maxdiff=maxdiff):
                 return True
         return False
-    expected, current = expected.lower(), current.lower()
-    if expected == current:
-        return True
     matched = difflib.get_close_matches(
-        current,
-        [expected],
+        word=current.lower(),
+        possibilities=expected,
         n=1,
         cutoff=maxdiff,
     )
