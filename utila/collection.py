@@ -184,3 +184,27 @@ def dicts_united(*items):
     for item in items:
         result.update(item)
     return result
+
+
+class LowerCasedSet:
+    """Wrapper that lower case input data to verify if data is present.
+
+    >>> data = LowerCasedSet('Helm melm GELM'.split())
+    >>> assert 'HELM' in data
+    >>> assert len(list(data)) == 3
+    >>> assert data | data
+    """
+
+    def __init__(self, values):
+        self.values = frozenset([item.lower() for item in values])
+
+    def __iter__(self):
+        return iter(self.values)
+
+    def __contains__(self, item):
+        return item.lower() in self.values
+
+    def __or__(self, items):
+        if isinstance(items, LowerCasedSet):
+            items: frozenset = items.values
+        return LowerCasedSet(self.values | items)
