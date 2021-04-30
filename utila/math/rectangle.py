@@ -117,6 +117,36 @@ def rectangle_max(items: list) -> tuple:
     return x0, y0, x1, y1
 
 
+def rectangle_scale(rectangle: tuple, scale: tuple):
+    """\
+    >>> rectangle_scale((20, 20, 60, 60), scale=(2.0, 2.0))
+    (20, 20, 120.0, 120.0)
+    >>> rectangle_scale((20, 20, 60, 60), scale=(2.0, 2.0, 2.0, 2.0))
+    (40.0, 40.0, 120.0, 120.0)
+    >>> rectangle_scale((20, 20, 60, 60), scale=(-3.0, -2.0, 2.0, 2.0))
+    (-40.0, -20.0, 120.0, 120.0)
+    """
+    # x0, y0, x1, y1
+    if len(scale) == 2:
+        result = (
+            rectangle[0],
+            rectangle[1],
+            rectangle[2] * scale[0],
+            rectangle[3] * scale[1],
+        )
+    else:
+        x00 = (scale[0] - 1.0) if scale[0] >= 0 else scale[0]
+        y00 = (scale[1] - 1.0) if scale[1] >= 0 else scale[1]
+        result = (
+            rectangle[0] + rectangle[0] * x00,
+            rectangle[1] + rectangle[1] * y00,
+            rectangle[2] * scale[2],
+            rectangle[3] * scale[3],
+        )
+    result = utila.roundme(result)
+    return result
+
+
 class RectangleCheck:
     """Verify if a rectangle is inside a group of rectangles.
 
