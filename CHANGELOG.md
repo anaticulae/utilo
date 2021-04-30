@@ -2,6 +2,12 @@
 
 Every noteable change is logged here.
 
+## v2.29.0
+
+### Feature
+
+* add method to scale rectangle (2eea49781515)
+
 ## v2.28.0
 
 ### Feature
