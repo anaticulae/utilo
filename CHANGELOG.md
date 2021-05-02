@@ -2,6 +2,13 @@
 
 Every noteable change is logged here.
 
+## v2.30.0
+
+### Feature
+
+* add None to tuple parser (f28aad63586c)
+* add option to skip None by rounding (5f25936ae699)
+
 ## v2.29.0
 
 ### Feature
