@@ -25,6 +25,7 @@ def roundme(
         *items: float,
         digits: int = NDIGITS,
         convert: bool = True,
+        none: bool = False,
 ) -> float:
     """Round `items` to `NDIGITS.
 
@@ -41,11 +42,18 @@ def roundme(
     [10.0]
     >>> roundme([10.5], digits=0)
     10.0
+    >>> roundme([1.555, None, 3.222], none=True)
+    [1.55, None, 3.22]
+    >>> roundme([1.555, None, 3.222], none=False)
+    Traceback (most recent call last):
+        ...
+    ValueError: require float, list or tuple, not: "(None,)", or none=True
 
     Args:
         items: list of floats or a single float
         digits(int): amount of numbers after dot
         convert(bool): convert single iter item to float
+        none(bool): if True, do not raise Error if value is None
     Raises:
         ValueError: if no float or list/tuple of numbers is passed
     Returns:
@@ -54,13 +62,16 @@ def roundme(
     assert digits >= 0, f'negative digits {digits}'
     result = None
     try:
-        result = [round(item, digits) for item in items]
+        result = [
+            round(item, digits) if none is False or item is not None else None
+            for item in items
+        ]
     except TypeError as error:
         # support roundme([1,2,3]); roundme((1.5,2.33,3.2))
         if not isinstance(items[0], (list, tuple)):
-            msg = f'require float, list or tuple, not: "{items}"'
+            msg = f'require float, list or tuple, not: "{items}", or none=True'
             raise ValueError(msg) from error
-        result = [roundme(item, digits=digits) for item in items[0]]
+        result = [roundme(item, digits=digits, none=none) for item in items[0]]
         if isinstance(items[0], tuple):
             # ensure that input which was a tuple stays a tuple
             result = tuple(result)

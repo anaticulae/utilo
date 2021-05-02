@@ -111,6 +111,7 @@ def shrink(content: str, maxlength: int = 300) -> str:
 # Hint: Do not add string
 ITERABLE = (list, tuple, set)
 
+
 def similar(expected: str, current: str, maxdiff=0.6) -> bool:
     """\
     >>> similar('Abbildungsverzeichnis', 'ab_ildungsverzeichnis')
