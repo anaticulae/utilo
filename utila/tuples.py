@@ -55,21 +55,33 @@ def ranges(start: float, stop: float, step: float = 1):
         start += step
 
 
-def parse_tuple(raw: str, length: int = 4, typ=float) -> tuple:
+def parse_tuple(
+        raw: str,
+        length: int = 4,
+        typ=float,
+        none: bool = False,
+) -> tuple:
     """Convert `raw` to tuple of `typ`.
 
     >>> parse_tuple('True false True False true', length=5, typ=bool)
     (True, False, True, False, True)
     >>> parse_tuple('9.0', length=1, typ=int)
     (9,)
+    >>> parse_tuple('9.0 None', length=2, typ=int, none=True)
+    (9, None)
+    >>> parse_tuple('9.0 None', length=2, typ=int, none=False)
+    Traceback (most recent call last):
+    ...
+    ValueError: could not convert string to float: 'None'
     """
     if typ is int:
         typ = utila.str2int
     if typ is bool:
         typ = utila.str2bool
-    items = (typ(item) for item in raw.split())
+    items = (typ(item) if not none or item != 'None' else None
+             for item in raw.split())
     if typ is float:
-        items = utila.math.roundme(*items, convert=False)
+        items = utila.math.roundme(*items, convert=False, none=none)
     items = tuple(items)
     assert len(items) == length, f'could not parse {raw}'
     return items
