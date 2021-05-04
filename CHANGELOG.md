@@ -2,6 +2,12 @@
 
 Every noteable change is logged here.
 
+## v2.31.0
+
+### Feature
+
+* add method to group by empty data (94d7050741bd)
+
 ## v2.30.0
 
 ### Feature
