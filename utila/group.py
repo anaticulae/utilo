@@ -7,8 +7,10 @@
 # be prosecuted under federal law. Its content is company confidential.
 # =============================================================================
 
+import utila
 
-def groupby_none(items):
+
+def groupby_none(items) -> list:
     """\
     >>> groupby_none([0, 1, 2, None, 1, None, 3, 4, 5, None])
     [(0, 1, 2), (1,), (3, 4, 5)]
@@ -24,6 +26,21 @@ def groupby_none(items):
                 collected = []
     if collected:
         result.append(collected)
+    result = [tuple(item) for item in result]
+    return result
+
+
+def groupby_empty(items) -> list:
+    """\
+    >>> groupby_empty([[1, 2, 3], [4, 5], [ ], [6, 7, 9], [], []])
+    [(1, 2, 3, 4, 5), (6, 7, 9)]
+    """
+    # convert to none to use `groupby_none`
+    items = [None if not len(item) else item for item in items]  # pylint:disable=len-as-condition
+    result = groupby_none(items)
+    # merge neighbors
+    result = [utila.flatten(item) for item in result]
+    # ensure correct data type
     result = [tuple(item) for item in result]
     return result
 
