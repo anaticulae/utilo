@@ -2,6 +2,14 @@
 
 Every noteable change is logged here.
 
+## v2.32.0
+
+### Feature
+
+* strip similar to ease using comparer (f46fa55ed692)
+* add method to strip list of strings (056710628e19)
+* add method to normalize text (62c2a11be96a)
+
 ## v2.31.0
 
 ### Feature
