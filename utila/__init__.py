@@ -291,6 +291,7 @@ from utila.string import fix_encoding
 from utila.string import forward_slash
 from utila.string import istemplate_replaced
 from utila.string import lower
+from utila.string import normalize_text
 from utila.string import normalize_whitespaces
 from utila.string import shrink
 from utila.string import similar

@@ -7,6 +7,7 @@
 # be prosecuted under federal law. Its content is company confidential.
 # =============================================================================
 
+import contextlib
 import difflib
 import re
 import sys
@@ -62,6 +63,41 @@ def normalize_whitespaces(text: str) -> str:
     'make me happy'
     """
     return ' '.join(text.strip().split())
+
+
+def normalize_text(
+        items,
+        *,
+        merge_divis: bool = True,
+        normalize_newline: bool = True,
+        normalize_spaces: bool = False,
+) -> str:
+    r"""\
+    >>> normalize_text(['Dieser Satz ent-\n', 'hält eine Trennung.'], merge_divis=True)
+    'Dieser Satz enthält eine Trennung.'
+    >>> normalize_text(['Der Stadtteil Berlin-\n', 'Neuköln liegt im Süden von Berlin.'])
+    'Der Stadtteil Berlin-Neuköln liegt im Süden von Berlin.'
+    >>> normalize_text('Das  sind   eindeutig zu   viele Trennungen.', normalize_spaces=True)
+    'Das sind eindeutig zu viele Trennungen.'
+    >>> normalize_text(['Special Char' + chr(173) + '\n', 'sol hier'])
+    'Special Charsol hier'
+    >>> normalize_text([''])
+    ''
+    """
+    # prepare input data
+    with contextlib.suppress(AttributeError, TypeError):
+        items = [item.text for item in items]
+    text = ''.join(items)
+    if merge_divis:
+        # Ensure that divis of following UpperCase-Word is not merged
+        # TODO: IMPORVE REGEX
+        text = re.sub(r'[-\xad]\n(?P<data>[a-zäöü])', r'\g<data>', text)
+        text = re.sub(r'[-\xad]\n(?P<data>[A-ZÄÖÜ])', r'-\g<data>', text)
+    if normalize_newline:
+        text = text.replace('\n', ' ')
+    if normalize_spaces:
+        text = re.sub(r'\s+', ' ', text)
+    return text
 
 
 def istemplate_replaced(text: str):
