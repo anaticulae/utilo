@@ -187,6 +187,14 @@ def lower(*items):
     return [item.lower() for item in items]
 
 
+def strip(*items):
+    """Strip list of strings.
+    >>> strip(' Helmut  ', ' MANFRED')
+    ['Helmut', 'MANFRED']
+    """
+    return [item.strip() for item in items]
+
+
 def splitlines(raw: str, lowers: bool = True) -> set:
     r"""Split string by newlines and convert to set.
 
