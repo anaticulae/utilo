@@ -162,6 +162,7 @@ def similar(expected: str, current: str, maxdiff=0.6) -> bool:
     # TODO: SWITCH EXPECTED AND CURRENT PARAMETER AND INCREASE MAJOR VERSION
     if not isinstance(expected, ITERABLE):
         expected = [expected]
+    expected = utila.strip(*expected)
     expected = utila.lower(*expected)
     if isinstance(current, ITERABLE):
         for item in current:
@@ -169,7 +170,7 @@ def similar(expected: str, current: str, maxdiff=0.6) -> bool:
                 return True
         return False
     matched = difflib.get_close_matches(
-        word=current.lower(),
+        word=current.strip().lower(),
         possibilities=expected,
         n=1,
         cutoff=maxdiff,
