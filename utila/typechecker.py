@@ -149,3 +149,16 @@ def asserts(item, typ):
         return
     msg = f'require: {typ}, got: {type(item)}, raw:\n{item!r}'
     raise AssertionError(msg)
+
+
+def hasattribute(caller, attribute) -> bool:
+    """\
+    >>> hasattribute(hasattribute, 'caller')
+    True
+    >>> hasattribute(hasattribute, 'false')
+    False
+    """
+    parameters = inspect.signature(caller).parameters.keys()
+    if attribute in parameters:
+        return True
+    return False
