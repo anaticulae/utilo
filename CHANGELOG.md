@@ -2,6 +2,13 @@
 
 Every noteable change is logged here.
 
+## v2.33.0
+
+### Feature
+
+* add method to replace special chars (af64f97ea1fd)
+* add method to check that interface has parameter (ad405ec8fddf)
+
 ## v2.32.0
 
 ### Feature
