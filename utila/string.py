@@ -100,6 +100,22 @@ def normalize_text(
     return text
 
 
+def simplify_chars(
+        text: str,
+        *,
+        table: bool = False,
+) -> str:
+    """\
+    >>> simplify_chars('Überschrift Φ', table=True)
+    'UEberschrift PH'
+    """
+    # TODO: EXTEND
+    text = text.replace('–', '-')
+    if table:
+        text = utila.replace(text)
+    return text
+
+
 def istemplate_replaced(text: str):
     """Check if some pattern `{% %}` is not replaced.
 
