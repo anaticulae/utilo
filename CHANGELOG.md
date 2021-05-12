@@ -2,6 +2,12 @@
 
 Every noteable change is logged here.
 
+## v2.33.1
+
+### Feature
+
+* strip before split (278f73ab8da8)
+
 ## v2.33.0
 
 ### Feature
