@@ -2,6 +2,12 @@
 
 Every noteable change is logged here.
 
+## v2.34.1
+
+### Feature
+
+* add option to skip file in copy_content (df4fbcbe705f)
+
 ## v2.34.0
 
 ### Feature
