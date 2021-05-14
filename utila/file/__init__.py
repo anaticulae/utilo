@@ -422,10 +422,11 @@ def isfilepath(path: str) -> bool:
     return '.' in base
 
 
-def copy_content(  # pylint:disable=R1260
+def copy_content(  # pylint:disable=R1260,too-many-branches
         source: str,
         destination: str,
         pattern: str = None,
+        ignore: callable = None,
         *,
         recursive: bool = False,
         update: bool = False,
@@ -440,7 +441,7 @@ def copy_content(  # pylint:disable=R1260
         destination(str): directory to copy source item(s)
         pattern(str): accept files which matches this pattern, if None
                       all files matches.
-
+        ignore(callable): option to skip files by path or filename
         recursive(bool): if True, copy child folder
         update(bool): move only when the source file is newer than the
                       destination file or when the destination file is
@@ -463,6 +464,9 @@ def copy_content(  # pylint:disable=R1260
     assert destination, str(destination)
     suppress = contextlib.suppress if skip_equal else utila.nothing
     if os.path.isfile(source):
+        if ignore and ignore(source):
+            utila.debug(f'skip: {source}')
+            return
         if not isfilepath(destination):
             destination = os.path.join(destination, os.path.basename(source))
         if verbose:
@@ -489,6 +493,7 @@ def copy_content(  # pylint:disable=R1260
                 copy_content(
                     source,
                     destination,
+                    ignore=ignore,
                     pattern=converted_pattern,
                     recursive=recursive,
                     skip_equal=skip_equal,
@@ -504,6 +509,9 @@ def copy_content(  # pylint:disable=R1260
 
     for item in selected:
         source_ = os.path.join(source, item)
+        if ignore and ignore(source_):
+            utila.debug(f'skip: {source_}')
+            continue
         dest_ = os.path.join(destination, item)
         if os.path.isfile(source_):
             if verbose:
