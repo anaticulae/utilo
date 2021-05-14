@@ -218,7 +218,8 @@ def splitlines(raw: str, lowers: bool = True) -> set:
     >>> splitlines('First\nThird\nSecond')
     {'third', 'second', 'first'}
     """
-    splitted = raw.strip().splitlines()
+    raw = raw.strip()
     if lowers:
-        splitted = lower(*splitted)
+        raw = raw.lower()
+    splitted = raw.strip().splitlines()
     return set(splitted)
