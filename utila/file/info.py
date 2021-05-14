@@ -7,6 +7,8 @@
 # be prosecuted under federal law. Its content is company confidential.
 # =============================================================================
 
+import os
+
 import utila
 
 
@@ -17,3 +19,21 @@ def file_line_length(path: str) -> int:
     True
     """
     return len(utila.file_read(path).splitlines())
+
+
+def isfilepath(path: str) -> bool:
+    """Check that given `path` is a file path.
+
+    >>> isfilepath('/c/tmp/file.txt')
+    True
+    >>> isfilepath('/c/tmp/.tmp')
+    False
+    """
+    assert path, path
+    if os.path.exists(path):
+        return os.path.isfile(path)
+    base = os.path.basename(path)
+    if base[0] == '.':
+        # .tmp
+        return False
+    return '.' in base

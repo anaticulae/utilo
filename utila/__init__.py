@@ -110,7 +110,6 @@ from utila.file import assert_file
 from utila.file import assert_html
 from utila.file import assert_json
 from utila.file import assert_yaml
-from utila.file import copy_content
 from utila.file import file_append
 from utila.file import file_compare
 from utila.file import file_copy
@@ -129,7 +128,6 @@ from utila.file import file_replace
 from utila.file import file_replace_binary
 from utila.file import file_unlock
 from utila.file import files_sort
-from utila.file import isfilepath
 from utila.file import make_absolute
 from utila.file import make_package
 from utila.file import make_relative
@@ -141,13 +139,16 @@ from utila.file import tmpfile
 from utila.file import tmpname
 from utila.file import yaml
 # file:action
+from utila.file.action import copy_content
 from utila.file.action import file_read_lines
 # directory
 from utila.file.directory import directory_list
 # hashed
 from utila.file.hashed import directory_hash
 from utila.file.hashed import file_hash
+# file:info
 from utila.file.info import file_line_length
+from utila.file.info import isfilepath
 # loader
 from utila.file.loader import LazyFile
 from utila.file.loader import from_raw_or_path
