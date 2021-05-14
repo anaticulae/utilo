@@ -2,6 +2,13 @@
 
 Every noteable change is logged here.
 
+## v2.34.0
+
+### Feature
+
+* add special similar method (498a973db7b9)
+* add method to split items (10bbee35e110)
+
 ## v2.33.1
 
 ### Feature
