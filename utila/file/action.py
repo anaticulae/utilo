@@ -129,25 +129,25 @@ def _copy_folder(
 
     suppress = contextlib.suppress if skip_equal else utila.nothing
     for item in selected:
-        source_ = os.path.join(source, item)
-        if ignore and ignore(source_):
-            utila.debug(f'skip: {source_}')
+        inpath = os.path.join(source, item)
+        if ignore and ignore(inpath):
+            utila.debug(f'skip: {inpath}')
             continue
-        dest_ = os.path.join(destination, item)
-        if os.path.isfile(source_):
+        outpath = os.path.join(destination, item)
+        if os.path.isfile(inpath):
             if verbose:
-                utila.log(f'cp: {source_} -> {dest_}')
+                utila.log(f'cp: {inpath} -> {outpath}')
             with suppress(shutil.SameFileError):
                 utila.file_copy(
-                    source_,
-                    dest_,
+                    inpath,
+                    outpath,
                     update=update,
                     exception=skip_equal,
                 )
         else:
             if verbose:
-                utila.log(f'mkdir: {dest_}')
-            os.makedirs(dest_, exist_ok=True)
+                utila.log(f'mkdir: {outpath}')
+            os.makedirs(outpath, exist_ok=True)
 
 
 def _copy_multiple(
