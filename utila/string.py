@@ -196,6 +196,18 @@ def similar(expected: str, current: str, maxdiff=0.6) -> bool:
     return False
 
 
+def verysimilar(current: str, expected: str) -> bool:
+    """\
+    >>> verysimilar('Hem', 'Helm')
+    True
+    >>> verysimilar('HemABC', 'HelmABC')
+    True
+    """
+    if len(expected) <= 4:
+        return similar(current=current, expected=expected, maxdiff=0.80)
+    return similar(current=current, expected=expected, maxdiff=0.9)
+
+
 def lower(*items):
     """Lowercase list of strings.
     >>> lower('Helmut', 'MANFRED')
