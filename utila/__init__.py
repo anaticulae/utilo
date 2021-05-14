@@ -296,6 +296,7 @@ from utila.string import normalize_whitespaces
 from utila.string import shrink
 from utila.string import similar
 from utila.string import simplify_chars
+from utila.string import splititems
 from utila.string import splitlines
 from utila.string import strip
 # tuples

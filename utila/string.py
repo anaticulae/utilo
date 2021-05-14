@@ -223,3 +223,22 @@ def splitlines(raw: str, lowers: bool = True) -> set:
         raw = raw.lower()
     splitted = raw.strip().splitlines()
     return set(splitted)
+
+
+def splititems(raw: str, lowers: bool = True) -> set:
+    r"""Split string by whitespace and convert to set.
+
+    >>> splititems('First   Third\nSecond')
+    {'third', 'second', 'first'}
+    """
+    raw = raw.strip()
+    if lowers:
+        raw = raw.lower()
+    raw = normalize_text(
+        raw,
+        merge_divis=False,
+        normalize_spaces=True,
+        normalize_newline=True,
+    )
+    splitted = raw.split()
+    return set(splitted)
