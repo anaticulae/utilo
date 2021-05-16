@@ -254,3 +254,19 @@ def splititems(raw: str, lowers: bool = True) -> set:
     )
     splitted = raw.split()
     return set(splitted)
+
+
+ALPHA = 'abcdefghijklmnopqrstuvwxyzäöüß '
+
+
+def char_rate(text: str) -> float:
+    """\
+    >>> char_rate('AB12DF')
+    0.67
+    """
+    if not text:
+        return 0
+    text = text.lower()
+    selected = len([item for item in text if item in ALPHA])
+    rate = selected / len(text)
+    return utila.roundme(rate)

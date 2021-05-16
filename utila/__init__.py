@@ -288,6 +288,7 @@ from utila.process import run_parallel
 # regex
 from utila.regex import extract_match
 # string
+from utila.string import char_rate
 from utila.string import fix_encoding
 from utila.string import forward_slash
 from utila.string import istemplate_replaced
