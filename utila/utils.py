@@ -195,8 +195,8 @@ def removekeys(items: dict, keys: set) -> dict:
 
 @contextlib.contextmanager
 def unset_env(
-        var: str,
-        skip: bool = True,
+    var: str,
+    skip: bool = True,
 ):
     """Temporary disable environment variable.
 

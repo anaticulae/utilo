@@ -26,12 +26,12 @@ class todo(contextlib.ContextDecorator):  # pylint:disable=C0103
     """
 
     def __init__(
-            self,
-            version: str = None,
-            major=None,
-            minor=None,
-            patch=None,
-            description='todo',
+        self,
+        version: str = None,
+        major=None,
+        minor=None,
+        patch=None,
+        description='todo',
     ):
         if version is None:
             import utila
@@ -58,12 +58,12 @@ class todo(contextlib.ContextDecorator):  # pylint:disable=C0103
 class refactor(todo):  # pylint:disable=C0103
 
     def __init__(
-            self,
-            version=None,
-            major=None,
-            minor=None,
-            patch=None,
-            description='time to refactor',
+        self,
+        version=None,
+        major=None,
+        minor=None,
+        patch=None,
+        description='time to refactor',
     ):
         super().__init__(
             version=version,
@@ -77,12 +77,12 @@ class refactor(todo):  # pylint:disable=C0103
 class docu(todo):  # pylint:disable=C0103
 
     def __init__(
-            self,
-            version=None,
-            major=None,
-            minor=None,
-            patch=None,
-            description='extend documentation',
+        self,
+        version=None,
+        major=None,
+        minor=None,
+        patch=None,
+        description='extend documentation',
     ):
         super().__init__(
             version=version,

@@ -105,8 +105,7 @@ def featureexample(testdir):
     file_create(os.path.join(root, 'feedback/features/__init__.py'))
     file_create(os.path.join(feature_path, '__init__.py'))
 
-    file_create(
-        os.path.join(feature_path, 'incomplete_worker.py'), """
+    file_create(os.path.join(feature_path, 'incomplete_worker.py'), """
 def work():
     return 'work'
     """)
@@ -173,11 +172,11 @@ def test_featurepack_with_broken_feature(featureexample, monkeypatch):
 )
 @utilatest.longrun
 def test_featurepack_with_different_worker(  #pylint:disable=W0621
-        featureexample,
-        monkeypatch,
-        name,
-        worker,
-        expected_result,
+    featureexample,
+    monkeypatch,
+    name,
+    worker,
+    expected_result,
 ):
     root, package = featureexample
     featurepath = os.path.join(root, package.replace('.', '/'))
@@ -218,9 +217,9 @@ def test_featurepack_wrong_featurepath(featureexample, monkeypatch, capsys):  #p
 
 
 def create_worker(
-        stepname: str,
-        worker: str,
-        featurepath: str,
+    stepname: str,
+    worker: str,
+    featurepath: str,
 ):
     example = """
 from utila import Flag
@@ -240,10 +239,10 @@ def commandline():
 
 
 def create_example(
-        root: str,
-        featurepackage: str,
-        stepname: str,
-        worker: str,
+    root: str,
+    featurepackage: str,
+    stepname: str,
+    worker: str,
 ):
     featurepath = os.path.join(root, featurepackage.replace('.', '/'))
     os.makedirs(featurepath)
@@ -346,8 +345,7 @@ def work(pdf : str, result: str, char_margin : float, char_align : float) -> str
                 workplan=workplan,
             )
     assert returncode(result) == SUCCESS
-    written = file_read(
-        os.path.join(root, 'parsi__path_with_value_result.yaml'))
+    written = file_read(os.path.join(root, 'parsi__path_with_value_result.yaml')) # yapf:disable
     assert written == '1.00 50.50', str(written)
 
 

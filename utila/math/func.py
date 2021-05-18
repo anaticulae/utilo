@@ -13,11 +13,11 @@ import utila
 
 
 def ranged_exp(
-        mini: float,
-        maxi: float,
-        steps: int = 15,
-        digits: int = 2,
-        func=None,
+    mini: float,
+    maxi: float,
+    steps: int = 15,
+    digits: int = 2,
+    func=None,
 ):
     """Determine numbers between `mini` and `maxi`.
 

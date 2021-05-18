@@ -232,10 +232,10 @@ def file_islocked(path: str):
 
 
 def file_copy(
-        source: str,
-        destination: str,
-        update: bool = True,
-        exception: bool = False,
+    source: str,
+    destination: str,
+    update: bool = True,
+    exception: bool = False,
 ):
     """Copy a single `source` file to `destination` file or folder.
 
@@ -273,11 +273,11 @@ def file_count(path: str, ext: str = None, recursive: bool = True) -> int:
 
 
 def file_list(
-        path: str,
-        include: list = None,
-        exclude: list = None,
-        recursive: bool = True,
-        absolute: bool = False,
+    path: str,
+    include: list = None,
+    exclude: list = None,
+    recursive: bool = True,
+    absolute: bool = False,
 ) -> list:
     """Scans `path` recursively and returns list of relative file path
     which matches `include` or `exclude` pattern.

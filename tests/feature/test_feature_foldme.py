@@ -16,13 +16,13 @@ import utila
 
 
 def run_foldme(
-        cmd: str,
-        main: dict,
-        testdir,
-        monkeypatch,
-        capsys=None,
-        success: bool = True,
-        create: bool = True,
+    cmd: str,
+    main: dict,
+    testdir,
+    monkeypatch,
+    capsys=None,
+    success: bool = True,
+    create: bool = True,
 ):
     """Run `foldme` featurepackage.
 

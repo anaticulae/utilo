@@ -23,15 +23,15 @@ import utila.feature.userinput
 
 
 def create_runtime(  # pylint:disable=too-many-locals
-        plan: list,
-        process_: str,
-        features: 'Features',
-        inspace: str,
-        outspace: str = None,
-        args: dict = None,
-        prefix: str = None,
-        verify: bool = False,
-        used_processes: int = 1,
+    plan: list,
+    process_: str,
+    features: 'Features',
+    inspace: str,
+    outspace: str = None,
+    args: dict = None,
+    prefix: str = None,
+    verify: bool = False,
+    used_processes: int = 1,
 ) -> 'utila.feature.ProcessSteps':
     """Parse user defined workplan
 
@@ -115,9 +115,9 @@ def create_runtime(  # pylint:disable=too-many-locals
 
 
 def prefix_workplan(
-        workplan: 'utila.feature.WorkPlanSteps',
-        prefix: str,
-        executor: str,
+    workplan: 'utila.feature.WorkPlanSteps',
+    prefix: str,
+    executor: str,
 ):
     # TODO: REPLACE COPY WITH OWN CONSTRUCT
     # avoid side effects to other workplans
@@ -191,9 +191,9 @@ def prepare_variables(variables, args):
 
 
 def prepare_inputs(  # pylint:disable=too-many-locals,too-complex,too-many-branches,too-many-statements
-        inputs: list,
-        inspaces: list,
-        outspace: str,
+    inputs: list,
+    inspaces: list,
+    outspace: str,
 ) -> typing.List[str]:
     """Parse single and multiple file input
 
@@ -286,11 +286,11 @@ def prepare_inputs(  # pylint:disable=too-many-locals,too-complex,too-many-branc
 
 
 def prepare_outputs(
-        process_: str,
-        stepname: str,
-        prefix: str,
-        outputs: list,
-        outspace: str,
+    process_: str,
+    stepname: str,
+    prefix: str,
+    outputs: list,
+    outspace: str,
 ) -> typing.List[str]:
     """Support different output types
 
@@ -376,10 +376,10 @@ def verify_interface(inputs, outputs, worker, stepname):
 
 
 def parallelize(
-        plan,
-        root,
-        *,
-        max_processes=1,
+    plan,
+    root,
+    *,
+    max_processes=1,
 ):
     order = input_order(plan, root)
     steps = {f'{root}{REQUIREMENT_SEPARATOR}{step.name}': step for step in plan}

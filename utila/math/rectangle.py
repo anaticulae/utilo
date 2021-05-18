@@ -169,8 +169,10 @@ class RectangleCheck:
     def contains(self, x0, y0, x1, y1) -> bool:
         diff = self.max_diff / 2
         for x00, y00, x11, y11 in self.content:
-            if all(((x00 - diff) <= x0 <= x1 <= (x11 + diff),
-                    (y00 - diff) <= y0 <= y1 <= (y11 + diff))):
+            if all((
+                (x00 - diff) <= x0 <= x1 <= (x11 + diff),
+                (y00 - diff) <= y0 <= y1 <= (y11 + diff),
+            )):
                 return True
         return False
 

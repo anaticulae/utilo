@@ -29,11 +29,11 @@ import utila.logger
 
 
 def run_playground(
-        cmd: str,
-        main: dict,
-        testdir,
-        monkeypatch,
-        capsys=None,
+    cmd: str,
+    main: dict,
+    testdir,
+    monkeypatch,
+    capsys=None,
 ):
     import tests.examples.featurepack.testfield.playground as exe
     utila.file_create(os.path.join(str(testdir), 'infile.yaml'))

@@ -66,11 +66,11 @@ def normalize_whitespaces(text: str) -> str:
 
 
 def normalize_text(
-        items,
-        *,
-        merge_divis: bool = True,
-        normalize_newline: bool = True,
-        normalize_spaces: bool = False,
+    items,
+    *,
+    merge_divis: bool = True,
+    normalize_newline: bool = True,
+    normalize_spaces: bool = False,
 ) -> str:
     r"""\
     >>> normalize_text(['Dieser Satz ent-\n', 'hält eine Trennung.'], merge_divis=True)
@@ -101,9 +101,9 @@ def normalize_text(
 
 
 def simplify_chars(
-        text: str,
-        *,
-        table: bool = False,
+    text: str,
+    *,
+    table: bool = False,
 ) -> str:
     """\
     >>> simplify_chars('Überschrift Φ', table=True)

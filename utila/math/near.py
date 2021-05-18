@@ -53,10 +53,10 @@ def nears(currents, expects, diff: float = 2.0, none: bool = False) -> bool:
 
 
 def pnear(
-        reference,
-        current,
-        rel_tol: float = 0.0,
-        abs_tol: float = 0.05,
+    reference,
+    current,
+    rel_tol: float = 0.0,
+    abs_tol: float = 0.05,
 ) -> bool:
     """\
     >>> pnear(10, 8, 0.2)
@@ -79,10 +79,10 @@ def pnear(
 
 
 def near_dims(
-        item: tuple,
-        dims: tuple,
-        diffs: tuple,
-        allow_none: bool = False,
+    item: tuple,
+    dims: tuple,
+    diffs: tuple,
+    allow_none: bool = False,
 ) -> bool:
     """\
     >>> near_dims((5, 5), [(4, 6), (4, 7), (10, 10)], [(1, 1), (1, 1), (0, 0)])

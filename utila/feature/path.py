@@ -13,12 +13,12 @@ import utila
 
 
 def connector(
-        path: str,
-        runner: str,
-        filename: str,
-        prefix: str = '',
-        *,
-        ftype: str = 'yaml',
+    path: str,
+    runner: str,
+    filename: str,
+    prefix: str = '',
+    *,
+    ftype: str = 'yaml',
 ) -> str:
     """Create path to resource. Replace backslash due forward slash.
 

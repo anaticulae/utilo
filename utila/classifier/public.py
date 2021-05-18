@@ -15,10 +15,10 @@ import utila.classifier.strategy
 
 
 def common_items(
-        collected: list,
-        max_difference: float = 10.0,
-        min_elements=2,
-        selector=None,
+    collected: list,
+    max_difference: float = 10.0,
+    min_elements=2,
+    selector=None,
 ) -> list:
     """Cluster items due `same_area_cluster`.
 
@@ -80,10 +80,10 @@ def max_distance(items, diff: float = 1.0, min_elements=2):
 
 
 def three_side_equal_cluster(
-        todo,
-        min_elements: int = 2,
-        max_diff=2.0,
-        selector=None,
+    todo,
+    min_elements: int = 2,
+    max_diff=2.0,
+    selector=None,
 ):
     selector = selector if selector else lambda x: x[0]
 
@@ -109,10 +109,10 @@ def three_side_equal_cluster(
 
 
 def same_area_cluster(
-        todo,
-        max_difference: float = 10.0,
-        min_elements: int = 2,
-        selector=None,
+    todo,
+    max_difference: float = 10.0,
+    min_elements: int = 2,
+    selector=None,
 ):
     selector = selector if selector else lambda x: x[0]
 
@@ -144,10 +144,10 @@ def same_area_cluster(
 
 
 def same_line_cluster(
-        todo,
-        max_diff: float = 10.0,
-        min_elements: int = 1,
-        matcher: callable = None,
+    todo,
+    max_diff: float = 10.0,
+    min_elements: int = 1,
+    matcher: callable = None,
 ):
     """\
     >>> len(same_line_cluster([(0, 50, 100, 55), (70, 49, 140, 52), (0, 400, 100, 401)]))
@@ -167,9 +167,9 @@ def same_line_cluster(
 
 
 def intersecting_rectangle_cluster(
-        todo,
-        min_elements: int = 1,
-        bounding: callable = None,
+    todo,
+    min_elements: int = 1,
+    bounding: callable = None,
 ):
     bounding = bounding if bounding else lambda item: item
 

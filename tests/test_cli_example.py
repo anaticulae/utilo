@@ -126,14 +126,14 @@ PROCESSNAME = 'cli_example'
 
 
 def create_runner(
-        featurepack_=utila.featurepack,
-        description='',
-        featurepackage='example.features',
-        multiprocessed=False,
-        name=PROCESSNAME,
-        pages=True,
-        version='beta',
-        workplan=None,
+    featurepack_=utila.featurepack,
+    description='',
+    featurepackage='example.features',
+    multiprocessed=False,
+    name=PROCESSNAME,
+    pages=True,
+    version='beta',
+    workplan=None,
 ):
     if workplan is None:
         workplan = list(WORKPLAN)
@@ -238,10 +238,10 @@ def test_cli_print_processing_step(testdir, monkeypatch, capsys):
     [True, False],
 )
 def test_cli_multiple_input(
-        testdir,
-        monkeypatch,
-        capsys,
-        create_missing_input: bool,
+    testdir,
+    monkeypatch,
+    capsys,
+    create_missing_input: bool,
 ):
     cli_example(testdir)
     root = str(testdir)
@@ -272,9 +272,9 @@ def test_cli_multiple_input(
 
 
 def test_cli_multiple_input_with_double_input(
-        testdir,
-        monkeypatch,
-        capsys,
+    testdir,
+    monkeypatch,
+    capsys,
 ):
     """Test that resources exists in both input source"""
     cli_example(testdir)
@@ -305,10 +305,10 @@ MULTI_RUNNER = create_runner(multiprocessed=True)
     ],
 )
 def test_cli_multiple_jobs(
-        testdir,
-        monkeypatch,
-        capsys,
-        jobs: int,
+    testdir,
+    monkeypatch,
+    capsys,
+    jobs: int,
 ):
     cli_example(testdir)
     root = str(testdir)

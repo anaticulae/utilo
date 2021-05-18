@@ -57,9 +57,9 @@ def millimeter(point: float, *, userunit=1.0, digits: int = 2) -> float:  # pyli
 
 
 def millimeters(  # pylint:disable=W0621
-        *points: utila.Numbers,
-        userunit=1.0,
-        digits: int = 2,
+    *points: utila.Numbers,
+    userunit=1.0,
+    digits: int = 2,
 ) -> utila.Numbers:
     result = [
         millimeter(item, userunit=userunit, digits=digits) for item in points
@@ -81,9 +81,9 @@ def point(millimeter: float, *, userunit=1.0, digits: int = 2) -> float:  # pyli
 
 
 def points(  # pylint:disable=W0621
-        *millimeters: utila.Numbers,
-        userunit=1.0,
-        digits: int = 2,
+    *millimeters: utila.Numbers,
+    userunit=1.0,
+    digits: int = 2,
 ) -> utila.Numbers:
     result = [
         point(item, userunit=userunit, digits=digits) for item in millimeters

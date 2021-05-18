@@ -19,10 +19,10 @@ class MatchStrategy(enum.Enum):
 
 
 def match(
-        cluster: 'Cluster',
-        todo: 'Clusters',
-        classifier: callable,
-        strategy: MatchStrategy = None,
+    cluster: 'Cluster',
+    todo: 'Clusters',
+    classifier: callable,
+    strategy: MatchStrategy = None,
 ) -> int:
     decider = match_first
     if strategy == MatchStrategy.LAST:

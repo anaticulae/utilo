@@ -263,11 +263,11 @@ def test_cli_parse_version_parser_version(tmpdir):
 
 
 def create_and_run_parser(
-        testdir,
-        monkeypatch,
-        argv,
-        prefix: bool = True,
-        singleinput: bool = False,
+    testdir,
+    monkeypatch,
+    argv,
+    prefix: bool = True,
+    singleinput: bool = False,
 ):
     prog = 'parser'
     argv = [prog] + argv

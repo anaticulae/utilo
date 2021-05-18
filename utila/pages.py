@@ -173,9 +173,9 @@ PageContent = typing.TypeVar('PageContent', typing.List, typing.Dict)
 
 
 def select_page(
-        items: PageContent,
-        page: int,
-        default: typing.Any = None,
+    items: PageContent,
+    page: int,
+    default: typing.Any = None,
 ) -> typing.Any:
     """Select item depending on `page`-attribute of the item.
 
@@ -217,9 +217,9 @@ def select_page(
 
 
 def select_pages(
-        items: PageContent,
-        pages: tuple,
-        default: typing.Any = None,
+    items: PageContent,
+    pages: tuple,
+    default: typing.Any = None,
 ) -> typing.Any:
     """Select items depending on `page`-attribute of the item.
 
@@ -233,9 +233,9 @@ def select_pages(
 
 
 def select_content(
-        items: PageContent,
-        page: int,
-        default: typing.Any = None,
+    items: PageContent,
+    page: int,
+    default: typing.Any = None,
 ) -> typing.Any:
     selected = select_page(items, page=page)
     if selected:
@@ -244,9 +244,9 @@ def select_content(
 
 
 def sync_pages(
-        iterators,
-        *,
-        numbers: bool = True,
+    iterators,
+    *,
+    numbers: bool = True,
 ) -> typing.Tuple[int, typing.List]:
     """Generator to synchronize a list of PageContentIterators.
 

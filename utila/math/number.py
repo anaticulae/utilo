@@ -130,10 +130,10 @@ def between(border: list, func: callable = None):
 
 
 def numbers_random(  # pylint:disable=inconsistent-return-statements
-        count: int = 1,
-        mini: float = 0.0,
-        maxi: float = 1.0,
-        seed: float = None,
+    count: int = 1,
+    mini: float = 0.0,
+    maxi: float = 1.0,
+    seed: float = None,
 ):
     """Generate random numbers.
 

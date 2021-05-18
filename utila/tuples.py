@@ -56,10 +56,10 @@ def ranges(start: float, stop: float, step: float = 1):
 
 
 def parse_tuple(
-        raw: str,
-        length: int = 4,
-        typ=float,
-        none: bool = False,
+    raw: str,
+    length: int = 4,
+    typ=float,
+    none: bool = False,
 ) -> tuple:
     """Convert `raw` to tuple of `typ`.
 

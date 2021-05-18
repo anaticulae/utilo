@@ -14,10 +14,10 @@ import utila.feature.userinput
 
 
 def prepare_description(
-        name: str,
-        description: str,
-        workplan: list,
-        features: 'utila.feature.collector.FeatureInterfaces',
+    name: str,
+    description: str,
+    workplan: list,
+    features: 'utila.feature.collector.FeatureInterfaces',
 ) -> str:
     """Create help description with in- and outports for program steps.
 

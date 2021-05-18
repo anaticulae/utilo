@@ -91,9 +91,9 @@ class ResultFile(File):
 
 
 def create_step(
-        name: str,
-        inputs: typing.List['Input'] = None,
-        output: typing.Tuple[str] = None,
+    name: str,
+    inputs: typing.List['Input'] = None,
+    output: typing.Tuple[str] = None,
 ) -> 'WorkPlanStep':
     """Create a WorkPlanStep from definition.
 

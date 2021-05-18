@@ -193,11 +193,11 @@ def test_file_copy_content_recursive_false(testdir, content_folder):  #pylint:di
     ],
 )
 def test_file_copy_content_pattern(
-        pattern,
-        recursive,
-        expected,
-        testdir,
-        content_folder,
+    pattern,
+    recursive,
+    expected,
+    testdir,
+    content_folder,
 ):  # pylint:disable=W0621
     source = content_folder
     utila.file_create(os.path.join(source, 'hallotxt'))
@@ -261,10 +261,10 @@ def test_file_copy_content_directory_to_directory(testdir):
     False,
 ])
 def test_file_copy_content_access_error(
-        update,
-        testdir,
-        monkeypatch,
-        capsys,
+    update,
+    testdir,
+    monkeypatch,
+    capsys,
 ):
     """Copy file to path which exists and is not overwriteable like an open
     pdf file.

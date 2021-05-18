@@ -18,13 +18,13 @@ import utila
 
 
 def run(
-        cmd: str,
-        cwd: str = None,
-        env: dict = None,
-        expect: bool = True,
-        verbose: bool = False,
-        live: bool = False,
-        timeout: 'Timeout' = None,
+    cmd: str,
+    cwd: str = None,
+    env: dict = None,
+    expect: bool = True,
+    verbose: bool = False,
+    live: bool = False,
+    timeout: 'Timeout' = None,
 ) -> subprocess.CompletedProcess:
     """Run external process
 
@@ -96,11 +96,11 @@ def determine_timeout(timeout):
 
 
 def run_parallel(
-        items: list,
-        cwd: str = None,
-        worker: int = 8,
-        expect: bool = True,
-        verbose: bool = False,
+    items: list,
+    cwd: str = None,
+    worker: int = 8,
+    expect: bool = True,
+    verbose: bool = False,
 ) -> int:
     """Run `items` as list of commands in parallel.
 
@@ -141,10 +141,10 @@ def run_parallel(
 
 
 def fork(
-        *runnables,
-        worker: int = 6,
-        process: bool = False,
-        returncode: bool = False,
+    *runnables,
+    worker: int = 6,
+    process: bool = False,
+    returncode: bool = False,
 ) -> int:
     """Run methods in parallel.
 
@@ -182,10 +182,10 @@ class GeorgFork(contextlib.AbstractContextManager):
     """Fork methods to run in parallel."""
 
     def __init__(
-            self,
-            process: bool = True,
-            returncode: bool = True,
-            worker: int = None,
+        self,
+        process: bool = True,
+        returncode: bool = True,
+        worker: int = None,
     ):
         self.process = process
         self.worker = worker

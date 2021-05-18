@@ -111,10 +111,10 @@ class FeaturePackConfig:
 
 @utila.saveme(systemexit=True)
 def featurepack(  # pylint:disable=too-many-locals
-        workplan: WorkPlanSteps,
-        root: str,
-        featurepackage: str,
-        config: FeaturePackConfig = None,
+    workplan: WorkPlanSteps,
+    root: str,
+    featurepackage: str,
+    config: FeaturePackConfig = None,
 ) -> int:
     """Run featurepack defined in `workplan`
 

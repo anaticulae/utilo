@@ -17,13 +17,13 @@ import utila.logger
 
 
 def run_featurepack(
-        cmd: str,
-        main: dict,
-        testdir,
-        monkeypatch,
-        exe=None,
-        capsys=None,
-        success: bool = True,
+    cmd: str,
+    main: dict,
+    testdir,
+    monkeypatch,
+    exe=None,
+    capsys=None,
+    success: bool = True,
 ):
     """Setup working step with main(dict) which defines the passed
     parameter to featurepack(**main). `cmd` is passed as argv to run."""

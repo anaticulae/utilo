@@ -32,15 +32,15 @@ def file_read_lines(path: str, start: int = None, end: int = None) -> str:
 
 
 def copy_content(  # pylint:disable=R1260,too-many-branches
-        source: str,
-        destination: str,
-        pattern: str = None,
-        ignore: callable = None,
-        *,
-        recursive: bool = False,
-        update: bool = False,
-        skip_equal: bool = False,
-        verbose: bool = False,
+    source: str,
+    destination: str,
+    pattern: str = None,
+    ignore: callable = None,
+    *,
+    recursive: bool = False,
+    update: bool = False,
+    skip_equal: bool = False,
+    verbose: bool = False,
 ):
     """Copy the content from `source` to `destination` folder. If
     `destination` folder does not exists, it will be created.
@@ -88,12 +88,12 @@ def copy_content(  # pylint:disable=R1260,too-many-branches
 
 
 def _copy_file(
-        source,
-        destination,
-        ignore,
-        update,
-        skip_equal,
-        verbose,
+    source,
+    destination,
+    ignore,
+    update,
+    skip_equal,
+    verbose,
 ):
     if ignore and ignore(source):
         utila.debug(f'skip: {source}')
@@ -113,14 +113,14 @@ def _copy_file(
 
 
 def _copy_folder(
-        source,
-        destination,
-        pattern,
-        recursive,
-        ignore,
-        update,
-        skip_equal,
-        verbose,
+    source,
+    destination,
+    pattern,
+    recursive,
+    ignore,
+    update,
+    skip_equal,
+    verbose,
 ):
     pattern = f'**/{pattern}' if recursive else pattern
 
@@ -151,14 +151,14 @@ def _copy_folder(
 
 
 def _copy_multiple(
-        source,
-        destination,
-        pattern,
-        ignore,
-        recursive,
-        update,
-        skip_equal,
-        verbose,
+    source,
+    destination,
+    pattern,
+    ignore,
+    recursive,
+    update,
+    skip_equal,
+    verbose,
 ):
     multiple = split_multipattern(pattern)
     if verbose:

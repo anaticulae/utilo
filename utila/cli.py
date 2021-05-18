@@ -144,11 +144,11 @@ class ParserConfiguration:
 
 
 def create_parser(
-        todo: list = None,
-        config: ParserConfiguration = None,
-        description: str = '',
-        prog: str = '',
-        version=None,
+    todo: list = None,
+    config: ParserConfiguration = None,
+    description: str = '',
+    prog: str = '',
+    version=None,
 ) -> argparse.ArgumentParser:
     """Create parser out of defined dictionary with command-line-definition.
 
@@ -231,9 +231,9 @@ MULTI_JOBS_DEFAULT = 8
 
 
 def prepare_todo(
-        todo,
-        *,
-        config: ParserConfiguration = None,
+    todo,
+    *,
+    config: ParserConfiguration = None,
 ):
     todo = todo if todo else []
     if not isinstance(todo, list):
@@ -330,10 +330,10 @@ def sort(items):
 
 
 def create_io_ports(
-        infile: bool = False,
-        outfile: bool = False,
-        config: bool = False,
-        singleinput: bool = False,
+    infile: bool = False,
+    outfile: bool = False,
+    config: bool = False,
+    singleinput: bool = False,
 ):
     todo = []
     if infile:
@@ -427,11 +427,11 @@ def split_args(items):
 
 
 def sources(  # pylint:disable=too-complex,too-many-branches
-        args,
-        *,
-        singleinput: bool = False,
-        use_cwd: bool = True,
-        verbose: bool = False,
+    args,
+    *,
+    singleinput: bool = False,
+    use_cwd: bool = True,
+    verbose: bool = False,
 ) -> tuple:
     """Parse the in- and outport from given command line args
 

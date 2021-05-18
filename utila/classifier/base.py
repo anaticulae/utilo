@@ -44,12 +44,12 @@ Clusters = typing.List[Cluster]
 
 
 def determine_cluster(
-        todo: list,
-        classifier: callable,
-        min_elements: int = 2,
-        ctor: Cluster = None,
-        strategy: 'MatchStrategy' = None,
-        key: callable = None,
+    todo: list,
+    classifier: callable,
+    min_elements: int = 2,
+    ctor: Cluster = None,
+    strategy: 'MatchStrategy' = None,
+    key: callable = None,
 ) -> Clusters:
     """Determine cluster out of `todo`.
 
@@ -93,9 +93,9 @@ def determine_cluster(
 
 
 def clusterme(
-        clusters: Clusters,
-        classifier: callable,
-        strategy: 'MatchStrategy' = None,
+    clusters: Clusters,
+    classifier: callable,
+    strategy: 'MatchStrategy' = None,
 ) -> Clusters:
     current, todo = clusters[0], clusters[1:]
     result = [current]

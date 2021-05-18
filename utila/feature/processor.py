@@ -25,19 +25,19 @@ NO_RESULT = object()
 
 
 def process(  # pylint:disable=R0914
-        workplan: 'utila.feature.ProcessSteps',
-        name: str = None,
-        todo: typing.List = None,
-        processes: int = 1,
-        pages: list = None,
-        errorhook: ErrorHook = None,
-        before: callable = None,
-        after: callable = None,
-        *,
-        failfast: bool = False,
-        profiling: bool = False,
-        verbose: bool = False,
-        wait: int = 0,
+    workplan: 'utila.feature.ProcessSteps',
+    name: str = None,
+    todo: typing.List = None,
+    processes: int = 1,
+    pages: list = None,
+    errorhook: ErrorHook = None,
+    before: callable = None,
+    after: callable = None,
+    *,
+    failfast: bool = False,
+    profiling: bool = False,
+    verbose: bool = False,
+    wait: int = 0,
 ) -> int:
     """Process the given features. The process ignores errors in
     sub-steps and run till the end. If some error occurs, the process
@@ -108,13 +108,13 @@ def process(  # pylint:disable=R0914
 
 
 def run_level(
-        level,
-        todo,
-        pool,
-        pages,
-        profiling,
-        verbose: bool = True,
-        wait: int = 0,
+    level,
+    todo,
+    pool,
+    pages,
+    profiling,
+    verbose: bool = True,
+    wait: int = 0,
 ):
     results = []
     for step in level:
@@ -137,12 +137,12 @@ def run_level(
 
 
 def callback(
-        hook: callable,
-        stepname: str,
-        output,
-        pages: list,
-        profiling: bool,
-        wait: int = 0,
+    hook: callable,
+    stepname: str,
+    output,
+    pages: list,
+    profiling: bool,
+    wait: int = 0,
 ) -> tuple:
     """Run processing step.
 
@@ -191,10 +191,10 @@ def require_wait(inputs: list) -> bool:
 
 
 def run_hook_safely(
-        hook: callable,
-        name: str,
-        stepoutput,
-        pages,
+    hook: callable,
+    name: str,
+    stepoutput,
+    pages,
 ) -> int:
     """Verify interface, run hook and catch Exception and log problem if
     required.
@@ -250,10 +250,10 @@ def prepare_process(todo, name, processes):
 
 
 def write_level_result(
-        results,
-        errorhook: ErrorHook = None,
-        *,
-        failfast=False,
+    results,
+    errorhook: ErrorHook = None,
+    *,
+    failfast=False,
 ) -> int:
     success = True
     for result in results:
@@ -275,9 +275,9 @@ def write_level_result(
 
 
 def write_result_safely(
-        result: typing.List[str],
-        processstep: str,
-        outputstep: typing.List[str],
+    result: typing.List[str],
+    processstep: str,
+    outputstep: typing.List[str],
 ) -> int:
     """Write `result`s to desired `outputstep`s and catch problems.
 

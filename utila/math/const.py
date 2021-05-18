@@ -39,10 +39,10 @@ def isequal(first: float, second: float) -> bool:
 
 
 def isoutside(
-        value: float,
-        left: float,
-        right: float,
-        maxdiff: float = 0.0,
+    value: float,
+    left: float,
+    right: float,
+    maxdiff: float = 0.0,
 ) -> bool:
     if left - maxdiff <= value <= right + maxdiff:
         return False

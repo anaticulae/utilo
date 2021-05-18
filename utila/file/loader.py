@@ -13,9 +13,9 @@ import utila.file
 
 
 def from_raw_or_path(
-        content: str,
-        ftype: str = 'yaml',
-        fname: str = None,
+    content: str,
+    ftype: str = 'yaml',
+    fname: str = None,
 ) -> str:
     """Provide raw content from file or pass content
 
@@ -54,10 +54,10 @@ def from_raw_or_path(
 
 
 def yaml_from_raw_or_path(
-        content: str,
-        fname: str = None,
-        verify: callable = None,
-        safe: bool = True,
+    content: str,
+    fname: str = None,
+    verify: callable = None,
+    safe: bool = True,
 ):
     loaded = from_raw_or_path(content, ftype='yaml', fname=fname)
     try:

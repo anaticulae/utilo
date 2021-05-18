@@ -22,10 +22,10 @@ NDIGITS = 2
 
 
 def roundme(
-        *items: float,
-        digits: int = NDIGITS,
-        convert: bool = True,
-        none: bool = False,
+    *items: float,
+    digits: int = NDIGITS,
+    convert: bool = True,
+    none: bool = False,
 ) -> float:
     """Round `items` to `NDIGITS.
 
@@ -81,9 +81,9 @@ def roundme(
 
 
 def isascending(
-        items: 'utila.math.number.Numbers',
-        *,
-        strict: bool = True,
+    items: 'utila.math.number.Numbers',
+    *,
+    strict: bool = True,
 ) -> bool:
     """Check that `items` are ascending numbers.
 
@@ -162,8 +162,8 @@ def mode(items, minimize: bool = False):
 
 
 def diff_mode(
-        items: 'utila.math.number.Numbers',
-        max_diff: float = 2.0,
+    items: 'utila.math.number.Numbers',
+    max_diff: float = 2.0,
 ) -> 'utila.math.number.Numbers':
     """Compute mode of `item` and determine matched `items` which does
     not more differ than `max_diff` from mode.
@@ -189,11 +189,11 @@ class Strategy(enum.Enum):
 
 
 def lookup(
-        value: 'utila.math.number.Number',
-        table: typing.List,
-        strategy: Strategy = None,
-        right_outranges_none: bool = True,
-        left_outranges_none: bool = True,
+    value: 'utila.math.number.Number',
+    table: typing.List,
+    strategy: Strategy = None,
+    right_outranges_none: bool = True,
+    left_outranges_none: bool = True,
 ) -> 'utila.math.number.Number':
     """Use table lookup to determine holy value.
 
