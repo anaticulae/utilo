@@ -11,6 +11,7 @@ import concurrent.futures
 import functools
 import inspect
 import os
+import sys
 import time
 import typing
 
@@ -330,7 +331,7 @@ def write_resource(path, content):
         return
     utila.error(f'invalid content type: {type(content)}')
     utila.error(utila.shrink(content))
-    exit(utila.FAILURE)
+    sys.exit(utila.FAILURE)
 
 
 def select_executor():

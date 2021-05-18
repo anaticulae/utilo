@@ -126,7 +126,7 @@ VERBOSE = 'verbose'
 
 
 @dataclasses.dataclass
-class ParserConfiguration:
+class ParserConfiguration:  # pylint:disable=R0902
     failfastflag: bool = False
     flags: list = dataclasses.field(default_factory=list)
     inputparameter: bool = False
@@ -393,9 +393,9 @@ def parse(parser: argparse.ArgumentParser):
             version += parser.__version
         except AttributeError:
             utila.error('missing version flag')
-            exit(utila.INVALID_COMMAND)
+            sys.exit(utila.INVALID_COMMAND)
         utila.log(version)
-        exit(utila.SUCCESS)
+        sys.exit(utila.SUCCESS)
 
     args = vars(parser.parse_args())
     # use disable with None
@@ -468,17 +468,17 @@ def sources(  # pylint:disable=too-complex,too-many-branches
             if not singleinput:
                 if os.path.isfile(inputpath):
                     utila.error('Input %s must be a directory' % inputpath)
-                    exit(INVALID_COMMAND)
+                    sys.exit(INVALID_COMMAND)
             if not os.path.exists(inputpath):
                 utila.error('Input %s does not exists' % inputpath)
-                exit(INVALID_COMMAND)
+                sys.exit(INVALID_COMMAND)
 
     if outputpath:
         if not os.path.isabs(outputpath):
             outputpath = os.path.join(cwd, outputpath)
         if os.path.isfile(outputpath):
             utila.error('Output %s must be a directory' % outputpath)
-            exit(INVALID_COMMAND)
+            sys.exit(INVALID_COMMAND)
         if not os.path.exists(outputpath):
             try:
                 os.makedirs(outputpath)
@@ -551,7 +551,7 @@ def processcount(args: dict, multiprocessed: bool = False) -> int:
             processes = int(selected)
         except ValueError:
             utila.error(f'invalid process count: {selected}')
-            exit(utila.INVALID_COMMAND)
+            sys.exit(utila.INVALID_COMMAND)
     return processes
 
 

@@ -44,8 +44,7 @@ def rectangle_merge(rectangles: Rectangles) -> Rectangles:
             item = items.pop()
             if any((rectangle_inside(check, item) for check in items)):
                 continue
-            else:
-                result.insert(0, item)
+            result.insert(0, item)
         result.insert(0, items.pop())
         return result
 

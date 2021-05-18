@@ -79,7 +79,7 @@ class InterfaceMismatch(TypeError):
 
 
 @dataclasses.dataclass
-class FeaturePackConfig:
+class FeaturePackConfig:  # pylint:disable=too-many-instance-attributes
     description: str = None
     errorhook: 'utila.feature.processor.ErrorHook' = None
     before: callable = None
@@ -182,7 +182,7 @@ def featurepack(  # pylint:disable=too-many-locals
         config.multiprocessed,
     )
     # evaluate the verbose flag
-    inputpath, outputpath, prefix, verbose = utila.sources(
+    inputpath, outputpath, prefix, verbose = utila.sources(  # pylint:disable=unbalanced-tuple-unpacking
         args,
         singleinput=config.singleinput,
         verbose=True,
@@ -276,7 +276,7 @@ def commandline(features: Features, workplan: list) -> utila.Commands:
 def remove_workplan_flags(args, plan):
     """Remove `Bool`-Flags which are part of the workplan steps to
     evaluate selected steps correctly."""
-    args = {key: value for key, value in args.items()}
+    args = dict(args.items())
     collected = set()
     for step in plan:
         for variable in step.inputs:
@@ -339,7 +339,7 @@ def determine_todo(args: dict, flags: list) -> typing.List[str]:
     deactivated = [
         key for key, value in args.items() if value is utila.cli.DEACTIVATED
     ]
-    seletected = any([item for item in args.values() if item is True])
+    seletected = any(item for item in args.values() if item is True)
     if not seletected or all_selected:
         # run all features
         result = [key for key, value in args.items()]

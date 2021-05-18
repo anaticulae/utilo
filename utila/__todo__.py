@@ -34,7 +34,7 @@ class todo(contextlib.ContextDecorator):  # pylint:disable=C0103
         description='todo',
     ):
         if version is None:
-            import utila
+            import utila  # pylint:disable=import-outside-toplevel
             version = utila.__version__
         self.major = major
         self.minor = minor

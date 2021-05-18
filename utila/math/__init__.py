@@ -101,8 +101,8 @@ def isascending(
         (after - current) for (current, after) in zip(items[:-1], items[1:])
     ]
     if strict:
-        return all([item > 0 for item in diff])
-    return all([item >= 0 for item in diff])
+        return all(item > 0 for item in diff)
+    return all(item >= 0 for item in diff)
 
 
 def modes(data: 'utila.math.number.Numbers') -> 'utila.math.number.Number':

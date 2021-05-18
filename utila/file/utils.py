@@ -39,9 +39,9 @@ def pathexists(func=None) -> callable:
             try:
                 path = kwds['path']
             except KeyError:
-                parameter = [item for item in sig.parameters]
+                parameter = list(item for item in sig.parameters)
                 try:
-                    pos = [item for item in parameter].index('path')
+                    pos = list(item for item in parameter).index('path')
                 except ValueError:
                     raise TypeError(f'no `path` in {parameter}') from None
                 path = args[pos]

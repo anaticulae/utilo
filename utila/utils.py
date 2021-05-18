@@ -99,11 +99,10 @@ def determine_order(requirements, flat=True):
         level = []
         before = len(todo)
         for item in todo[:]:
-            isparent = any([
+            isparent = any(
                 # check that item is not required by other resources
                 current in todo or current in level
-                for current in requirements[item]
-            ])
+                for current in requirements[item])
             if isparent:
                 continue
             todo.remove(item)

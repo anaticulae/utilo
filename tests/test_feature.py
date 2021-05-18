@@ -418,7 +418,7 @@ def work(pdf : str, result: str, char_margin : float, char_align : float) -> str
 @utilatest.longrun
 def test_error_hook(hook, failfast, testdir, monkeypatch):
     """Test passing exception to error hook and without hook"""
-    import tests.examples.featurepack.withexception.withexception as exe
+    import tests.examples.featurepack.withexception.withexception as exe  # pylint:disable=C0415
     root = exe.ROOT
     utila.file_create(os.path.join(str(testdir), 'inputs.yaml'))
 

@@ -19,6 +19,7 @@ import os
 import random
 import shutil
 import stat
+import sys
 
 import utila
 
@@ -262,7 +263,7 @@ def file_copy(
         utila.error(f'could not overwrite: {destination}')
         if exception:
             raise error
-        exit(utila.FAILURE)
+        sys.exit(utila.FAILURE)
 
 
 def file_count(path: str, ext: str = None, recursive: bool = True) -> int:
@@ -300,8 +301,8 @@ def file_list(
     include = [include] if isinstance(include, str) else include
     exclude = [exclude] if isinstance(exclude, str) else exclude
     # make unique and ?fast?
-    include = set(include)
-    exclude = set(exclude)
+    include: set = set(include)
+    exclude: set = set(exclude)
     result = []
     for item in glob.glob(f'{path}/**/*', recursive=recursive):
         if not os.path.isfile(item):

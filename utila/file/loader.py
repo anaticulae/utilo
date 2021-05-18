@@ -61,7 +61,7 @@ def yaml_from_raw_or_path(
 ):
     loaded = from_raw_or_path(content, ftype='yaml', fname=fname)
     try:
-        import yaml
+        import yaml  # pylint:disable=import-outside-toplevel
     except ImportError:
         utila.error('add `yaml` package to requirements, eg. `PyYAML>=5.1`')
         return None

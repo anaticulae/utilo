@@ -35,7 +35,7 @@ def run_playground(
     monkeypatch,
     capsys=None,
 ):
-    import tests.examples.featurepack.testfield.playground as exe
+    import tests.examples.featurepack.testfield.playground as exe  # pylint:disable=C0415
     utila.file_create(os.path.join(str(testdir), 'infile.yaml'))
     result = tests.feature.runner.run_featurepack(
         cmd=cmd,

@@ -14,6 +14,7 @@ import functools
 import glob
 import inspect
 import os
+import sys
 import typing
 
 import utila
@@ -110,7 +111,7 @@ def create_runtime(  # pylint:disable=too-many-locals
                 outputs=outputs,
             ))
     if ret and verify:
-        exit(utila.FAILURE)
+        sys.exit(utila.FAILURE)
     return result
 
 
@@ -227,28 +228,26 @@ def prepare_inputs(  # pylint:disable=too-many-locals,too-complex,too-many-branc
                 if os.path.exists(filepath):
                     result.append(filepath)
                     break  # do not double add path
-                else:
-                    # TODO: Refactor recursive inputs
-                    # Only on the last inspace, because the file could exists
-                    # in other input folder
-                    if inspace == inspaces[-1]:
-                        recursivepath = os.path.join(outspace, filename)
-                        utila.info(f'recursive input: {recursivepath}')
-                        result.append(f'_{recursivepath}')
+                # TODO: Refactor recursive inputs
+                # Only on the last inspace, because the file could exists
+                # in other input folder
+                if inspace == inspaces[-1]:
+                    recursivepath = os.path.join(outspace, filename)
+                    utila.info(f'recursive input: {recursivepath}')
+                    result.append(f'_{recursivepath}')
             elif isinstance(item, utila.feature.userinput.File):
                 filename = f'{name}.{ext}'
                 filepath = os.path.join(inspace, filename)
                 if os.path.exists(filepath):
                     result.append(filepath)
                     break  # do not double add path
-                else:
-                    if not lastinput:
-                        continue
-                    if item.optional:
-                        result.append(f'_{filepath}')
-                        continue
-                    utila.error(f'search location: {search_location}')
-                    utila.error(f'missing input: {filepath}')
+                if not lastinput:
+                    continue
+                if item.optional:
+                    result.append(f'_{filepath}')
+                    continue
+                utila.error(f'search location: {search_location}')
+                utila.error(f'missing input: {filepath}')
             elif isinstance(item, utila.feature.userinput.Directory):
                 directory_path = os.path.join(inspace, name)
                 # Mark `?` to not check existence of folder and group
@@ -263,21 +262,19 @@ def prepare_inputs(  # pylint:disable=too-many-locals,too-complex,too-many-branc
                     # File as a input name
                     result.append(inspace)
                     break  # do not double add path
-                elif os.path.isfile(inspace):
+                if os.path.isfile(inspace):
                     # support dir-like file-path as input
                     # TODO: Introduce new datatype?
                     result.append(inspace)
                     break  # do not double add path
-                else:
-                    ext = ext.lower()
-                    pattern = f'{inspace}/{name}.{ext}'
-                    utila.info(f'using pattern: {pattern}')
-                    files = glob.glob(pattern)
-                    utila.info(f'{files}')
-                    for finding in files:
-                        utila.info(f'FINDING {finding}')
-                        result.append(finding)
-
+                ext = ext.lower()
+                pattern = f'{inspace}/{name}.{ext}'
+                utila.info(f'using pattern: {pattern}')
+                files = glob.glob(pattern)
+                utila.info(f'{files}')
+                for finding in files:
+                    utila.info(f'FINDING {finding}')
+                    result.append(finding)
     utila.call('result:')
     for item in result:
         utila.call(item)
@@ -323,7 +320,7 @@ def prepare_outputs(
             outitem = f'{process_}__{prefix}{stepname}_{filename}.{datatype}'
         _outputs.append(outitem)
     if ret:
-        exit(utila.FAILURE)
+        sys.exit(utila.FAILURE)
     outputs = [os.path.join(outspace, item) for item in _outputs]
     return outputs
 

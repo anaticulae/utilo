@@ -30,13 +30,13 @@ def test_refactor_contextmanager(monkeypatch):
 def test_refactor_decorator():
 
     @utila.refactor(major=5, minor=1)  # pylint:disable=W0612
-    class ValidVersion:
+    class ValidVersion:  # pylint:disable=W0612
         pass
 
     with pytest.raises(AssertionError):
 
         @utila.refactor(major=1, minor=1)  # pylint:disable=W0612,W0621
-        class OutdatedVersion:
+        class OutdatedVersion:  # pylint:disable=W0612
             pass
 
     @utila.refactor(major=5, minor=1)

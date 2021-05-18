@@ -165,7 +165,7 @@ def should_skip(page: PageNumbers, pages: tuple) -> bool:  # pylint:disable=W062
         # ensure that all (page..) are in range, all selected and all inside
         start, end = min(page), max(page)
         start, end = math.floor(start), math.ceil(end)
-        return any([should_skip(pp, pages) for pp in range(start, end + 1)])
+        return any(should_skip(pp, pages) for pp in range(start, end + 1))
     return not page in pages
 
 

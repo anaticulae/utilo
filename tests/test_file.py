@@ -291,7 +291,7 @@ def test_file_copy_content_access_error(
     notdouble = os.path.join(source, 'not_double.pdf')
     utila.file_create(notdouble)
 
-    def copy(source, dest):
+    def copy(source, _):  # pylint:disable=W0613
         if source == notdouble:
             # not double is not locked, therefore no error is raised
             return
@@ -424,7 +424,7 @@ def test_file_compare_not_exists():
     equals = utila.file_compare(first, second)
     assert equals is False
 
-    equals = utila.file_compare(second, first)
+    equals = utila.file_compare(first=second, second=first)
     assert equals is False
 
 

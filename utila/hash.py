@@ -26,7 +26,7 @@ def freehash(data: bytes, digits: int = 16) -> str:
         data = str(data)
     if isinstance(data, str):
         # convert to byte
-        data:bytes = data.encode('utf8', errors='ignore')
+        data: bytes = data.encode('utf8', errors='ignore')
     hashed = hashlib.blake2b(data, digest_size=digits)
     result = hashed.hexdigest()
     return result

@@ -285,7 +285,7 @@ def create_and_run_parser(
         context.setattr(sys, 'argv', argv)
         context.setattr(os, 'getcwd', lambda: str(testdir))
         parsed = parse(parser)
-        inpath, outpath, _ = sources(
+        inpath, outpath, _ = sources(  # pylint:disable=unbalanced-tuple-unpacking
             parsed,
             singleinput=singleinput,
         )
