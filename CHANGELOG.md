@@ -2,6 +2,12 @@
 
 Every noteable change is logged here.
 
+## v2.34.2
+
+### Feature
+
+* add method to determine char rate (79ef5ac47238)
+
 ## v2.34.1
 
 ### Feature
