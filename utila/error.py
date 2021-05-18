@@ -8,6 +8,7 @@
 #==============================================================================
 
 import contextlib
+import sys
 import typing
 
 import utila
@@ -32,7 +33,7 @@ def handle_error(*exceptions: typing.Tuple, code: int = None):
     except exceptions as msg:
         utila.error(msg)
         code = code if code is not None else utila.FAILURE
-        exit(code)
+        sys.exit(code)
 
 
 CANCELLED_BY_USER = 130
@@ -62,7 +63,7 @@ def saveme(func=None, *, systemexit=True) -> callable:
                 utila.log_stacktrace()
                 ret = utila.FAILURE
             if systemexit:
-                exit(ret)
+                sys.exit(ret)
             return ret
 
         return wrapper
