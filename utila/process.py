@@ -52,17 +52,29 @@ def run(
     if verbose:
         utila.log(f'cd {cwd}')
         utila.log(cmd)
-    proc = subprocess.Popen(  # nosec
-        cmd,
-        cwd=cwd,
-        env=env,
-        errors='replace',
-        shell=True,
-        stderr=None if live else subprocess.PIPE,
-        stdout=None if live else subprocess.PIPE,
-        universal_newlines=True,
-    )
     timeout, gracefully, ontimeout = determine_timeout(timeout)
+    with subprocess.Popen(  # nosec
+            cmd,
+            cwd=cwd,
+            env=env,
+            errors='replace',
+            shell=True,
+            stderr=None if live else subprocess.PIPE,
+            stdout=None if live else subprocess.PIPE,
+            universal_newlines=True,
+    ) as proc:
+        completed = handle_run(
+            proc,
+            expect,
+            timeout,
+            gracefully,
+            ontimeout,
+            cmd,
+        )
+    return completed
+
+
+def handle_run(proc, expect, timeout, gracefully, ontimeout, cmd):
     try:
         stdout, stderr = proc.communicate(timeout=timeout)
     except subprocess.TimeoutExpired as error:
