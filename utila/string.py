@@ -208,6 +208,35 @@ def verysimilar(current: str, expected: str) -> bool:
     return similar(current=current, expected=expected, maxdiff=0.9)
 
 
+def inside(current: str, expected: str, maxdiff: float = 0.1) -> bool:
+    """\
+    >>> inside('Helmut', 'Der Helmut wohnt in Berlin')
+    True
+    >>> inside('Helmut', ['Der Helm wohnt in Berlin'], maxdiff=0.3)
+    True
+    >>> inside('1. FC Union Berlin', 'An der alten Försterei spielt Union Berlin', maxdiff=0.3)
+    True
+    """
+    current = current.lower()
+    if isinstance(expected, (list, tuple)):
+        # multiple expected options
+        return any((inside(current, item, maxdiff) for item in expected))
+    expected = expected.lower()
+    if current in expected:
+        return True
+    curlen = len(current)
+    # TODO: SLOW APPROACH
+    # DIRTY
+    for side in range(curlen):
+        splitted = [
+            expected[index * curlen + side:side + (index + 1) * curlen]
+            for index in range(int(len(expected) / curlen) + 1)
+        ]
+        if similar(current, splitted, maxdiff=maxdiff):
+            return True
+    return False
+
+
 def lower(*items):
     """Lowercase list of strings.
     >>> lower('Helmut', 'MANFRED')
