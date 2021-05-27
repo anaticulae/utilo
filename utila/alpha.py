@@ -132,4 +132,6 @@ TABLE = """\
 Ü           UE
 """
 # TODO: REPLACE WITH SHARK OPERATOR, PYTHON 3.8
-MATCHED = {item.split()[0]: item.split()[1] for item in TABLE.strip().splitlines()}
+MATCHED = {
+    item.split()[0]: item.split()[1] for item in TABLE.strip().splitlines()
+}
