@@ -27,6 +27,24 @@ import utila
 MAX_NUMBER = 32
 SHARED_TEMP = 'SHARED_TMP'
 
+OPEN = open
+
+
+@contextlib.contextmanager
+def open(  # pylint:disable=redefined-builtin
+    path,
+    mode=None,
+    newline=None,
+    encoding='utf8',
+    private: bool = False,
+):
+    if not private:
+        if 'b' in mode:
+            yield OPEN(path, mode=mode)
+        else:
+            yield OPEN(path, mode=mode, newline=newline, encoding=encoding)
+        return
+
 
 def tmp(root) -> str:
     """Return path to temporary folder. If not exists, create folder
@@ -72,20 +90,20 @@ def file_append(path: str, content: str, create: bool = False):
             fp.write(content)
 
 
-def file_create(path: str, content: str = ''):
+def file_create(path: str, content: str = '', private: bool = False):
     """Create file `path` with the content `content`
 
     Args:
         path(str): path to write file, path must not exists
         content(str): content to write in given `path`
-
+        private(bool): if True, use encryption
     Hint:
         If file exists, an assertion is raised.
     """
     parent = os.path.split(path)[0]
     assert os.path.exists(parent) or not parent, f'{parent} does not exists'
     assert not os.path.exists(path), f'{path} already exists'
-    with open(path, mode='w', newline=utila.NEWLINE, encoding=utila.UTF8) as fp:
+    with open(path, 'w', utila.NL, utila.U8, private=private) as fp:
         fp.write(content)
 
 
