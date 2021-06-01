@@ -17,7 +17,9 @@ FAILURE = 1
 
 TMP = '.tmp'
 UTF8 = 'utf8'
+U8 = UTF8
 NEWLINE = '\n'
+NL = NEWLINE
 INF = (1 << 31) - 1
 
 ALL_PAGES = ':'

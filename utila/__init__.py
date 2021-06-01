@@ -326,8 +326,10 @@ from utila.utils import ALL_PAGES
 from utila.utils import FAILURE
 from utila.utils import INF
 from utila.utils import NEWLINE
+from utila.utils import NL
 from utila.utils import SUCCESS
 from utila.utils import TMP
+from utila.utils import U8
 from utila.utils import UTF8
 from utila.utils import chdir
 from utila.utils import flatten

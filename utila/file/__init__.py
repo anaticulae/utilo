@@ -69,7 +69,7 @@ def file_append(path: str, content: str, create: bool = False):
     if not os.path.exists(path):
         file_create(path, content)
     else:
-        with open(path, mode='a', newline=utila.NEWLINE, encoding=utila.UTF8) as fp: # yapf:disable
+        with open(path, mode='a', newline=utila.NL, encoding=utila.U8) as fp:
             fp.write(content)
 
 
