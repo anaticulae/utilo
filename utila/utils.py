@@ -150,13 +150,14 @@ def chdir(path: str) -> typing.NoReturn:
 
 @contextlib.contextmanager
 def nothing(*args, **kwargs):  # pylint:disable=W0613
-    """Use a empty contextmanager to ease code.
+    """Use empty contextmanager to ease code.
 
     Example:
-
-        contextmanager = utila.profile if profiling else utila.nothing
-        with contextmanager():
-            pass
+    >>> import utila
+    >>> profiling = False
+    >>> contextmanager = utila.profile if profiling else utila.nothing
+    >>> with contextmanager():
+    ...     pass
     """
     yield
 
