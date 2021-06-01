@@ -107,16 +107,16 @@ def file_create_binary(path: str, content: bytes = b'', private: bool = False):
         fp.write(content)
 
 
-def file_read(path: str):
+def file_read(path: str, private: bool = False):
     assert os.path.exists(path), path
-    with open(path, mode='r', newline=utila.NEWLINE, encoding=utila.UTF8) as fp:
+    with open(path, mode='r', newline=utila.NL, encoding=utila.U8, private=private) as fp: # yapf:disable
         return fp.read()
 
 
-def file_read_binary(path: str) -> bytes:
+def file_read_binary(path: str, private: bool = False) -> bytes:
     """Read binary file content"""
     assert os.path.exists(path), path
-    with open(path, mode='rb') as fp:
+    with open(path, mode='rb', private=private) as fp:
         content = fp.read()
     return content
 
@@ -127,15 +127,17 @@ def file_remove(path: str):
     os.remove(path)
 
 
-def file_replace(path: str, content: str):
-    """Replace file content
+def file_replace(path: str, content: str, private: bool = False):
+    """Replace file content.
+
+    Args:
+        path(str): path to file
+        content(str): content to write
+        private(bool): if True, use encryption
 
     1. If not exit, create file
     2. If exists,   compare content, if changed than replace
                                      if not, do nothing
-    Args:
-        path(str): path to file
-        content(str): content to write
     """
     if not os.path.exists(path):
         file_create(path, content)
@@ -144,28 +146,30 @@ def file_replace(path: str, content: str):
     if current_content == content:
         return
 
-    with open(path, mode='w', newline=utila.NEWLINE, encoding=utila.UTF8) as fp:
+    with open(path, mode='w', newline=utila.NL, encoding=utila.U8, private=private) as fp: # yapf:disable
         fp.write(content)
 
 
-def file_replace_binary(path: str, content: bytes):
-    """Replace file content
+def file_replace_binary(path: str, content: bytes, private: bool = False):
+    """Replace file content.
+
+    Args:
+        path(str): path to file
+        content(str): content to write
+        private(bool): if True, use encryption
 
     1. If not exist, create file
     2. If exists,   compare content, if changed than replace
                                      if not, do nothing
-    Args:
-        path(str): path to file
-        content(str): content to write
     """
     if not os.path.exists(path):
-        file_create_binary(path, content)
+        file_create_binary(path, content, private=private)
         return
-    current_content = file_read_binary(path)
+    current_content = file_read_binary(path, private=private)
     if current_content == content:
         return
 
-    with open(path, mode='wb') as fp:
+    with open(path, mode='wb', private=private) as fp:
         fp.write(content)
 
 
@@ -177,7 +181,6 @@ def file_compare(first: str, second: str) -> bool:
     Args:
         first(str): path to first file
         second(str): path to second file
-
     Returns:
         True if paths exists and hashed content is equal else False.
     """

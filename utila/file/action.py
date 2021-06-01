@@ -16,14 +16,19 @@ import shutil
 import utila
 
 
-def file_read_lines(path: str, start: int = None, end: int = None) -> str:
+def file_read_lines(
+    path: str,
+    start: int = None,
+    end: int = None,
+    private: bool = False,
+) -> str:
     """\
     >>> len(file_read_lines(__file__).splitlines()) > 20
     True
     >>> len(file_read_lines(__file__, 5, 6).splitlines())
     1
     """
-    data = utila.file_read(path)
+    data = utila.file_read(path, private=private)
     splitted = data.splitlines(keepends=True)
     start = start or 0
     end = end or len(splitted)

@@ -25,7 +25,7 @@ def test_file_append_private_str(testdir):
     utila.file_append(path, content, create=True, private=True)
     utila.file_append(path, content, private=True)
     utila.file_append(path, content, private=True)
-    assert utila.file_read(path) == content + content  + content
+    assert utila.file_read(path) == content + content + content
 
 
 def test_file_create_private_binary(testdir):
