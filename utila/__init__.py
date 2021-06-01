@@ -287,6 +287,9 @@ from utila.process import run
 from utila.process import run_parallel
 # regex
 from utila.regex import extract_match
+# secret
+from utila.secret import decrypt
+from utila.secret import encrypt
 # string
 from utila.string import char_rate
 from utila.string import fix_encoding
