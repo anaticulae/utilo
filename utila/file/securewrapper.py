@@ -12,8 +12,8 @@ import contextlib
 import utila.secret
 
 OPEN = open
-HEADER_STRING = b'&&&&STRING&&&&'
-HEADER_BYTES = b'&&&&BYTES&&&&&'
+HEADER_STRING = br'%ENC-STRI'
+HEADER_BYTES = br'%ENC-BYTE'
 
 
 class SecureFile(contextlib.ContextDecorator):
