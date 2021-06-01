@@ -64,8 +64,7 @@ def file_append(path: str, content: str, create: bool = False):
     Hint:
         If file not exists and create == False, an assertion is fired.
     """
-    if not create:
-        assert os.path.exists(path)
+    assert create or os.path.exists(path), str(path)
     if not os.path.exists(path):
         file_create(path, content)
     else:
