@@ -54,22 +54,22 @@ def tmp(root) -> str:
     return path
 
 
-def file_append(path: str, content: str, create: bool = False):
+def file_append(path: str, content: str, create: bool = False, private: bool = False): # yapf:disable
     """Append `content` to file given in `path`.
 
     Args:
         path(str): file to write
         content(str): write content to file
         create(bool): if True, create File if not exists
-
+        private(bool): if True, use encryption
     Hint:
         If file not exists and create == False, an assertion is fired.
     """
     assert create or os.path.exists(path), str(path)
     if not os.path.exists(path):
-        file_create(path, content)
+        file_create(path, content, private=private)
     else:
-        with open(path, mode='a', newline=utila.NL, encoding=utila.U8) as fp:
+        with open(path, mode='a', newline=utila.NL, encoding=utila.U8, private=private) as fp: # yapf:disable
             fp.write(content)
 
 

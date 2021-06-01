@@ -19,6 +19,15 @@ def test_file_create_private_str(testdir):
     assert utila.file_read(path) == content
 
 
+def test_file_append_private_str(testdir):
+    content = 'This is Helmut.'
+    path = os.path.join(testdir.tmpdir, 'helm.txt')
+    utila.file_append(path, content, create=True, private=True)
+    utila.file_append(path, content, private=True)
+    utila.file_append(path, content, private=True)
+    assert utila.file_read(path) == content + content  + content
+
+
 def test_file_create_private_binary(testdir):
     content = b'This is Helmut.'
     path = os.path.join(testdir.tmpdir, 'helm.txt')

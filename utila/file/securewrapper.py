@@ -37,6 +37,11 @@ class SecureFile(contextlib.ContextDecorator):
     def __exit__(self, *exc):
         if self.readme:
             return
+        if self.append:
+            mode = 'rb' if self.binary else 'r'
+            with open(self.path, mode=mode) as fp:
+                content = fp.read()
+            self.content = content + self.content
         # write cached content
         encrypted = utila.secret.encrypt(self.content)
         content = HEADER_BYTES if self.binary else HEADER_STRING
