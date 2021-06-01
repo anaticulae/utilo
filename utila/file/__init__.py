@@ -22,28 +22,11 @@ import stat
 import sys
 
 import utila
+from utila.file.securewrapper import open  # pylint:disable=redefined-builtin
 
 # width of tempfile name
 MAX_NUMBER = 32
 SHARED_TEMP = 'SHARED_TMP'
-
-OPEN = open
-
-
-@contextlib.contextmanager
-def open(  # pylint:disable=redefined-builtin
-    path,
-    mode=None,
-    newline=None,
-    encoding='utf8',
-    private: bool = False,
-):
-    if not private:
-        if 'b' in mode:
-            yield OPEN(path, mode=mode)
-        else:
-            yield OPEN(path, mode=mode, newline=newline, encoding=encoding)
-        return
 
 
 def tmp(root) -> str:
@@ -107,20 +90,20 @@ def file_create(path: str, content: str = '', private: bool = False):
         fp.write(content)
 
 
-def file_create_binary(path: str, content: bytes = b''):
+def file_create_binary(path: str, content: bytes = b'', private: bool = False):
     """Create file `path` with the content `content`
 
     Args:
         path(str): path to write file, path must not exists
         content(str): content to write in given `path`
-
+        private(bool): if True, use encryption
     Hint:
         If file already exists, an assertion is raised.
     """
     parent = os.path.split(path)[0]
     assert os.path.exists(parent) or not parent, f'{parent} does not exists'
     assert not os.path.exists(path), f'{path} already exists'
-    with open(path, mode='wb') as fp:
+    with open(path, mode='wb', private=private) as fp:
         fp.write(content)
 
 
