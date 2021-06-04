@@ -83,9 +83,9 @@ def create_block(content: bytes):
 
 def remove_block(content: bytes):
     stripped = content.rstrip()
-    if content[len(stripped):len(stripped)+1] == b'\n':
+    if content[len(stripped):len(stripped) + 1] == b'\n':
         # valid file ends with newline
-        stripped = content[0:len(stripped)+1]
+        stripped = content[0:len(stripped) + 1]
     return stripped
 
 
