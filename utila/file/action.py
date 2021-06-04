@@ -130,6 +130,7 @@ def _copy_folder(
     pattern = f'**/{pattern}' if recursive else pattern
 
     with utila.chdir(source):
+        # TODO: NOT THREAD SAFE!
         selected = list(glob.glob(pattern, recursive=recursive))
 
     suppress = contextlib.suppress if skip_equal else utila.nothing
