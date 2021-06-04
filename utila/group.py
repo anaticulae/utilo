@@ -135,3 +135,19 @@ def shortest(items, number: int = 1):
     if number == 1:
         return items[0]
     return items[0:number]
+
+
+def xsome(items, count: 1, yield_rest: bool = True):
+    """\
+    >>> list(xsome([1, 2, 3, 5, 10, 12, 14], count=3))
+    [[1, 2, 3], [5, 10, 12], [14]]
+    """
+    collected = []
+    for item in items:
+        collected.append(item)
+        if len(collected) != count:
+            continue
+        yield collected
+        collected = []
+    if collected and yield_rest:
+        yield collected

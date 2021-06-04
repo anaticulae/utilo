@@ -164,6 +164,7 @@ from utila.group import groupby_neighbors
 from utila.group import groupby_none
 from utila.group import longest
 from utila.group import shortest
+from utila.group import xsome
 # hash
 from utila.hash import freehash
 from utila.hash import secure_hash
