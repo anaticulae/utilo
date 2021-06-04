@@ -141,9 +141,9 @@ def file_replace(path: str, content: str, private: bool = False):
                                      if not, do nothing
     """
     if not os.path.exists(path):
-        file_create(path, content)
+        file_create(path, content, private=private)
         return
-    current_content = file_read(path)
+    current_content = file_read(path, private=private)
     if current_content == content:
         return
 
