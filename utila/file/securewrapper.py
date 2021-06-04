@@ -13,8 +13,8 @@ import shutil
 import utila.secret
 
 OPEN = open
-HEADER_STRING = br'%ENC-STRI'
-HEADER_BYTES = br'%ENC-BYTE'
+HEADER_STR = br'%ENC-STR'
+HEADER_BIN = br'%ENC-BIN'
 
 
 class SecureFile(contextlib.ContextDecorator):
@@ -45,7 +45,7 @@ class SecureFile(contextlib.ContextDecorator):
             self.content = content + self.content
         # write cached content
         encrypted = utila.secret.encrypt(self.content)
-        content = HEADER_BYTES if self.binary else HEADER_STRING
+        content = HEADER_BIN if self.binary else HEADER_STR
         content += encrypted
         with OPEN(self.path, mode='bw') as fp:
             fp.write(content)
@@ -56,9 +56,9 @@ class SecureFile(contextlib.ContextDecorator):
     def read(self):
         with OPEN(self.path, mode='br') as fp:
             content = fp.read()
-        header = content[0:len(HEADER_STRING)]
-        string = header == HEADER_STRING
-        byte = header == HEADER_BYTES
+        header = content[0:len(HEADER_STR)]
+        string = header == HEADER_STR
+        byte = header == HEADER_BIN
         # if string or byte, strip header and decrypt.
         # if no header is given, return file content
         if string or byte:
@@ -101,12 +101,12 @@ def copy(src, dst, private: bool = False):
         COPY(src, dst)
         return
     header = utila.file_read_binary(src)
-    header = header[0:len(utila.file.securewrapper.HEADER_STRING)]
-    if header == utila.file.securewrapper.HEADER_STRING:
+    header = header[0:len(utila.file.securewrapper.HEADER_STR)]
+    if header == utila.file.securewrapper.HEADER_STR:
         content = utila.file_read(src, private=True)
         utila.file_replace(dst, content, private=True)
         return
-    if header == utila.file.securewrapper.HEADER_BYTES:
+    if header == utila.file.securewrapper.HEADER_BIN:
         content = utila.file_read_binary(src, private=True)
         utila.file_replace_binary(dst, content, private=True)
         return
