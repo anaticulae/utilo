@@ -2,6 +2,29 @@
 
 Every noteable change is logged here.
 
+## v2.35.0
+
+### Feature
+
+* add option to encrypt data (c9a5d96acc8d)
+* add aes module for cryptography (2fcfb5d65a75)
+* add encryption to more file methods (dcbd57b4a7d5)
+* add option to append private file data (3b79660ecb50)
+* fill secure wrapper with functionality (31fc6a0a254e)
+* add encryption method (70878ce46f85)
+* use hook to introduce encryption measures (f512d9f95ae6)
+* introduce shortcuts to shorten code (a5f3b562f906)
+* add method to verify that string is inside other string (8970256b7cf9)
+
+### Fix
+
+* add missing private flag (f9712168c610)
+* fix digit parameter (1ce5c4194bcc)
+
+### Documentation
+
+* improve doc test (912735bbc81a)
+
 ## v2.34.2
 
 ### Feature
