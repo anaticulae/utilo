@@ -8,13 +8,13 @@
 #==============================================================================
 
 import os
-import shutil
 
 import pytest
 import yaml
 
 import utila
 import utila.file
+import utila.file.securewrapper
 
 
 def test_file_append_assert(tmpdir):
@@ -266,13 +266,13 @@ def test_file_copy_content_access_error(
     monkeypatch,
     capsys,
 ):
-    """Copy file to path which exists and is not overwriteable like an open
-    pdf file.
+    """Copy file to path which exists and is not overwriteable like an
+    open pdf file.
 
     Create example with 2 directories called source and sink. Both
     directories contains a file named `single.pdf`. Using
-    copy_content(source, sink) should raises an error, cause the sink pdf is
-    locked by an pdf reader for example.
+    copy_content(source, sink) should raises an error, cause the sink
+    pdf is locked by an pdf reader for example.
 
     update: if True, the copy process which raises OSError is
             not reached and therefore no SystemExit is raised.
@@ -291,19 +291,17 @@ def test_file_copy_content_access_error(
     notdouble = os.path.join(source, 'not_double.pdf')
     utila.file_create(notdouble)
 
-    def copy(source, _):  # pylint:disable=W0613
+    def copy(source, _, private: bool = False):  # pylint:disable=W0613
         if source == notdouble:
             # not double is not locked, therefore no error is raised
             return
         raise OSError()
 
     with monkeypatch.context() as context:
-        context.setattr(shutil, 'copy', copy)
-
+        context.setattr(utila.file.securewrapper, 'copy', copy)
         if update:
             utila.copy_content(source, sink, update=True)
             return
-
         with pytest.raises(SystemExit):
             utila.copy_content(
                 source,

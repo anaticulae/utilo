@@ -46,6 +46,7 @@ def copy_content(  # pylint:disable=R1260,too-many-branches
     update: bool = False,
     skip_equal: bool = False,
     verbose: bool = False,
+    private: bool = False,
 ):
     """Copy the content from `source` to `destination` folder. If
     `destination` folder does not exists, it will be created.
@@ -63,6 +64,7 @@ def copy_content(  # pylint:disable=R1260,too-many-branches
         skip_equal(bool): if True, do not raise Error if source and
                           destination is equal.
         verbose(bool): explain what is being done
+        private(bool): encrypt data
 
     Pattern-Syntax:
         In the current implementation only one multiple field is
@@ -77,7 +79,8 @@ def copy_content(  # pylint:disable=R1260,too-many-branches
     assert source, str(source)
     assert destination, str(destination)
     if os.path.isfile(source):
-        _copy_file(source, destination, ignore, update, skip_equal, verbose)
+        _copy_file(source, destination, ignore, update, skip_equal, verbose,
+                   private)
         return
     if pattern is None:
         pattern = '*'
@@ -85,11 +88,11 @@ def copy_content(  # pylint:disable=R1260,too-many-branches
     multiple = split_multipattern(pattern)
     if multiple:
         _copy_multiple(source, destination, pattern, ignore, recursive, update,
-                       skip_equal, verbose)
+                       skip_equal, verbose, private)
         return
 
     _copy_folder(source, destination, pattern, recursive, ignore, update,
-                 skip_equal, verbose)
+                 skip_equal, verbose, private)
 
 
 def _copy_file(
@@ -99,6 +102,7 @@ def _copy_file(
     update,
     skip_equal,
     verbose,
+    private,
 ):
     if ignore and ignore(source):
         utila.debug(f'skip: {source}')
@@ -114,6 +118,7 @@ def _copy_file(
             destination,
             update=update,
             exception=skip_equal,
+            private=private,
         )
 
 
@@ -126,6 +131,7 @@ def _copy_folder(
     update,
     skip_equal,
     verbose,
+    private,
 ):
     pattern = f'**/{pattern}' if recursive else pattern
 
@@ -149,6 +155,7 @@ def _copy_folder(
                     outpath,
                     update=update,
                     exception=skip_equal,
+                    private=private,
                 )
         else:
             if verbose:
@@ -165,6 +172,7 @@ def _copy_multiple(
     update,
     skip_equal,
     verbose,
+    private,
 ):
     multiple = split_multipattern(pattern)
     if verbose:
@@ -182,6 +190,7 @@ def _copy_multiple(
                 skip_equal=skip_equal,
                 update=update,
                 verbose=verbose,
+                private=private,
             )
 
 

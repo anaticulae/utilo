@@ -22,6 +22,7 @@ import stat
 import sys
 
 import utila
+import utila.file.securewrapper
 from utila.file.securewrapper import open  # pylint:disable=redefined-builtin
 
 # width of tempfile name
@@ -240,6 +241,7 @@ def file_copy(
     destination: str,
     update: bool = True,
     exception: bool = False,
+    private: bool = False,
 ):
     """Copy a single `source` file to `destination` file or folder.
 
@@ -251,6 +253,7 @@ def file_copy(
                       is missing.
         exception(bool): if True  raise exception if copying is not possible
                          if False log error and raise exit
+        private(bool): encrypt data
     Raises:
         OSError: if coping is not possible and exception is True
         SameFileError: if source and destination is equal
@@ -261,7 +264,8 @@ def file_copy(
             return
         parent, _ = os.path.split(destination)
         os.makedirs(parent, exist_ok=True)
-        shutil.copy(source, destination)
+        # shutil.copy
+        utila.file.securewrapper.copy(source, destination, private=private)
     except OSError as error:
         utila.error(f'could not overwrite: {destination}')
         if exception:

@@ -8,6 +8,7 @@
 # =============================================================================
 
 import contextlib
+import shutil
 
 import utila.secret
 
@@ -90,3 +91,28 @@ def open(  # pylint:disable=redefined-builtin
         return
     with SecureFile(path, binary, append, read) as secure:
         yield secure
+
+
+COPY = shutil.copy
+
+
+def copy(src, dst, private: bool = False):
+    if not private:
+        COPY(src, dst)
+        return
+    header = utila.file_read_binary(src)
+    header = header[0:len(utila.file.securewrapper.HEADER_STRING)]
+    if header == utila.file.securewrapper.HEADER_STRING:
+        content = utila.file_read(src, private=True)
+        utila.file_replace(dst, content, private=True)
+        return
+    if header == utila.file.securewrapper.HEADER_BYTES:
+        content = utila.file_read_binary(src, private=True)
+        utila.file_replace_binary(dst, content, private=True)
+        return
+    try:
+        content = utila.file_read(src, private=False)
+        utila.file_replace(dst, content, private=True)
+    except UnicodeDecodeError:
+        content = utila.file_read_binary(src, private=False)
+        utila.file_replace_binary(dst, content, private=True)
