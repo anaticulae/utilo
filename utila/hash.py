@@ -8,6 +8,7 @@
 # =============================================================================
 
 import hashlib
+import math
 
 
 def freehash(data: bytes, digits: int = 16) -> str:
@@ -16,17 +17,19 @@ def freehash(data: bytes, digits: int = 16) -> str:
     Hint: Use this for non secure approaches only.
 
     >>> freehash(b'this is data', digits=10)
-    '2635759800462057793e'
+    '492cb96eda'
     >>> freehash('this is string data', digits=5)
-    '89299ad12d'
+    '6eb828'
     >>> freehash(13371337, digits=20)
-    'c4352ad929a1a77871951c66835d0b3975df24d8'
+    '1d6894801cdd2e11e98f'
     """
     if not isinstance(data, (bytes, str)):
         data = str(data)
     if isinstance(data, str):
         # convert to byte
         data: bytes = data.encode('utf8', errors='ignore')
+    # hexdigits produces two chars for one digit?
+    digits = math.ceil(digits / 2)
     hashed = hashlib.blake2b(data, digest_size=digits)
     result = hashed.hexdigest()
     return result
