@@ -10,4 +10,5 @@
 utilatest==0.5.3
 
 PyYAML==5.4.1
-pycryptodome==3.10.1
+
+utilasafe==0.1.1
