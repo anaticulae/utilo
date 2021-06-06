@@ -388,6 +388,7 @@ def parse(parser: argparse.ArgumentParser):
         verbose = '-V' in sys.argv or '--verbose' in sys.argv
         version = ''
         if verbose:
+            assert parser.prog, 'missing cli.prog flag'
             version = f'{parser.prog} '
         try:
             version += parser.__version
