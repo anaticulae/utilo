@@ -2,6 +2,14 @@
 
 Every noteable change is logged here.
 
+## v2.36.0
+
+### Feature
+
+* replace with utilasafe code (37d271e16a09)
+* add assertion to verify that cli-prog is defined (91f8ba560b81)
+* add xsome grouper (186f0fb920a2)
+
 ## v2.35.0
 
 ### Feature
