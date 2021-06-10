@@ -198,7 +198,6 @@ def create_parser(
         todo = io_ports + todo
 
     add_todo_to_parser(parser, todo)
-
     return parser
 
 
@@ -210,13 +209,11 @@ def add_todo_to_parser(parser, todo):
         # support defining longcut without --
         if longcut and not longcut.startswith('--'):
             longcut = '--%s' % longcut
-
         if longcut:
             shortcuts = (shortcut, longcut) if shortcut else (longcut,)
         else:
             # no longcut is defined
             shortcuts = (shortcut,)
-
         if args:
             args['help'] = msg
             parser.add_argument(*shortcuts, **args)
@@ -243,21 +240,19 @@ def prepare_todo(
     # --input twice.
     todo = todo[:]
     todo.extend(flags_to_parameter(config.flags))
-
+    # create parser
     if config.profileflag:
         profilecmd = Flag(
             longcut='profile',
             message='profile feature step execution',
         )
         todo.insert(0, profilecmd)
-
     if config.prefix:
         prefixcommand = Parameter(
             longcut='prefix',
             message='add prefix to separate different output files',
         )
         todo.insert(0, prefixcommand)
-
     if config.multiprocessed:
         multicmd = Parameter(
             shortcut=MULTI_FLAG[0],
@@ -270,7 +265,6 @@ def prepare_todo(
             },
         )
         todo.insert(0, multicmd)
-
     if config.pages:
         # TODO: pages flag in def work is only possible as the last parameter
         # BUG
@@ -279,7 +273,6 @@ def prepare_todo(
             message='shrink to given pages',
         )
         todo.insert(0, page)
-
     if config.verboseflag:
         todo.append(
             FlagCounted(
@@ -287,17 +280,17 @@ def prepare_todo(
                 message='define verbose level of logging',
                 shortcut='V',
             ))
-
     if config.failfastflag:
         todo.append(
             Flag(
                 longcut='ff',
                 message='failfast: quit after the first error',
             ))
-
     if config.quiteflag:
-        todo.append(Flag(longcut='quite', message='suppress logging'))
-
+        todo.append(Flag(
+            longcut='quite',
+            message='suppress logging',
+        ))
     todo = sort(todo)
     return todo
 
@@ -345,7 +338,6 @@ def create_io_ports(
         if singleinput:
             input_command.args['required'] = True  # pylint:disable=E1137
         todo.append(input_command)
-
     if outfile:
         output_command = Command(
             shortcut='o',
@@ -355,7 +347,6 @@ def create_io_ports(
             },
         )
         todo.append(output_command)
-
     if config:
         config_command = Command(
             shortcut='c',
@@ -381,7 +372,6 @@ def parse(parser: argparse.ArgumentParser):
     # remove disabling commands out of sys args to avoid problems with
     # `parse_args`.
     sys.argv = enable
-
     # verify version and/or verbose before parsing to avoid conflicts with
     # required resources when using e.g. `abel --version --verbose`
     if '--version' in sys.argv or '-v' in sys.argv:
@@ -397,7 +387,6 @@ def parse(parser: argparse.ArgumentParser):
             sys.exit(utila.INVALID_COMMAND)
         utila.log(version)
         sys.exit(utila.SUCCESS)
-
     args = vars(parser.parse_args())
     # use disable with None
     args = {
@@ -417,7 +406,6 @@ def split_args(items):
     (['--enable_me'], ['disable', 'd'])
     """
     enable, disable = [], []
-
     for item in items:
         matched = re.match(DISABLE_PATTERN, item)
         if matched:
@@ -457,9 +445,9 @@ def sources(  # pylint:disable=too-complex,too-many-branches
     # multiple inputs are possible
     inputpaths = args.get('input', None)
     outputpath = args.get('output', None)
-
+    # use prefix
     prefix = args.get('prefix', False)
-
+    # verify input paths
     if inputpaths:
         # make path absolute
         inputpaths = [utila.make_absolute(item) for item in inputpaths]
@@ -473,7 +461,6 @@ def sources(  # pylint:disable=too-complex,too-many-branches
             if not os.path.exists(inputpath):
                 utila.error('Input %s does not exists' % inputpath)
                 sys.exit(INVALID_COMMAND)
-
     if outputpath:
         if not os.path.isabs(outputpath):
             outputpath = os.path.join(cwd, outputpath)
@@ -494,7 +481,7 @@ def sources(  # pylint:disable=too-complex,too-many-branches
         inputpaths = [os.getcwd()]
     if not outputpath and use_cwd:
         outputpath = os.getcwd()
-
+    # prepare output
     result = [inputpaths, outputpath]
     if prefix is not False:
         result.append(prefix)
@@ -578,7 +565,6 @@ def isuserflag(flag: str) -> bool:
         True if flag is passed in user argument else False
     """
     assert flag
-
     if flag in sys.argv:
         return True
     if f'--{flag}' in sys.argv:
