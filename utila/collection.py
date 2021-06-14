@@ -186,6 +186,14 @@ def dicts_united(*items):
     return result
 
 
+def dict_reverse(dictum):
+    """\
+    >>> dict_reverse(dict(first='Helmut', second=10))
+    {'Helmut': 'first', 10: 'second'}
+    """
+    return {value: key for key, value in dictum.items()}
+
+
 class LowerCasedSet:
     """Wrapper that lower case input data to verify if data is present.
 
