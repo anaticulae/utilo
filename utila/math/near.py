@@ -7,6 +7,7 @@
 # be prosecuted under federal law. Its content is company confidential.
 # =============================================================================
 
+import functools
 import itertools
 
 import utila
@@ -32,6 +33,9 @@ def near(current, expected, diff: float = 2.0, none: bool = False) -> bool:
         if not none:
             raise error from None
     return current == expected
+
+
+verynear = functools.partial(near, diff=0.001)  # pylint:disable=C0103
 
 
 def nears(currents, expects, diff: float = 2.0, none: bool = False) -> bool:
