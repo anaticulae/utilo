@@ -59,6 +59,7 @@ def parse_tuple(
     raw: str,
     length: int = 4,
     typ=float,
+    separator=' ',
     none: bool = False,
 ) -> tuple:
     """Convert `raw` to tuple of `typ`.
@@ -73,13 +74,15 @@ def parse_tuple(
     Traceback (most recent call last):
     ...
     ValueError: could not convert string to float: 'None'
+    >>> parse_tuple('504.02;316.08;547.52;390.24', separator=';')
+    (504.02, 316.08, 547.52, 390.24)
     """
     if typ is int:
         typ = utila.str2int
     if typ is bool:
         typ = utila.str2bool
     items = (typ(item) if not none or item != 'None' else None
-             for item in raw.split())
+             for item in raw.split(separator))
     if typ is float:
         items = utila.math.roundme(*items, convert=False, none=none)
     items = tuple(items)
