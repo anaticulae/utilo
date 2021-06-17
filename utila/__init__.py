@@ -148,6 +148,7 @@ from utila.file.directory import directory_list
 from utila.file.hashed import directory_hash
 from utila.file.hashed import file_hash
 # file:info
+from utila.file.info import file_age
 from utila.file.info import file_line_length
 from utila.file.info import isfilepath
 # loader

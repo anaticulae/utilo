@@ -37,3 +37,15 @@ def isfilepath(path: str) -> bool:
         # .tmp
         return False
     return '.' in base
+
+
+def file_age(path: str) -> int:
+    """Determine seconds since last file modification.
+
+    >>> file_age(__file__) > 0
+    True
+    """
+    filetime = os.stat(path).st_mtime
+    timediff = utila.now() - filetime
+    timediff = int(timediff)
+    return timediff
