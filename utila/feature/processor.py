@@ -215,7 +215,7 @@ def run_hook_safely(
             hook.after()
     except Exception:  # pylint: disable=broad-except
         utila.error('while processing %s' % name)
-        utila.log_stacktrace()
+        utila.print_stacktrace()
         raise
 
     if isinstance(result, (str, bytes)) or result == NO_RESULT:

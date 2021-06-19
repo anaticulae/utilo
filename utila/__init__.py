@@ -189,10 +189,10 @@ from utila.logger import level_temp
 from utila.logger import log
 from utila.logger import log_args
 from utila.logger import log_raw
-from utila.logger import log_stacktrace
 from utila.logger import outfile
 from utila.logger import print_env
 from utila.logger import print_runtime
+from utila.logger import print_stacktrace
 from utila.logger import profile
 # math
 from utila.math import Strategy
@@ -355,6 +355,7 @@ from utila.utils import unset_env
 # TODO: REMOVE LATER AND INCREASE MAJOR VERSION NUMBER
 not_none = notnone  # pylint:disable=C0103
 manhatten = manhattan  # pylint:disable=C0103
+log_stacktrace = print_stacktrace  # pylint:disable=C0103
 
 ROOT = os.path.abspath(os.path.join(os.path.dirname(__file__), '..'))
 PACKAGE = 'utila'

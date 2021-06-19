@@ -60,7 +60,7 @@ def saveme(func=None, *, systemexit=True) -> callable:
                 ret = CANCELLED_BY_USER
             except Exception as msg:  # pylint: disable=broad-except
                 utila.error(msg)
-                utila.log_stacktrace()
+                utila.print_stacktrace()
                 ret = utila.FAILURE
             if systemexit:
                 sys.exit(ret)

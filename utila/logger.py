@@ -125,7 +125,7 @@ def write_log(msg: str, end: str):
         utila.file_append(OUTFILE, msg + end, create=True)
 
 
-def log_stacktrace():
+def print_stacktrace():
     stack_trace = traceback.format_exc()
     error(forward_slash(stack_trace, newline=True))
 
