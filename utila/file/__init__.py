@@ -433,7 +433,7 @@ def files_sort(files: list) -> list:
     return files
 
 
-POOL = 'ABCDEFGHIJKLMNOPQRSTUVYXYZabcdefghijklmnopqrstuvyxyz0123456789'
+POOL = 'ABCDEFGHIJKLMNOPQRSTUVYXYZabcdefghijklmnopqrstuvyxyz123456789'
 
 
 def tmpname(width: int = MAX_NUMBER) -> str:
