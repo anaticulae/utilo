@@ -2,6 +2,23 @@
 
 Every noteable change is logged here.
 
+## v2.37.0
+
+### Feature
+
+* add method to find tokens in string (8d9c19e77aba)
+* add starmap method (dc24658f9da6)
+* add method to create temporary file with content (0f816d6686db)
+* add default tmp path (11c70a9a0dab)
+* add method to determine file age (2635b493e652)
+* add separator flag (dacd407eb80f)
+* add method to compare very near numbers (93d19055ccf9)
+* add method to reverse dict (068ec15fb190)
+
+### Fix
+
+* avoid leading zeros in file name (a6e625675859)
+
 ## v2.36.0
 
 ### Feature
