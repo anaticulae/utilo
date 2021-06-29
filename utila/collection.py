@@ -215,3 +215,27 @@ class LowerCasedSet:
         if isinstance(items, LowerCasedSet):
             items: frozenset = items.values
         return LowerCasedSet(self.values | items)
+
+
+def starmap(*items) -> list:
+    """\
+    >>> starmap([[1, 2], [3,]])
+    [[1, 3], [2, 3]]
+    >>> starmap([(1, 2, 3), (4, ), (5, 6)])
+    [[1, 4, 5], [1, 4, 6], [2, 4, 5], [2, 4, 6], [3, 4, 5], [3, 4, 6]]
+    """
+    result = []
+    try:  # pylint:disable=too-many-nested-blocks
+        for current, *rest in items:
+            for cur in current:
+                if rest:
+                    children = starmap(rest)
+                    for item in children:
+                        if not isinstance(item, (list, tuple)):
+                            item = [item]
+                        result.append([cur] + item)
+                else:
+                    result.append(cur)
+    except ValueError:
+        return []
+    return result
