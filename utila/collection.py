@@ -40,7 +40,6 @@ def partition(key, items):
             matched.append(item)
         else:
             not_matched.append(item)
-
     return matched, not_matched
 
 
