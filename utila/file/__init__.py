@@ -432,12 +432,14 @@ def tmpname(width: int = MAX_NUMBER) -> str:
 
 
 def tmpfile(root):
-    """Get temporary file-path located in `TEMP_FOLDER`.
+    """Get temporary file-path located in root or `TMPDIR` as default.
 
     Returns:
-        filepath(str): to tempfile in TEMP_FOLDER
+        filepath(str): to tempfile in TMPDIR
     """
-    assert os.path.exists(root)
+    assert root is None or os.path.exists(root)
+    if root is None:
+        root = os.environ['TMPDIR']
     tmppath = tmp(root)
 
     name = tmpname()
