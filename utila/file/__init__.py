@@ -91,6 +91,28 @@ def file_create(path: str, content: str = '', private: bool = False):
         fp.write(content)
 
 
+def file_create_tmp(
+    content: str = '',
+    root: str = None,
+    private: bool = False,
+) -> str:
+    """Create file `content` in a temporary file
+
+    Args:
+        content(str): content to write in given `path`
+        root(str): project root to create temporary file
+        private(bool): if True, use encryption
+    Returns:
+        path to temporary file
+
+    >>> assert file_create_tmp('temporary content')
+    """
+    path = tmpfile(root)
+    with open(path, 'w', utila.NEWLINE, utila.UTF8, private=private) as fp:
+        fp.write(content)
+    return path
+
+
 def file_create_binary(path: str, content: bytes = b'', private: bool = False):
     """Create file `path` with the content `content`
 
@@ -441,7 +463,6 @@ def tmpfile(root):
     if root is None:
         root = os.environ['TMPDIR']
     tmppath = tmp(root)
-
     name = tmpname()
     path = os.path.join(tmppath, name)
     if os.path.exists(path):

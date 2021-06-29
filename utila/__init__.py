@@ -117,6 +117,7 @@ from utila.file import file_copy
 from utila.file import file_count
 from utila.file import file_create
 from utila.file import file_create_binary
+from utila.file import file_create_tmp
 from utila.file import file_ext
 from utila.file import file_islocked
 from utila.file import file_list
