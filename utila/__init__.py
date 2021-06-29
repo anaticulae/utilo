@@ -298,6 +298,7 @@ from utila.secret import decrypt
 from utila.secret import encrypt
 # string
 from utila.string import char_rate
+from utila.string import findindex
 from utila.string import fix_encoding
 from utila.string import forward_slash
 from utila.string import inside

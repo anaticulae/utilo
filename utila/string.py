@@ -299,3 +299,22 @@ def char_rate(text: str) -> float:
     selected = len([item for item in text if item in ALPHA])
     rate = selected / len(text)
     return utila.roundme(rate)
+
+
+def findindex(text: str, token: str):
+    """\
+    >>> findindex('Hier spricht Dr. Helmut Der 1. PrÃ¤sident von spricht.', token='.')
+    [15, 29, 53]
+    >>> findindex('Hier spricht Dr. Helmut Der 1. PrÃ¤sident von spricht.', token='Hier')
+    [0]
+    >>> findindex('Hier spricht Dr. Helmut Der 1. PrÃ¤sident von spricht.', token='empty')
+    []
+    """
+    result = []
+    index = -1
+    while True:
+        index = text.find(token, index + 1)
+        if index == -1:
+            break
+        result.append(index)
+    return result
