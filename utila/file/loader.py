@@ -62,13 +62,17 @@ def yaml_from_raw_or_path(
     loaded = from_raw_or_path(content, ftype='yaml', fname=fname)
     try:
         import yaml  # pylint:disable=import-outside-toplevel
+        import yaml.scanner  # pylint:disable=import-outside-toplevel
     except ImportError:
         utila.error('add `yaml` package to requirements, eg. `PyYAML>=5.1`')
         return None
-    if safe:
-        result = yaml.safe_load(loaded)
-    else:
-        result = yaml.load(loaded, Loader=yaml.FullLoader)  #nosec
+    try:
+        if safe:
+            result = yaml.safe_load(loaded)
+        else:
+            result = yaml.load(loaded, Loader=yaml.FullLoader)  #nosec
+    except yaml.scanner.ScannerError as error:
+        raise ValueError(f'no valid yaml input: {loaded}') from error
     if verify:
         verify(result)
     return result
