@@ -10,6 +10,8 @@
 import inspect
 import os
 
+import utila
+
 PATH_MAX_LENGTH = 512
 
 
@@ -28,6 +30,10 @@ def exists(path: str) -> bool:
         return False
     path = str(path)[0:PATH_MAX_LENGTH]
     return os.path.exists(path)
+
+
+def exists_assert(path: str):
+    assert os.path.exists(path), utila.shrink(str(path), maxlength=100)
 
 
 def pathexists(func=None) -> callable:

@@ -159,6 +159,7 @@ from utila.file.loader import from_raw_or_path
 from utila.file.loader import yaml_from_raw_or_path
 # utile
 from utila.file.utils import exists
+from utila.file.utils import exists_assert
 from utila.file.utils import pathexists
 # group
 from utila.group import groupby_ascending
