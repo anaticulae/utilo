@@ -324,7 +324,6 @@ def file_list(
     assert os.path.exists(path), path
     msg = f'only one pattern is allowed {include} ! {exclude}'
     assert not (include and exclude), msg
-
     include = include if include else []
     exclude = exclude if exclude else []
     include = [include] if isinstance(include, str) else include
