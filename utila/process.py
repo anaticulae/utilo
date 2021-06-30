@@ -45,7 +45,7 @@ def run(
         TimeoutExpired: if timeout is defined and gracefully flag is not set
     """
     cwd = cwd if cwd else os.getcwd()
-    assert os.path.exists(cwd)
+    utila.exists_assert(cwd)
     msg = f'cwd {cwd} is not a valid directory'
     assert os.path.isdir(cwd), msg
     env = os.environ if env is None else env

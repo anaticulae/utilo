@@ -51,7 +51,7 @@ def pathexists(func=None) -> callable:
                 except ValueError:
                     raise TypeError(f'no `path` in {parameter}') from None
                 path = args[pos]
-            assert os.path.exists(path), str(path)
+            utila.exists_assert(path)
             ret = user_function(*args, **kwds)
             return ret
 

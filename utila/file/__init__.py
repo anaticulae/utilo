@@ -131,21 +131,21 @@ def file_create_binary(path: str, content: bytes = b'', private: bool = False):
 
 
 def file_read(path: str, private: bool = False):
-    assert os.path.exists(path), path
+    utila.exists_assert(path)
     with open(path, mode='r', newline=utila.NL, encoding=utila.U8, private=private) as fp: # yapf:disable
         return fp.read()
 
 
 def file_read_binary(path: str, private: bool = False) -> bytes:
     """Read binary file content"""
-    assert os.path.exists(path), path
+    utila.exists_assert(path)
     with open(path, mode='rb', private=private) as fp:
         content = fp.read()
     return content
 
 
 def file_remove(path: str):
-    assert os.path.exists(path), path
+    utila.exists_assert(path)
     assert os.path.isfile(path), path
     os.remove(path)
 
@@ -296,7 +296,7 @@ def file_copy(
 
 
 def file_count(path: str, ext: str = None, recursive: bool = True) -> int:
-    assert os.path.exists(path), path
+    utila.exists_assert(path)
     pattern = f'{path}/**/*.*' if ext is None else f'{path}/**/*.{ext}'
     collected = list(glob.glob(pattern, recursive=recursive))
     return len(collected)
@@ -321,7 +321,7 @@ def file_list(
     Returns:
         List of selected files.
     """
-    assert os.path.exists(path), path
+    utila.exists_assert(path)
     msg = f'only one pattern is allowed {include} ! {exclude}'
     assert not (include and exclude), msg
     include = include if include else []
@@ -476,7 +476,7 @@ def tmpdir(root, create: bool = True, trys: int = 10):
     Returns:
         filepath(str): to tempfile in TEMP_FOLDER
     """
-    assert os.path.exists(root)
+    utila.exists_assert(root)
     assert trys, trys
     tmppath = tmp(root)
     name = tmpname()
@@ -501,7 +501,7 @@ def make_tmpdir(root: str, remove: bool = False, max_file_guard=100):
     Yields:
         str: created temporary directory
     """
-    assert os.path.exists(root), root
+    utila.exists_assert(root)
     path = tmpdir(root, create=False)
     assert not os.path.exists(path), path
     os.makedirs(path)

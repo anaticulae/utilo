@@ -40,7 +40,7 @@ def find_features(root: str, featurepackage: str) -> FeatureInterfaces:
 
     Ensure that feature methods are defined. If some feature interface
     is not implemented properly, the execution ends with FAILURE."""
-    assert os.path.exists(root), root
+    utila.exists_assert(root)
     featurepath = os.path.join(root, featurepackage.replace('.', '/'))
     if not os.path.exists(featurepath):
         utila.error('wrong featurepack configuration, '

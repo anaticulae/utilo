@@ -9,9 +9,11 @@
 
 import os
 
+import utila
+
 
 def directory_list(path: str) -> list:
-    assert os.path.exists(path), path
+    utila.exists_assert(path)
     result = []
     for item in os.scandir(path):
         if not item.is_dir():

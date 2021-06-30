@@ -13,7 +13,7 @@ import utila
 
 
 def file_hash(path: str) -> str:
-    assert os.path.exists(path), str(path)
+    utila.exists_assert(path)
     content = utila.file_read_binary(path)
     hashed = utila.freehash(content)
     return hashed
