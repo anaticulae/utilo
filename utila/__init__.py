@@ -208,6 +208,7 @@ from utila.math import modes
 from utila.math import roundme
 from utila.math.const import isequal
 from utila.math.const import isinf
+from utila.math.const import isinside
 from utila.math.const import isoutside
 from utila.math.const import iszero
 # math:distance

@@ -49,3 +49,14 @@ def isoutside(
     if right - maxdiff <= value <= left + maxdiff:
         return False
     return True
+
+
+def isinside(
+    value: float,
+    left: float,
+    right: float,
+    maxdiff: float = 0.0,
+) -> bool:
+    if isoutside(value=value, left=left, right=right, maxdiff=maxdiff):
+        return False
+    return True
