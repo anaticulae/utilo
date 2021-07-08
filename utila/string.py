@@ -301,7 +301,7 @@ def char_rate(text: str) -> float:
     return utila.roundme(rate)
 
 
-def findindex(text: str, token: str):
+def findindex(text: str, token: str) -> list:
     """\
     >>> findindex('Hier spricht Dr. Helmut Der 1. PrÃ¤sident von spricht.', token='.')
     [15, 29, 53]
