@@ -193,28 +193,45 @@ def dict_reverse(dictum):
     return {value: key for key, value in dictum.items()}
 
 
-class LowerCasedSet:
+class CasedSet:
     """Wrapper that lower case input data to verify if data is present.
 
-    >>> data = LowerCasedSet('Helm melm GELM'.split())
+    >>> data = CasedSet('Helm melm GELM'.split())
     >>> assert 'HELM' in data
     >>> assert len(list(data)) == 3
     >>> assert data | data
     """
 
-    def __init__(self, values):
-        self.values = frozenset([item.lower() for item in values])
+    def __init__(self, values, method=str.lower):
+        self.method = method
+        self.values = frozenset([self.method(item) for item in values])
 
     def __iter__(self):
         return iter(self.values)
 
     def __contains__(self, item):
-        return item.lower() in self.values
+        return self.method(item) in self.values
 
     def __or__(self, items):
-        if isinstance(items, LowerCasedSet):
+        if isinstance(items, CasedSet):
             items: frozenset = items.values
-        return LowerCasedSet(self.values | items)
+        return CasedSet(self.values | items, method=self.method)
+
+
+class LowerCasedSet(CasedSet):
+    pass
+
+
+class UpperCasedSet(CasedSet):
+    """\
+    >>> data = UpperCasedSet('helm telm melm'.split())
+    >>> assert 'HELM' in data
+    >>> list(data)
+    ['HELM', 'TELM', 'MELM']
+    """
+
+    def __init__(self, values):
+        super().__init__(values, method=str.upper)
 
 
 def starmap(*items) -> list:
