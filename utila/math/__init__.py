@@ -10,6 +10,7 @@
 import collections
 import contextlib
 import enum
+import functools
 import math
 import operator
 import statistics
@@ -78,6 +79,36 @@ def roundme(
     if len(result) == 1 and convert:
         return result[0]
     return result
+
+
+def roundshe(func=None, *, digits=2, convert: bool = True):
+    """\
+    >>> @roundshe
+    ... def hello(test:str):
+    ...     return 1.3335
+    >>> hello('hi')
+    1.33
+    >>> @roundshe(digits=5)
+    ... def three():
+    ...     return 1.36666666
+    >>> three()
+    1.36667
+    """
+
+    def decorating_function(user_function):
+
+        @functools.wraps(func)
+        def wrapper(*args, **kwds):
+            result = user_function(*args, **kwds)
+            result = roundme(result, digits=digits, convert=convert)
+            return result
+
+        return wrapper
+
+    # support @decorator() and @decorator
+    if func is None:
+        return decorating_function
+    return decorating_function(func)
 
 
 def isascending(
