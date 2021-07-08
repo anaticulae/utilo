@@ -2,6 +2,16 @@
 
 Every noteable change is logged here.
 
+## v2.38.0
+
+### Feature
+
+* add UpperCasedSet (89d6f51f5ab3)
+* add method to check if number is inside range (b47f101482e2)
+* improve assertion check (9e2d0768c81d)
+* add method to verify file path (a289147b8d80)
+* inform developer about invalid yaml file (7594c1eac0c5)
+
 ## v2.37.0
 
 ### Feature
