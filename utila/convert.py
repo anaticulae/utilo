@@ -99,3 +99,20 @@ def parse_numbers(text, maxcount=None) -> list:
     if maxcount is None:
         return result
     return result[0:maxcount]
+
+
+def parse_floats(text, maxcount=None) -> list:
+    """\
+    >>> parse_floats('Helmut')
+    []
+    >>> parse_floats('This is 1.0 number an 50.345345345 apple')
+    [1.0, 50.345345345]
+    >>> parse_floats('2.2 3.5 3.7', maxcount=2)
+    [2.2, 3.5]
+    """
+    result = []
+    for number in re.findall(r'\d+\.\d+', text):
+        result.append(float(number))
+    if maxcount is None:
+        return result
+    return result[0:maxcount]

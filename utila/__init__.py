@@ -68,6 +68,7 @@ from utila.collection import starmap
 from utila.config import dump_config
 from utila.config import load_config
 # convert
+from utila.convert import parse_floats
 from utila.convert import parse_numbers
 from utila.convert import simplify
 from utila.convert import str2bool
