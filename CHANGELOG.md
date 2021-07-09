@@ -2,6 +2,18 @@
 
 Every noteable change is logged here.
 
+## v2.39.0
+
+### Feature
+
+* add method to parse float (e18f3e0455d9)
+* add flag to enable converting \n to /n (532e68a20a62)
+* add roundme decorator (5793f184841f)
+
+### Documentation
+
+* extend interface documentation (9a8ae48d7dc3)
+
 ## v2.38.0
 
 ### Feature
