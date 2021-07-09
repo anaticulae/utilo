@@ -63,13 +63,19 @@ def level_current() -> Level:
     return LEVEL
 
 
-def log(*msg: str, level: Level = Level.LOGGING, end: str = NEWLINE):
-    """Write message to logger
+def log(
+    *msg: str,
+    level: Level = Level.LOGGING,
+    forwardnewline: bool = True,
+    end: str = NEWLINE,
+):
+    r"""Write message to logger.
 
     Args:
         msg(str): message to log
         level(Level): define logging level which is required to print on
                       console
+        forwardnewline(bool): if True, do not convert \n to /n
         end(str): line ending
     Hint:
         Logging with default arguments will log a newline
@@ -83,7 +89,7 @@ def log(*msg: str, level: Level = Level.LOGGING, end: str = NEWLINE):
     # avoid problems when using with windows console(cp1252)
     msg = fix_encoding(msg)
     # TODO: msg = NEWLINE.join(wrap(msg, 120))
-    msg = forward_slash(msg, newline=True)
+    msg = forward_slash(msg, newline=forwardnewline)
     write_log(msg, end=end)
     print(msg, end=end, file=sys.stdout, flush=True)
 
