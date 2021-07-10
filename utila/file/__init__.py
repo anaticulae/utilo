@@ -23,7 +23,6 @@ import sys
 
 import utila
 import utila.file.securewrapper
-from utila.file.securewrapper import open  # pylint:disable=redefined-builtin
 
 # width of tempfile name
 MAX_NUMBER = 32
@@ -69,9 +68,15 @@ def file_append(path: str, content: str, create: bool = False, private: bool = F
     assert create or os.path.exists(path), str(path)
     if not os.path.exists(path):
         file_create(path, content, private=private)
-    else:
-        with open(path, mode='a', newline=utila.NL, encoding=utila.U8, private=private) as fp: # yapf:disable
-            fp.write(content)
+        return
+    with utila.file.securewrapper.open(
+            path,
+            mode='a',
+            newline=utila.NL,
+            encoding=utila.U8,
+            private=private,
+    ) as fp:
+        fp.write(content)
 
 
 def file_create(path: str, content: str = '', private: bool = False):
@@ -87,7 +92,13 @@ def file_create(path: str, content: str = '', private: bool = False):
     parent = os.path.split(path)[0]
     assert os.path.exists(parent) or not parent, f'{parent} does not exists'
     assert not os.path.exists(path), f'{path} already exists'
-    with open(path, 'w', utila.NL, utila.U8, private=private) as fp:
+    with utila.file.securewrapper.open(
+            path,
+            mode='w',
+            newline=utila.NL,
+            encoding=utila.U8,
+            private=private,
+    ) as fp:
         fp.write(content)
 
 
@@ -108,7 +119,13 @@ def file_create_tmp(
     >>> assert file_create_tmp('temporary content')
     """
     path = tmpfile(root)
-    with open(path, 'w', utila.NEWLINE, utila.UTF8, private=private) as fp:
+    with utila.file.securewrapper.open(
+            path,
+            mode='w',
+            newline=utila.NEWLINE,
+            encoding=utila.UTF8,
+            private=private,
+    ) as fp:
         fp.write(content)
     return path
 
@@ -126,20 +143,26 @@ def file_create_binary(path: str, content: bytes = b'', private: bool = False):
     parent = os.path.split(path)[0]
     assert os.path.exists(parent) or not parent, f'{parent} does not exists'
     assert not os.path.exists(path), f'{path} already exists'
-    with open(path, mode='wb', private=private) as fp:
+    with utila.file.securewrapper.open(path, mode='wb', private=private) as fp:
         fp.write(content)
 
 
 def file_read(path: str, size: int = -1, private: bool = False):
     utila.exists_assert(path)
-    with open(path, mode='r', newline=utila.NL, encoding=utila.U8, private=private) as fp: # yapf:disable
+    with utila.file.securewrapper.open(
+            path,
+            mode='r',
+            newline=utila.NL,
+            encoding=utila.U8,
+            private=private,
+    ) as fp:
         return fp.read(size)
 
 
 def file_read_binary(path: str, size: int = -1, private: bool = False) -> bytes:
     """Read binary file content"""
     utila.exists_assert(path)
-    with open(path, mode='rb', private=private) as fp:
+    with utila.file.securewrapper.open(path, mode='rb', private=private) as fp:
         content = fp.read(size)
     return content
 
@@ -169,7 +192,13 @@ def file_replace(path: str, content: str, private: bool = False):
     if current_content == content:
         return
 
-    with open(path, mode='w', newline=utila.NL, encoding=utila.U8, private=private) as fp: # yapf:disable
+    with utila.file.securewrapper.open(
+            path,
+            mode='w',
+            newline=utila.NL,
+            encoding=utila.U8,
+            private=private,
+    ) as fp:
         fp.write(content)
 
 
@@ -192,7 +221,7 @@ def file_replace_binary(path: str, content: bytes, private: bool = False):
     if current_content == content:
         return
 
-    with open(path, mode='wb', private=private) as fp:
+    with utila.file.securewrapper.open(path, mode='wb', private=private) as fp:
         fp.write(content)
 
 
@@ -211,10 +240,8 @@ def file_compare(first: str, second: str) -> bool:
         return False
     if not os.path.isfile(second):
         return False
-
     first = hash(file_read_binary(first))
     second = hash(file_read_binary(second))
-
     return first == second
 
 
