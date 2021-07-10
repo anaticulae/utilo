@@ -130,17 +130,17 @@ def file_create_binary(path: str, content: bytes = b'', private: bool = False):
         fp.write(content)
 
 
-def file_read(path: str, private: bool = False):
+def file_read(path: str, size: int = -1, private: bool = False):
     utila.exists_assert(path)
     with open(path, mode='r', newline=utila.NL, encoding=utila.U8, private=private) as fp: # yapf:disable
-        return fp.read()
+        return fp.read(size)
 
 
-def file_read_binary(path: str, private: bool = False) -> bytes:
+def file_read_binary(path: str, size: int = -1, private: bool = False) -> bytes:
     """Read binary file content"""
     utila.exists_assert(path)
     with open(path, mode='rb', private=private) as fp:
-        content = fp.read()
+        content = fp.read(size)
     return content
 
 

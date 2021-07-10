@@ -53,7 +53,7 @@ class SecureFile(contextlib.ContextDecorator):
     def write(self, content):
         self.content += content
 
-    def read(self):
+    def read(self, size: int = -1):
         with OPEN(self.path, mode='br') as fp:
             content = fp.read()
         header = content[0:len(HEADER_STR)]
@@ -68,6 +68,10 @@ class SecureFile(contextlib.ContextDecorator):
             content = utila.secret.decrypt(content, string=string)
         elif not self.binary:
             content: str = bytes.decode(content, 'utf8')
+        if size != -1:
+            if isinstance(size, tuple):
+                return content[size[0]:size[0]]
+            return content[0:size]
         return content
 
 
