@@ -239,6 +239,7 @@ def inside(current: str, expected: str, maxdiff: float = 0.1) -> bool:
 
 def lower(*items):
     """Lowercase list of strings.
+
     >>> lower('Helmut', 'MANFRED')
     ['helmut', 'manfred']
     """
@@ -247,6 +248,7 @@ def lower(*items):
 
 def strip(*items):
     """Strip list of strings.
+
     >>> strip(' Helmut  ', ' MANFRED')
     ['Helmut', 'MANFRED']
     """
