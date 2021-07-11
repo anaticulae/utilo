@@ -327,6 +327,7 @@ def findindexs(text: str, tokens: tuple) -> list:
     >>> findindexs('ABCDEFGAHCABCDEFGAHC', ('A', 'DE'))
     [0, 3, 7, 10, 13, 17]
     """
+    assert len(tokens) == len(set(tokens)), f'duplicated tokes: {tokens}'
     result = []
     for token in tokens:
         result.extend(findindex(text, token))
