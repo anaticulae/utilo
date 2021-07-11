@@ -294,7 +294,7 @@ def char_rate(text: str) -> float:
     0.67
     """
     if not text:
-        return 0
+        return 0.0
     text = text.lower()
     selected = len([item for item in text if item in ALPHA])
     rate = selected / len(text)
