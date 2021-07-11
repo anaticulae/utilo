@@ -2,6 +2,13 @@
 
 Every noteable change is logged here.
 
+## v2.40.0
+
+### Feature
+
+* add method to find multiple tokens (a7a2226c788a)
+* add parameter to read not the whole chunk (84cd2e207ba9)
+
 ## v2.39.0
 
 ### Feature
