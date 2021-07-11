@@ -318,3 +318,15 @@ def findindex(text: str, token: str) -> list:
             break
         result.append(index)
     return result
+
+
+def findindexs(text: str, tokens: tuple) -> list:
+    """\
+    >>> findindexs('ABCDEFGAHCABCDEFGAHC', ('A', 'DE'))
+    [0, 3, 7, 10, 13, 17]
+    """
+    result = []
+    for token in tokens:
+        result.extend(findindex(text, token))
+    result.sort()
+    return result
