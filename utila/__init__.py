@@ -154,6 +154,7 @@ from utila.file.hashed import file_hash
 # file:info
 from utila.file.info import file_age
 from utila.file.info import file_line_length
+from utila.file.info import file_size
 from utila.file.info import isfilepath
 # loader
 from utila.file.loader import LazyFile
