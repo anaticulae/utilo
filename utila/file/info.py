@@ -51,11 +51,15 @@ def file_age(path: str) -> int:
     return timediff
 
 
-def file_size(path: str) -> int:
-    """\
+def file_size(path: str) -> float:
+    """Return file size in MB.
+
     >>> file_size(__file__) > 0
     True
     """
     utila.exists_assert(path)
     status = os.stat(path)
-    return status.st_size
+    result = status.st_size
+    # convert to MB
+    result = result / 1000000
+    return result
