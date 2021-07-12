@@ -2,6 +2,13 @@
 
 Every noteable change is logged here.
 
+## v2.40.1
+
+### Feature
+
+* add method to determine file size (fc0711a31eb3)
+* ensure to have unique tokens (f0af93497b98)
+
 ## v2.40.0
 
 ### Feature
