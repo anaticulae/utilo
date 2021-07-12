@@ -2,6 +2,16 @@
 
 Every noteable change is logged here.
 
+## v2.40.2
+
+### Feature
+
+* convert file size to MB (364ff0c01928)
+
+### Fix
+
+* clarify parameter (25bc1dbb29d1)
+
 ## v2.40.1
 
 ### Feature
