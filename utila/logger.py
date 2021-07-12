@@ -66,7 +66,7 @@ def level_current() -> Level:
 def log(
     *msg: str,
     level: Level = Level.LOGGING,
-    forwardnewline: bool = True,
+    preserve_newlines: bool = True,
     end: str = NEWLINE,
 ):
     r"""Write message to logger.
@@ -75,7 +75,7 @@ def log(
         msg(str): message to log
         level(Level): define logging level which is required to print on
                       console
-        forwardnewline(bool): if True, do not convert \n to /n
+        preserve_newlines(bool): if True, do not convert \n to /n
         end(str): line ending
     Hint:
         Logging with default arguments will log a newline
@@ -89,7 +89,7 @@ def log(
     # avoid problems when using with windows console(cp1252)
     msg = fix_encoding(msg)
     # TODO: msg = NEWLINE.join(wrap(msg, 120))
-    msg = forward_slash(msg, newline=forwardnewline)
+    msg = forward_slash(msg, newline=preserve_newlines)
     write_log(msg, end=end)
     print(msg, end=end, file=sys.stdout, flush=True)
 
