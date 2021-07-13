@@ -2,6 +2,17 @@
 
 Every noteable change is logged here.
 
+## v2.40.3
+
+### Feature
+
+* add option to define not all file parameter (533cb73aa7c3)
+* add option to define different file ext (05ccd1b83321)
+
+### Fix
+
+* use str representation as file path (1df11cab45fb)
+
 ## v2.40.2
 
 ### Feature
