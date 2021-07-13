@@ -222,8 +222,7 @@ def prepare_inputs(  # pylint:disable=too-many-locals,too-complex,too-many-branc
         (name, ext) = item.name, item.ext
         for inspace in inspaces:
             if isinstance(item, utila.feature.userinput.ResultFile):
-                producer = item.producer
-                filename = f'{producer}__{name}.{ext}'
+                filename = str(item)
                 filepath = os.path.join(inspace, filename)
                 if os.path.exists(filepath):
                     result.append(filepath)
