@@ -75,9 +75,16 @@ class Directory(Pattern):
 class ResultFile(File):
     producer: str = 'default'
 
-    def __init__(self, producer: str, name: str, optional: bool = False):
+    def __init__(
+        self,
+        producer: str,
+        name: str,
+        ext: str = 'yaml',
+        optional: bool = False,
+    ):
         self.producer = producer
         self.name = name
+        self.ext = ext
         self.optional = optional
 
     def __str__(self):
