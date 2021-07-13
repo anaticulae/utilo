@@ -88,6 +88,10 @@ class ResultFile(File):
         self.optional = optional
 
     def __str__(self):
+        if not self.name and not self.ext:
+            return self.producer
+        if not self.ext:
+            return '%s__%s' % (self.producer, self.name)
         return '%s__%s.%s' % (self.producer, self.name, self.ext)
 
 
