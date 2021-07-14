@@ -125,6 +125,7 @@ def parse_single(pattern, pagecount):
 
 
 PageNumbers = typing.TypeVar('PageNumbers', int, tuple)
+Iterable = (list, tuple)
 
 
 def should_skip(page: PageNumbers, pages: tuple) -> bool:  # pylint:disable=W0621
@@ -143,6 +144,8 @@ def should_skip(page: PageNumbers, pages: tuple) -> bool:  # pylint:disable=W062
     Examples:
     >>> should_skip(5, (1, 2, 3))
     True
+    >>> should_skip(2, [1, 2, 3])
+    False
     >>> should_skip(5, None)
     False
     >>> should_skip(6, 5)
@@ -158,10 +161,10 @@ def should_skip(page: PageNumbers, pages: tuple) -> bool:  # pylint:disable=W062
     """
     if pages is None:
         return False
-    if not isinstance(pages, tuple):
+    if not isinstance(pages, Iterable):
         pages = (pages,)
     # support multiple pages
-    if isinstance(page, tuple):
+    if isinstance(page, Iterable):
         # ensure that all (page..) are in range, all selected and all inside
         start, end = min(page), max(page)
         start, end = math.floor(start), math.ceil(end)
