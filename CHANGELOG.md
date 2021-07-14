@@ -2,6 +2,17 @@
 
 Every noteable change is logged here.
 
+## v2.40.4
+
+### Feature
+
+* increase required log level to display profile time (73810c53c3ee)
+* add option to disable length validation (5af52fb642c9)
+
+### Fix
+
+* ensure that list and tuple is handled equal (87738ce34af8)
+
 ## v2.40.3
 
 ### Feature
