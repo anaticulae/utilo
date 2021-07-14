@@ -166,7 +166,7 @@ def should_skip(page: PageNumbers, pages: tuple) -> bool:  # pylint:disable=W062
         start, end = min(page), max(page)
         start, end = math.floor(start), math.ceil(end)
         return any(should_skip(pp, pages) for pp in range(start, end + 1))
-    return not page in pages
+    return page not in pages
 
 
 PageContent = typing.TypeVar('PageContent', typing.List, typing.Dict)
