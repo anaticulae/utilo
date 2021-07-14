@@ -216,7 +216,10 @@ class profile(contextlib.ContextDecorator):  # pylint:disable=C0103
     """ContextManager and Decorator to profile method performance."""
 
     def __init__(self, msg: str = ''):
-        """Print runtime to logger to monitor performance
+        """Print runtime to logger to monitor performance.
+
+        Current log level must be higher than Level.LOGGING. Use -V to
+        increase logging level.
 
         Args:
             msg(str): extend runtime message to differentiate multiple runtime
@@ -230,6 +233,8 @@ class profile(contextlib.ContextDecorator):  # pylint:disable=C0103
 
     def __exit__(self, *exc_info):
         """Finish profiling."""
+        if utila.level_current() == Level.LOGGING:
+            return
         print_runtime(self.start, msg=self.msg)
 
 
