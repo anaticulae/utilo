@@ -64,6 +64,8 @@ def parse_tuple(
 ) -> tuple:
     """Convert `raw` to tuple of `typ`.
 
+    If `length` is None the parsed tuple length is not verified.
+
     >>> parse_tuple('True false True False true', length=5, typ=bool)
     (True, False, True, False, True)
     >>> parse_tuple('9.0', length=1, typ=int)
@@ -86,7 +88,7 @@ def parse_tuple(
     if typ is float:
         items = utila.math.roundme(*items, convert=False, none=none)
     items = tuple(items)
-    assert len(items) == length, f'could not parse {raw}'
+    assert length is None or len(items) == length, f'could not parse {raw}'
     return items
 
 
