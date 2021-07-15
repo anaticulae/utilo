@@ -2,6 +2,17 @@
 
 Every noteable change is logged here.
 
+## v2.40.5
+
+### Feature
+
+* add max_diff parameter to intersecting lines cluster (a15bf2ae126d)
+* inform developer about bad configured features/workplan (f31ebd2c3930)
+
+### Fix
+
+* show version and program name on all verbose variants (84d71de77d82)
+
 ## v2.40.4
 
 ### Feature
