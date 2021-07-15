@@ -29,6 +29,9 @@ def prepare_description(
     Returns:
         Prepared description with out- and input-parameter.
     """
+    assert len(features) == len(workplan), (
+        f'workplan length: {len(workplan)} does not match '
+        f'with detected feature folder length: {len(features)}')
     description = description or ''  # convert None to empty
     result = []
     for index, step in enumerate(workplan):

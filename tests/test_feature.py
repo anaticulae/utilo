@@ -70,7 +70,6 @@ def workplan(name: str = 'complete_worker'):
             ),
         ),
     ]
-
     return plan
 
 
@@ -135,7 +134,7 @@ def test_featurepack_without_input(featureexample, monkeypatch):
         context.setattr(sys, 'argv', [PROCESS_NAME])
         context.syspath_prepend(root)
         with pytest.raises(SystemExit) as result:
-            pack(workplan(), root=root, featurepackage=package)
+            pack(workplan() * 2, root=root, featurepackage=package)
         assert returncode(result) == SUCCESS
 
 
@@ -190,7 +189,7 @@ def test_featurepack_with_different_worker(  #pylint:disable=W0621
         context.syspath_prepend(root)
 
         with pytest.raises(SystemExit) as result:
-            pack(workplan(name), root=root, featurepackage=package)
+            pack(workplan(name) * 3, root=root, featurepackage=package)
         assert returncode(result) == expected_result, str(result)
 
 
@@ -200,7 +199,7 @@ def test_featurepack(featureexample, monkeypatch):  #pylint:disable=W0621
         context.setattr(sys, 'argv', [PROCESS_NAME, '-i', root, '-o', root])
         context.syspath_prepend(root)
         with pytest.raises(SystemExit) as result:
-            pack(workplan(), root=root, featurepackage=package)
+            pack(workplan() * 2, root=root, featurepackage=package)
         assert returncode(result) == SUCCESS, str(result)
 
 
