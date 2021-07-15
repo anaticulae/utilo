@@ -187,14 +187,30 @@ def intersecting_rectangle_cluster(
     )
 
 
-def intersecting_line_cluster(todo, min_elements: int = 1):
+def intersecting_line_cluster(
+    todo,
+    min_elements: int = 1,
+    max_diff: float = 0.0,
+):
 
     def classifier(candidat, clusteritem):
-        return utila.intersecting_lines(candidat, clusteritem)
+        return utila.intersecting_lines(
+            candidat,
+            clusteritem,
+            max_diff=max_diff,
+        )
+
+    def withdiff(candidat, clusteritem):
+        try:
+            return classifier(candidat, clusteritem)
+        except utila.IndenticalLineError:
+            # some very near lines can be detected as eqaul if max_diff is
+            # allowed. We include them into the cluster.
+            return True
 
     return utila.determine_cluster(
         todo,
-        classifier,
+        withdiff if max_diff else classifier,
         min_elements=min_elements,
         strategy=utila.classifier.strategy.MatchStrategy.ANY,
     )
