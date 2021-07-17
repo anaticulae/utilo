@@ -298,3 +298,16 @@ def rectangle_ensure_bounding(rectangle: Rectangle) -> Rectangle:
         max(rectangle[1], rectangle[3]),
     )
     return utila.roundme(result)
+
+
+def rectangle_center(rectangle: Rectangle) -> tuple:
+    """\
+    >>> rectangle_center((20, 40, 100, 140))
+    (60.0, 90.0)
+    """
+    center = (
+        (rectangle[0] + rectangle[2]) / 2,
+        (rectangle[1] + rectangle[3]) / 2,
+    )
+    center = utila.roundme(center)
+    return center

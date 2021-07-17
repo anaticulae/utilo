@@ -258,6 +258,7 @@ from utila.math.rectangle import Rectangles
 from utila.math.rectangle import dot_in_rectangle
 from utila.math.rectangle import intersecting_rectangle
 from utila.math.rectangle import rectangle_border
+from utila.math.rectangle import rectangle_center
 from utila.math.rectangle import rectangle_ensure_bounding
 from utila.math.rectangle import rectangle_height
 from utila.math.rectangle import rectangle_inside
