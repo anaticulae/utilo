@@ -2,6 +2,13 @@
 
 Every noteable change is logged here.
 
+## v2.41.0
+
+### Feature
+
+* add method to determine center of rectangle (913ffefa3ec8)
+* add dot in rectangle to public API (894c004147ea)
+
 ## v2.40.5
 
 ### Feature
