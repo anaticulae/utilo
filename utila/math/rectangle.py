@@ -267,6 +267,23 @@ def rectangle_border(rectangle: tuple):
     yield (x0, y0, x0, y1)
 
 
+def rectangle_border_points(rectangle: tuple):
+    """Generator to run round trip on rectangle border.
+
+    Visit: (left,top), (right, top), (right, bottom), (left, bottom)
+
+    >>> list(rectangle_border_points((0, 0, 55, 50)))
+    [(0, 0), (55, 0), (55, 50), (0, 50)]
+
+    Hint: Left coordinate is always smaller equal than right coordinate
+    """
+    x0, y0, x1, y1 = rectangle
+    yield x0, y0
+    yield x1, y0
+    yield x1, y1
+    yield x0, y1
+
+
 def rectangle_roundsmall(rectangle: Rectangle) -> Rectangle:
     """Round border in direction to the center of the rectangle to get a
     `smaller` rectangle which fit in more parent rectangles.
