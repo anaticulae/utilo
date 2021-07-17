@@ -2,6 +2,16 @@
 
 Every noteable change is logged here.
 
+## v2.41.1
+
+### Feature
+
+* add method to visit rectangle border points (21086707153b)
+
+### Fix
+
+* fix intersecting rectangle checker (b09b83ff8406)
+
 ## v2.41.0
 
 ### Feature
