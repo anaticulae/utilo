@@ -171,6 +171,10 @@ def intersecting_rectangle_cluster(
     min_elements: int = 1,
     bounding: callable = None,
 ):
+    """\
+    >>> len(intersecting_rectangle_cluster(((99.11, 112.15, 496.16, 272.75), (195.33, 296.66, 399.95, 321.37))))
+    2
+    """
     bounding = bounding if bounding else lambda item: item
 
     def classifier(candidat, clusteritem):
