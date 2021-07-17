@@ -251,7 +251,7 @@ def rectangle_border(rectangle: tuple):
 
     Visit: (left,top), (right, top), (right, bottom), (left, bottom), (left, top)
 
-    >>> list(rectangle_border((0,0, 55, 50)))
+    >>> list(rectangle_border((0, 0, 55, 50)))
     [(0, 0, 55, 0), (55, 0, 55, 50), (0, 50, 55, 50), (0, 0, 0, 50)]
 
     Hint: Left coordinate is always smaller equal than right coordinate
