@@ -225,13 +225,16 @@ def intersecting_rectangle(first: tuple, second: tuple) -> bool:
     False
     >>> intersecting_rectangle((0, 0, 50, 50), (0, 0, 50, 50)) # identical
     True
+    >>> intersecting_rectangle((99.11, 112.15, 496.16, 272.75), (195.33, 296.66, 399.95, 321.37))
+    False
     """
-    x = [first[0], first[2], second[0], second[2]]
-    y = [first[1], first[3], second[1], second[3]]
-    middle = sum(x) / 4, sum(y) / 4
-    if dot_in_rectangle(first, middle):
+    for point in rectangle_border_points(first):
+        if not dot_in_rectangle(second, point):
+            continue
         return True
-    if dot_in_rectangle(second, middle):
+    for point in rectangle_border_points(second):
+        if not dot_in_rectangle(first, point):
+            continue
         return True
     return False
 
