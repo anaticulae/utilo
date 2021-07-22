@@ -2,6 +2,12 @@
 
 Every noteable change is logged here.
 
+## v2.41.2
+
+### Feature
+
+* add None as optional data type (616a9ee04a22)
+
 ## v2.41.1
 
 ### Feature
