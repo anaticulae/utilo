@@ -62,7 +62,10 @@ def format_inputs(step) -> str:
     for source in step.inputs:
         if isinstance(source, utila.feature.userinput.Value):
             # for example: <class 'float'>
-            datatype = str(source.typ).split("'")[1]
+            if source.typ is None:
+                datatype = None
+            else:
+                datatype = str(source.typ).split("'")[1]
             msg = f'{source.name}({datatype})={source.defaultvar}'
             inputs.append(msg)
         elif isinstance(source, utila.feature.userinput.Bool):

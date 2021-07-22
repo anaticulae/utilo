@@ -174,6 +174,9 @@ def prepare_variables(variables, args):
         if not isinstance(variable, utila.Value):
             continue
         typ = variable.typ
+        if typ is None:
+            # do not convert data type, just pass it as it is
+            typ = lambda x: x
         if typ is bool:
             # convert cause every non empty string is converted to true
             typ = utila.str2bool
