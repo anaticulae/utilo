@@ -12,7 +12,6 @@ import contextlib
 import enum
 import functools
 import math
-import operator
 import statistics
 import typing
 
