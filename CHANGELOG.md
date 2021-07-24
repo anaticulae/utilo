@@ -2,6 +2,13 @@
 
 Every noteable change is logged here.
 
+## v2.41.3
+
+### Feature
+
+* rename interface (68a5e581fd7a)
+* add option to group complex objects (b48eebd806ab)
+
 ## v2.41.2
 
 ### Feature
