@@ -83,7 +83,7 @@ def groupby_ascending(items) -> int:
 
 
 def groupby_diff(
-    pages: tuple,
+    items: tuple,
     *,
     diff=1,
     selector: callable = None,
@@ -98,13 +98,13 @@ def groupby_diff(
     []
     """
     assert diff >= 0, 'negative diff'
-    if not pages:
+    if not items:
         return []
     selector = selector if selector else lambda x: x
     if sort:
-        pages = sorted(pages, key=selector)
-    result = [[pages[0]]]
-    for item in pages[1:]:
+        items = sorted(items, key=selector)
+    result = [[items[0]]]
+    for item in items[1:]:
         if (selector(item) - selector(result[-1][-1])) <= diff:
             result[-1].append(item)
         else:
