@@ -85,7 +85,7 @@ def groupby_ascending(items) -> int:
 def groupby_diff(
     items: tuple,
     *,
-    diff=1,
+    maxdiff: int = 1,
     selector: callable = None,
     sort: bool = True,
 ) -> list:
@@ -97,7 +97,7 @@ def groupby_diff(
     >>> groupby_diff([])
     []
     """
-    assert diff >= 0, 'negative diff'
+    assert maxdiff >= 0, f'negative maxdiff: {maxdiff}'
     if not items:
         return []
     selector = selector if selector else lambda x: x
@@ -105,7 +105,7 @@ def groupby_diff(
         items = sorted(items, key=selector)
     result = [[items[0]]]
     for item in items[1:]:
-        if (selector(item) - selector(result[-1][-1])) <= diff:
+        if (selector(item) - selector(result[-1][-1])) <= maxdiff:
             result[-1].append(item)
         else:
             result.append([item])

@@ -325,7 +325,7 @@ def simplify_pages(numbers: tuple) -> str:
         numbers = [numbers]
     if not numbers:
         return ':'
-    diffed = utila.groupby_diff(numbers, diff=1)
+    diffed = utila.groupby_diff(numbers, maxdiff=1)
     collected = []
     for item in diffed:
         if len(item) == 1:
