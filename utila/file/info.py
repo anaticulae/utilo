@@ -63,3 +63,13 @@ def file_size(path: str) -> float:
     # convert to MB
     result = result / 1000000
     return result
+
+
+def path_parent(path: str) -> str:
+    """\
+    >>> path_parent(__file__)
+    '...utila/utila/file'
+    """
+    parent = os.path.split(path)[0]
+    parent = utila.forward_slash(parent, newline=False)
+    return parent
