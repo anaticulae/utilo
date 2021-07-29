@@ -375,9 +375,8 @@ def parse(parser: argparse.ArgumentParser):
     # verify version and/or verbose before parsing to avoid conflicts with
     # required resources when using e.g. `abel --version --verbose`
     if '--version' in sys.argv or '-v' in sys.argv:
-        verbose = any(item in sys.argv for item in '--verbose -V -VV -VVV'.split()) # yapf:disable
         version = ''
-        if verbose:
+        if isverbose(sys.argv):
             assert parser.prog, 'missing cli.prog flag'
             version = f'{parser.prog} '
         try:
@@ -394,6 +393,12 @@ def parse(parser: argparse.ArgumentParser):
         for key, value in args.items()
     }
     return args
+
+
+def isverbose(args) -> bool:
+    pattern = '--verbose -V -VV -VVV'.split()
+    result = any(item in args for item in pattern)
+    return result
 
 
 DISABLE_PATTERN = r'^[-]{1,2}(?P<text>[\w\-\_^!]+?)(?:[!])$'
