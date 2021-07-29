@@ -18,6 +18,7 @@ def prepare_description(
     description: str,
     workplan: list,
     features: 'utila.feature.collector.FeatureInterfaces',
+    rename: callable = None,
 ) -> str:
     """Create help description with in- and outports for program steps.
 
@@ -26,6 +27,7 @@ def prepare_description(
         description(str): text which is presented in --help view
         workplan(list): list of WorkingStep's
         features(list): list of feature step documentation
+        rename(call): rename outputs
     Returns:
         Prepared description with out- and input-parameter.
     """
@@ -50,7 +52,7 @@ def prepare_description(
         inputs = format_inputs(step)
         result.append(inputs)
         # prepare outputs
-        outputs = format_outputs(step, name)
+        outputs = format_outputs(step, name, rename=rename)
         result.append(outputs)
         result.append('')
     raw = utila.NEWLINE.join(result)
@@ -86,7 +88,7 @@ def format_inputs(step) -> str:
     return raw
 
 
-def format_outputs(step, name) -> str:
+def format_outputs(step, name, rename: callable = None) -> str:
     outputs = []
     for dest in step.outputs:
         try:
@@ -94,8 +96,12 @@ def format_outputs(step, name) -> str:
         except ValueError:
             fname, fending = dest, 'yaml'
         outputs.append(f'{name}__{step.name}_{fname}.{fending}')
-
+    # rename outputs if given
+    if rename:
+        outputs = rename(outputs)
+    # sort outputs alphabetically
     outputs = sorted(outputs)
+    # group outputs into columns
     raw = ''.join('>%s   ' % item.ljust(30, ' ') for item in outputs)
     raw = textwrap.fill(raw, 120)
     return raw
