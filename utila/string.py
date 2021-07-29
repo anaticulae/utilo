@@ -335,17 +335,17 @@ def findindexs(text: str, tokens: tuple) -> list:
     return result
 
 
-def rreplace(content: str, token: str, replacement: str, count: int = 1):
+def rreplace(content: str, pattern: str, replace: str, count: int = 1):
     """\
     >>> rreplace('/test_figures_run_bachelor56page270/'
     ... 'figureo__standard_figures/62711c57d36', 'figureo__standard_figures', 'repl')
     '/test_figures_run_bachelor56page270/repl/62711c57d36'
     """
     while count > 0:
-        index = content.rfind(token)
+        index = content.rfind(pattern)
         if index == -1:
             break
-        rend = index + len(token)
-        content = content[:index] + replacement + content[rend:]
+        rend = index + len(pattern)
+        content = content[:index] + replace + content[rend:]
         count = count - 1
     return content
