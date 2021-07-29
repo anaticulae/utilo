@@ -2,6 +2,13 @@
 
 Every noteable change is logged here.
 
+## v2.42.0
+
+### Feature
+
+* add rename hook to rename outpath before writing (984701db31d9)
+* add method to replace from left to right (d38e031b0dff)
+
 ## v2.41.3
 
 ### Feature
