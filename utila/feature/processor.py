@@ -32,6 +32,7 @@ def process(  # pylint:disable=R0914
     processes: int = 1,
     pages: list = None,
     errorhook: ErrorHook = None,
+    rename: callable = None,
     before: callable = None,
     after: callable = None,
     *,
@@ -53,6 +54,7 @@ def process(  # pylint:disable=R0914
         processes(int): maximal parallel execution steps
         pages(list): list with processed pages
         errorhook(ErrorHook): if Error occurs write it to ErrorHook
+        rename(callable): rename outputs
         before(callable): run before process plan
         after(callable): run before process plan
         failfast(bool): quit after first failure
@@ -96,6 +98,7 @@ def process(  # pylint:disable=R0914
                 results,
                 errorhook=errorhook,
                 failfast=failfast,
+                rename=rename,
             )
             if failfast and failure:
                 return utila.FAILURE
@@ -255,6 +258,7 @@ def write_level_result(
     errorhook: ErrorHook = None,
     *,
     failfast=False,
+    rename: callable = None,
 ) -> int:
     success = True
     for result in results:
@@ -267,7 +271,10 @@ def write_level_result(
             if failfast:
                 return utila.FAILURE
         else:
-            written = write_result_safely(*completed)
+            written = write_result_safely(
+                *completed,
+                rename=rename,
+            )
             if written == utila.FAILURE:
                 success = False
                 if failfast:
@@ -279,6 +286,7 @@ def write_result_safely(
     result: typing.List[str],
     processstep: str,
     outputstep: typing.List[str],
+    rename: callable = None,
 ) -> int:
     """Write `result`s to desired `outputstep`s and catch problems.
 
@@ -286,6 +294,7 @@ def write_result_safely(
         result(list): list of content to write
         processstep(name): name of process step
         outputstep(list): list of output paths
+        rename(callable): rename outpath before writing
     Returns:
         Returns return code SUCCESS or FAILURE.
     """
@@ -296,7 +305,7 @@ def write_result_safely(
             result,
         )
         for path, content in zip(outputstep, result):
-            write_resource(path, content)
+            write_resource(path, content, rename=rename)
         return utila.SUCCESS
     except TypeError as msg:
         utila.error(f'while processing {processstep}')
@@ -306,15 +315,18 @@ def write_result_safely(
         return utila.FAILURE
 
 
-def write_resource(path, content):
+def write_resource(path, content, rename: callable = None):
     if not isinstance(path, str):
         # multiple resource
         for first, second in zip(path, content):
-            write_resource(first, second)
+            write_resource(first, second, rename=rename)
         return
     if content.__class__.__name__ == 'object':
         utila.log(f'no result, skip writing: {path}')
         return
+    # Rename via rename-hook
+    if rename:
+        path = rename(path)
     # Ensure that parent folder exists. It is possible to create folder
     # via `hello/folder/content.txt`.
     parent, _ = os.path.split(path)

@@ -96,6 +96,7 @@ class FeaturePackConfig:  # pylint:disable=too-many-instance-attributes
     singleinput: bool = False
     verboseflag: bool = True
     configflag: bool = False
+    rename: callable = None
     version: str = None
 
     def __post_init__(self):
@@ -235,6 +236,7 @@ def featurepack(  # pylint:disable=too-many-locals
                 profiling=profiling,
                 verbose=verbose,
                 wait=wait,
+                rename=config.rename,
             )
     return completed
 
