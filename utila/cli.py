@@ -550,9 +550,8 @@ def pages_fromargs(args) -> tuple:
     (0, 5, 10, 11, 12, 13, 14)
     """
     pages = args.get(PAGES_FLAG, [utila.ALL_PAGES])
-    pages = [str(item) for item in pages]
-    joined = ','.join(pages)
-    result = utila.parse_pages(joined)  # pylint:disable=R0204
+    joined = utila.from_tuple(pages, separator=',')
+    result = utila.parse_pages(joined)
     return result
 
 
