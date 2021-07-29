@@ -89,7 +89,7 @@ def file_create(path: str, content: str = '', private: bool = False):
     Hint:
         If file exists, an assertion is raised.
     """
-    parent = os.path.split(path)[0]
+    parent = utila.path_parent(path)
     assert os.path.exists(parent) or not parent, f'{parent} does not exists'
     assert not os.path.exists(path), f'{path} already exists'
     with utila.file.securewrapper.open(
@@ -140,7 +140,7 @@ def file_create_binary(path: str, content: bytes = b'', private: bool = False):
     Hint:
         If file already exists, an assertion is raised.
     """
-    parent = os.path.split(path)[0]
+    parent = utila.path_parent(path)
     assert os.path.exists(parent) or not parent, f'{parent} does not exists'
     assert not os.path.exists(path), f'{path} already exists'
     with utila.file.securewrapper.open(path, mode='wb', private=private) as fp:
