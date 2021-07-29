@@ -315,6 +315,7 @@ from utila.string import istemplate_replaced
 from utila.string import lower
 from utila.string import normalize_text
 from utila.string import normalize_whitespaces
+from utila.string import rreplace
 from utila.string import shrink
 from utila.string import similar
 from utila.string import simplify_chars
