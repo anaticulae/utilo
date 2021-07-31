@@ -303,6 +303,7 @@ def write_result_safely(
         outputstep, result = utila.feature.outpath.prepare_outputpath(
             outputstep,
             result,
+            rename=rename,
         )
         for path, content in zip(outputstep, result):
             write_resource(path, content, rename=rename)

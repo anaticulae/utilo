@@ -13,9 +13,9 @@ import re
 import utila.feature
 
 
-def prepare_outputpath(outputstep, result):
+def prepare_outputpath(outputstep, result, rename: callable = None):
     outputstep, result = replace_datatype_pattern(outputstep, result)
-    outputstep = replace_star_pattern(outputstep, result)
+    outputstep = replace_star_pattern(outputstep, result, rename=rename)
     outputstep = replace_filehash_pattern(outputstep, result)
     return outputstep, result
 
@@ -61,7 +61,7 @@ def replace_datatype_pattern(outputstep, result):  # pylint:disable=R1260
     return outputstep, result
 
 
-def replace_star_pattern(outputstep, result):
+def replace_star_pattern(outputstep, result, rename: callable = None):
     variable_returnvalues = variable_parameter(outputstep)
     if not variable_returnvalues:
         return outputstep
@@ -78,6 +78,8 @@ def replace_star_pattern(outputstep, result):
     # adding list of files in parent folder is possible.
     parent = utila.path_parent(outputstep[0])
     if result:
+        if rename:
+            parent = rename(parent)
         # only create output folder if some content is to write
         os.makedirs(parent, exist_ok=True)
     # replace star-pattern to archive indexed output paths
