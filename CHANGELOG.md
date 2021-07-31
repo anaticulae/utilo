@@ -2,6 +2,18 @@
 
 Every noteable change is logged here.
 
+## v2.43.0
+
+### Feature
+
+* add method to manipulate tuple (1d7e05ee5de5)
+* add method to determine parent path (d6b85b13d65d)
+
+### Fix
+
+* add missing folder renaming (b1e2ccdb59f6)
+* add renaming to cli info (365ca261a6d1)
+
 ## v2.42.0
 
 ### Feature
