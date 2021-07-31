@@ -76,7 +76,7 @@ def replace_star_pattern(outputstep, result):
     # Create parent folder if required:
     # cli_example__multistep_pages/view_*.html
     # adding list of files in parent folder is possible.
-    parent, _ = os.path.split(outputstep[0])
+    parent = utila.path_parent(outputstep[0])
     if result:
         # only create output folder if some content is to write
         os.makedirs(parent, exist_ok=True)
