@@ -331,6 +331,8 @@ from utila.tuples import parse_tuple
 from utila.tuples import ranged_list
 from utila.tuples import ranged_tuple
 from utila.tuples import ranges
+from utila.tuples import tuple_mult
+from utila.tuples import tuple_plus
 from utila.tuples import update_tuple
 # type-checker
 from utila.typechecker import Strings

@@ -113,3 +113,19 @@ def update_tuple(data: tuple, value, index: int) -> tuple:
     (1, 10, 5)
     """
     return (*data[0:index], value, *data[index + 1:])
+
+
+def tuple_mult(items, value):
+    """\
+    >>> tuple_mult((4, 6, 10), 0.5)
+    (2.0, 3.0, 5.0)
+    """
+    return tuple(item * value for item in items)
+
+
+def tuple_plus(items, value):
+    """\
+    >>> tuple_plus((4, 6, 10), 5)
+    (9, 11, 15)
+    """
+    return tuple(item + value for item in items)
