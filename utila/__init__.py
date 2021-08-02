@@ -269,6 +269,7 @@ from utila.math.rectangle import rectangle_roundsmall
 from utila.math.rectangle import rectangle_scale
 from utila.math.rectangle import rectangle_size
 from utila.math.rectangle import rectangle_width
+from utila.math.rectangle import rectangles_intersecting
 from utila.math.rectangle import sort_leftright_topdown
 from utila.math.rectangle import sort_leftright_topdown_upper
 # roman

@@ -239,6 +239,16 @@ def intersecting_rectangle(first: tuple, second: tuple) -> bool:
     return False
 
 
+def rectangles_intersecting(
+    rectangles: 'Rectangles',
+    test: 'Rectangle',
+) -> bool:
+    for item in rectangles:
+        if utila.intersecting_rectangle(item, test):
+            return True
+    return False
+
+
 def dot_in_rectangle(rectangle, dot) -> bool:
     x0, y0, x1, y1 = rectangle
     xx, yy = dot
