@@ -91,7 +91,7 @@ def log(
     # TODO: msg = NEWLINE.join(wrap(msg, 120))
     msg = forward_slash(msg, newline=preserve_newlines)
     write_log(msg, end=end)
-    print(msg, end=end, file=sys.stdout, flush=True)
+    print(msg, file=sys.stdout, end=end, flush=True)
 
 
 def call(*msg: str, end: str = NEWLINE):
@@ -117,7 +117,7 @@ def error(msg: str, *, end: str = NEWLINE):
     msg = forward_slash(msg, newline=True)
     msg = f'[ERROR] {msg}'
     write_log(msg, end=end)
-    print(msg, file=sys.stderr, flush=True, end=end)
+    print(msg, file=sys.stderr, end=end, flush=True)
 
 
 SINGLE_LOGGING = threading.Semaphore()
