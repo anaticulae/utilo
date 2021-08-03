@@ -2,6 +2,13 @@
 
 Every noteable change is logged here.
 
+## v2.44.0
+
+### Feature
+
+* make interface easier to use (129a8245d47a)
+* add method to verify if rectangle intersects rectangles (fc9870560d8c)
+
 ## v2.43.0
 
 ### Feature
