@@ -22,7 +22,7 @@ def make_tuple(length: int, *, start: int = 0) -> tuple:
     return tuple(index + start for index in range(length))
 
 
-def ranged_tuple(start, end) -> tuple:
+def ranged_tuple(start, end=None) -> tuple:
     """\
     >>> ranged_tuple(10, 15)
     (10, 11, 12, 13, 14)
