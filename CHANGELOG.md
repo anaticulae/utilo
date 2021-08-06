@@ -2,6 +2,12 @@
 
 Every noteable change is logged here.
 
+## v2.44.1
+
+### Fix
+
+* convert dataclasses correctly (36c843eab6c1)
+
 ## v2.44.0
 
 ### Feature
