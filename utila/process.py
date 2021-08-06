@@ -9,10 +9,13 @@
 
 import concurrent.futures
 import contextlib
+import copy
 import dataclasses
 import functools
+import inspect
 import os
 import subprocess  # nosec
+import threading
 
 import utila
 
@@ -264,3 +267,26 @@ class Timeout:
     def __radd__(self, value):
         # ease handling with numbers
         return self.seconds + value
+
+
+class Waiter:
+
+    def __init__(self, lock=None, done=None):
+        self.lock = threading.Lock() if not lock else lock
+        self.done = dict() if done is None else done
+
+    def please(self, method, **kwargs):
+        assert callable(method), str(method)
+        inspected = str(inspect.signature(method))
+        with self.lock:
+            hashed = self.hashme(inspected)
+            try:
+                data = self.done[hashed]
+            except KeyError:
+                data = method(**kwargs)
+                self.done[hashed] = data
+        data = copy.deepcopy(data)
+        return data
+
+    def hashme(self, args):  # pylint:disable=R0201
+        return hash(str(args))

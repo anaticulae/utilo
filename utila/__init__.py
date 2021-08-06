@@ -295,6 +295,7 @@ from utila.pages import sync_pages
 # process
 from utila.process import GeorgFork
 from utila.process import Timeout
+from utila.process import Waiter
 from utila.process import assert_failure
 from utila.process import assert_success
 from utila.process import fork

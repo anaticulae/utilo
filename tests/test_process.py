@@ -8,6 +8,7 @@
 # =============================================================================
 
 import subprocess  # nosec
+import time
 
 import pytest
 import utilatest
@@ -73,3 +74,20 @@ def test_run_timeout_not_gracefully():
     cmd = 'sleep 2'
     with pytest.raises(subprocess.TimeoutExpired):
         utila.run(cmd, timeout=utila.Timeout(seconds=0, gracefully=False))
+
+
+@pytest.mark.timeout(4, method="thread")
+def test_waiter():
+    """Use `timeout` to verify that caching works."""
+
+    def run(a: int, b: int):  # pylint:disable=C0103
+        time.sleep(1)
+        return a + b
+
+    waiter = utila.Waiter()
+    first = waiter.please(run, a=10, b=10)
+    waiter.please(run, a=15, b=10)
+    third = waiter.please(run, a=10, b=10)
+    assert first == third
+    for _ in range(10):
+        assert waiter.please(run, a=15, b=10)
