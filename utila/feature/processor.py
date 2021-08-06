@@ -65,6 +65,13 @@ def process(  # pylint:disable=R0914
         SUCCESS if all features process successfully, if not FAILURE
     """
     todo = prepare_process(todo, name, processes)
+    if todo:
+        # remove non selected items. Removing inactivate items is required
+        # to determine the levels correctly. Why?
+        # If we use 2 processes and we select --text and --font, the algo
+        # run font first and afterwards text causes it thinks to run the
+        # other inactivate levels.
+        workplan = [item for item in workplan if item.name in todo]
     workplan = utila.feature.workplan.parallelize(
         workplan,
         root=name,
