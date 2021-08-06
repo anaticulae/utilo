@@ -7,6 +7,7 @@
 # be prosecuted under federal law. Its content is company confidential.
 # =============================================================================
 
+import dataclasses
 import enum
 import re
 
@@ -63,7 +64,9 @@ def str2bool(item: str) -> bool:
     return str(item).lower() != 'false'
 
 
-def simplify(item, not_none: bool = True, removes: set = None):
+def simplify(item, not_none: bool = True, removes: set = None):  # pylint:disable=R1260
+    if dataclasses.is_dataclass(item):
+        item = dataclasses.asdict(item)
     if isinstance(item, enum.Enum):
         return item.value
     if isinstance(item, list):
@@ -71,10 +74,12 @@ def simplify(item, not_none: bool = True, removes: set = None):
     if isinstance(item, tuple):
         raw = [simplify(it, not_none=not_none, removes=removes) for it in item]
         return tuple(raw)
-    try:
-        item = vars(item)
-    except TypeError:
-        return item
+    # if item is dict already, no converting is required
+    if not isinstance(item, dict):
+        try:
+            item = vars(item)
+        except TypeError:
+            return item
     for key, value in item.items():
         item[key] = simplify(value, not_none=not_none, removes=removes)
     if not_none:

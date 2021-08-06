@@ -7,6 +7,8 @@
 # be prosecuted under federal law. Its content is company confidential.
 # =============================================================================
 
+import dataclasses
+
 import utila
 
 
@@ -15,3 +17,17 @@ def test_simplify():
     example = utila.FeaturePackConfig()
     simple = utila.simplify(example)
     assert 'prefixflag' in simple
+
+
+@dataclasses.dataclass
+class Human:
+    name: str = None
+    year: int = None
+
+
+def test_simplify_dataclass():
+    data = Human('Helm', 1920)
+    before = hash(str(data))
+    simple = utila.simplify(data)
+    assert simple
+    assert hash(str(data)) == before, 'do not change data while simplify'
