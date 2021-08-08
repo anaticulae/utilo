@@ -10,8 +10,11 @@
 import dataclasses
 import enum
 import re
+import sys
 
 import utila
+
+DIGITS_FLOAT = sys.float_info.dig
 
 
 def str2int(item: str, default=None) -> int:
@@ -23,8 +26,13 @@ def str2int(item: str, default=None) -> int:
     >>> str2int('ABC', default=13)
     13
     """
-    item = str2float(item, default=default)
-    return item if item is None else int(item)
+    if len(str(item)) < DIGITS_FLOAT:
+        # maximum number of decimal digits that can be faithfully
+        # represented in a float;
+        item = str2float(item, default=default)
+    if item is not None:
+        item: int = int(item)
+    return item
 
 
 def str2float(item: str, default=None) -> float:

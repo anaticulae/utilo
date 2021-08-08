@@ -78,6 +78,10 @@ def parse_tuple(
     ValueError: could not convert string to float: 'None'
     >>> parse_tuple('504.02;316.08;547.52;390.24', separator=';')
     (504.02, 316.08, 547.52, 390.24)
+
+    Ensure that big ints are converted properly.
+    >>> parse_tuple('1 0 2 4144807557434719406', length=4, typ=int)
+    (1, 0, 2, 4144807557434719406)
     """
     if typ is int:
         typ = utila.str2int
