@@ -2,6 +2,17 @@
 
 Every noteable change is logged here.
 
+## v2.44.2
+
+### Feature
+
+* add Waiter to cache method calls (f6a68e8f26a7)
+
+### Fix
+
+* fix selective workplan selector (b06fff8f0b66)
+* convert large int's properly (ca696d253320)
+
 ## v2.44.1
 
 ### Fix
