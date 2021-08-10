@@ -37,8 +37,8 @@ def file_read_lines(
 
 
 def copy_content(  # pylint:disable=R1260,too-many-branches
-    source: str,
-    destination: str,
+    src: str,
+    dest: str,
     pattern: str = None,
     ignore: callable = None,
     rename: callable = None,
@@ -49,22 +49,21 @@ def copy_content(  # pylint:disable=R1260,too-many-branches
     verbose: bool = False,
     private: bool = False,
 ):
-    """Copy the content from `source` to `destination` folder. If
-    `destination` folder does not exists, it will be created.
+    """Copy the content from `src` to `dest` folder. If `dest` folder
+    does not exists, it will be created.
 
     Args:
-        source(str): file or directory to copy
-        destination(str): directory to copy source item(s)
+        src(str): file or directory to copy
+        dest(str): directory to copy src item(s)
         pattern(str): accept files which matches this pattern, if None
                       all files matches.
         ignore(callable): option to skip files by path or filename
         rename(callable): rename written files
         recursive(bool): if True, copy child folder
-        update(bool): move only when the source file is newer than the
-                      destination file or when the destination file is
-                      missing.
-        skip_equal(bool): if True, do not raise Error if source and
-                          destination is equal.
+        update(bool): move only when the src file is newer than the
+                      dest file or when the dest file is missing.
+        skip_equal(bool): if True, do not raise Error if src and
+                          dest is equal.
         verbose(bool): explain what is being done
         private(bool): encrypt data
 
@@ -76,29 +75,29 @@ def copy_content(  # pylint:disable=R1260,too-many-branches
 
     Hint:
         Why not using shutil.copytree?: Copy tree expect that
-        destination does not exists, but we need this.
+        dest does not exists, but we need this.
     """
-    assert source, str(source)
-    assert destination, str(destination)
-    if os.path.isfile(source):
-        _copy_file(source, destination, ignore, rename, update, skip_equal,
-                   verbose, private)
+    assert src, str(src)
+    assert dest, str(dest)
+    if os.path.isfile(src):
+        _copy_file(src, dest, ignore, rename, update, skip_equal, verbose,
+                   private)
         return
     if pattern is None:
         pattern = '*'
 
     multiple = split_multipattern(pattern)
     if multiple:
-        _copy_multiple(source, destination, pattern, ignore, rename, recursive,
-                       update, skip_equal, verbose, private)
+        _copy_multiple(src, dest, pattern, ignore, rename, recursive, update,
+                       skip_equal, verbose, private)
         return
-    _copy_folder(source, destination, pattern, recursive, ignore, rename,
-                 update, skip_equal, verbose, private)
+    _copy_folder(src, dest, pattern, recursive, ignore, rename, update,
+                 skip_equal, verbose, private)
 
 
 def _copy_file(
-    source,
-    destination,
+    src,
+    dest,
     ignore,
     rename,
     update,
@@ -106,21 +105,21 @@ def _copy_file(
     verbose,
     private,
 ):
-    if ignore and ignore(source):
-        utila.debug(f'skip: {source}')
+    if ignore and ignore(src):
+        utila.debug(f'skip: {src}')
         return
-    if not utila.isfilepath(destination):
-        filename = os.path.basename(source)
-        destination = os.path.join(destination, filename)
+    if not utila.isfilepath(dest):
+        filename = os.path.basename(src)
+        dest = os.path.join(dest, filename)
         if rename:
-            destination = rename(destination)
+            dest = rename(dest)
     if verbose:
-        utila.log(f'cp: {source} -> {destination}')
+        utila.log(f'cp: {src} -> {dest}')
     suppress = contextlib.suppress if skip_equal else utila.nothing
     with suppress(shutil.SameFileError):
         utila.file_copy(
-            source,
-            destination,
+            src,
+            dest,
             update=update,
             exception=skip_equal,
             private=private,
@@ -128,8 +127,8 @@ def _copy_file(
 
 
 def _copy_folder(
-    source,
-    destination,
+    src,
+    dest,
     pattern,
     recursive,
     ignore,
@@ -141,17 +140,17 @@ def _copy_folder(
 ):
     pattern = f'**/{pattern}' if recursive else pattern
 
-    with utila.chdir(source):
+    with utila.chdir(src):
         # TODO: NOT THREAD SAFE!
         selected = list(glob.glob(pattern, recursive=recursive))
 
     suppress = contextlib.suppress if skip_equal else utila.nothing
     for item in selected:
-        inpath = os.path.join(source, item)
+        inpath = os.path.join(src, item)
         if ignore and ignore(inpath):
             utila.debug(f'skip: {inpath}')
             continue
-        outpath = os.path.join(destination, item)
+        outpath = os.path.join(dest, item)
         if rename:
             outpath = rename(outpath)
         if os.path.isfile(inpath):
@@ -172,8 +171,8 @@ def _copy_folder(
 
 
 def _copy_multiple(
-    source,
-    destination,
+    src,
+    dest,
     pattern,
     ignore,
     rename,
@@ -191,8 +190,8 @@ def _copy_multiple(
         # run multiple operation
         with suppress(shutil.SameFileError):
             copy_content(
-                source,
-                destination,
+                src,
+                dest,
                 ignore=ignore,
                 rename=rename,
                 pattern=converted_pattern,
