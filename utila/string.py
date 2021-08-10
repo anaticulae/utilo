@@ -14,6 +14,9 @@ import sys
 
 import utila
 
+BACKSLASH = re.compile(r'\\')
+NEWLINE = re.compile(r'\\(?!n)')
+
 
 def forward_slash(content: str, newline: bool = False) -> str:
     r"""Replace every backward slash \\ with an forward slash /.
@@ -32,10 +35,11 @@ def forward_slash(content: str, newline: bool = False) -> str:
     >>> forward_slash('\\helm\\nelm')
     '/helm/nelm'
     """
-    pattern = r'\\'
+    assert isinstance(content, str)
+    pattern = BACKSLASH
     if newline:
-        pattern = r'\\(?!n)'
-    content = re.sub(re.compile(pattern), '/', content)
+        pattern = NEWLINE
+    content = re.sub(pattern, '/', content)
     return content
 
 
