@@ -72,12 +72,12 @@ def isstrings(items) -> bool:
         return False
 
 
-def assert_type_list(items, types):
+def asserts_types(items, types):
     """Ensure that `items` is a list and the types of the single `items`
     matches width `types`.
 
-    >>> assert_type_list([1, 3, 5, 10], int)
-    >>> assert_type_list([1, 'hello', 10], str)
+    >>> asserts_types([1, 3, 5, 10], int)
+    >>> asserts_types([1, 'hello', 10], str)
     Traceback (most recent call last):
         ...
     AssertionError: [False, True, False]

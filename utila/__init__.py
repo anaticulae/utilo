@@ -338,8 +338,8 @@ from utila.tuples import tuple_plus
 from utila.tuples import update_tuple
 # type-checker
 from utila.typechecker import Strings
-from utila.typechecker import assert_type_list
 from utila.typechecker import asserts
+from utila.typechecker import asserts_types
 from utila.typechecker import checkdatatype
 from utila.typechecker import equal_length
 from utila.typechecker import hasattribute
@@ -374,6 +374,7 @@ from utila.utils import unset_env
 not_none = notnone  # pylint:disable=C0103
 manhatten = manhattan  # pylint:disable=C0103
 log_stacktrace = print_stacktrace  # pylint:disable=C0103
+assert_type_list = asserts_types # pylint:disable=C0103
 
 ROOT = os.path.abspath(os.path.join(os.path.dirname(__file__), '..'))
 PACKAGE = 'utila'
