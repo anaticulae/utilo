@@ -41,6 +41,7 @@ def copy_content(  # pylint:disable=R1260,too-many-branches
     destination: str,
     pattern: str = None,
     ignore: callable = None,
+    rename: callable = None,
     *,
     recursive: bool = False,
     update: bool = False,
@@ -57,6 +58,7 @@ def copy_content(  # pylint:disable=R1260,too-many-branches
         pattern(str): accept files which matches this pattern, if None
                       all files matches.
         ignore(callable): option to skip files by path or filename
+        rename(callable): rename written files
         recursive(bool): if True, copy child folder
         update(bool): move only when the source file is newer than the
                       destination file or when the destination file is
@@ -79,26 +81,26 @@ def copy_content(  # pylint:disable=R1260,too-many-branches
     assert source, str(source)
     assert destination, str(destination)
     if os.path.isfile(source):
-        _copy_file(source, destination, ignore, update, skip_equal, verbose,
-                   private)
+        _copy_file(source, destination, ignore, rename, update, skip_equal,
+                   verbose, private)
         return
     if pattern is None:
         pattern = '*'
 
     multiple = split_multipattern(pattern)
     if multiple:
-        _copy_multiple(source, destination, pattern, ignore, recursive, update,
-                       skip_equal, verbose, private)
+        _copy_multiple(source, destination, pattern, ignore, rename, recursive,
+                       update, skip_equal, verbose, private)
         return
-
-    _copy_folder(source, destination, pattern, recursive, ignore, update,
-                 skip_equal, verbose, private)
+    _copy_folder(source, destination, pattern, recursive, ignore, rename,
+                 update, skip_equal, verbose, private)
 
 
 def _copy_file(
     source,
     destination,
     ignore,
+    rename,
     update,
     skip_equal,
     verbose,
@@ -108,7 +110,10 @@ def _copy_file(
         utila.debug(f'skip: {source}')
         return
     if not utila.isfilepath(destination):
-        destination = os.path.join(destination, os.path.basename(source))
+        filename = os.path.basename(source)
+        destination = os.path.join(destination, filename)
+        if rename:
+            destination = rename(destination)
     if verbose:
         utila.log(f'cp: {source} -> {destination}')
     suppress = contextlib.suppress if skip_equal else utila.nothing
@@ -128,6 +133,7 @@ def _copy_folder(
     pattern,
     recursive,
     ignore,
+    rename,
     update,
     skip_equal,
     verbose,
@@ -146,6 +152,8 @@ def _copy_folder(
             utila.debug(f'skip: {inpath}')
             continue
         outpath = os.path.join(destination, item)
+        if rename:
+            outpath = rename(outpath)
         if os.path.isfile(inpath):
             if verbose:
                 utila.log(f'cp: {inpath} -> {outpath}')
@@ -168,6 +176,7 @@ def _copy_multiple(
     destination,
     pattern,
     ignore,
+    rename,
     recursive,
     update,
     skip_equal,
@@ -185,6 +194,7 @@ def _copy_multiple(
                 source,
                 destination,
                 ignore=ignore,
+                rename=rename,
                 pattern=converted_pattern,
                 recursive=recursive,
                 skip_equal=skip_equal,
