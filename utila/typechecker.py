@@ -82,7 +82,7 @@ def assert_type_list(items, types):
         ...
     AssertionError: [False, True, False]
     """
-    assert isinstance(items, list), type(items)
+    assert isinstance(items, (list, tuple)), type(items)
     verified = [isinstance(item, types) for item in items]
     assert all(verified), str(verified)
 
