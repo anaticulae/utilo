@@ -2,6 +2,14 @@
 
 Every noteable change is logged here.
 
+## v2.45.0
+
+### Feature
+
+* add hook to rename copied files (1d6ec8bb6b9a)
+* tuple is fine also (26ed5d05a6aa)
+* ensure that input is str (3f93744eb7d6)
+
 ## v2.44.2
 
 ### Feature
