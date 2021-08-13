@@ -162,19 +162,22 @@ def log_args(func) -> callable:
     return wrapper
 
 
-def print_runtime(before: int, msg: str = ''):
+def print_runtime(before: int, msg: str = '') -> float:
     """Determine runtime due the diff of current time and provided time
     `before`. Log this time diff.
 
     Args:
         before(int): time recorded some time before - use time.time()
         msg(str): extend runtime message to differentiate multiple invocations
+    Returns:
+        Runtime diff
     """
     time_diff = time.time() - before
     if msg:
         log('runtime(%s): %.2f secs' % (msg, time_diff))
     else:
         log('runtime: %.2f secs' % time_diff)
+    return time_diff
 
 
 def print_env():
