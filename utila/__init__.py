@@ -277,12 +277,6 @@ from utila.math.roman import arabic
 from utila.math.roman import isarabic
 from utila.math.roman import isroman
 from utila.math.roman import roman
-# measure
-from utila.measure import inch
-from utila.measure import millimeter
-from utila.measure import millimeters
-from utila.measure import point
-from utila.measure import points
 # optimizer
 from utila.optimizer import zip_optimizer
 # pages
@@ -308,6 +302,12 @@ from utila.regex import extract_match
 # secret
 from utila.secret import decrypt
 from utila.secret import encrypt
+# space
+from utila.space import inch
+from utila.space import millimeter
+from utila.space import millimeters
+from utila.space import point
+from utila.space import points
 # string
 from utila.string import char_rate
 from utila.string import findindex

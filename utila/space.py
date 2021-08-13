@@ -30,8 +30,6 @@ A5 = (148, 210)
 A6 = (104, 148)
 """
 
-# TODO: RENAME THIS MODULE<MEASURE IS NOT THE CORRECT NAME>
-
 import utila
 
 INC_TO_MILI = 25.4  # millimeter
