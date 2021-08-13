@@ -89,3 +89,13 @@ def points(  # pylint:disable=W0621
         point(item, userunit=userunit, digits=digits) for item in millimeters
     ]
     return tuple(result)
+
+
+def inch(point: float, userspace: float = 1.0) -> float:  # pylint:disable=W0621
+    """\
+    >>> inch(72)
+    1.0
+    """
+    scale = 72.0 / userspace
+    result = point / scale
+    return result

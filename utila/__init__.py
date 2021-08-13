@@ -278,6 +278,7 @@ from utila.math.roman import isarabic
 from utila.math.roman import isroman
 from utila.math.roman import roman
 # measure
+from utila.measure import inch
 from utila.measure import millimeter
 from utila.measure import millimeters
 from utila.measure import point
