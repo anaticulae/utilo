@@ -228,6 +228,7 @@ class profile(contextlib.ContextDecorator):  # pylint:disable=C0103
             msg(str): extend runtime message to differentiate multiple runtime
         """
         self.start = None
+        self.diff = None
         self.msg = msg
 
     def __enter__(self):
@@ -238,7 +239,7 @@ class profile(contextlib.ContextDecorator):  # pylint:disable=C0103
         """Finish profiling."""
         if utila.level_current() == Level.LOGGING:
             return
-        print_runtime(self.start, msg=self.msg)
+        self.diff = print_runtime(self.start, msg=self.msg)
 
 
 class SkipCollector:
