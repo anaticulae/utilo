@@ -2,6 +2,13 @@
 
 Every noteable change is logged here.
 
+## v2.45.1
+
+### Feature
+
+* save profiled runtime (db8320356c18)
+* return time diff (10add704f1f2)
+
 ## v2.45.0
 
 ### Feature
