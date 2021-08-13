@@ -2,6 +2,12 @@
 
 Every noteable change is logged here.
 
+## v2.45.2
+
+### Feature
+
+* add inch converter (8a246bcc3030)
+
 ## v2.45.1
 
 ### Feature
