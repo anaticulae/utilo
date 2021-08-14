@@ -392,6 +392,9 @@ def parse(parser: argparse.ArgumentParser):
         key: value if key not in disable else DEACTIVATED
         for key, value in args.items()
     }
+    if isverbose(sys.argv):
+        verbose = min((args['verbose'], 3))
+        utila.level_setup(utila.Level(verbose))
     return args
 
 
