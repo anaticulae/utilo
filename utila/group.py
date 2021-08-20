@@ -136,6 +136,7 @@ def longest(items, number: int = 1):
     >>> longest([(1, 2, 4), (2, 2, 2, 2), (5, 5, 5)], number=3)
     [(2, 2, 2, 2), (1, 2, 4), (5, 5, 5)]
     """
+    assert number >= 1, 'invalid number'
     if not items:
         return []
     items = sorted(items, key=len, reverse=True)
