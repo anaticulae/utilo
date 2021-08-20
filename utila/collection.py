@@ -125,7 +125,7 @@ class Single:
             hash(item)
         except TypeError:
             # unhashable, str is always hashable
-            item = str(item)
+            item = hash(str(item))
         if item in self.visited:
             return True
         if mark:
