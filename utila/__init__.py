@@ -171,6 +171,7 @@ from utila.group import groupby_diff
 from utila.group import groupby_empty
 from utila.group import groupby_neighbors
 from utila.group import groupby_none
+from utila.group import groupby_x
 from utila.group import longest
 from utila.group import shortest
 from utila.group import xsome

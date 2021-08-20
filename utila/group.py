@@ -7,6 +7,8 @@
 # be prosecuted under federal law. Its content is company confidential.
 # =============================================================================
 
+import collections
+
 import utila
 
 
@@ -110,6 +112,20 @@ def groupby_diff(
         else:
             result.append([item])
     result = [tuple(item) for item in result]
+    return result
+
+
+def groupby_x(items, selector: callable) -> list:
+    """\
+    >>> groupby_x('see he tee wee ge a b C'.split(), selector=len)
+    [['see', 'tee', 'wee'], ['he', 'ge'], ['a', 'b', 'C']]
+    """
+    if not items:
+        return []
+    collected = collections.defaultdict(list)
+    for item in items:
+        collected[selector(item)].append(item)
+    result = list(collected.values())
     return result
 
 
