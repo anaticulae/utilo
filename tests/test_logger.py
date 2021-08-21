@@ -54,7 +54,7 @@ def test_logger_skipcollector_zero_tuple():
 @pytest.mark.parametrize('message', ['', 'setup'])
 def test_logger_profile(capsys, message):
     """Test that profiler print the `message` in combination of runtime"""
-    with utila.level_temp(utila.Level.INFO):
+    with utila.level_tmp(utila.Level.INFO):
         with utila.profile(message):
             pass
     stdout = capsys.readouterr().out
@@ -64,7 +64,7 @@ def test_logger_profile(capsys, message):
 def test_logger_profile_with_exception(capsys):
     """Catch error while running profiling"""
     with pytest.raises(ValueError):
-        with utila.level_temp(utila.Level.INFO):
+        with utila.level_tmp(utila.Level.INFO):
             with utila.profile():
                 raise ValueError('some problems in invocation')
     stdout = capsys.readouterr().out
@@ -77,7 +77,7 @@ def test_profiler_decorator(capsys):
     def runtime():
         time.sleep(0.1)
 
-    with utila.level_temp(utila.Level.INFO):
+    with utila.level_tmp(utila.Level.INFO):
         runtime()
 
     stdout = capsys.readouterr().out
@@ -146,7 +146,7 @@ def test_logger_log_args_loglevel_to_low(capsys, monkeypatch):
     assert not captured, str(captured)
 
 
-def test_logger_level_temp(monkeypatch):
+def test_logger_level_tmp(monkeypatch):
     utila.level_setup(utila.LEVEL_DEFAULT)  # TODO: REMOVE LATER
     assert utila.level_current() == utila.LEVEL_DEFAULT
     with monkeypatch.context() as context:
@@ -154,7 +154,7 @@ def test_logger_level_temp(monkeypatch):
 
         setme = utila.Level.DEBUG
         before = utila.level_current()
-        with utila.level_temp(setme):
+        with utila.level_tmp(setme):
             now = utila.level_current()
         after = utila.level_current()
 

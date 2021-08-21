@@ -193,7 +193,7 @@ from utila.logger import format_completed
 from utila.logger import info
 from utila.logger import level_current
 from utila.logger import level_setup
-from utila.logger import level_temp
+from utila.logger import level_tmp
 from utila.logger import log
 from utila.logger import log_args
 from utila.logger import log_raw
@@ -377,6 +377,7 @@ not_none = notnone  # pylint:disable=C0103
 manhatten = manhattan  # pylint:disable=C0103
 log_stacktrace = print_stacktrace  # pylint:disable=C0103
 assert_type_list = asserts_types  # pylint:disable=C0103
+level_temp = level_tmp
 
 ROOT = os.path.abspath(os.path.join(os.path.dirname(__file__), '..'))
 PACKAGE = 'utila'
