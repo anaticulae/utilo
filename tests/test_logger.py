@@ -54,7 +54,7 @@ def test_logger_skipcollector_zero_tuple():
 @pytest.mark.parametrize('message', ['', 'setup'])
 def test_logger_profile(capsys, message):
     """Test that profiler print the `message` in combination of runtime"""
-    with utila.level_temp(utila.Level.INFORMATION):
+    with utila.level_temp(utila.Level.INFO):
         with utila.profile(message):
             pass
     stdout = capsys.readouterr().out
@@ -64,7 +64,7 @@ def test_logger_profile(capsys, message):
 def test_logger_profile_with_exception(capsys):
     """Catch error while running profiling"""
     with pytest.raises(ValueError):
-        with utila.level_temp(utila.Level.INFORMATION):
+        with utila.level_temp(utila.Level.INFO):
             with utila.profile():
                 raise ValueError('some problems in invocation')
     stdout = capsys.readouterr().out
@@ -77,7 +77,7 @@ def test_profiler_decorator(capsys):
     def runtime():
         time.sleep(0.1)
 
-    with utila.level_temp(utila.Level.INFORMATION):
+    with utila.level_temp(utila.Level.INFO):
         runtime()
 
     stdout = capsys.readouterr().out
@@ -86,7 +86,7 @@ def test_profiler_decorator(capsys):
 
 def test_logger_print_env(capsys, monkeypatch):
     with monkeypatch.context() as context:
-        context.setattr(utila.logger, 'LEVEL', utila.Level.INFORMATION)
+        context.setattr(utila.logger, 'LEVEL', utila.Level.INFO)
         utila.print_env()
     stdout = capsys.readouterr().out
     assert len(stdout) > 500, str(stdout)
@@ -111,7 +111,7 @@ def add(x, y, z):  # pylint:disable=C0103
         id='no_logging',
     ),
     pytest.param(
-        utila.Level.INFORMATION,
+        utila.Level.INFO,
         ['x', 'y', 'y', '1', '2', '3'],
         id='logging info',
     ),

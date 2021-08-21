@@ -27,13 +27,13 @@ from utila.utils import NEWLINE
 class Level(enum.IntEnum):
     LOGGING = 0
     CALLS = 1
-    INFORMATION = 2
+    INFO = 2
     DEBUG = 3
     ERROR = -1
+    INFORMATION = 2  # TODO: REMOVE LATER
 
 
 LEVEL_DEFAULT = Level.LOGGING
-
 LEVEL = LEVEL_DEFAULT
 
 # define output file where logs written to. If None, do nothing.
@@ -44,7 +44,7 @@ def level_setup(level: Level):
     """\
     Use ints to choose logging level:
     >>> level_setup(2)
-    >>> assert utila.level_current() == Level.INFORMATION
+    >>> assert utila.level_current() == Level.INFO
     >>> level_setup(LEVEL_DEFAULT)
     """
     if isinstance(level, int):
@@ -109,7 +109,7 @@ def call(*msg: str, end: str = NEWLINE):
 
 def info(*msg: str, end: str = NEWLINE):
     msg = utila.from_tuple(msg) if isinstance(msg, tuple) else msg
-    log(f'    {msg}', level=Level.INFORMATION, end=end)
+    log(f'    {msg}', level=Level.INFO, end=end)
 
 
 def debug(*msg: str, end: str = NEWLINE):
@@ -192,7 +192,7 @@ def print_env():
     """Log environment variables as a table.
 
     Hint:
-        Log level higher equal than `INFORMATION` is required
+        Log level higher equal than `INFO` is required
     """
     for key, value in os.environ.items():
         info('{:<40}{}'.format(key, value))
