@@ -187,6 +187,7 @@ def fork(
             except Exception as error:  # pylint:disable=broad-except
                 utila.error(f'future number: {index}; {future} failed.')
                 utila.error(error)
+                utila.print_stacktrace()
                 failure += 1
     if failure or returncode:
         return failure
