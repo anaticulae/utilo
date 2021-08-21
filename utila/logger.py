@@ -41,6 +41,14 @@ OUTFILE = None
 
 
 def level_setup(level: Level):
+    """\
+    Use ints to choose logging level:
+    >>> level_setup(2)
+    >>> assert utila.level_current() == Level.INFORMATION
+    >>> level_setup(LEVEL_DEFAULT)
+    """
+    if isinstance(level, int):
+        level = Level(level)
     global LEVEL  # pylint:disable=global-statement
     LEVEL = level
 
