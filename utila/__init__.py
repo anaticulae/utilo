@@ -20,6 +20,8 @@ from utila.__todo__ import todo
 from utila.alpha import alphabetically
 from utila.alpha import replace
 from utila.alpha import sort
+# classes
+from utila.classes import collect_classes
 # classifier
 from utila.classifier.base import Cluster
 from utila.classifier.base import Clusters
