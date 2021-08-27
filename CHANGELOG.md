@@ -2,6 +2,26 @@
 
 Every noteable change is logged here.
 
+## v2.46.0
+
+### Feature
+
+* add method to name classes (700bbb268b5c)
+* add method to collect tuple of classes (9d7da88d4c02)
+* increase verbosity to ease finding bugs (34567c7a148b)
+* shorten logging level (8d7557433111)
+* add option to use ints as logging level (d0f1a8255f2c)
+* add method to group collection by selector (77616f21d8c4)
+* setup logging level if given (3e175587ead8)
+
+### Fix
+
+* store hash instead of long string (b46b59f95ee3)
+
+### Documentation
+
+* extend interface documentation (6e55700a4094)
+
 ## v2.45.2
 
 ### Feature
