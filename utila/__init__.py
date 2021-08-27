@@ -22,6 +22,7 @@ from utila.alpha import replace
 from utila.alpha import sort
 # classes
 from utila.classes import collect_classes
+from utila.classes import name_classes
 # classifier
 from utila.classifier.base import Cluster
 from utila.classifier.base import Clusters

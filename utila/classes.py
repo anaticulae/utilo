@@ -6,6 +6,13 @@
 # use or distribution is an offensive act against international law and may
 # be prosecuted under federal law. Its content is company confidential.
 # =============================================================================
+"""\
+>>> import utila
+>>> collected = collect_classes(utila)
+>>> name_classes(collected)
+{...>, 'Waiter': <class 'utila.process.Waiter'>}
+"""
+
 
 import inspect
 
@@ -31,4 +38,9 @@ def collect_classes(classes, valid=None):
                 continue
             result.append(value)
     result: tuple = tuple(result)
+    return result
+
+
+def name_classes(classes) -> dict:
+    result = {item.__name__ : item for item in classes}
     return result
