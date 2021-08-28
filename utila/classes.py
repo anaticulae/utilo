@@ -13,7 +13,6 @@
 {...>, 'Waiter': <class 'utila.process.Waiter'>}
 """
 
-
 import inspect
 
 
@@ -42,5 +41,5 @@ def collect_classes(classes, valid=None):
 
 
 def name_classes(classes) -> dict:
-    result = {item.__name__ : item for item in classes}
+    result = {item.__name__: item for item in classes}
     return result
