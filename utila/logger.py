@@ -97,7 +97,7 @@ def log(
     # avoid problems when using with windows console(cp1252)
     msg = fix_encoding(msg)
     # TODO: msg = NEWLINE.join(wrap(msg, 120))
-    msg = forward_slash(msg, newline=preserve_newlines)
+    msg = forward_slash(msg, keep_newline=preserve_newlines)
     write_log(msg, end=end)
     print(msg, file=sys.stdout, end=end, flush=True)
 
@@ -122,7 +122,7 @@ def error(msg: str, *, end: str = NEWLINE):
     # avoid problems when using with windows console(cp1252)
     msg = fix_encoding(msg)
     # use forward slash's
-    msg = forward_slash(msg, newline=True)
+    msg = forward_slash(msg, keep_newline=True)
     msg = f'[ERROR] {msg}'
     write_log(msg, end=end)
     print(msg, file=sys.stderr, end=end, flush=True)
@@ -141,7 +141,7 @@ def write_log(msg: str, end: str):
 
 def print_stacktrace():
     stack_trace = traceback.format_exc()
-    error(forward_slash(stack_trace, newline=True))
+    error(forward_slash(stack_trace, keep_newline=True))
 
 
 def log_args(func) -> callable:

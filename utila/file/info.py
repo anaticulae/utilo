@@ -71,5 +71,5 @@ def path_parent(path: str) -> str:
     '...utila/utila/file'
     """
     parent = os.path.split(path)[0]
-    parent = utila.forward_slash(parent, newline=False)
+    parent = utila.forward_slash(parent, keep_newline=False)
     return parent

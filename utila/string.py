@@ -11,6 +11,7 @@ import contextlib
 import difflib
 import re
 import sys
+import warnings
 
 import utila
 
@@ -18,26 +19,29 @@ BACKSLASH = re.compile(r'\\')
 NEWLINE = re.compile(r'\\(?!n)')
 
 
-def forward_slash(content: str, newline: bool = False) -> str:
+def forward_slash(content: str, keep_newline: bool = False, **kwargs) -> str:  # pylint:disable=W9015
     r"""Replace every backward slash \\ with an forward slash /.
 
     Args:
         content(str): content with backslash's
-        newline(bool): if True, do not convert \n to /n
+        keep_newline(bool): if True, do not convert \n to /n
     Returns:
         content without backslash's
 
     Examples:
-    >>> forward_slash('\\helm\nelm', newline=True)
+    >>> forward_slash('\\helm\nelm', keep_newline=True)
     '/helm\nelm'
-    >>> forward_slash('\\helm\\telm', newline=True)
+    >>> forward_slash('\\helm\\telm', keep_newline=True)
     '/helm/telm'
     >>> forward_slash('\\helm\\nelm')
     '/helm/nelm'
     """
     assert isinstance(content, str)
     pattern = BACKSLASH
-    if newline:
+    if 'newline' in kwargs.keys():
+        keep_newline = kwargs['newline']
+        warnings.warn("replace with keep_newline", DeprecationWarning)
+    if keep_newline:
         pattern = NEWLINE
     content = re.sub(pattern, '/', content)
     return content
