@@ -2,6 +2,12 @@
 
 Every noteable change is logged here.
 
+## v2.47.0
+
+### Feature
+
+* add method to simplify string and compare bytes (5ca04224d4d1)
+
 ## v2.46.0
 
 ### Feature
