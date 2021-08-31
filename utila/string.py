@@ -7,6 +7,7 @@
 # be prosecuted under federal law. Its content is company confidential.
 # =============================================================================
 
+import binascii
 import contextlib
 import difflib
 import re
@@ -357,3 +358,32 @@ def rreplace(content: str, pattern: str, replace: str, count: int = 1):
         content = content[:index] + replace + content[rend:]
         count = count - 1
     return content
+
+
+SIMPLIFY = str.maketrans({item: '' for item in ' _-=+,.;\'/"()!@#$%^&&*'})
+
+
+def simple(item: str, maxlength: int = 25) -> str:
+    """Simplify test name to ease selecting generated tests by test name.
+
+    >>> simple('No spaces _+; 133')
+    'Nospaces133'
+    """
+    item = utila.fix_encoding(item)
+    item = item.translate(SIMPLIFY)
+    item = item[-maxlength:]
+    return item
+
+
+def binhash(data: bytes) -> int:
+    """\
+    >>> binhash(b'hello')
+    907060870
+    """
+    result = binascii.crc32(data)
+    return result
+
+
+def assert_bin(data: bytes, expected: int):
+    current = binhash(data)
+    assert current == expected, f'{current}=={expected}'

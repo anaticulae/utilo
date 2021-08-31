@@ -313,6 +313,8 @@ from utila.space import millimeters
 from utila.space import point
 from utila.space import points
 # string
+from utila.string import assert_bin
+from utila.string import binhash
 from utila.string import char_rate
 from utila.string import findindex
 from utila.string import findindexs
@@ -326,6 +328,7 @@ from utila.string import normalize_whitespaces
 from utila.string import rreplace
 from utila.string import shrink
 from utila.string import similar
+from utila.string import simple
 from utila.string import simplify_chars
 from utila.string import splititems
 from utila.string import splitlines
