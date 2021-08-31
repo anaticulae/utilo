@@ -178,9 +178,14 @@ def dicts_united(*items):
     {'first': 10, 'second': 20}
     >>> dicts_united({'first': 10}, {'second': 20}, {'second': 15})
     {'first': 10, 'second': 15}
+    >>> dicts_united({}, {})
+    {}
     """
     result = {}
     for item in items:
+        if not item:
+            # skip empty dict
+            continue
         result.update(item)
     return result
 
