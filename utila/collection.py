@@ -43,11 +43,18 @@ def partition(key, items):
     return matched, not_matched
 
 
-def choose_random(items, count: int = 5) -> list:
+def choose_random(
+    items,
+    count: int = 5,
+    repeat: bool = False,
+    seed: float = None,
+) -> list:
     """Chose `count` random items of a collection
 
     >>> choose_random((5, 5, 5, 5, 5, 5), count=2)
     [5, 5]
+    >>> choose_random((1, 2, 3), count=7, repeat=True, seed=0.5)
+    [1, 3, 2, 1, 1, 1, 3]
 
     Hint:
         This process does not change the source collection. There are no
@@ -55,12 +62,18 @@ def choose_random(items, count: int = 5) -> list:
     Args:
         items(list): data collection to select random items
         count(int): number of items to return
+        repeat(bool): if True, count can be higher than items-len
+        seed(float): random seed
     Returns:
         `count` selected items out of collections
     """
-    items = list(items)  # create a copy
-    random.shuffle(items)
-    return items[0:count]
+    # items = list(items)  # TODO: create a copy???
+    if not repeat and len(items) < count:
+        count = len(items)
+    generator = random
+    if seed is not None:
+        generator: 'Random' = random.Random(seed)  # nosec
+    return generator.choices(items, k=count)
 
 
 def split_shuffle(items, length, seed=0.0):
