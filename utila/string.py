@@ -273,7 +273,8 @@ def splitlines(raw: str, lowers: bool = True) -> set:
     raw = raw.strip()
     if lowers:
         raw = raw.lower()
-    splitted = raw.strip().splitlines()
+    # remove empty entrees
+    splitted = [item for item in raw.strip().splitlines() if item.strip()]
     return set(splitted)
 
 
