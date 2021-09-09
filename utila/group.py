@@ -87,9 +87,10 @@ def groupby_ascending(items) -> int:
 def groupby_diff(
     items: tuple,
     *,
-    maxdiff: int = 1,
+    maxdiff: float = 1.0,
     selector: callable = None,
     sort: bool = True,
+    enlarge: bool = True,
 ) -> list:
     """\
     >>> groupby_diff((1, 5, 2, 6, 9))
@@ -98,6 +99,10 @@ def groupby_diff(
     [(5,)]
     >>> groupby_diff([])
     []
+
+    Ensure that grouping does not enlarges group
+    >>> groupby_diff((0.5, 1.0, 1.5, 2.0, 2.5, 3.0), maxdiff=0.5, enlarge=False)
+    [(0.5, 1.0), (1.5, 2.0), (2.5, 3.0)]
     """
     assert maxdiff >= 0, f'negative maxdiff: {maxdiff}'
     if not items:
@@ -107,7 +112,8 @@ def groupby_diff(
         items = sorted(items, key=selector)
     result = [[items[0]]]
     for item in items[1:]:
-        if (selector(item) - selector(result[-1][-1])) <= maxdiff:
+        diff = selector(item) - selector(result[-1][-1 if enlarge else 0])
+        if diff <= maxdiff:
             result[-1].append(item)
         else:
             result.append([item])
