@@ -176,8 +176,10 @@ class RectangleCheck:
         return False
 
     def shrink(self):
-        """Reduce checking rectangles to minimal required. Remove
-        rectangle is there are included in a parent rectangle."""
+        """Reduce checking rectangles to minimal required.
+
+        Remove rectangle which are included in a parent rectangle.
+        """
         self.content = rectangle_merge(self.content)
 
     def __getitem__(self, index):
