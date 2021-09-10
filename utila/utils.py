@@ -301,3 +301,35 @@ def collect_data(data, required, usenone) -> list:
                f'provided by data {given}')
         raise AttributeError(msg) from error
     return collected
+
+
+def islist(items) -> bool:
+    """\
+    >>> islist((1, 2, 3))
+    True
+    >>> islist('Helmut')
+    False
+    """
+    if isinstance(items, (list, tuple)):
+        return True
+    return False
+
+
+def ensure_tuple(items) -> bool:
+    """\
+    >>> ensure_tuple([1, 2, 3])
+    (1, 2, 3)
+    """
+    if not isinstance(items, tuple):
+        items = tuple(items)
+    return items
+
+
+def ensure_list(items) -> bool:
+    """\
+    >>> ensure_list((1, 2, 3))
+    [1, 2, 3]
+    """
+    if not isinstance(items, list):
+        items = list(items)
+    return items
