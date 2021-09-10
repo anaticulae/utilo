@@ -352,6 +352,7 @@ from utila.typechecker import checkdatatype
 from utila.typechecker import equal_length
 from utila.typechecker import hasattribute
 from utila.typechecker import isfloat
+from utila.typechecker import isint
 from utila.typechecker import isnumber
 from utila.typechecker import isstrings
 # utile

@@ -105,6 +105,24 @@ def isnumber(item: str) -> bool:
     return False
 
 
+def isint(item: str) -> bool:
+    """Check if `item` is a int.
+
+    >>> isint('ten')
+    False
+    >>> isint(10.5)
+    False
+    >>> isint('3')
+    True
+    >>> isint(0)
+    True
+    """
+    with contextlib.suppress(ValueError):
+        _ = int(str(item))
+        return True
+    return False
+
+
 def equal_length(*items) -> bool:
     """\
     >>> equal_length([1, 2], (2,), [3, 3, 3])
