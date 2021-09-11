@@ -2,6 +2,20 @@
 
 Every noteable change is logged here.
 
+## v2.48.0
+
+### Feature
+
+* add some helper to handle tuple and lists easier (9412eebb5578)
+* add method to check if item is an int (b66e8f7fe69e)
+* add option to decide if group should enlarges (d55a5a822c1d)
+* add option to choose seed and choose more than containing (06f955886c4d)
+
+### Fix
+
+* remove empty lines in splitlines (9fead4820181)
+* unite empty dicts (934e117637e5)
+
 ## v2.47.0
 
 ### Feature
