@@ -312,8 +312,10 @@ def iterable(items) -> bool:
     True
     >>> iterable('Helmut')
     False
+    >>> iterable({5, 5, 5, 6})
+    True
     """
-    if isinstance(items, (list, tuple)):
+    if isinstance(items, ITERABLE):
         return True
     return False
 
