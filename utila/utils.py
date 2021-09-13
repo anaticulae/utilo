@@ -24,6 +24,9 @@ INF = (1 << 31) - 1
 
 ALL_PAGES = ':'
 
+# Hint: Do not add string
+ITERABLE = (list, tuple, set)
+
 
 def flatten(lists, append: bool = False) -> list:
     """Chain lists of list to one list.

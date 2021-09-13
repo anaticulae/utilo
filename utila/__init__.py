@@ -313,7 +313,6 @@ from utila.space import millimeters
 from utila.space import point
 from utila.space import points
 # string
-from utila.string import ITERABLE
 from utila.string import assert_bin
 from utila.string import binhash
 from utila.string import char_rate
@@ -361,6 +360,7 @@ from utila.typechecker import isstrings
 from utila.utils import ALL_PAGES
 from utila.utils import FAILURE
 from utila.utils import INF
+from utila.utils import ITERABLE
 from utila.utils import NEWLINE
 from utila.utils import NL
 from utila.utils import SUCCESS

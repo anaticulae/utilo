@@ -169,10 +169,6 @@ def shrink(content: str, maxlength: int = 300) -> str:
     return result
 
 
-# Hint: Do not add string
-ITERABLE = (list, tuple, set)
-
-
 def similar(expected: str, current: str, maxdiff=0.6) -> bool:
     """\
     >>> similar('Abbildungsverzeichnis', 'ab_ildungsverzeichnis')
@@ -185,11 +181,11 @@ def similar(expected: str, current: str, maxdiff=0.6) -> bool:
     True
     """
     # TODO: SWITCH EXPECTED AND CURRENT PARAMETER AND INCREASE MAJOR VERSION
-    if not isinstance(expected, ITERABLE):
+    if not isinstance(expected, utila.ITERABLE):
         expected = [expected]
     expected = utila.strip(*expected)
     expected = utila.lower(*expected)
-    if isinstance(current, ITERABLE):
+    if isinstance(current, utila.ITERABLE):
         for item in current:
             if similar(expected=expected, current=item, maxdiff=maxdiff):
                 return True
