@@ -303,11 +303,11 @@ def collect_data(data, required, usenone) -> list:
     return collected
 
 
-def islist(items) -> bool:
+def iterable(items) -> bool:
     """\
-    >>> islist((1, 2, 3))
+    >>> iterable((1, 2, 3))
     True
-    >>> islist('Helmut')
+    >>> iterable('Helmut')
     False
     """
     if isinstance(items, (list, tuple)):

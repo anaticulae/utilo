@@ -374,7 +374,7 @@ from utila.utils import flatten
 from utila.utils import flatten_content
 from utila.utils import ifnone
 from utila.utils import index_max
-from utila.utils import islist
+from utila.utils import iterable
 from utila.utils import minus
 from utila.utils import notempty
 from utila.utils import nothing
@@ -389,6 +389,7 @@ not_none = notnone  # pylint:disable=C0103
 manhatten = manhattan  # pylint:disable=C0103
 log_stacktrace = print_stacktrace  # pylint:disable=C0103
 assert_type_list = asserts_types  # pylint:disable=C0103
+islist = iterable  # pylint:disable=C0103
 level_temp = level_tmp
 
 ROOT = os.path.abspath(os.path.join(os.path.dirname(__file__), '..'))
