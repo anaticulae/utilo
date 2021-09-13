@@ -97,7 +97,7 @@ def handle_run(proc, expect, timeout, gracefully, ontimeout, cmd):
     )
     if expect is True:
         assert_success(completed)
-    if expect is False:
+    if expect is False:  # pylint:disable=C2001
         assert_failure(completed)
     return completed
 
@@ -150,7 +150,7 @@ def run_parallel(
                 ret += 1
     if expect:
         assert ret == utila.SUCCESS, str(ret)
-    if expect is False:
+    if expect is False:  # pylint:disable=C2001
         assert ret >= utila.FAILURE, str(ret)
     return ret
 

@@ -175,11 +175,9 @@ def test_cli_parse_required_command_missing(tmpdir):
 def test_cli_parse_required_command(tmpdir):
     runner = os.path.join(tmpdir, 'run.py')
     file_create(runner, RUN_ME % forward_slash(ROOT))
-
     command = 'python "%s" -a Samba' % runner
     completed = utilatest.run(command, tmpdir)
-
-    assert completed.returncode == 0, str(completed)
+    assert not completed.returncode, str(completed)
 
 
 EMPTY_PARSER = """\

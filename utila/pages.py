@@ -90,9 +90,9 @@ def parse_collon(pattern, pagecount=None):
         return []
     splitted = pattern.split(':')
     # Example 50:
-    splitted[1] = pagecount if splitted[1] == '' else splitted[1]
+    splitted[1] = pagecount if splitted[1] == '' else splitted[1]  # pylint:disable=C1901
     # Example :5
-    splitted[0] = '0' if splitted[0] == '' else splitted[0]
+    splitted[0] = '0' if splitted[0] == '' else splitted[0]  # pylint:disable=C1901
     with contextlib.suppress(ValueError, TypeError):
         left = parse_special_pagenumber(splitted[0])
         right = parse_special_pagenumber(splitted[1])

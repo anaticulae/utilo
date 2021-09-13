@@ -21,7 +21,7 @@ def test_math_isascending():
 
 def test_math_isascending_negative():
     items = [10, 0.5, 5]
-    assert utila.isascending(items) is False
+    assert not utila.isascending(items)
 
 
 @pytest.mark.parametrize('value, digits, expected', [

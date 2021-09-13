@@ -169,7 +169,7 @@ def callback(
     """
     utila.log(f'processing: {stepname}')
     # wait = -1 run forever
-    while require_wait(hook.work.args) and wait != 0:
+    while require_wait(hook.work.args) and wait:
         utila.log('.', end='')
         wait -= 1
         time.sleep(1)

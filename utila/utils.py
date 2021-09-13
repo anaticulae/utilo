@@ -186,7 +186,7 @@ def notempty(items):
     >>> notempty(['', 0, 'items', None])
     [0, 'items']
     """
-    return [item for item in items if item or item == 0]
+    return [item for item in items if item or item == 0]  # pylint:disable=C2001
 
 
 def removekeys(items: dict, keys: set) -> dict:

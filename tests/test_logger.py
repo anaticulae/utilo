@@ -31,24 +31,24 @@ def test_logger_skipcollector():
 
 def test_logger_skipcollector_none():
     with utila.SkipCollector() as collector:
-        assert collector.skip(10) is False
-        assert collector.skip(20) is False
+        assert not collector.skip(10)
+        assert not collector.skip(20)
 
 
 def test_logger_skipcollector_single_int():
     """Skip all other pages than zero."""
     single_int = 0
     with utila.SkipCollector(pages=single_int) as collector:
-        assert collector.skip(0) is False
-        assert collector.skip(1) is True
+        assert not collector.skip(0)
+        assert collector.skip(1)
 
 
 def test_logger_skipcollector_zero_tuple():
     """Skip all other pages than zero."""
     zero_tuple = (0,)
     with utila.SkipCollector(pages=zero_tuple) as collector:
-        assert collector.skip(0) is False
-        assert collector.skip(1) is True
+        assert not collector.skip(0)
+        assert collector.skip(1)
 
 
 @pytest.mark.parametrize('message', ['', 'setup'])

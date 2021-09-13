@@ -491,7 +491,7 @@ def sources(  # pylint:disable=too-complex,too-many-branches
         outputpath = os.getcwd()
     # prepare output
     result = [inputpaths, outputpath]
-    if prefix is not False:
+    if prefix is not False:  # pylint:disable=C2001
         result.append(prefix)
     if verbose:
         try:

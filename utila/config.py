@@ -19,7 +19,7 @@ def dump_config(config: dict) -> str:
     """
     if not config:
         return None
-    isflat = isinstance(list(config.values())[0], dict) is False
+    isflat = not isinstance(list(config.values())[0], dict)
     result = []
     if isflat:
         for key, value in config.items():

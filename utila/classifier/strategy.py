@@ -42,7 +42,7 @@ def match_first(cluster: 'Cluster', todo: 'Clusters', classifier: callable):
             candidat=candiat.center,
             clusteritem=cluster.center,
         )
-        if matched is None or matched is False:
+        if matched is None or not matched:
             continue
         return clusterindex
     return None
@@ -55,7 +55,7 @@ def match_last(cluster: 'Cluster', todo: 'Clusters', classifier: callable):
             candidat=candiat.center,
             clusteritem=cluster.center,
         )
-        if matched is None or matched is False:
+        if not matched:
             continue
         result = clusterindex
     return result
@@ -69,7 +69,7 @@ def match_min(cluster: 'Cluster', todo: 'Clusters', classifier: callable):
             candidat=candiat.center,
             clusteritem=cluster.center,
         )
-        if matched is None or matched is False:
+        if not matched:
             continue
         if minvalue is not None and matched >= minvalue:
             continue
@@ -86,7 +86,7 @@ def match_max(cluster: 'Cluster', todo: 'Clusters', classifier: callable):
             candidat=candiat.center,
             clusteritem=cluster.center,
         )
-        if matched is None or matched is False:
+        if not matched:
             continue
         if maxvalue is not None and matched <= maxvalue:
             continue

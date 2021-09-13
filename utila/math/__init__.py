@@ -63,7 +63,7 @@ def roundme(
     result = None
     try:
         result = [
-            round(item, digits) if none is False or item is not None else None
+            round(item, digits) if none is False or item is not None else None  # pylint:disable=C2001
             for item in items
         ]
     except TypeError as error:

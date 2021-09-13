@@ -22,10 +22,9 @@ def groupby_none(items) -> list:
     for item in items:
         if item is not None:
             collected.append(item)
-        else:
-            if collected:
-                result.append(collected)
-                collected = []
+        elif collected:
+            result.append(collected)
+            collected = []
     if collected:
         result.append(collected)
     result = [tuple(item) for item in result]
@@ -59,10 +58,9 @@ def groupby_neighbors(items: list) -> list:
     for item in items:
         if item not in (None, [], ''):
             collected.extend(item)
-        else:
-            if collected:
-                result.append(collected)
-                collected = []
+        elif collected:
+            result.append(collected)
+            collected = []
     if collected:
         result.append(collected)
     return result

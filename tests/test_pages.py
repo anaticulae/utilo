@@ -40,9 +40,9 @@ def test_pages(pattern, expected):
 
 
 def test_pages_should_skip():
-    assert utila.should_skip(5, (1, 2, 3)) is True
-    assert utila.should_skip(5, (1, 2, 3, 5)) is False
-    assert utila.should_skip(5, None) is False
+    assert utila.should_skip(5, (1, 2, 3))
+    assert not utila.should_skip(5, (1, 2, 3, 5))
+    assert not utila.should_skip(5, None)
 
 
 @pytest.fixture
