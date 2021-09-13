@@ -9,7 +9,7 @@
 
 import os
 
-import utila.file
+import utila
 
 
 def from_raw_or_path(
@@ -49,7 +49,7 @@ def from_raw_or_path(
             raise FileNotFoundError(f'directory not found: {newpath}')
     # filepath must not have any line breaks
     if len(content.splitlines()) == 1 and os.path.isfile(content):
-        content = utila.file.file_read(content)
+        content = utila.file_read(content)
     return content
 
 

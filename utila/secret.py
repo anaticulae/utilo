@@ -10,12 +10,11 @@
 import os
 
 import utila
-import utila.logger
 
 try:
     import utilasafe
 except ModuleNotFoundError:
-    utila.logger.error('could not use utilasafe')
+    utila.error('could not use utilasafe')
     utilasafe = None  # pylint:disable=C0103
 
 

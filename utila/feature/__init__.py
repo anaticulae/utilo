@@ -25,9 +25,7 @@ import contextlib
 import dataclasses
 import inspect
 import os
-import sys
 import typing
-import zipfile
 
 import utila
 import utila.cli
@@ -37,25 +35,6 @@ import utila.feature.config
 import utila.feature.description
 import utila.feature.processor
 import utila.feature.userinput
-
-RESERVED_WORKPLAN_NAMES = {
-    'all', 'cache', 'ff', 'i', 'input', 'j', 'jobs', 'o', 'output', 'pages',
-    'prefix', 'wait'
-}
-
-
-@dataclasses.dataclass
-class WorkPlanStep:
-    name: str
-    inputs: list = dataclasses.field(default_factory=list)
-    outputs: list = dataclasses.field(default_factory=list)
-
-    def __post_init__(self):
-        assert self.name.lower() not in RESERVED_WORKPLAN_NAMES, (
-            f'reserved workstep name: {self.name.lower()}')
-
-
-WorkPlanSteps = typing.List[WorkPlanStep]
 
 Name = str
 CommandLineInterface = typing.List[utila.Command]
@@ -112,7 +91,7 @@ class FeaturePackConfig:  # pylint:disable=too-many-instance-attributes
 
 @utila.saveme(systemexit=True)
 def featurepack(  # pylint:disable=too-many-locals
-    workplan: WorkPlanSteps,
+    workplan: 'WorkPlanSteps',
     root: str,
     featurepackage: str,
     config: FeaturePackConfig = None,

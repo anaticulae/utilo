@@ -116,7 +116,7 @@ def create_runtime(  # pylint:disable=too-many-locals
 
 
 def prefix_workplan(
-    workplan: 'utila.feature.WorkPlanSteps',
+    workplan: 'utila.WorkPlanSteps',
     prefix: str,
     executor: str,
 ):
@@ -442,7 +442,7 @@ def input_order(plan, root):
     for step in plan:
         name = f'{root}{REQUIREMENT_SEPARATOR}{step.name}'
 
-        if isinstance(step, utila.feature.WorkPlanStep):
+        if isinstance(step, utila.WorkPlanStep):
             items = step.inputs
         else:
             items = step.hooks.work.args

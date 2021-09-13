@@ -8,8 +8,8 @@
 # =============================================================================
 
 from utila import ResultFile
+from utila import WorkPlanStep
 from utila import create_step as step
-from utila.feature import WorkPlanStep
 
 ROOT = 'groupme'
 

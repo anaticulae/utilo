@@ -11,12 +11,10 @@ import math
 import operator
 
 import utila
-import utila.math.const
-import utila.math.distance
 
 
 def length(x0, y0, x1, y1) -> float:
-    return utila.math.distance.norm(x0, y0, x1, y1)
+    return utila.norm(x0, y0, x1, y1)
 
 
 def round_line(x0, y0, x1, y1, digits: int = 1, max_noise=4.0) -> tuple:

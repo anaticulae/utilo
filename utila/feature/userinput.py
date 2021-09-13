@@ -95,6 +95,26 @@ class ResultFile(File):
         return '%s__%s.%s' % (self.producer, self.name, self.ext)
 
 
+RESERVED_WORKPLAN_NAMES = {
+    'all', 'cache', 'ff', 'i', 'input', 'j', 'jobs', 'o', 'output', 'pages',
+    'prefix', 'wait'
+}
+
+
+@dataclasses.dataclass
+class WorkPlanStep:
+    name: str
+    inputs: list = dataclasses.field(default_factory=list)
+    outputs: list = dataclasses.field(default_factory=list)
+
+    def __post_init__(self):
+        assert self.name.lower() not in RESERVED_WORKPLAN_NAMES, (
+            f'reserved workstep name: {self.name.lower()}')
+
+
+WorkPlanSteps = typing.List[WorkPlanStep]
+
+
 def create_step(
     name: str,
     inputs: typing.List['Input'] = None,
@@ -122,4 +142,4 @@ def create_step(
         assert isinstance(item, Input), f'{index} {item}'
     msg = '%s %s' % (type(output), str(output))
     assert isinstance(output, (tuple, list)), msg
-    return utila.feature.WorkPlanStep(name, inputs, output)
+    return utila.WorkPlanStep(name, inputs, output)

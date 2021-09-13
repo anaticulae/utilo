@@ -10,7 +10,6 @@
 import textwrap
 
 import utila
-import utila.feature.userinput
 
 
 def prepare_description(
@@ -62,7 +61,7 @@ def prepare_description(
 def format_inputs(step) -> str:
     inputs = []
     for source in step.inputs:
-        if isinstance(source, utila.feature.userinput.Value):
+        if isinstance(source, utila.Value):
             # for example: <class 'float'>
             if source.typ is None:
                 datatype = None
@@ -70,9 +69,9 @@ def format_inputs(step) -> str:
                 datatype = str(source.typ).split("'")[1]
             msg = f'{source.name}({datatype})={source.defaultvar}'
             inputs.append(msg)
-        elif isinstance(source, utila.feature.userinput.Bool):
+        elif isinstance(source, utila.Bool):
             inputs.append(f'{source.name}(Bool)=True')
-        elif isinstance(source, utila.feature.userinput.ResultFile):
+        elif isinstance(source, utila.ResultFile):
             optional = '[?]' if source.optional else ''
             inputs.append(f'{source}{optional}')
         else:

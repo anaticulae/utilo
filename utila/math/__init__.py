@@ -15,8 +15,6 @@ import math
 import statistics
 import typing
 
-import utila.math.number
-
 # default number of digits to round
 NDIGITS = 2
 

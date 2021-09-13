@@ -11,7 +11,7 @@ import contextlib
 import math
 import typing
 
-import utila.math
+import utila
 
 
 def parse_pages(pattern: str, pagecount=None) -> tuple:  # pylint:disable=too-complex

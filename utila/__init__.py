@@ -110,6 +110,7 @@ from utila.feature.userinput import Input
 from utila.feature.userinput import Pattern
 from utila.feature.userinput import ResultFile
 from utila.feature.userinput import Value
+from utila.feature.userinput import WorkPlanStep
 from utila.feature.userinput import create_step
 from utila.feature.workplan import parallelize as parallelize_workplan
 # File

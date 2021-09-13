@@ -10,7 +10,7 @@
 import contextlib
 import shutil
 
-import utila.secret
+import utila
 
 OPEN = open
 HEADER_STR = br'%ENC-STR'
@@ -44,7 +44,7 @@ class SecureFile(contextlib.ContextDecorator):
                 content = fp.read()
             self.content = content + self.content
         # write cached content
-        encrypted = utila.secret.encrypt(self.content)
+        encrypted = utila.encrypt(self.content)
         content = HEADER_BIN if self.binary else HEADER_STR
         content += encrypted
         with OPEN(self.path, mode='bw') as fp:
@@ -65,7 +65,7 @@ class SecureFile(contextlib.ContextDecorator):
             # strip header
             content = content[len(header):]
             # plain text
-            content = utila.secret.decrypt(content, string=string)
+            content = utila.decrypt(content, string=string)
         elif not self.binary:
             content: str = bytes.decode(content, 'utf8')
         if size != -1:

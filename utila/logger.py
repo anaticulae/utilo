@@ -19,8 +19,6 @@ import time
 import traceback
 
 import utila
-from utila.string import fix_encoding
-from utila.string import forward_slash
 from utila.utils import NEWLINE
 
 
@@ -95,9 +93,9 @@ def log(
     if level > LEVEL:
         return
     # avoid problems when using with windows console(cp1252)
-    msg = fix_encoding(msg)
+    msg = utila.fix_encoding(msg)
     # TODO: msg = NEWLINE.join(wrap(msg, 120))
-    msg = forward_slash(msg, keep_newline=preserve_newlines)
+    msg = utila.forward_slash(msg, keep_newline=preserve_newlines)
     write_log(msg, end=end)
     print(msg, file=sys.stdout, end=end, flush=True)
 
@@ -120,9 +118,9 @@ def debug(*msg: str, end: str = NEWLINE):
 def error(msg: str, *, end: str = NEWLINE):
     """Print error-message to stderr and add [ERROR]-tag"""
     # avoid problems when using with windows console(cp1252)
-    msg = fix_encoding(msg)
+    msg = utila.fix_encoding(msg)
     # use forward slash's
-    msg = forward_slash(msg, keep_newline=True)
+    msg = utila.forward_slash(msg, keep_newline=True)
     msg = f'[ERROR] {msg}'
     write_log(msg, end=end)
     print(msg, file=sys.stderr, end=end, flush=True)
@@ -141,7 +139,7 @@ def write_log(msg: str, end: str):
 
 def print_stacktrace():
     stack_trace = traceback.format_exc()
-    error(forward_slash(stack_trace, keep_newline=True))
+    error(utila.forward_slash(stack_trace, keep_newline=True))
 
 
 def log_args(func) -> callable:
@@ -295,5 +293,5 @@ def log_raw(content: str):
     Example:
         assert len(abc) > 100, utila.log_raw(abc)
     """
-    content = utila.string.fix_encoding(content)
+    content = utila.fix_encoding(content)
     print(content, flush=True)
