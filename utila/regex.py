@@ -9,6 +9,8 @@
 
 import re
 
+NOCASE_VERBOSE = re.I | re.X
+
 
 def extract_match(matched) -> str:
     """Extract content out of `re.Match`."""

@@ -302,6 +302,7 @@ from utila.process import returnvalue as returncode
 from utila.process import run
 from utila.process import run_parallel
 # regex
+from utila.regex import NOCASE_VERBOSE
 from utila.regex import extract_match
 # secret
 from utila.secret import decrypt
