@@ -2,6 +2,16 @@
 
 Every noteable change is logged here.
 
+## v2.49.0
+
+### Feature
+
+* add nocase verbose constant (cd59001d010f)
+* extend is iterable check (e472f7636a10)
+* rename islist to iterable (b848376c9c1d)
+* add iterable to public interface (711597ee8d03)
+* add method to check if string starts with int (346dad1eee28)
+
 ## v2.48.0
 
 ### Feature
