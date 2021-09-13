@@ -388,3 +388,19 @@ def binhash(data: bytes) -> int:
 def assert_bin(data: bytes, expected: int):
     current = binhash(data)
     assert current == expected, f'{current}=={expected}'
+
+
+INT_START = re.compile(r'^\d{1,3}[^\.,]')
+
+
+def starts_withint(text: str) -> bool:
+    """\
+    >>> starts_withint('1 First Line')
+    True
+    >>> starts_withint('2.0 No Float start')
+    False
+    """
+    text = text.strip()
+    if INT_START.search(text):
+        return True
+    return False
