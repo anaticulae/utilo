@@ -194,7 +194,7 @@ def prepare_variables(variables, args):
     return result
 
 
-def prepare_inputs(  # pylint:disable=too-many-locals,too-complex,too-many-branches,too-many-statements
+def prepare_inputs(  # pylint:disable=R1260
     inputs: list,
     inspaces: list,
     outspace: str,
@@ -222,66 +222,103 @@ def prepare_inputs(  # pylint:disable=too-many-locals,too-complex,too-many-branc
         if not isinstance(item, utila.feature.userinput.Pattern):
             utila.info(f'skipping input `{item}`, require `Pattern')
             continue
-        (name, ext) = item.name, item.ext
         for inspace in inspaces:
             if isinstance(item, utila.feature.userinput.ResultFile):
-                filename = str(item)
-                filepath = os.path.join(inspace, filename)
-                if os.path.exists(filepath):
-                    result.append(filepath)
-                    break  # do not double add path
-                # TODO: Refactor recursive inputs
-                # Only on the last inspace, because the file could exists
-                # in other input folder
-                if inspace == inspaces[-1]:
-                    recursivepath = os.path.join(outspace, filename)
-                    utila.info(f'recursive input: {recursivepath}')
-                    result.append(f'_{recursivepath}')
-            elif isinstance(item, utila.feature.userinput.File):
-                filename = f'{name}.{ext}'
-                filepath = os.path.join(inspace, filename)
-                if os.path.exists(filepath):
-                    result.append(filepath)
-                    break  # do not double add path
-                if not lastinput:
-                    continue
-                if item.optional:
-                    result.append(f'_{filepath}')
-                    continue
-                utila.error(f'search location: {search_location}')
-                utila.error(f'missing input: {filepath}')
-            elif isinstance(item, utila.feature.userinput.Directory):
-                directory_path = os.path.join(inspace, name)
+                if prepare_inputs_resultfile(
+                        item,
+                        inspace,
+                        outspace,
+                        inspaces,
+                        result,
+                ):
+                    # do not double add path
+                    break
+                continue
+            if isinstance(item, utila.feature.userinput.File):
+                if prepare_inputs_file(
+                        item,
+                        inspace,
+                        search_location,
+                        lastinput,
+                        result,
+                ):
+                    # do not double add path
+                    break
+                continue
+            if isinstance(item, utila.feature.userinput.Directory):
+                directory_path = os.path.join(inspace, item.name)
                 # Mark `?` to not check existence of folder and group
                 # multiple directories which are produced by -i flags to a
                 # single entry.
                 question_group = '?' * index
                 result.append(f'{question_group}{directory_path}')
-            else:
-                _, filename = os.path.split(inspace)
-                if '.' in filename and filename[0] != '.':  # .tmp
-                    # .tmp is not a file name, it is a directory.
-                    # File as a input name
-                    result.append(inspace)
-                    break  # do not double add path
-                if os.path.isfile(inspace):
-                    # support dir-like file-path as input
-                    # TODO: Introduce new datatype?
-                    result.append(inspace)
-                    break  # do not double add path
-                ext = ext.lower()
-                pattern = f'{inspace}/{name}.{ext}'
-                utila.info(f'using pattern: {pattern}')
-                files = glob.glob(pattern)
-                utila.info(f'{files}')
-                for finding in files:
-                    utila.info(f'FINDING {finding}')
-                    result.append(finding)
+                continue
+            if prepare_inputs_pattern(item, inspace, result):
+                # do not double add path
+                break
     utila.call('result:')
     for item in result:
         utila.call(item)
-
     return result
+
+
+def prepare_inputs_resultfile(item, inspace, outspace, inspaces, result):
+    filename = str(item)
+    filepath = os.path.join(inspace, filename)
+    if os.path.exists(filepath):
+        result.append(filepath)
+        return True
+    # TODO: Refactor recursive inputs
+    # Only on the last inspace, because the file could exists
+    # in other input folder
+    if inspace == inspaces[-1]:
+        recursivepath = os.path.join(outspace, filename)
+        utila.info(f'recursive input: {recursivepath}')
+        result.append(f'_{recursivepath}')
+    return False
+
+
+def prepare_inputs_file(item, inspace, search_location, lastinput, result):
+    filename = f'{item.name}.{item.ext}'
+    filepath = os.path.join(inspace, filename)
+    if os.path.exists(filepath):
+        result.append(filepath)
+        # do not double add path
+        return True
+    if not lastinput:
+        return False
+    if item.optional:
+        result.append(f'_{filepath}')
+        return False
+    utila.error(f'search location: {search_location}')
+    utila.error(f'missing input: {filepath}')
+    return False
+
+
+def prepare_inputs_pattern(item, inspace, result):
+    name, ext = item.name, item.ext
+    _, filename = os.path.split(inspace)
+    if '.' in filename and filename[0] != '.':  # .tmp
+        # .tmp is not a file name, it is a directory.
+        # File as a input name
+        result.append(inspace)
+        # do not double add path
+        return True
+    if os.path.isfile(inspace):
+        # support dir-like file-path as input
+        # TODO: Introduce new datatype?
+        result.append(inspace)
+        # do not double add path
+        return True
+    ext = ext.lower()
+    pattern = f'{inspace}/{name}.{ext}'
+    utila.info(f'using pattern: {pattern}')
+    files = glob.glob(pattern)
+    utila.info(f'{files}')
+    for finding in files:
+        utila.info(f'FINDING {finding}')
+        result.append(finding)
+    return False
 
 
 def prepare_outputs(
