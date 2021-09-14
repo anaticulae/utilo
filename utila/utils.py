@@ -324,9 +324,11 @@ def ensure_tuple(items) -> bool:
     """\
     >>> ensure_tuple([1, 2, 3])
     (1, 2, 3)
+    >>> ensure_tuple(1)
+    (1,)
     """
     if not isinstance(items, tuple):
-        items = tuple(items)
+        items = tuple(items) if iterable(items) else (items,)
     return items
 
 
@@ -334,7 +336,9 @@ def ensure_list(items) -> bool:
     """\
     >>> ensure_list((1, 2, 3))
     [1, 2, 3]
+    >>> ensure_list(1)
+    [1]
     """
     if not isinstance(items, list):
-        items = list(items)
+        items = list(items) if iterable(items) else [items]
     return items
