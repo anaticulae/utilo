@@ -2,6 +2,12 @@
 
 Every noteable change is logged here.
 
+## v2.49.2
+
+### Fix
+
+* adjust import to avoid importing error (d17ca3a26ccd)
+
 ## v2.49.1
 
 ### Fix
