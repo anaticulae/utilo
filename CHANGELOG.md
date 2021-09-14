@@ -2,6 +2,13 @@
 
 Every noteable change is logged here.
 
+## v2.49.1
+
+### Fix
+
+* add option to return none if given (68c45897fa61)
+* ensure to convert single item correctly (b44c41fb4fbb)
+
 ## v2.49.0
 
 ### Feature
