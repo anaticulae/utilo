@@ -320,25 +320,31 @@ def iterable(items) -> bool:
     return False
 
 
-def ensure_tuple(items) -> bool:
+def ensure_tuple(items, skipnone: bool = True) -> bool:
     """\
     >>> ensure_tuple([1, 2, 3])
     (1, 2, 3)
     >>> ensure_tuple(1)
     (1,)
+    >>> assert ensure_tuple(None) is None
     """
     if not isinstance(items, tuple):
+        if skipnone and items is None:
+            return None
         items = tuple(items) if iterable(items) else (items,)
     return items
 
 
-def ensure_list(items) -> bool:
+def ensure_list(items, skipnone: bool = True) -> bool:
     """\
     >>> ensure_list((1, 2, 3))
     [1, 2, 3]
     >>> ensure_list(1)
     [1]
+    >>> assert ensure_list(None) is None
     """
     if not isinstance(items, list):
+        if skipnone and items is None:
+            return None
         items = list(items) if iterable(items) else [items]
     return items
