@@ -13,13 +13,13 @@ import random
 import utila
 
 
-def make_unique(items):
+def make_unique(items, converter: callable = None):
     """Convert collection where every element exists only once.
 
     Hint:
         stable algorithm which holds the previous order
     """
-    single = Single()
+    single = Single(converter=converter)
     result = [item for item in items if not single.contains(item)]
     return result
 
@@ -118,7 +118,8 @@ class Single:
     True
     """
 
-    def __init__(self):
+    def __init__(self, converter: callable = None):
+        self.converter = converter if converter else lambda x: x
         self.visited = set()
 
     def contains(self, item: object, mark: bool = True) -> bool:
@@ -132,6 +133,7 @@ class Single:
             True  if item was already added due contains
             False if item was not added. Add item afterwards
         """
+        item = self.converter(item)
         try:
             # Try that hashing is possible. We do not store hash value
             # cause -1 and -2 can have the same hash value.
