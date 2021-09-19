@@ -12,6 +12,8 @@ import inspect
 import os
 import typing
 
+import utila
+
 SUCCESS = 0
 FAILURE = 1
 
@@ -348,3 +350,37 @@ def ensure_list(items, skipnone: bool = True) -> bool:
             return None
         items = list(items) if iterable(items) else [items]
     return items
+
+
+def rate_rel(first, second):
+    """\
+    >>> rate_rel((1, 2, 3), (1, 2, 3, 4, 5))
+    0.6
+    >>> rate_rel(5, 10)
+    0.5
+    """
+    if not second:
+        return 0.0
+    try:
+        rate = len(first) / len(second)
+    except TypeError:
+        rate = first / second
+    rate = utila.roundme(rate, digits=3)
+    return rate
+
+
+def rate_sum(first, second):
+    """\
+    >>> rate_sum((1, 2, 3), (1, 2, 3, 4, 5))
+    0.375
+    >>> rate_sum(5, 10)
+    0.333
+    """
+    if not second:
+        return 0.0
+    try:
+        rate = len(first) / (len(second) + len(first))
+    except TypeError:
+        rate = first / (first + second)
+    rate = utila.roundme(rate, digits=3)
+    return rate
