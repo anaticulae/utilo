@@ -309,6 +309,10 @@ def file_copy(
     """
     assert os.path.exists(source), f'"{source}" does not exists'
     try:
+        if os.path.exists(destination) and not utila.isfilepath(destination):
+            # use name of current file as new file name
+            # TODO: IS THIS REALLY NECESSARY?
+            destination = os.path.join(destination, utila.path_current(source))
         if update and file_compare(source, destination):
             # file is up to date
             return
