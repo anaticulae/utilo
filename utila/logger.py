@@ -229,7 +229,7 @@ def format_completed(completed: subprocess.CompletedProcess) -> str:
 class profile(contextlib.ContextDecorator):  # pylint:disable=C0103
     """ContextManager and Decorator to profile method performance."""
 
-    def __init__(self, msg: str = ''):
+    def __init__(self, msg: str = '', always: bool = False):
         """Print runtime to logger to monitor performance.
 
         Current log level must be higher than Level.LOGGING. Use -V to
@@ -237,10 +237,12 @@ class profile(contextlib.ContextDecorator):  # pylint:disable=C0103
 
         Args:
             msg(str): extend runtime message to differentiate multiple runtime
+            always(bool): profile log level independent
         """
+        self.msg = msg
         self.start = None
         self.diff = None
-        self.msg = msg
+        self.always = always
 
     def __enter__(self):
         """Start profiler."""
@@ -248,7 +250,7 @@ class profile(contextlib.ContextDecorator):  # pylint:disable=C0103
 
     def __exit__(self, *exc_info):
         """Finish profiling."""
-        if utila.level_current() == Level.LOGGING:
+        if utila.level_current() == Level.LOGGING and not self.always:
             return
         self.diff = print_runtime(self.start, msg=self.msg)
 
