@@ -2,6 +2,15 @@
 
 Every noteable change is logged here.
 
+## v2.51.0
+
+### Feature
+
+* add parameter to copy file creation time (7de05cd881dd)
+* add method to update file access time (f7c3ffb9832e)
+* add option to use file directory as file dest (c305a0579896)
+* add method to determine file path head (c432cfce3757)
+
 ## v2.50.1
 
 ### Feature
