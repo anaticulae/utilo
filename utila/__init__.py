@@ -160,6 +160,7 @@ from utila.file.info import file_age
 from utila.file.info import file_line_length
 from utila.file.info import file_size
 from utila.file.info import isfilepath
+from utila.file.info import path_current
 from utila.file.info import path_parent
 # loader
 from utila.file.loader import LazyFile

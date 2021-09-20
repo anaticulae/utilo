@@ -73,3 +73,12 @@ def path_parent(path: str) -> str:
     parent = os.path.split(path)[0]
     parent = utila.forward_slash(parent, keep_newline=False)
     return parent
+
+
+def path_current(path: str) -> str:
+    """\
+    >>> path_current(__file__)
+    'info.py'
+    """
+    parent = os.path.split(path)[1]
+    return parent
