@@ -51,6 +51,16 @@ def file_age(path: str) -> int:
     return timediff
 
 
+def file_age_update(path: str, seconds: int = None) -> int:
+    """Set seconds since last modification time."""
+    assert os.path.exists(path), str(path)
+    assert seconds >= 0 or seconds is None, str(seconds)
+    if seconds is None:
+        seconds = 0
+    times = seconds + utila.now()
+    os.utime(path, (times, times))
+
+
 def file_size(path: str) -> float:
     """Return file size in MB.
 

@@ -157,6 +157,7 @@ from utila.file.hashed import directory_hash
 from utila.file.hashed import file_hash
 # file:info
 from utila.file.info import file_age
+from utila.file.info import file_age_update
 from utila.file.info import file_line_length
 from utila.file.info import file_size
 from utila.file.info import isfilepath
