@@ -2,6 +2,13 @@
 
 Every noteable change is logged here.
 
+## v2.50.0
+
+### Feature
+
+* add methods to rate result (8ae89141a175)
+* add option to convert value before checking existence (54a1ca261290)
+
 ## v2.49.2
 
 ### Fix
