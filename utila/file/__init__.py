@@ -290,6 +290,7 @@ def file_copy(
     destination: str,
     update: bool = True,
     exception: bool = False,
+    timestamp: bool = True,
     private: bool = False,
 ):
     """Copy a single `source` file to `destination` file or folder.
@@ -302,6 +303,7 @@ def file_copy(
                       is missing.
         exception(bool): if True  raise exception if copying is not possible
                          if False log error and raise exit
+        timestamp(bool): if True, copy timestamp
         private(bool): encrypt data
     Raises:
         OSError: if coping is not possible and exception is True
@@ -320,6 +322,9 @@ def file_copy(
         os.makedirs(parent, exist_ok=True)
         # shutil.copy
         utila.file.securewrapper.copy(source, destination, private=private)
+        if timestamp:
+            filetime = utila.file_age(source)
+            utila.file_age_update(destination, filetime)
     except OSError as error:
         utila.error(f'could not overwrite: {destination}')
         if exception:

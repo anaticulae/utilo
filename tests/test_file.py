@@ -299,6 +299,7 @@ def test_file_copy_content_access_error(
 
     with monkeypatch.context() as context:
         context.setattr(utila.file.securewrapper, 'copy', copy)
+        context.setattr(utila, 'file_age_update', lambda path, seconds: True)
         if update:
             utila.copy_content(source, sink, update=True)
             return

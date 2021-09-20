@@ -57,7 +57,7 @@ def file_age_update(path: str, seconds: int = None) -> int:
     assert seconds >= 0 or seconds is None, str(seconds)
     if seconds is None:
         seconds = 0
-    times = seconds + utila.now()
+    times = utila.now() - seconds
     os.utime(path, (times, times))
 
 
