@@ -310,8 +310,9 @@ def file_copy(
     assert os.path.exists(source), f'"{source}" does not exists'
     try:
         if update and file_compare(source, destination):
+            # file is up to date
             return
-        parent, _ = os.path.split(destination)
+        parent = utila.path_parent(destination)
         os.makedirs(parent, exist_ok=True)
         # shutil.copy
         utila.file.securewrapper.copy(source, destination, private=private)
