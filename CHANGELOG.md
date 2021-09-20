@@ -2,6 +2,12 @@
 
 Every noteable change is logged here.
 
+## v2.50.1
+
+### Feature
+
+* add always parameter to profile logger state independent (d992f5b84733)
+
 ## v2.50.0
 
 ### Feature
