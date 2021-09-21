@@ -384,3 +384,20 @@ def rate_sum(first, second):
         rate = first / (first + second)
     rate = utila.roundme(rate, digits=3)
     return rate
+
+
+def iseven(number: int) -> bool:
+    """\
+    >>> iseven(3)
+    False
+    >>> iseven('10')
+    True
+    >>> iseven(0)
+    True
+    """
+    # WHAT A BABY FUNCTION :|
+    if isinstance(number, str):
+        number = int(number)
+    if not number % 2:
+        return True
+    return False
