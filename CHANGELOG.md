@@ -2,6 +2,12 @@
 
 Every noteable change is logged here.
 
+## v2.51.1
+
+### Feature
+
+* add method to check if a number is even (0c9ab982b37a)
+
 ## v2.51.0
 
 ### Feature
