@@ -11,6 +11,7 @@ import concurrent.futures
 import functools
 import inspect
 import os
+import signal
 import sys
 import time
 import typing
@@ -35,6 +36,7 @@ def process(  # pylint:disable=R0914
     rename: callable = None,
     before: callable = None,
     after: callable = None,
+    ctrlbreak: callable = None,
     *,
     failfast: bool = False,
     profiling: bool = False,
@@ -57,6 +59,7 @@ def process(  # pylint:disable=R0914
         rename(callable): rename outputs
         before(callable): run before process plan
         after(callable): run before process plan
+        ctrlbreak(callable): run if ctrl and break is pressed
         failfast(bool): quit after first failure
         profiling(bool): if True, runtime of every single step is logged
         verbose(bool): if True, print more logging information(skipped steps)
@@ -64,6 +67,13 @@ def process(  # pylint:disable=R0914
     Returns:
         SUCCESS if all features process successfully, if not FAILURE
     """
+    executor = select_executor()
+    if executor == concurrent.futures.ThreadPoolExecutor:
+        # we do not require intializer with signal
+        initializer = None
+    else:
+        register_signals(ctrlbreak)
+        initializer = functools.partial(register_signals, ctrlbreak)
     todo = prepare_process(todo, name, processes)
     if todo:
         # remove non selected items. Removing inactivate items is required
@@ -77,8 +87,7 @@ def process(  # pylint:disable=R0914
         root=name,
         max_processes=processes,
     )
-    executor = select_executor()
-    with executor(max_workers=processes) as pool:
+    with executor(max_workers=processes, initializer=initializer) as pool:
         failure = 0
         if before:
             befored = before()
@@ -116,6 +125,16 @@ def process(  # pylint:disable=R0914
                 failure += aftered
     status = utila.FAILURE if failure else utila.SUCCESS
     return status
+
+
+def register_signals(ctrlbreak=None):
+    if ctrlbreak is None:
+
+        def ctrlbreak(event, name):  # pylint:disable=W0613
+            # do nothing if signal handler is not defined
+            return True
+
+    signal.signal(signal.SIGBREAK, ctrlbreak)
 
 
 def run_level(
