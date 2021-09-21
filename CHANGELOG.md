@@ -2,6 +2,12 @@
 
 Every noteable change is logged here.
 
+## v2.52.0
+
+### Feature
+
+* add parameter to define shutdown behavior (e768a1f25876)
+
 ## v2.51.1
 
 ### Feature
