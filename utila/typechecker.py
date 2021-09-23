@@ -177,7 +177,17 @@ def hasattribute(caller, attribute) -> bool:
     >>> hasattribute(hasattribute, 'false')
     False
     """
-    parameters = inspect.signature(caller).parameters.keys()
+    parameters = attributes(caller)
     if attribute in parameters:
         return True
     return False
+
+
+def attributes(method: callable) -> tuple:
+    """\
+    >>> attributes(attributes)
+    ('method',)
+    """
+    sig = inspect.signature(method)
+    result = tuple(sig.parameters.keys())
+    return result

@@ -353,6 +353,7 @@ from utila.tuples import update_tuple
 from utila.typechecker import Strings
 from utila.typechecker import asserts
 from utila.typechecker import asserts_types
+from utila.typechecker import attributes
 from utila.typechecker import checkdatatype
 from utila.typechecker import equal_length
 from utila.typechecker import hasattribute
