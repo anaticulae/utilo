@@ -2,6 +2,13 @@
 
 Every noteable change is logged here.
 
+## v2.53.0
+
+### Feature
+
+* add method to automatically select passed data (4f8e61560e78)
+* add method to determine method parameters (bc71624895be)
+
 ## v2.52.0
 
 ### Feature
