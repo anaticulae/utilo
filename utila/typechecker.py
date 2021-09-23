@@ -191,3 +191,15 @@ def attributes(method: callable) -> tuple:
     sig = inspect.signature(method)
     result = tuple(sig.parameters.keys())
     return result
+
+
+def pass_required(caller: callable, default=None, **kwargs):
+    """\
+    >>> method = lambda alpha, beta: alpha + beta
+    >>> pass_required(method, default=5, beta=20)
+    25
+    """
+    keys = attributes(caller)
+    data = {key: kwargs.get(key, default) for key in keys}
+    result = caller(**data)
+    return result
