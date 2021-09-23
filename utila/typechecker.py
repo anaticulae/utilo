@@ -133,8 +133,8 @@ def equal_length(*items) -> bool:
     >>> equal_length([3, 3, 3], [3, 3, 3])
     True
     """
-    length = [len(item) for item in items]
-    if len(set(length)) > 1:
+    length = {len(item) for item in items}
+    if len(length) > 1:
         return False
     return True
 
