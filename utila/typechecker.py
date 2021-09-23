@@ -77,9 +77,10 @@ def asserts_types(items, types):
     matches width `types`.
 
     >>> asserts_types([1, 3, 5, 10], int)
-    >>> asserts_types([1, 'hello', 10], str)
+
+    >>> asserts_types([1, 'hello', 10], str)  #doctest: +IGNORE_EXCEPTION_DETAIL
     Traceback (most recent call last):
-        ...
+    ...
     AssertionError: [False, True, False]
     """
     assert isinstance(items, (list, tuple)), type(items)
