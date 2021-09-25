@@ -158,15 +158,17 @@ class RectangleCheck:
     >>> assert not check.contains(100, 100, 150, 150)
     """
 
-    def __init__(self, max_diff: float = 0.0):
-        self.max_diff = max_diff
+    def __init__(self, diff_max: float = 0.0, max_diff: float = None):
+        if max_diff is not None:
+            diff_max = max_diff
+        self.diff_max = diff_max
         self.content = []
 
     def extend(self, x0, y0, x1, y1):
         self.content.append((x0, y0, x1, y1))
 
     def contains(self, x0, y0, x1, y1) -> bool:
-        diff = self.max_diff / 2
+        diff = self.diff_max / 2
         for x00, y00, x11, y11 in self.content:
             if all((
                 (x00 - diff) <= x0 <= x1 <= (x11 + diff),
