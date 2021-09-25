@@ -304,7 +304,7 @@ def rectangle_roundsmall(rectangle: Rectangle) -> Rectangle:
     `smaller` rectangle which fit in more parent rectangles.
 
     >>> rectangle_roundsmall((5.596, 5.3360, 10.339, 10.222))
-    (5.6, 5.34, 10.34, 10.22)
+    (5.6, 5.34, 10.33, 10.22)
     """
     # round to move coordinate in center direction of page
     rounding = [
@@ -313,12 +313,15 @@ def rectangle_roundsmall(rectangle: Rectangle) -> Rectangle:
         math.floor,  # x1
         math.floor,  # y1
     ]
-    result = [method(rectangle[index]) for index, method in enumerate(rounding)]
+    result = [
+        method(rectangle[index] * 100.0) / 100.0
+        for index, method in enumerate(rounding)
+    ]
     # rounding to the middle can flip min and max. Therefore we have to
     # ensure x0/x1 and y0/y1 constraint.
     # TODO: VERY SMALL RECTANGLE?
-    result = rectangle_ensure_bounding(rectangle)
-    return tuple(result)
+    result = rectangle_ensure_bounding(result)
+    return result
 
 
 def rectangle_ensure_bounding(rectangle: Rectangle) -> Rectangle:
