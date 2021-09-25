@@ -242,8 +242,8 @@ def intersecting_rectangle(first: tuple, second: tuple) -> bool:
 
 
 def rectangles_intersecting(
-    rectangles: 'Rectangles',
-    test: 'Rectangle',
+    rectangles: Rectangles,
+    test: Rectangle,
 ) -> bool:
     for item in rectangles:
         if utila.intersecting_rectangle(item, test):
