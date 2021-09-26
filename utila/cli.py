@@ -580,5 +580,11 @@ def isuserflag(flag: str) -> bool:
 
 
 def userflag_to_arg(flag: str):
+    """\
+    >>> userflag_to_arg('--iamflag')
+    'iamflag'
+    >>> userflag_to_arg('already_flag')
+    'already_flag'
+    """
     flag = flag.strip()
     return flag.split('--')[-1]
