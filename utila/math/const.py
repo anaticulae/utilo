@@ -24,6 +24,15 @@ def iszero(item: float, diff: float = NEAR_ZERO) -> bool:
     return math.fabs(item) <= diff
 
 
+def isone(item: float, diff: float = 0.001) -> bool:
+    """Check if `item` is near zero.
+
+    >>> isone(1.000001)
+    True
+    """
+    return utila.near(item, expected=1.0, diff=diff)
+
+
 def isinf(item: float) -> bool:
     """Check if `item` is near inf.
 
