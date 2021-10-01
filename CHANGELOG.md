@@ -2,6 +2,17 @@
 
 Every noteable change is logged here.
 
+## v2.54.0
+
+### Feature
+
+* add one checker (ec5a8048a7f0)
+* add border points generator (347ef322ec58)
+
+### Fix
+
+* variable was not accessed correctly (1eda4b3c3372)
+
 ## v2.53.0
 
 ### Feature
