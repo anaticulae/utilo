@@ -16,3 +16,15 @@ def extract_match(matched) -> str:
     """Extract content out of `re.Match`."""
     assert isinstance(matched, re.Match), type(matched)
     return matched.string[matched.span()[0]:matched.span()[1]]
+
+
+def match(pattern: str, content: str):
+    r"""\
+    >>> match(r'Abc\:', 'abc:')
+    <re.Match object; span=(0, 4), match='abc:'>
+    """
+    return re.match(pattern, content.strip(), flags=NOCASE_VERBOSE)
+
+
+def search(pattern: str, content: str):
+    return re.search(pattern, content.strip(), flags=NOCASE_VERBOSE)
