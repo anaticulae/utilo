@@ -2,6 +2,12 @@
 
 Every noteable change is logged here.
 
+## v2.54.1
+
+### Feature
+
+* add search and match method (53f7043cccfb)
+
 ## v2.54.0
 
 ### Feature
