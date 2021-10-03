@@ -2,6 +2,12 @@
 
 Every noteable change is logged here.
 
+## v2.54.3
+
+### Feature
+
+* add option to write to special output path (30cbb5b1b8d6)
+
 ## v2.54.2
 
 ### Fix
