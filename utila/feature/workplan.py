@@ -54,12 +54,10 @@ def create_runtime(  # pylint:disable=too-many-locals
     # if no outspace is defined, use the first passed inspace to write output
     outspace = outspace if outspace else inspace[0]
     prefix = f'{prefix}_' if prefix else ''
-
     if prefix:
         plan = prefix_workplan(plan, prefix, process_)
-
     hooks = {item.name: item.hooks for item in features}
-
+    args = prepare_args(plan, args)
     result = []
     ret = 0
     for step in plan:
@@ -73,7 +71,6 @@ def create_runtime(  # pylint:disable=too-many-locals
             utila.error(msg % step.name)
             ret += 1
             continue
-
         inputs = prepare_inputs(step.inputs, inspace, outspace)
         try:
             caller = hooks[name].work
@@ -81,7 +78,6 @@ def create_runtime(  # pylint:disable=too-many-locals
             utila.error('missing hook with name %s' % name)
             ret += 1
             continue
-
         outputs = prepare_outputs(
             process_=process_,
             stepname=name,
@@ -95,9 +91,12 @@ def create_runtime(  # pylint:disable=too-many-locals
         inputs = group_multiple_directories(inputs)
         if variables:
             inputs.extend(variables)
-        if verify_interface(inputs, outputs, caller, name) == utila.FAILURE:
-            ret += 1
-            continue
+
+        if args.get(name):
+            # shrink verification to selected step
+            if verify_interface(inputs, outputs, caller, name) == utila.FAILURE:
+                ret += 1
+                continue
         function_call = functools.partial(caller, *inputs)
         result.append(
             utila.feature.ProcessStep(
@@ -112,6 +111,17 @@ def create_runtime(  # pylint:disable=too-many-locals
             ))
     if ret and verify:
         sys.exit(utila.FAILURE)
+    return result
+
+
+def prepare_args(plan, args):
+    isall = args.get('all')
+    isany = any(args.get(step.name) for step in plan)
+    result = dict(args)
+    if isall or not isany:
+        for step in plan:
+            result[step.name] = True
+        return result
     return result
 
 
@@ -397,12 +407,10 @@ def verify_interface(inputs, outputs, worker, stepname):
                         f'expected: {list(call_parameter.keys())}\n'
                         f'got: {inputs}')
             return utila.FAILURE
-
     # check output parameter
     return_parameter = str(inspect.signature(worker).return_annotation)
     supported = ('str', 'bytes')
     return_count = sum([return_parameter.count(typ) for typ in supported])
-
     variable_returnvalues = utila.feature.outpath.variable_parameter(outputs)
     if not len(outputs) == return_count and not variable_returnvalues:
         utila.error(f'missing output resources: '
