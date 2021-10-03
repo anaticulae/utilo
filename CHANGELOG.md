@@ -2,6 +2,12 @@
 
 Every noteable change is logged here.
 
+## v2.54.2
+
+### Fix
+
+* do not verify unselected workplan step (fb263acec6bd)
+
 ## v2.54.1
 
 ### Feature
