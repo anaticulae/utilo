@@ -14,9 +14,28 @@ import utila.feature
 
 
 def prepare_outputpath(outputstep, result, rename: callable = None):
+    outputstep, result = replace_filepaths(outputstep, result)
     outputstep, result = replace_datatype_pattern(outputstep, result)
     outputstep = replace_star_pattern(outputstep, result, rename=rename)
     outputstep = replace_filehash_pattern(outputstep, result)
+    return outputstep, result
+
+
+def replace_filepaths(outputstep, result):
+    """Define path to write by list of (path, content) and write to
+    absoult path.
+
+    {FILEPATHS}
+
+    This feature is used to modify existing resources.
+    """
+    if not any(isfilepath(item) for item in outputstep):
+        return outputstep, result
+    # TODO: HACKY
+    # path to write
+    outputstep = [item[0] for item in result]
+    # content to write
+    result = [item[1] for item in result]
     return outputstep, result
 
 
@@ -159,7 +178,10 @@ def filenumber(item: str) -> int:
 
 def variable_parameter(items: list) -> int:
     """Count number of path contains */{FILEHASH}-pattern to replace."""
-    result = [item for item in items if '*' in item or isfilehash(item)]
+    result = [
+        item for item in items
+        if '*' in item or isfilehash(item) or isfilepath(item)
+    ]
     result = len(result)
     return result
 
@@ -167,6 +189,10 @@ def variable_parameter(items: list) -> int:
 def isfilehash(item):
     # {FILEHASH to support {FILEHASH_NUMBER Pattern
     return '{FILEHASH}' in item or '{FILEHASH' in item
+
+
+def isfilepath(item):
+    return '{FILEPATHS}' in item
 
 
 def variable_datatype(items: list) -> int:
