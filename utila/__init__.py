@@ -61,6 +61,7 @@ from utila.collection import Single
 from utila.collection import UpperCasedSet
 from utila.collection import choose_random
 from utila.collection import chunks
+from utila.collection import counts
 from utila.collection import dict_reverse
 from utila.collection import dicts_united
 from utila.collection import make_unique

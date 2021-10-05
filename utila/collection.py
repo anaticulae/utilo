@@ -276,3 +276,12 @@ def starmap(*items) -> list:
     except ValueError:
         return []
     return result
+
+
+def counts(items: list, selector: callable) -> int:
+    """\
+    >>> counts('ABCAD', lambda x: x == 'A')
+    2
+    """
+    counted = len([item for item in items if selector(item)])
+    return counted
