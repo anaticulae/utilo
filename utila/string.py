@@ -400,3 +400,15 @@ def starts_withint(text: str) -> bool:
     if INT_START.search(text):
         return True
     return False
+
+
+def starts_with(line: str, start: str) -> bool:
+    """\
+    >>> starts_with('Methode3', '2 Methode3')
+    True
+    """
+    start = start[0:len(line)]
+    maxdiff = 0.9 if len(start) > 10 else 0.7  # TODO: HOLY VALUE
+    if utila.similar(start, line, maxdiff=maxdiff):
+        return True
+    return False

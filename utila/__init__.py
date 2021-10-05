@@ -341,6 +341,7 @@ from utila.string import simple
 from utila.string import simplify_chars
 from utila.string import splititems
 from utila.string import splitlines
+from utila.string import starts_with
 from utila.string import starts_withint
 from utila.string import strip
 from utila.string import verysimilar
