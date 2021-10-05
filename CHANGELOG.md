@@ -2,6 +2,13 @@
 
 Every noteable change is logged here.
 
+## v2.55.0
+
+### Feature
+
+* add method to check if string starts with (cf5af0b252e7)
+* count elements in iterable (9d2eec665abb)
+
 ## v2.54.3
 
 ### Feature
