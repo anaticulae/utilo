@@ -79,14 +79,15 @@ class FeaturePackConfig:  # pylint:disable=too-many-instance-attributes
     version: str = None
 
     def __post_init__(self):
-        if self.cli_hook:
-            install, run = self.cli_hook  # pylint:disable=E0633
-            install_signature = list(inspect.signature(install).parameters.keys()) # yapf:disable
-            run_signature = list(inspect.signature(run).parameters.keys())
-            msg = f'cli_hook: require `def install(parser):` hook {install_signature}'
-            assert len(install_signature) >= 1, msg
-            msg = f'cli_hook: require `def run(args):` hook {run_signature}'
-            assert len(run_signature) >= 1, msg
+        if not self.cli_hook:
+            return
+        install, run = self.cli_hook  # pylint:disable=E0633
+        install_signature = list(inspect.signature(install).parameters.keys())
+        run_signature = list(inspect.signature(run).parameters.keys())
+        msg = f'cli_hook: require `def install(parser):` hook {install_signature}'
+        assert len(install_signature) >= 1, msg
+        msg = f'cli_hook: require `def run(args):` hook {run_signature}'
+        assert len(run_signature) >= 1, msg
 
 
 @utila.saveme(systemexit=True)
