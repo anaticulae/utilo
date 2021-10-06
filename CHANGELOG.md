@@ -2,6 +2,12 @@
 
 Every noteable change is logged here.
 
+## v2.56.1
+
+### Fix
+
+* add s-zett (75a3156cc315)
+
 ## v2.56.0
 
 ### Feature
