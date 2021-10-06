@@ -75,9 +75,9 @@ def test_yaml_from_path(testdir):
     def verify(item):
         assert len(item) == 2
 
-    loaded = utila.yaml_from_raw_or_path('test.yaml', verify=verify)
+    loaded = utila.yaml_load('test.yaml', verify=verify)
     assert len(loaded) == 2
-    loaded = utila.yaml_from_raw_or_path('test.yaml', safe=False)
+    loaded = utila.yaml_load('test.yaml', safe=False)
     assert len(loaded) == 2
 
 

@@ -53,7 +53,7 @@ def from_raw_or_path(
     return content
 
 
-def yaml_from_raw_or_path(
+def yaml_load(
     content: str,
     fname: str = None,
     verify: callable = None,

@@ -167,7 +167,7 @@ from utila.file.info import path_parent
 # loader
 from utila.file.loader import LazyFile
 from utila.file.loader import from_raw_or_path
-from utila.file.loader import yaml_from_raw_or_path
+from utila.file.loader import yaml_load
 # utile
 from utila.file.utils import exists
 from utila.file.utils import exists_assert
@@ -406,6 +406,7 @@ log_stacktrace = print_stacktrace  # pylint:disable=C0103
 assert_type_list = asserts_types  # pylint:disable=C0103
 islist = iterable  # pylint:disable=C0103
 level_temp = level_tmp
+yaml_from_raw_or_path = yaml_load
 
 ROOT = os.path.abspath(os.path.join(os.path.dirname(__file__), '..'))
 PACKAGE = 'utila'

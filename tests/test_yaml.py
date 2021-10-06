@@ -22,4 +22,4 @@ version=PDFVersion(major=1, minor=4), meta={'author': 'Innendienst',
 
 def test_yaml_from_error():
     with pytest.raises(ValueError, match='no valid yaml input'):
-        utila.yaml_from_raw_or_path(NO_YAML)
+        utila.yaml_load(NO_YAML)
