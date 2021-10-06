@@ -2,6 +2,12 @@
 
 Every noteable change is logged here.
 
+## v2.56.0
+
+### Feature
+
+* add method to dump yaml content (c1845ead6ae6)
+
 ## v2.55.0
 
 ### Feature
