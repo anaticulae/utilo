@@ -78,6 +78,22 @@ def yaml_load(
     return result
 
 
+def yaml_dump(
+    content: str,
+    safe: bool = True,
+):
+    try:
+        import yaml  # pylint:disable=import-outside-toplevel
+    except ImportError:
+        utila.error('add `yaml` package to requirements, eg. `PyYAML>=5.1`')
+        return None
+    if safe:
+        result = yaml.safe_dump(content)
+    else:
+        result = yaml.dump(content, Loader=yaml.FullLoader)  #nosec
+    return result
+
+
 class LazyFile:
     """\
     >>> me = LazyFile(__file__)

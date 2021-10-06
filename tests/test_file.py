@@ -10,7 +10,6 @@
 import os
 
 import pytest
-import yaml
 
 import utila
 import utila.file
@@ -69,7 +68,7 @@ def test_file_from_path_or_raw_not_exists():
 
 
 def test_yaml_from_path(testdir):
-    dumped = yaml.dump(['test', 'data'])
+    dumped = utila.yaml_dump(['test', 'data'])
     utila.file_create('test.yaml', dumped)
 
     def verify(item):

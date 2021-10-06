@@ -167,6 +167,7 @@ from utila.file.info import path_parent
 # loader
 from utila.file.loader import LazyFile
 from utila.file.loader import from_raw_or_path
+from utila.file.loader import yaml_dump
 from utila.file.loader import yaml_load
 # utile
 from utila.file.utils import exists
