@@ -130,6 +130,7 @@ TABLE = """\
 Ä           AE
 Ö           OE
 Ü           UE
+ß           ss
 """
 # TODO: REPLACE WITH SHARK OPERATOR, PYTHON 3.8
 MATCHED = {
