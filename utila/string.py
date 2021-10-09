@@ -37,7 +37,7 @@ def forward_slash(content: str, keep_newline: bool = False, **kwargs) -> str:  #
     >>> forward_slash('\\helm\\nelm')
     '/helm/nelm'
     """
-    assert isinstance(content, str)
+    assert isinstance(content, str), str(content)
     pattern = BACKSLASH
     if 'newline' in kwargs.keys():
         keep_newline = kwargs['newline']
