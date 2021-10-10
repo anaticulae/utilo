@@ -220,8 +220,8 @@ def sort_leftright_topdown_upper(items):
 def intersecting_rectangle(first: tuple, second: tuple) -> bool:
     """Check if two rectangles intersects at any point.
 
-    Determine middle point of two rectangle and check if that middle
-    point is inside of `first` or `second` rectangle.
+    Iterate over border points and check if border point is inside the
+    other rectangle.
 
     >>> intersecting_rectangle((0, 45, 55, 100), (45, 0, 55, 100))
     True
