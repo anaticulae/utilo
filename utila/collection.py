@@ -165,7 +165,10 @@ class Buckets:
         self.sorting = sorting
         self.selector = selector if selector else lambda x: x
 
-        self.border = [self.selector(item) for item in border]
+        self.border = [
+            item if utila.isnumber(item) else self.selector(item)
+            for item in border
+        ]
         self.border.append(utila.INF)
 
         self.bucket = [[] for _ in range(len(self.border))]
