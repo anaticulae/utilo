@@ -333,7 +333,7 @@ def create_io_ports(
         input_command = ParameterAppended(
             shortcut='i',
             longcut='input',
-            message='read input data from path',
+            message='read data from path',
         )
         if singleinput:
             input_command.args['required'] = True  # pylint:disable=E1137
