@@ -9,6 +9,7 @@
 
 import contextlib
 import functools
+import importlib.util
 import inspect
 import typing
 
@@ -203,3 +204,19 @@ def pass_required(caller: callable, default=None, **kwargs):
     data = {key: kwargs.get(key, default) for key in keys}
     result = caller(**data)
     return result
+
+
+def load_module(path: str):
+    """\
+    >>> load_module(__file__).__name__
+    'utila.typechecker'
+    """
+    item = utila.file_name(path)
+    parent = utila.file_name(utila.path_parent(path))
+    spec = importlib.util.spec_from_file_location(
+        f'{parent}.{item}',
+        path,
+    )
+    module = importlib.util.module_from_spec(spec)
+    spec.loader.exec_module(module)
+    return module

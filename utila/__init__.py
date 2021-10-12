@@ -368,6 +368,7 @@ from utila.typechecker import isfloat
 from utila.typechecker import isint
 from utila.typechecker import isnumber
 from utila.typechecker import isstrings
+from utila.typechecker import load_module
 from utila.typechecker import pass_required
 # utile
 from utila.utils import ALL_PAGES
