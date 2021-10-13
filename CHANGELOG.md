@@ -2,6 +2,17 @@
 
 Every noteable change is logged here.
 
+## v2.57.0
+
+### Feature
+
+* add method to print banner (1550b8dfe65f)
+* add method to load module (5d97a53a2b95)
+
+### Fix
+
+* pass border as ints while using selector (b8ce4dcedc72)
+
 ## v2.56.1
 
 ### Fix
