@@ -302,3 +302,18 @@ def log_raw(content: str):
     """
     content = fix_encoding(content)
     print(content, flush=True)
+
+
+def print_banner(text, symbol='*', width=80):
+    """\
+    >>> print_banner('hello', width=30)
+    <BLANKLINE>
+    ******************************
+    **          hello           **
+    ******************************
+    <BLANKLINE>
+    """
+    text = f'{text}'.center(width-4)
+    utila.log('\n' + symbol * width)
+    utila.log(f'{symbol}{symbol}{text}{symbol}{symbol}')
+    utila.log(symbol * width + '\n')

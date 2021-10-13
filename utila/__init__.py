@@ -206,6 +206,7 @@ from utila.logger import log
 from utila.logger import log_args
 from utila.logger import log_raw
 from utila.logger import outfile
+from utila.logger import print_banner
 from utila.logger import print_env
 from utila.logger import print_runtime
 from utila.logger import print_stacktrace
