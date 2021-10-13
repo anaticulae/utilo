@@ -304,7 +304,7 @@ def log_raw(content: str):
     print(content, flush=True)
 
 
-def print_banner(text, symbol='*', width=80):
+def print_banner(text, symbol='*', width=80, newlines: bool = True):
     """\
     >>> print_banner('hello', width=30)
     <BLANKLINE>
@@ -313,7 +313,8 @@ def print_banner(text, symbol='*', width=80):
     ******************************
     <BLANKLINE>
     """
-    text = f'{text}'.center(width-4)
-    utila.log('\n' + symbol * width)
+    newlines = '\n' if newlines else ''
+    text = f'{text}'.center(width - 4)
+    utila.log(newlines + symbol * width)
     utila.log(f'{symbol}{symbol}{text}{symbol}{symbol}')
-    utila.log(symbol * width + '\n')
+    utila.log(symbol * width + newlines)
