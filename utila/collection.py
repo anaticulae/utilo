@@ -257,27 +257,36 @@ class UpperCasedSet(CasedSet):
         super().__init__(values, method=str.upper)
 
 
-def starmap(*items) -> list:
+def starmap(items) -> list:
     """\
+    >>> starmap([5,])
+    [[5]]
+    >>> starmap(([1,], [2,]))
+    [[1, 2]]
     >>> starmap([[1, 2], [3,]])
     [[1, 3], [2, 3]]
     >>> starmap([(1, 2, 3), (4, ), (5, 6)])
-    [[1, 4, 5], [1, 4, 6], [2, 4, 5], [2, 4, 6], [3, 4, 5], [3, 4, 6]]
+    [[1, 4, 5], [2, 4, 5], [3, 4, 5], [1, 4, 6], [2, 4, 6], [3, 4, 6]]
+    >>> starmap([[0], [0.0], [0.0], [0], [0.0], [0.0]])
+    [[0, 0.0, 0.0, 0, 0.0, 0.0]]
     """
+    if len(items) == 1:
+        return [items]
+    result = items[0]
+    for item in items[1:]:
+        result = twice(result, item)
+    return result
+
+
+def twice(firsts, seconds):
+    # TODO: ADD DOCS HERE
     result = []
-    try:  # pylint:disable=too-many-nested-blocks
-        for current, *rest in items:
-            for cur in current:
-                if rest:
-                    children = starmap(rest)
-                    for item in children:
-                        if not isinstance(item, (list, tuple)):
-                            item = [item]
-                        result.append([cur] + item)
-                else:
-                    result.append(cur)
-    except ValueError:
-        return []
+    for second in seconds:
+        for first in firsts:
+            if utila.iterable(first):
+                result.append(list(first) + [second])
+            else:
+                result.append([first] + [second])
     return result
 
 
