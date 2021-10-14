@@ -290,6 +290,30 @@ def twice(firsts, seconds):
     return result
 
 
+def minimal(items) -> list:
+    """\
+    >>> minimal(([1,], [2,]))
+    [[1, 2]]
+    >>> minimal([[1, 2], [3,]])
+    [[1, 3], [2, 3]]
+    >>> minimal([(1, 2, 3), (4, ), (5, 6)])
+    [[1, 4, 5], [2, 4, 6], [3, 4, 6]]
+    """
+    todo = [len(item) for item in items]
+    current = [0] * len(items)
+    result = []
+    while sum(todo) != sum(current):
+        step = []
+        for pos, _ in enumerate(items):
+            if current[pos] < todo[pos]:
+                step.append(items[pos][current[pos]])
+                current[pos] += 1
+            else:
+                step.append(items[pos][current[pos] - 1])
+        result.append(step)
+    return result
+
+
 def counts(items: list, selector: callable) -> int:
     """\
     >>> counts('ABCAD', lambda x: x == 'A')

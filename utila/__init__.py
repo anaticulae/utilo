@@ -65,6 +65,7 @@ from utila.collection import counts
 from utila.collection import dict_reverse
 from utila.collection import dicts_united
 from utila.collection import make_unique
+from utila.collection import minimal
 from utila.collection import partition
 from utila.collection import split_shuffle
 from utila.collection import starmap
