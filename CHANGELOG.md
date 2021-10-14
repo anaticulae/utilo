@@ -2,6 +2,19 @@
 
 Every noteable change is logged here.
 
+## v2.58.0
+
+### Feature
+
+* add minimal method to present minimal config (14018979c7de)
+* increase optional width of first cli column (dfab239fad04)
+* add special field to extend char_rate check (f218e9b454b9)
+* add option to skip banner newlines (6740bee6657d)
+
+### Fix
+
+* adjust starmap for single values (4e204ac092fb)
+
 ## v2.57.0
 
 ### Feature
