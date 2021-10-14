@@ -143,6 +143,16 @@ class ParserConfiguration:  # pylint:disable=R0902
     waitingflag: bool = True
 
 
+class DescriptionHelpFormatter(argparse.RawDescriptionHelpFormatter):
+    """Increase optional width of parameter column."""
+
+    def __init__(self, prog):
+        super().__init__(
+            prog=prog,
+            max_help_position=80,
+        )
+
+
 def create_parser(
     todo: list = None,
     config: ParserConfiguration = None,
@@ -168,7 +178,7 @@ def create_parser(
 
     parser = argparse.ArgumentParser(
         description=description,
-        formatter_class=argparse.RawDescriptionHelpFormatter,
+        formatter_class=DescriptionHelpFormatter,
         prog=prog,
     )
 
