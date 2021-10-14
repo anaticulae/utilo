@@ -296,15 +296,20 @@ def splititems(raw: str, lowers: bool = True) -> set:
 ALPHA = 'abcdefghijklmnopqrstuvwxyzäöüß '
 
 
-def char_rate(text: str) -> float:
+def char_rate(text: str, special: str = None) -> float:
     """\
     >>> char_rate('AB12DF')
     0.67
+    >>> char_rate('AB12DF', special='12')
+    1.0
     """
     if not text:
         return 0.0
     text = text.lower()
-    selected = len([item for item in text if item in ALPHA])
+    valid = ALPHA
+    if special:
+        valid = valid + special
+    selected = len([item for item in text if item in valid])
     rate = selected / len(text)
     return utila.roundme(rate)
 
