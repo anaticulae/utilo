@@ -64,6 +64,7 @@ from utila.collection import chunks
 from utila.collection import counts
 from utila.collection import dict_reverse
 from utila.collection import dicts_united
+from utila.collection import first_one
 from utila.collection import make_unique
 from utila.collection import minimal
 from utila.collection import partition

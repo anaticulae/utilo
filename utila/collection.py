@@ -318,6 +318,27 @@ def minimal(items) -> list:
     return result
 
 
+def first_one(items) -> list:
+    """\
+    >>> first_one(([1,], [2,]))
+    [[1, 2]]
+    >>> first_one([[1, 2], [3,]])
+    [[1, 3], [2, 3]]
+    >>> first_one([(4, ), (1, 2, 3), (5, 6)])
+    [[4, 1, 5], [4, 2, 5], [4, 3, 5], [4, 1, 6]]
+    """
+    items = [list(item) for item in items]
+    result = []
+    for index, _ in enumerate(items):
+        base = [item[0] for item in items]
+        for current in items[index]:
+            copy = list(base)
+            copy[index] = current
+            result.append(copy)
+    result = utila.make_unique(result)
+    return result
+
+
 def counts(items: list, selector: callable) -> int:
     """\
     >>> counts('ABCAD', lambda x: x == 'A')
