@@ -140,6 +140,9 @@ def equal_length(*items) -> bool:
     return True
 
 
+# TODO: add isbool method
+
+
 def isfloat(*floats) -> bool:
     """\
     >>> isfloat(1.0)
@@ -150,7 +153,13 @@ def isfloat(*floats) -> bool:
     False
     >>> isfloat(1.5, 3.0, -0.3)
     True
+
+    # >>> isfloat('2.5')
+    # True
     """
+    # TODO: RENAME TO isfloats
+    # TODO: use isfloat for single checkup
+    # TODO: add str support
     for item in floats:
         if not isinstance(item, float):
             return False
