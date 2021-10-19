@@ -28,3 +28,11 @@ def match(pattern: str, content: str):
 
 def search(pattern: str, content: str):
     return re.search(pattern, content.strip(), flags=NOCASE_VERBOSE)
+
+
+def compiles(pattern: str):
+    r"""\
+    >>> compiles(r'\d+10 HELLO')
+    re.compile('\\d+10 HELLO', re.IGNORECASE|re.VERBOSE)
+    """
+    return re.compile(pattern, flags=NOCASE_VERBOSE)

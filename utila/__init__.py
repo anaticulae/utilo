@@ -313,6 +313,7 @@ from utila.process import run
 from utila.process import run_parallel
 # regex
 from utila.regex import NOCASE_VERBOSE
+from utila.regex import compiles
 from utila.regex import extract_match
 from utila.regex import match
 from utila.regex import search
