@@ -2,6 +2,13 @@
 
 Every noteable change is logged here.
 
+## v2.59.0
+
+### Feature
+
+* add shortcut to compile regex more easier (6c10e963afe6)
+* move from configo project (ac5c52371b15)
+
 ## v2.58.0
 
 ### Feature
