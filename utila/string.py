@@ -337,11 +337,15 @@ def findindexs(text: str, tokens: tuple) -> list:
     """\
     >>> findindexs('ABCDEFGAHCABCDEFGAHC', ('A', 'DE'))
     [0, 3, 7, 10, 13, 17]
+    >>> findindexs('super seite: https://checkitweg.de', tokens='http https'.split())
+    [13]
     """
     assert len(tokens) == len(set(tokens)), f'duplicated tokes: {tokens}'
     result = []
     for token in tokens:
         result.extend(findindex(text, token))
+    # TODO: SHRINK PATTERN INSTEAD OF SHRINKING CONTENT, TO AVOID DUPLICATION
+    result = utila.make_unique(result)
     result.sort()
     return result
 
