@@ -260,18 +260,26 @@ def strip(*items):
     return [item.strip() for item in items]
 
 
-def splitlines(raw: str, lowers: bool = True) -> set:
+REGEX_NEWLINE = re.compile('\n+')
+
+
+def splitlines(
+    raw: str,
+    lowers: bool = True,
+    pattern: str = REGEX_NEWLINE,
+) -> set:
     r"""Split string by newlines and convert to set.
 
     >>> splitlines('First\nThird\nSecond')
     {'third', 'second', 'first'}
     """
-    raw = raw.strip()
     if lowers:
         raw = raw.lower()
-    # remove empty entrees
-    splitted = [item for item in raw.splitlines() if item.strip()]
-    return set(splitted)
+    if pattern != REGEX_NEWLINE:
+        pattern = re.compile(pattern)
+    splitted = pattern.split(raw)
+    result = set(splitted)
+    return result
 
 
 def splititems(raw: str, lowers: bool = True) -> set:
