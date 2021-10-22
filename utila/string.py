@@ -267,18 +267,22 @@ def splitlines(
     raw: str,
     lowers: bool = True,
     pattern: str = REGEX_NEWLINE,
+    unique: bool = True,
 ) -> set:
     r"""Split string by newlines and convert to set.
 
     >>> splitlines('First\nThird\nSecond')
     {'third', 'second', 'first'}
+    >>> splitlines('First\nThird\n\n\n')
+    {'third', 'first'}
     """
     if lowers:
         raw = raw.lower()
     if pattern != REGEX_NEWLINE:
         pattern = re.compile(pattern)
     splitted = pattern.split(raw)
-    result = set(splitted)
+    splitted = utila.notempty(splitted)
+    result = set(splitted) if unique else splitted
     return result
 
 
