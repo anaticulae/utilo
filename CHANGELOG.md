@@ -2,6 +2,17 @@
 
 Every noteable change is logged here.
 
+## v2.59.1
+
+### Feature
+
+* add option to return values as list (1b7f9a37bf3c)
+* improve split lines pattern (3271c28eaa21)
+
+### Fix
+
+* return duplicated starts only once (38f6962303bd)
+
 ## v2.59.0
 
 ### Feature
