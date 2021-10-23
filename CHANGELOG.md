@@ -2,6 +2,12 @@
 
 Every noteable change is logged here.
 
+## v2.59.2
+
+### Feature
+
+* add findall method (613e35808bb6)
+
 ## v2.59.1
 
 ### Feature
