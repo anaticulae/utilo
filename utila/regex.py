@@ -36,3 +36,12 @@ def compiles(pattern: str):
     re.compile('\\d+10 HELLO', re.IGNORECASE|re.VERBOSE)
     """
     return re.compile(pattern, flags=NOCASE_VERBOSE)
+
+
+def finditer(pattern: str, text: str):
+    r"""\
+    >>> [extract_match(item) for item in finditer(pattern=r'\d+', text=r'   10 HELLO 38 19')]
+    ['10', '38', '19']
+    """
+    result = re.finditer(pattern, text, flags=NOCASE_VERBOSE)
+    return result
