@@ -2,6 +2,12 @@
 
 Every noteable change is logged here.
 
+## v2.59.3
+
+### Fix
+
+* enable yaml unsafe dumper (7be539882989)
+
 ## v2.59.2
 
 ### Feature
