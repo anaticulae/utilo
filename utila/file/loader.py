@@ -79,9 +79,13 @@ def yaml_load(
 
 
 def yaml_dump(
-    content: str,
+    content: object,
     safe: bool = True,
 ):
+    r"""\
+    >>> yaml_dump(dict(user='Helmut', age=34), safe=False)
+    'age: 34\nuser: Helmut\n'
+    """
     try:
         import yaml  # pylint:disable=import-outside-toplevel
     except ImportError:
@@ -90,7 +94,7 @@ def yaml_dump(
     if safe:
         result = yaml.safe_dump(content)
     else:
-        result = yaml.dump(content, Loader=yaml.FullLoader)  #nosec
+        result = yaml.dump(content, Dumper=yaml.Dumper)  #nosec
     return result
 
 
