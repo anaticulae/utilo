@@ -4,3 +4,6 @@ name = write it once
 
 [release]
 fail_on_finding = true
+
+[test]
+plugins = timeout
