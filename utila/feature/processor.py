@@ -9,7 +9,6 @@
 
 import concurrent.futures
 import functools
-import inspect
 import os
 import signal
 import sys
@@ -229,16 +228,11 @@ def run_hook_safely(
     """Verify interface, run hook and catch Exception and log problem if
     required.
     """
-    sig = inspect.signature(hook.work)
     try:
         # run optional before hook before running work
         if hook.before:
             hook.before()
-        if utila.PAGES_FLAG in sig.parameters:
-            # optional page numbers flag
-            result = hook.work(pages=pages)
-        else:
-            result = hook.work()
+        result = utila.pass_required(caller=hook.work, pages=pages)
         # run optional after hook after completing work
         if hook.after:
             hook.after()
@@ -246,7 +240,6 @@ def run_hook_safely(
         utila.error('while processing %s' % name)
         utila.print_stacktrace()
         raise
-
     if isinstance(result, (str, bytes)) or result == NO_RESULT:
         result = [result]
     # Verify result
