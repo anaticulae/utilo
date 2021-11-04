@@ -56,10 +56,11 @@ def from_raw_or_path(
 def yaml_load(
     content: str,
     fname: str = None,
+    ftype: str = 'yaml',
     verify: callable = None,
     safe: bool = True,
 ):
-    loaded = from_raw_or_path(content, ftype='yaml', fname=fname)
+    loaded = from_raw_or_path(content, ftype=ftype, fname=fname)
     try:
         import yaml  # pylint:disable=import-outside-toplevel
         import yaml.scanner  # pylint:disable=import-outside-toplevel
