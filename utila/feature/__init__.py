@@ -114,7 +114,6 @@ def featurepack(  # pylint:disable=too-many-locals
         return utila.FAILURE
     features = utila.feature.collector.find_features(root, featurepackage)
     commands = commandline(features, workplan)
-
     description = utila.feature.description.prepare_description(
         config.name,
         config.description,
@@ -168,7 +167,7 @@ def featurepack(  # pylint:disable=too-many-locals
         singleinput=config.singleinput,
         verbose=True,
     )
-
+    argv = dict(inputs=inputpath, outputs=outputpath, prefix=prefix)
     # update logging level
     level = utila.Level(verbose)
     with contextlib.suppress(KeyError):
@@ -214,6 +213,7 @@ def featurepack(  # pylint:disable=too-many-locals
                 processes=processes,
                 todo=current_todo,
                 profiling=profiling,
+                argv=argv,
                 verbose=verbose,
                 wait=wait,
                 rename=config.rename,

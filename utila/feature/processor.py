@@ -25,7 +25,7 @@ ErrorHook = typing.Tuple[Exception, str]
 NO_RESULT = object()
 
 
-def process(  # pylint:disable=R0914
+def process(  # pylint:disable=R0913,R0914
     workplan: 'utila.feature.ProcessSteps',
     name: str = None,
     todo: typing.List = None,
@@ -36,6 +36,7 @@ def process(  # pylint:disable=R0914
     before: callable = None,
     after: callable = None,
     ctrlbreak: callable = None,
+    argv=None,
     *,
     failfast: bool = False,
     profiling: bool = False,
@@ -62,6 +63,7 @@ def process(  # pylint:disable=R0914
         failfast(bool): quit after first failure
         profiling(bool): if True, runtime of every single step is logged
         verbose(bool): if True, print more logging information(skipped steps)
+        argv(dict): magics defined in command line tool
         wait(int): if required, wait till incoming resources are ready
     Returns:
         SUCCESS if all features process successfully, if not FAILURE
@@ -107,6 +109,7 @@ def process(  # pylint:disable=R0914
                 todo=todo,
                 verbose=verbose,
                 wait=wait,
+                argv=argv,
             )
             # write result
             failure += write_level_result(
@@ -134,6 +137,7 @@ def run_level(
     profiling,
     verbose: bool = True,
     wait: int = 0,
+    argv=None,
 ):
     results = []
     for step in level:
@@ -150,6 +154,7 @@ def run_level(
             pages=pages,
             profiling=profiling,
             wait=wait,
+            argv=argv,
         )
         results.append(future)
     return results
@@ -162,6 +167,7 @@ def callback(
     pages: list,
     profiling: bool,
     wait: int = 0,
+    argv=None,
 ) -> tuple:
     """Run processing step.
 
@@ -172,6 +178,7 @@ def callback(
         pages(list): list of pages to processed
         profiling(bool): if True log callback runtime
         wait(int): seconds to wait for required input-resources
+        argv(dict): magics defined in command line tool
     Returns:
         Tuple of result, stepname and output
     """
@@ -188,6 +195,7 @@ def callback(
         name=stepname,
         stepoutput=output,
         pages=pages,
+        argv=argv,
     )
     with utila.profile(msg=stepname) if profiling else utila.nothing():
         try:
@@ -214,6 +222,7 @@ def run_hook_safely(
     name: str,
     stepoutput,
     pages,
+    argv,
 ) -> int:
     """Verify interface, run hook and catch Exception and log problem if
     required.
@@ -222,7 +231,7 @@ def run_hook_safely(
         # run optional before hook before running work
         if hook.before:
             hook.before()
-        result = utila.pass_required(caller=hook.work, pages=pages)
+        result = utila.pass_required(caller=hook.work, pages=pages, **argv)
         # run optional after hook after completing work
         if hook.after:
             hook.after()
