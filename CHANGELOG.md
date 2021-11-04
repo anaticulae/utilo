@@ -2,6 +2,14 @@
 
 Every noteable change is logged here.
 
+## v2.60.0
+
+### Feature
+
+* pass parameter of cli to runtime step (8bb0c0ea69c2)
+* add support for None return (2e56623a9104)
+* add magic parameter which are filled automatically (c3e8153a99ab)
+
 ## v2.59.4
 
 ### Feature
