@@ -126,16 +126,6 @@ def process(  # pylint:disable=R0914
     return status
 
 
-def register_signals(ctrlbreak=None):
-    if ctrlbreak is None:
-
-        def ctrlbreak(event, name):  # pylint:disable=W0613
-            # do nothing if signal handler is not defined
-            return True
-
-    signal.signal(signal.SIGBREAK, ctrlbreak)
-
-
 def run_level(
     level,
     todo,
@@ -373,3 +363,13 @@ def select_executor():
     if testrun:
         executor = concurrent.futures.ThreadPoolExecutor
     return executor
+
+
+def register_signals(ctrlbreak=None):
+    if ctrlbreak is None:
+
+        def ctrlbreak(event, name):  # pylint:disable=W0613
+            # do nothing if signal handler is not defined
+            return True
+
+    signal.signal(signal.SIGBREAK, ctrlbreak)
