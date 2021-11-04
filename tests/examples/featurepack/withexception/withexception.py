@@ -17,7 +17,7 @@ PROCESS = 'brokenworker'
 WORKPLAN = [
     utila.create_step(
         'brokenworker',
-        inputs=[utila.File('inputs')],
+        inputs=[utila.File('inputso')],
         output=('first', 'second'),
     ),
 ]

@@ -389,6 +389,9 @@ def verify_resources(inputs):
     return ret
 
 
+MAGICS = 'inputs outputs prefix'.split()
+
+
 def verify_interface(inputs, outputs, worker, stepname):
     # check callable
     # check input parameter
@@ -399,8 +402,9 @@ def verify_interface(inputs, outputs, worker, stepname):
     if not dynamic_collection:
         # Optional pages flag, reduces count of required parameter in
         # definition.
+        magics = len([item for item in call_parameter if item in MAGICS])
         has_pages = int(utila.PAGES_FLAG in call_parameter)
-        required_callparameter = len(inputs) + has_pages
+        required_callparameter = len(inputs) + has_pages + magics
         if len(call_parameter) != required_callparameter:
             utila.error('interface error: missing input resources\n'
                         f'step: {stepname}\n'

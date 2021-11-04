@@ -419,7 +419,7 @@ def test_error_hook(hook, failfast, testdir, monkeypatch):
     """Test passing exception to error hook and without hook"""
     import tests.examples.featurepack.withexception.withexception as exe  # pylint:disable=C0415
     root = exe.ROOT
-    utila.file_create(os.path.join(str(testdir), 'inputs.yaml'))
+    utila.file_create(os.path.join(str(testdir), 'inputso.yaml'))
 
     def errorhook(name, exception):  # pylint:disable=W0613
         errorhook.hooked = True
