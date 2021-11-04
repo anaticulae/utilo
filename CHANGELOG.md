@@ -2,6 +2,13 @@
 
 Every noteable change is logged here.
 
+## v2.59.4
+
+### Feature
+
+* add option to disable ftype (3646143421c4)
+* add option to change yaml loader file type (ba4c671f3531)
+
 ## v2.59.3
 
 ### Fix
