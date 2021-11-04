@@ -29,9 +29,13 @@ def connector(
     '/c/gummi/processor__info.yaml'
     >>> connector('C:/', 'processor', 'info', ftype='doc')
     'C:/processor__info.doc'
+    >>> connector('C:/', 'processor', 'info', ftype='')
+    'C:/processor__info'
     """
     prefix = f'{prefix}_' if prefix else ''
-    filename = f'{runner}__{prefix}{filename}.{ftype}'
+    filename = f'{runner}__{prefix}{filename}'
+    if ftype:
+        filename = f'{filename}.{ftype}'
     result = os.path.join(path, filename)
     result = utila.forward_slash(result)
     return result
