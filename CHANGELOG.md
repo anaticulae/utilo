@@ -2,6 +2,16 @@
 
 Every noteable change is logged here.
 
+## v2.60.1
+
+### Feature
+
+* add option to skip star-attributes (8cb5188580d4)
+
+### Fix
+
+* skip stars to handle *images as parameter correctly (d9540b8005ca)
+
 ## v2.60.0
 
 ### Feature
