@@ -327,6 +327,8 @@ def write_result_safely(
             rename=rename,
         )
         for path, content in zip(outputstep, result):
+            if content == NO_RESULT:
+                continue
             write_resource(path, content, rename=rename)
         return utila.SUCCESS
     except TypeError as msg:
