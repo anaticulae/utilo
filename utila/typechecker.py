@@ -193,13 +193,18 @@ def hasattribute(caller, attribute) -> bool:
     return False
 
 
-def attributes(method: callable) -> tuple:
+def attributes(method: callable, skipstars: bool = False) -> tuple:
     """\
     >>> attributes(attributes)
-    ('method',)
+    ('method', 'skipstars')
+    >>> attributes(isfloat)
+    ('floats',)
+    >>> attributes(isfloat, skipstars=True)
+    ()
     """
     sig = inspect.signature(method)
-    result = tuple(sig.parameters.keys())
+    result = tuple(key for key, value in sig.parameters.items()
+                   if '*' not in str(value) or not skipstars)
     return result
 
 
