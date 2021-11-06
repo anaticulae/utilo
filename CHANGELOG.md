@@ -2,6 +2,12 @@
 
 Every noteable change is logged here.
 
+## v2.60.2
+
+### Feature
+
+* add NO_RESULT to skip empty result (adb6216d9f1c)
+
 ## v2.60.1
 
 ### Feature
