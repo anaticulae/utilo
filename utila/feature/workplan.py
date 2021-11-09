@@ -36,7 +36,7 @@ ProcessSteps = typing.List[ProcessStep]
 
 def create_runtime(  # pylint:disable=too-many-locals
     plan: list,
-    process_: str,
+    process: str,
     features: 'Features',
     inspace: str,
     outspace: str = None,
@@ -49,7 +49,7 @@ def create_runtime(  # pylint:disable=too-many-locals
 
     Args:
         plan: list of working steps
-        process_: step name to print on console
+        process: step name to print on console
         features: list of Features
         inspace(str or list): list of input spaces
         outspace(str): absolute path to write output
@@ -66,7 +66,7 @@ def create_runtime(  # pylint:disable=too-many-locals
     outspace = outspace if outspace else inspace[0]
     prefix = f'{prefix}_' if prefix else ''
     if prefix:
-        plan = prefix_workplan(plan, prefix, process_)
+        plan = prefix_workplan(plan, prefix, process)
     hooks = {item.name: item.hooks for item in features}
     args = prepare_args(plan, args)
     result = []
@@ -90,7 +90,7 @@ def create_runtime(  # pylint:disable=too-many-locals
             ret += 1
             continue
         outputs = prepare_outputs(
-            process_=process_,
+            process=process,
             stepname=name,
             prefix=prefix,
             outputs=step.outputs,
@@ -353,7 +353,7 @@ def prepare_inputs_pattern(item, inspace, result):
 
 
 def prepare_outputs(
-    process_: str,
+    process: str,
     stepname: str,
     prefix: str,
     outputs: list,
@@ -362,7 +362,7 @@ def prepare_outputs(
     """Support different output types
 
     Args:
-        process_(str): name to invoke program by system call
+        process(str): name to invoke program by system call
         stepname(str): a step describes a part of working in the process
         prefix(str): optional to add prefix to differentiate output files
         outputs(list): list of items to write results of steps as files
@@ -387,7 +387,7 @@ def prepare_outputs(
         if isinstance(item, utila.File):
             outitem = f'{filename}.{datatype}'
         else:
-            outitem = f'{process_}__{prefix}{stepname}_{filename}.{datatype}'
+            outitem = f'{process}__{prefix}{stepname}_{filename}.{datatype}'
         _outputs.append(outitem)
     if ret:
         sys.exit(utila.FAILURE)

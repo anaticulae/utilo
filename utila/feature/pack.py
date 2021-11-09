@@ -92,7 +92,7 @@ def featurepack(
     choice = evaluate_userchoice(config, parser)
     runtime = utila.feature.workplan.create_runtime(
         workplan,
-        process_=config.name,
+        process=config.name,
         features=features,
         inspace=choice.inputpath,
         outspace=choice.outputpath,

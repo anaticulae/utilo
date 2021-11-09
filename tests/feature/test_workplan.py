@@ -200,7 +200,7 @@ def test_workplan_prepare_variables_invalid_datatype():
 def test_workplan_prepare_outputs_invalid_outputs():
     with pytest.raises(SystemExit):
         utila.feature.workplan.prepare_outputs(
-            process_='rawmaker',
+            process='rawmaker',
             stepname='stepname',
             prefix='oneline',
             outputs=[20, 50],
