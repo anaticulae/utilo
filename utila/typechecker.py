@@ -208,6 +208,23 @@ def attributes(method: callable, skipstars: bool = False) -> tuple:
     return result
 
 
+def annotations(method: callable, skipstars: bool = False) -> tuple:
+    """\
+    >>> annotations(attributes)
+    (<built-in function callable>, <class 'bool'>)
+    >>> annotations(isfloat)
+    (<class 'inspect._empty'>,)
+    >>> annotations(isfloat, skipstars=True)
+    ()
+    """
+    sig = inspect.signature(method)
+    result = (value.annotation
+              for key, value in sig.parameters.items()
+              if '*' not in str(value) or not skipstars)
+    result = tuple(result)
+    return result
+
+
 def pass_required(caller: callable, default=None, **kwargs):
     """\
     >>> method = lambda alpha, beta: alpha + beta

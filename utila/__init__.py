@@ -363,6 +363,7 @@ from utila.tuples import tuple_plus
 from utila.tuples import update_tuple
 # type-checker
 from utila.typechecker import Strings
+from utila.typechecker import annotations
 from utila.typechecker import asserts
 from utila.typechecker import asserts_types
 from utila.typechecker import attributes
