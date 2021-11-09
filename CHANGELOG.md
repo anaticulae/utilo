@@ -2,6 +2,15 @@
 
 Every noteable change is logged here.
 
+## v2.61.0
+
+### Feature
+
+* use optional args in workplan verification (df4b83f487d4)
+* add optional data provider from cli run hook (16a27dbb6f83)
+* add method to determine method annotations (451d2cf3b214)
+* add multiple cli hook option (e5bd8aff8902)
+
 ## v2.60.2
 
 ### Feature
