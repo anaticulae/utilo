@@ -26,7 +26,7 @@ NO_RESULT = object()
 
 
 def process(  # pylint:disable=R0913,R0914
-    workplan: 'utila.feature.ProcessSteps',
+    workplan: 'ProcessSteps',
     name: str = None,
     todo: typing.List = None,
     processes: int = 1,
@@ -127,6 +127,10 @@ def process(  # pylint:disable=R0913,R0914
                 failure += aftered
     status = utila.FAILURE if failure else utila.SUCCESS
     return status
+
+
+class InterfaceMismatch(TypeError):
+    pass
 
 
 def run_level(
@@ -256,7 +260,7 @@ def run_hook_safely(
         utila.error(f'wrong return value count in step: `{name}`')
         utila.error(f'interface count: {len(stepoutput)}')
         utila.error(f'return count from step: {len(result)}')
-        raise utila.feature.InterfaceMismatch
+        raise InterfaceMismatch
     return result
 
 

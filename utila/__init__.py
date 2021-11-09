@@ -94,16 +94,16 @@ from utila.decorator import isdecorated
 from utila.error import CANCELLED_BY_USER
 from utila.error import handle_error
 from utila.error import saveme
-# Feature
-from utila.feature import FeaturePackConfig
-from utila.feature import InterfaceMismatch
-from utila.feature import featurepack
 # cache
 from utila.feature.cache import datapackage
+# Feature
+from utila.feature.pack import FeaturePackConfig
+from utila.feature.pack import featurepack
 # path
 from utila.feature.path import connector as pathconnector
 # processor
 from utila.feature.processor import NO_RESULT
+from utila.feature.processor import InterfaceMismatch
 from utila.feature.processor import select_executor
 # user input
 from utila.feature.userinput import Bool

@@ -10,6 +10,7 @@
 import collections
 import contextlib
 import copy
+import dataclasses
 import functools
 import glob
 import inspect
@@ -23,6 +24,16 @@ import utila.feature
 import utila.feature.userinput
 
 
+@dataclasses.dataclass
+class ProcessStep:
+    name: str = None
+    outputs: list = dataclasses.field(default_factory=list)
+    hooks: 'utila.feature.collector.FeatureHooks' = None
+
+
+ProcessSteps = typing.List[ProcessStep]
+
+
 def create_runtime(  # pylint:disable=too-many-locals
     plan: list,
     process_: str,
@@ -33,7 +44,7 @@ def create_runtime(  # pylint:disable=too-many-locals
     prefix: str = None,
     verify: bool = False,
     used_processes: int = 1,
-) -> 'utila.feature.ProcessSteps':
+) -> ProcessSteps:
     """Parse user defined workplan
 
     Args:
@@ -109,7 +120,7 @@ def create_runtime(  # pylint:disable=too-many-locals
                 continue
         function_call = functools.partial(caller, *inputs)
         result.append(
-            utila.feature.ProcessStep(
+            ProcessStep(
                 name=name,
                 hooks=utila.feature.collector.FeatureHooks(
                     work=function_call,
@@ -424,7 +435,8 @@ def verify_interface(inputs, outputs, worker, stepname, args: dict = None):
             utila.error('interface error: missing input resources\n'
                         f'step: {stepname}\n'
                         f'expected: {list(call_parameter.keys())}\n'
-                        f'got: {inputs}')
+                        f'got: {inputs}\n'
+                        f'magics: {magics}')
             return utila.FAILURE
     # check output parameter
     return_parameter = str(inspect.signature(worker).return_annotation)
