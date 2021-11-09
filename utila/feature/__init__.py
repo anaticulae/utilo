@@ -80,13 +80,16 @@ class FeaturePackConfig:  # pylint:disable=too-many-instance-attributes
     def __post_init__(self):
         if not self.cli_hook:
             return
-        install, run = self.cli_hook  # pylint:disable=E0633
-        install_signature = utila.attributes(install)
-        run_signature = utila.attributes(run)
-        msg = f'cli_hook: require `def install(parser):` hook {install_signature}'
-        assert len(install_signature) >= 1, msg
-        msg = f'cli_hook: require `def run(args):` hook {run_signature}'
-        assert len(run_signature) >= 1, msg
+        hooks = self.cli_hook
+        if not isinstance(hooks, list):
+            hooks = [hooks]
+        for (install, run) in hooks:
+            install_signature = utila.attributes(install)
+            run_signature = utila.attributes(run)
+            msg = f'cli_hook: require `def install(parser):` hook {install_signature}'
+            assert len(install_signature) >= 1, msg
+            msg = f'cli_hook: require `def run(args):` hook {run_signature}'
+            assert len(run_signature) >= 1, msg
 
 
 @utila.saveme(systemexit=True)
@@ -141,18 +144,17 @@ def featurepack(  # pylint:disable=too-many-locals
         prog=config.name,
         version=config.version,
     )
-    if config.cli_hook:
-        install, run = config.cli_hook
-    else:
-        install, run = None, None
-    if install:
+    hooked = config.cli_hook if config.cli_hook else []
+    for install, _ in hooked:
         # install optional parser steps
         install(parser)
     # evaluate create parser
     args = utila.parse(parser)
-    if run:
+    for _, run in hooked:
+        if not run:
+            continue
         # run optional parser steps
-        run(args)  # pylint:disable=E1102
+        run(args)
     # overwrite input as fast as possible. This is required to overwrite
     # general flags (profiling, failfast, etc.).
     utila.feature.config.overwrite(args)
