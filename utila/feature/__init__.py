@@ -144,6 +144,7 @@ def featurepack(  # pylint:disable=too-many-locals
         prog=config.name,
         version=config.version,
     )
+    optional_data = dict()
     hooked = config.cli_hook if config.cli_hook else []
     for install, _ in hooked:
         # install optional parser steps
@@ -154,7 +155,9 @@ def featurepack(  # pylint:disable=too-many-locals
         if not run:
             continue
         # run optional parser steps
-        run(args)
+        parsed = run(args)
+        if parsed:
+            optional_data = utila.dicts_united(optional_data, parsed)
     # overwrite input as fast as possible. This is required to overwrite
     # general flags (profiling, failfast, etc.).
     utila.feature.config.overwrite(args)
@@ -170,6 +173,9 @@ def featurepack(  # pylint:disable=too-many-locals
         verbose=True,
     )
     argv = dict(inputs=inputpath, outputs=outputpath, prefix=prefix)
+    if optional_data:
+        # add hooked data to automated vars
+        argv = utila.dicts_united(argv, optional_data)
     # update logging level
     level = utila.Level(verbose)
     with contextlib.suppress(KeyError):
