@@ -86,15 +86,25 @@ def create_runtime(  # pylint:disable=too-many-locals
             outspace=outspace,
         )
         ret += verify_resources(inputs)
+        stepargs = {
+            key: value
+            for key, value in args.items()
+            if key not in [item.name for item in step.inputs]
+        }
         # filter rewrite recursive inputs
         inputs = [item[1:] if item[0] == '_' else item for item in inputs]
         inputs = group_multiple_directories(inputs)
         if variables:
             inputs.extend(variables)
-
         if args.get(name):
             # shrink verification to selected step
-            if verify_interface(inputs, outputs, caller, name) == utila.FAILURE:
+            if verify_interface(
+                    inputs,
+                    outputs,
+                    caller,
+                    name,
+                    args=stepargs,
+            ) == utila.FAILURE:
                 ret += 1
                 continue
         function_call = functools.partial(caller, *inputs)
@@ -392,7 +402,9 @@ def verify_resources(inputs):
 MAGICS = 'inputs outputs prefix'.split()
 
 
-def verify_interface(inputs, outputs, worker, stepname):
+def verify_interface(inputs, outputs, worker, stepname, args: dict = None):
+    if args is None:
+        args = {}
     # check callable
     # check input parameter
     call_parameter = inspect.signature(worker).parameters
@@ -402,9 +414,12 @@ def verify_interface(inputs, outputs, worker, stepname):
     if not dynamic_collection:
         # Optional pages flag, reduces count of required parameter in
         # definition.
-        magics = len([item for item in call_parameter if item in MAGICS])
+        magics = [
+            item for item in call_parameter
+            if item in MAGICS or (item in args and item not in parameter)
+        ]
         has_pages = int(utila.PAGES_FLAG in call_parameter)
-        required_callparameter = len(inputs) + has_pages + magics
+        required_callparameter = len(inputs) + has_pages + len(magics)
         if len(call_parameter) != required_callparameter:
             utila.error('interface error: missing input resources\n'
                         f'step: {stepname}\n'
