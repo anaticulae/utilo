@@ -7,6 +7,8 @@
 # be prosecuted under federal law. Its content is company confidential.
 # =============================================================================
 
+import argparse
+import collections
 import contextlib
 import dataclasses
 import os
@@ -61,7 +63,7 @@ Features = typing.List[Feature]
 
 
 @utila.saveme(systemexit=True)
-def featurepack(  # pylint:disable=too-many-locals
+def featurepack(
     workplan: 'WorkPlanSteps',
     root: str,
     featurepackage: str,
@@ -84,15 +86,59 @@ def featurepack(  # pylint:disable=too-many-locals
         utila.error('empty workplan - nothing todo - abort!')
         return utila.FAILURE
     features = utila.feature.collector.find_features(root, featurepackage)
-    commands = commandline(features, workplan)
-    description = utila.feature.description.prepare_description(
-        config.name,
-        config.description,
+    # parser
+    parser = create_featurepack_parser(features, workplan, config)
+    # evaluate cmd input
+    choice = evaluate_userchoice(config, parser)
+    runtime = utila.feature.workplan.create_runtime(
         workplan,
-        features,
-        rename=config.rename,
+        process_=config.name,
+        features=features,
+        inspace=choice.inputpath,
+        outspace=choice.outputpath,
+        args=choice.args,
+        prefix=choice.prefix,
+        used_processes=choice.processes,
+        verify=True,
     )
-    parser_configuration = utila.ParserConfiguration(
+    # ensure to handle selected steps correctly
+    args = remove_workplan_flags(choice.args, workplan)
+    # Ensure to have output folder
+    os.makedirs(choice.outputpath, exist_ok=True)
+    current_todo = determine_todo(args, config.flags)
+    cache = utila.feature.cache.cacheme if choice.usecache else utila.nothing
+    with cache(config.name, config.version) as done:
+        if done:
+            # already cached
+            return utila.SUCCESS
+        profiles = utila.profile if choice.profiling else utila.nothing
+        with profiles(config.name):
+            completed = utila.feature.processor.process(
+                runtime,
+                name=config.name,
+                errorhook=config.errorhook,
+                before=config.before,
+                after=config.after,
+                failfast=choice.failfast,
+                pages=choice.pages,
+                processes=choice.processes,
+                todo=current_todo,
+                profiling=choice.profiling,
+                argv=choice.argv,
+                verbose=choice.verbose,
+                wait=choice.wait,
+                rename=config.rename,
+            )
+    return completed
+
+
+def create_featurepack_parser(
+    features,
+    workplan,
+    config,
+) -> argparse.ArgumentParser:
+    commands = commandline(features, workplan)
+    configuration = utila.ParserConfiguration(
         failfastflag=config.failfastflag,
         flags=config.flags,
         inputparameter=True,
@@ -105,20 +151,38 @@ def featurepack(  # pylint:disable=too-many-locals
         verboseflag=config.verboseflag,
         configflag=config.configflag,
     )
+    description = utila.feature.description.prepare_description(
+        config.name,
+        config.description,
+        workplan,
+        features,
+        rename=config.rename,
+    )
     parser = utila.cli.create_parser(
         commands,
-        config=parser_configuration,
+        config=configuration,
         description=description,
         prog=config.name,
         version=config.version,
     )
-    optional_data = dict()
+    return parser
+
+
+UserChoice = collections.namedtuple(
+    'UserChoice',
+    'args, inputpath, outputpath, prefix, verbose processes, failfast, pages, '
+    'profiling, wait, usecache, argv',
+)
+
+
+def evaluate_userchoice(config, parser) -> UserChoice:  # pylint:disable=R0914
     hooked = config.cli_hook if config.cli_hook else []
     for install, _ in hooked:
         # install optional parser steps
         install(parser)
     # evaluate create parser
     args = utila.parse(parser)
+    optional_data = dict()
     for _, run in hooked:
         if not run:
             continue
@@ -129,8 +193,7 @@ def featurepack(  # pylint:disable=too-many-locals
     # overwrite input as fast as possible. This is required to overwrite
     # general flags (profiling, failfast, etc.).
     utila.feature.config.overwrite(args)
-
-    processes, failfast, pages, profiling, wait = utila.cli.evaluate_flags(
+    processes, failfast, pages, profiling, wait = utila.cli.evaluate_flags(  # pylint:disable=W0613
         args,
         config.multiprocessed,
     )
@@ -146,55 +209,26 @@ def featurepack(  # pylint:disable=too-many-locals
         argv = utila.dicts_united(argv, optional_data)
     # update logging level
     level = utila.Level(verbose)
-    with contextlib.suppress(KeyError):
-        if args['quite']:
-            # suppress logging - log only errors
-            level = utila.Level.ERROR
+    if args.get('quite', False):
+        # suppress logging - log errors only
+        level = utila.Level.ERROR
     utila.level_setup(level)
-
-    runtime = utila.feature.workplan.create_runtime(
-        workplan,
-        process_=config.name,
-        features=features,
-        inspace=inputpath,
-        outspace=outputpath,
-        args=args,
-        prefix=prefix,
-        used_processes=processes,
-        verify=True,
-    )
-    # ensure to handle selected steps correctly
-    args = remove_workplan_flags(args, workplan)
-
-    # Ensure to have output folder
-    os.makedirs(outputpath, exist_ok=True)
-
-    current_todo = determine_todo(args, config.flags)
-
     usecache = args.get('cache', False)
-    cache = utila.feature.cache.cacheme if usecache else utila.nothing
-    with cache(config.name, config.version) as done:
-        if done:
-            # already cached
-            return utila.SUCCESS
-        with utila.profile(config.name) if profiling else utila.nothing():
-            completed = utila.feature.processor.process(
-                runtime,
-                config.name,
-                errorhook=config.errorhook,
-                before=config.before,
-                after=config.after,
-                failfast=failfast,
-                pages=pages,
-                processes=processes,
-                todo=current_todo,
-                profiling=profiling,
-                argv=argv,
-                verbose=verbose,
-                wait=wait,
-                rename=config.rename,
-            )
-    return completed
+    result = UserChoice(
+        args,
+        inputpath,
+        outputpath,
+        prefix,
+        verbose,
+        processes,
+        failfast,
+        pages,
+        profiling,
+        wait,
+        usecache,
+        argv,
+    )
+    return result
 
 
 def commandline(features: Features, workplan: list) -> utila.Commands:
