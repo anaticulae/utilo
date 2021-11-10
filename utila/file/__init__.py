@@ -391,7 +391,7 @@ def file_list(
     return result
 
 
-def file_name(path: str) -> str:
+def file_name(path: str, ext: bool = False) -> str:
     """Determine file name without file extension out of file path.
 
     >>> file_name('/etc/profile.d/helm.sh')
@@ -404,6 +404,8 @@ def file_name(path: str) -> str:
     '.etc'
     >>> file_name('/no/file/ext')
     'ext'
+    >>> file_name('etc/dev/raw.png', ext=True)
+    'raw.png'
     """
     assert path
     path = utila.forward_slash(path)
@@ -411,6 +413,8 @@ def file_name(path: str) -> str:
         _, name = path.rsplit('/', 1)
     except ValueError:
         name = path
+    if ext:
+        return name
     if name[0] == '.':
         return name
     return name.split('.')[0]
