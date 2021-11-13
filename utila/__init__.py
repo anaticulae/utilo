@@ -69,6 +69,7 @@ from utila.collection import make_unique
 from utila.collection import minimal
 from utila.collection import partition
 from utila.collection import split_shuffle
+from utila.collection import splitby_count
 from utila.collection import starmap
 # config
 from utila.config import dump_config

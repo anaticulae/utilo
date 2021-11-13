@@ -91,6 +91,23 @@ def split_shuffle(items, length, seed=0.0):
     return left, right
 
 
+def splitby_count(items, count) -> tuple:
+    """\
+    >>> splitby_count('hello my friend this is smart', (3, 5, 9))
+    ['hel', 'lo my', ' friend t', 'his is smart']
+    """
+    result = []
+    index = 0
+    for part in count:
+        selected = items[index:index + part]
+        result.append(selected)
+        index += part
+    rest = items[index:]
+    if rest:
+        result.append(rest)
+    return result
+
+
 def chunks(items, size: int = 1) -> list:
     """\
     >>> chunks((1, 2, 3, 4, 5, 6, 7, 8, 9, 10), size=3)
