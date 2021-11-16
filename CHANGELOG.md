@@ -2,6 +2,14 @@
 
 Every noteable change is logged here.
 
+## v2.62.0
+
+### Feature
+
+* add caching decorator (7579846f7d13)
+* move collection splitter (0dd2d08da68c)
+* add ext parameter to extract filename with extension (3ce76e29de22)
+
 ## v2.61.0
 
 ### Feature
