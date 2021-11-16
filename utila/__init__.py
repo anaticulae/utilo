@@ -20,6 +20,11 @@ from utila.__todo__ import todo
 from utila.alpha import alphabetically
 from utila.alpha import replace
 from utila.alpha import sort
+# cacher
+from utila.cacher import cache_clear
+from utila.cacher import cache_disable
+from utila.cacher import cache_enable
+from utila.cacher import cacheme
 # classes
 from utila.classes import collect_classes
 from utila.classes import name_classes
