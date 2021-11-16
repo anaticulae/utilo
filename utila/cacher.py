@@ -12,6 +12,8 @@
 ...     return str(item)
 >>> complex([20, 30])
 '[20, 30]'
+>>> complex([20, 30]) # invoke cache
+'[20, 30]'
 >>> cache_clear()
 """
 
