@@ -27,6 +27,12 @@ def match(pattern: str, content: str):
 
 
 def search(pattern: str, content: str):
+    r"""\
+    >>> search(r'Abc\:', 'abc: ende')
+    <re.Match object; span=(0, 4), match='abc:'>
+    """
+    if not isinstance(pattern, str):
+        return pattern.search(content.strip())
     return re.search(pattern, content.strip(), flags=NOCASE_VERBOSE)
 
 
@@ -42,6 +48,10 @@ def finditer(pattern: str, text: str):
     r"""\
     >>> [extract_match(item) for item in finditer(pattern=r'\d+', text=r'   10 HELLO 38 19')]
     ['10', '38', '19']
+    >>> len(list(finditer(pattern=compiles(r'\d+'), text=r'   10 HELLO 38 19')))
+    3
     """
+    if not isinstance(pattern, str):
+        return pattern.finditer(text)
     result = re.finditer(pattern, text, flags=NOCASE_VERBOSE)
     return result
