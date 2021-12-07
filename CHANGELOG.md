@@ -2,6 +2,12 @@
 
 Every noteable change is logged here.
 
+## v2.62.1
+
+### Feature
+
+* add option to pass compiled pattern (036d795278e7)
+
 ## v2.62.0
 
 ### Feature
