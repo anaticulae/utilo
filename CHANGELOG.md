@@ -2,6 +2,12 @@
 
 Every noteable change is logged here.
 
+## v2.62.2
+
+### Feature
+
+* add method to dump dict (a9984c5b90f5)
+
 ## v2.62.1
 
 ### Feature
