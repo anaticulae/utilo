@@ -337,6 +337,7 @@ from utila.space import points
 from utila.string import assert_bin
 from utila.string import binhash
 from utila.string import char_rate
+from utila.string import dict_dump
 from utila.string import findindex
 from utila.string import findindexs
 from utila.string import fix_encoding

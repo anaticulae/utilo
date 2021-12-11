@@ -433,3 +433,16 @@ def starts_with(line: str, start: str) -> bool:
     if utila.similar(start, line, maxdiff=maxdiff):
         return True
     return False
+
+
+def dict_dump(data, keywidth: int = 20) -> str:
+    r"""\
+    >>> dict_dump(dict(hello=10, data='Hier spricht Helm'))
+    'hello               10\ndata                Hier spricht Helm'
+    """
+    line = '{:<' + str(keywidth) + '}{}'
+    collected = []
+    for key, value in data.items():
+        collected.append(line.format(key, value))
+    result = utila.NEWLINE.join(collected)
+    return result
