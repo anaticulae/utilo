@@ -82,8 +82,8 @@ def simplify(item, not_none: bool = True, removes: set = None):  # pylint:disabl
     if isinstance(item, tuple):
         raw = [simplify(it, not_none=not_none, removes=removes) for it in item]
         return tuple(raw)
-    # if item is dict already, no converting is required
     if not isinstance(item, dict):
+        # if item is dict already, no converting is required
         try:
             item = vars(item)
         except TypeError:
