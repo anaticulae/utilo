@@ -2,6 +2,13 @@
 
 Every noteable change is logged here.
 
+## v2.62.3
+
+### Feature
+
+* treat white spaces as junk (f137f2c7a8f1)
+* add method to remove white spaces (fe4e8e7f3daf)
+
 ## v2.62.2
 
 ### Feature
