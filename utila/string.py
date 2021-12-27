@@ -185,13 +185,15 @@ def similar(expected: str, current: str, maxdiff=0.6) -> bool:
         expected = [expected]
     expected = utila.strip(*expected)
     expected = utila.lower(*expected)
+    expected = utila.nowhitespace(*expected)
     if isinstance(current, utila.ITERABLE):
         for item in current:
             if similar(expected=expected, current=item, maxdiff=maxdiff):
                 return True
         return False
+    current = current.strip().replace(' ', '').lower()
     matched = difflib.get_close_matches(
-        word=current.strip().lower(),
+        word=current,
         possibilities=expected,
         n=1,
         cutoff=maxdiff,
@@ -207,10 +209,20 @@ def verysimilar(current: str, expected: str) -> bool:
     True
     >>> verysimilar('HemABC', 'HelmABC')
     True
+    >>> verysimilar('A B S T R A C T', {'zusammenfassung', 'kurzfassung', 'abstract'})
+    True
     """
-    if len(expected) <= 4:
-        return similar(current=current, expected=expected, maxdiff=0.80)
-    return similar(current=current, expected=expected, maxdiff=0.9)
+    if isinstance(current, str):
+        current = [current]
+    current = utila.nowhitespace(*current)
+    if isinstance(expected, str):
+        expected = [expected]
+    maxdiff = 0.9
+    if min(len(item) for item in expected) <= 4:
+        maxdiff = 0.8
+    if similar(current=current, expected=expected, maxdiff=maxdiff):
+        return True
+    return False
 
 
 def inside(current: str, expected: str, maxdiff: float = 0.1) -> bool:
