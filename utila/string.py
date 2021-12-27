@@ -260,6 +260,15 @@ def strip(*items):
     return [item.strip() for item in items]
 
 
+def nowhitespace(*items):
+    """Remove whitespaces inside list of strings.
+
+    >>> nowhitespace(' A B S T R A C T  ',)
+    ['ABSTRACT']
+    """
+    return [item.replace(' ', '') for item in items]
+
+
 REGEX_NEWLINE = re.compile('\n+')
 
 
