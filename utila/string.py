@@ -80,6 +80,7 @@ def normalize_text(
     merge_divis: bool = True,
     normalize_newline: bool = True,
     normalize_spaces: bool = False,
+    strips: bool = False,
 ) -> str:
     r"""\
     >>> normalize_text(['Dieser Satz ent-\n', 'hält eine Trennung.'], merge_divis=True)
@@ -92,6 +93,8 @@ def normalize_text(
     'Special Charsol hier'
     >>> normalize_text([''])
     ''
+    >>> normalize_text(' Strip ?  ', strips=True)
+    'Strip ?'
     """
     # prepare input data
     with contextlib.suppress(AttributeError, TypeError):
@@ -106,6 +109,8 @@ def normalize_text(
         text = text.replace('\n', ' ')
     if normalize_spaces:
         text = re.sub(r'\s+', ' ', text)
+    if strips:
+        text = text.strip()
     return text
 
 
