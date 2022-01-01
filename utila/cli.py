@@ -142,6 +142,21 @@ class ParserConfiguration:  # pylint:disable=R0902
     cacheflag: bool = True
     waitingflag: bool = True
 
+    @staticmethod
+    def all_off():
+        """\
+        Ensure that all options are off:
+        >>> 'True' not in str(ParserConfiguration.all_off())
+        True
+        """
+        result = ParserConfiguration()
+        for key, value in vars(result).items():
+            if not isinstance(value, bool):
+                continue
+            # turn every bool off
+            setattr(result, key, False)
+        return result
+
 
 class DescriptionHelpFormatter(argparse.RawDescriptionHelpFormatter):
     """Increase optional width of parameter column."""
