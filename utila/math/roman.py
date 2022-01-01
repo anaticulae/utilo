@@ -87,7 +87,9 @@ def arabic(*items) -> int:
     """
     result = []
     for item in items:
-        item = str(item).upper().replace(' ', '', 1)
+        item = str(item).upper()
+        # make converter robust against white space inside
+        item = item.replace(' ', '', 1)
         with contextlib.suppress(KeyError):
             result.append(NUMBERS[item])
             continue
