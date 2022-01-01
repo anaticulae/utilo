@@ -107,6 +107,8 @@ def isroman(item) -> bool:
     False
     >>> isroman('XX II')  # roman number with space inside
     True
+    >>> isroman('ABC')
+    False
     """
     with contextlib.suppress(KeyError):
         _ = arabic(item)
