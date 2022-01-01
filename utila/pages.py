@@ -69,6 +69,21 @@ def parse_pages(pattern: str, pagecount=None) -> tuple:  # pylint:disable=too-co
     return tuple(parsed)
 
 
+def pages_inside(pages: tuple, minn: int = 0, maxx=None) -> tuple:
+    """\
+    >>> pages_inside(None, 5, 10)
+    (5, 6, 7, 8, 9, 10)
+    >>> pages_inside((0, 1, 2, 3, 4, 5), 2, maxx=4)
+    (2, 3, 4)
+    """
+    if not pages:
+        if maxx is None:
+            return None
+        return utila.ranged_tuple(minn, maxx + 1)
+    pages = tuple(item for item in pages if minn <= item <= maxx)
+    return pages
+
+
 def parse_comma(pattern, pagecount):
     """Pattern contains `,`"""
     splitted = pattern.split(',')
