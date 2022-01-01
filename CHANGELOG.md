@@ -2,6 +2,17 @@
 
 Every noteable change is logged here.
 
+## v2.62.4
+
+### Feature
+
+* add method to create minimal config (874920b3372c)
+* add strip option to normalize (b74f640e04b0)
+
+### Documentation
+
+* Happy New Year! (a02e75eb3be7)
+
 ## v2.62.3
 
 ### Feature
