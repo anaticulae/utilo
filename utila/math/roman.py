@@ -87,7 +87,7 @@ def arabic(*items) -> int:
     """
     result = []
     for item in items:
-        item = str(item).upper()
+        item = str(item).upper().replace(' ', '', 1)
         try:
             result.append(NUMBERS[item])
         except KeyError:
@@ -105,6 +105,8 @@ def isroman(item) -> bool:
     False
     >>> isroman(10)
     False
+    >>> isroman('XX II')  # roman number with space inside
+    True
     """
     with contextlib.suppress(KeyError):
         _ = arabic(item)
