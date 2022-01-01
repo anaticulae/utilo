@@ -88,10 +88,13 @@ def arabic(*items) -> int:
     result = []
     for item in items:
         item = str(item).upper().replace(' ', '', 1)
-        try:
+        with contextlib.suppress(KeyError):
             result.append(NUMBERS[item])
-        except KeyError:
+            continue
+        try:
             result.append(EXCEPTION[item])
+        except KeyError:
+            return None
     if len(result) == 1:
         return result[0]
     return result
@@ -110,10 +113,9 @@ def isroman(item) -> bool:
     >>> isroman('ABC')
     False
     """
-    with contextlib.suppress(KeyError):
-        _ = arabic(item)
-        return True
-    return False
+    if arabic(item) is None:
+        return False
+    return True
 
 
 def isarabic(item) -> bool:
