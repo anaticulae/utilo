@@ -484,13 +484,15 @@ def issinglechar(text: str) -> bool:
     False
     >>> issinglechar('2 background 9')
     False
+    >>> issinglechar('M U LT I - S O U R C E D E T E C T A N O M A L I E S')
+    True
     """
     if not text:
         return False
     splitted = [len(token) for token in text.strip().split()]
     if not splitted:
         return False
-    median = statistics.mean(splitted)
-    if median == 1:
+    mean = statistics.mean(splitted)
+    if 1.0 <= mean < 1.15:
         return True
     return False
