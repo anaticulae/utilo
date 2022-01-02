@@ -2,6 +2,14 @@
 
 Every noteable change is logged here.
 
+## v2.63.0
+
+### Feature
+
+* add method to check single char (0fe7879d92f9)
+* make convert robust against white spaces inside (5fdcab05ea69)
+* add method to shrink pages (4ce695388d24)
+
 ## v2.62.4
 
 ### Feature
