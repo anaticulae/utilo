@@ -11,6 +11,7 @@ import binascii
 import contextlib
 import difflib
 import re
+import statistics
 import sys
 import warnings
 
@@ -472,3 +473,24 @@ def dict_dump(data, keywidth: int = 20) -> str:
         collected.append(line.format(key, value))
     result = utila.NEWLINE.join(collected)
     return result
+
+
+@utila.cacheme
+def issinglechar(text: str) -> bool:
+    """\
+    >>> issinglechar('A B S T R A C T')
+    True
+    >>> issinglechar('  ')
+    False
+    >>> issinglechar('2 background 9')
+    False
+    """
+    if not text:
+        return False
+    splitted = [len(token) for token in text.strip().split()]
+    if not splitted:
+        return False
+    median = statistics.mean(splitted)
+    if median == 1:
+        return True
+    return False

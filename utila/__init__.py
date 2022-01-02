@@ -344,6 +344,7 @@ from utila.string import findindexs
 from utila.string import fix_encoding
 from utila.string import forward_slash
 from utila.string import inside
+from utila.string import issinglechar
 from utila.string import istemplate_replaced
 from utila.string import lower
 from utila.string import normalize_text
