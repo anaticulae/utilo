@@ -88,8 +88,8 @@ def test_file_tmpname():
     assert len(name) == 20, name
 
 
-def test_file_tmpfile(tmpdir):
-    random_path = utila.tmpfile(tmpdir)
+def test_file_tmpfile():
+    random_path = utila.tmpfile(utila.ROOT)
     assert not os.path.exists(random_path), random_path
 
 
@@ -503,7 +503,7 @@ def test_file_count(tmpdir):
 
 
 def test_file_tmpdir(testdir):
-    create = utila.tmpdir(testdir.tmpdir)
+    create = utila.tmpdir(utila.ROOT)
     assert os.path.exists(create), create
 
 
@@ -541,16 +541,14 @@ def test_file_list_relative(testdir):
     assert files != ['test.txt']
 
 
-def test_make_tmpdir(testdir):
-    root = testdir.tmpdir
-    with utila.make_tmpdir(root) as tmp_dir:
+def test_make_tmpdir():
+    with utila.make_tmpdir(utila.ROOT) as tmp_dir:
         assert os.path.exists(tmp_dir)
     assert os.path.exists(tmp_dir)
 
 
 def test_make_tmpdir_remove(testdir):
-    root = testdir.tmpdir
-    with utila.make_tmpdir(root, remove=True) as tmp_dir:
+    with utila.make_tmpdir(utila.ROOT, remove=True) as tmp_dir:
         assert os.path.exists(tmp_dir)
         os.makedirs(os.path.join(tmp_dir, 'recursive_path'))
         utila.file_create(os.path.join(tmp_dir, 'helm.txt'))
