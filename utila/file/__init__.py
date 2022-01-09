@@ -46,6 +46,8 @@ def tmp(root) -> str:
     # need control about temp folder. Temp folder must not exist in
     # site-packages, so `SHARED_TMP` is required.
     projectname = os.path.split(root)[1]
+    # queuemo-1.17.2-py3.8.egg
+    projectname = projectname.split('-', maxsplit=1)[0]
     try:
         path = os.path.join(os.environ[SHARED_TMP], projectname)
     except KeyError:
