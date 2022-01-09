@@ -42,14 +42,15 @@ def tmp(root) -> str:
         path to temporary folder
     """
     assert root, str(root)
+    # redirect temp folder to central folder, defined in `SHARED_TEMP`. we
+    # need control about temp folder. Temp folder must not exist in
+    # site-packages, so `SHARED_TEMP` is required.
+    projectname = os.path.split(root)[1]
     try:
-        # redirect temp folder to central folder, defined in `SHARED_TEMP`.
-        # we need control about temp folder. Temp folder must not exist in
-        # site-packages, so `SHARED_TEMP` is required.
-        _, projectname = os.path.split(root)
         path = os.path.join(os.environ[SHARED_TEMP], projectname)
     except KeyError:
-        path = os.path.join(root, utila.TMP)
+        utila.error('DEFINE $SHARED_TEMP')
+        sys.exit(utila.FAILURE)
     os.makedirs(path, exist_ok=True)
     return path
 
