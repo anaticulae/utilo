@@ -26,7 +26,7 @@ import utila.file.securewrapper
 
 # width of tempfile name
 MAX_NUMBER = 32
-SHARED_TEMP = 'SHARED_TMP'
+SHARED_TMP = 'SHARED_TMP'
 
 
 def tmp(root) -> str:
@@ -42,14 +42,14 @@ def tmp(root) -> str:
         path to temporary folder
     """
     assert root, str(root)
-    # redirect temp folder to central folder, defined in `SHARED_TEMP`. we
+    # redirect temp folder to central folder, defined in `SHARED_TMP`. we
     # need control about temp folder. Temp folder must not exist in
-    # site-packages, so `SHARED_TEMP` is required.
+    # site-packages, so `SHARED_TMP` is required.
     projectname = os.path.split(root)[1]
     try:
-        path = os.path.join(os.environ[SHARED_TEMP], projectname)
+        path = os.path.join(os.environ[SHARED_TMP], projectname)
     except KeyError:
-        utila.error('DEFINE $SHARED_TEMP')
+        utila.error('DEFINE $SHARED_TMP')
         sys.exit(utila.FAILURE)
     os.makedirs(path, exist_ok=True)
     return path
@@ -117,7 +117,7 @@ def file_create_tmp(
     Returns:
         path to temporary file
 
-    >>> assert file_create_tmp('temporary content')
+    >>> assert file_create_tmp('temporary content', utila.ROOT)
     """
     path = tmpfile(root)
     with utila.file.securewrapper.open(
@@ -501,11 +501,9 @@ def tmpfile(root):
         filepath(str): to tempfile in TMPDIR
     """
     assert root is None or os.path.exists(root)
-    if root is None:
-        root = os.environ['TMPDIR']
-    tmppath = tmp(root)
+    tmpfolder = tmp(root)
     name = tmpname()
-    path = os.path.join(tmppath, name)
+    path = os.path.join(tmpfolder, name)
     if os.path.exists(path):
         # try again to find unused temp file
         return tmpfile(root)
@@ -518,10 +516,9 @@ def tmpdir(root, create: bool = True, trys: int = 10):
     Returns:
         filepath(str): to tempfile in TEMP_FOLDER
     """
-    utila.exists_assert(root)
     assert trys, trys
-    tmppath = tmp(root)
-    name = tmpname()
+    utila.exists_assert(root)
+    tmppath, name = tmp(root), tmpname()
     path = os.path.join(tmppath, name)
     if os.path.exists(path):
         # try again to find unused tmp dir
@@ -538,7 +535,7 @@ def tmpdir(root, create: bool = True, trys: int = 10):
 def make_tmpdir(root: str, remove: bool = False, max_file_guard=100):
     """\
     root: project root as backup for temporary path. This path will be
-    used if SHARED_TEMP does not exists.
+    used if SHARED_TMP does not exists.
 
     Yields:
         str: created temporary directory

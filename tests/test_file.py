@@ -96,18 +96,9 @@ def test_file_tmpfile(tmpdir):
 def test_file_tmp_redirect(testdir, monkeypatch):
     """Redirect tmp-path with KIWI_TEMPBASE environ variable"""
     with monkeypatch.context() as context:
-        context.setattr(os, 'environ', {utila.file.SHARED_TEMP: str(testdir)})
+        context.setattr(os, 'environ', {utila.file.SHARED_TMP: str(testdir)})
         temp = utila.tmp(utila.ROOT)
         assert os.path.exists(temp), temp
-
-
-def test_file_tmp_without_shared_temp(testdir, monkeypatch):
-    """Do not redirect SHARED_TEMP"""
-    with monkeypatch.context() as context:
-        # unset SHARED_TEMP
-        context.setattr(os, 'environ', {})
-        without_redirect = utila.tmp(utila.ROOT)
-        assert without_redirect.endswith('.tmp'), without_redirect
 
 
 def test_file_assert_html_files():
