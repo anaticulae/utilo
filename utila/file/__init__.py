@@ -530,6 +530,8 @@ def tmpdir(root, create: bool = True, trys: int = 10):
             os.makedirs(path)
         except OSError:
             return tmpdir(root, create=create, trys=trys - 1)
+    # ease for the developer
+    path = utila.forward_slash(path)
     return path
 
 
