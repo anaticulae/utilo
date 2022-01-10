@@ -1,28 +1,38 @@
 Welcome to write it once
 ========================
 
+General
+-------
+
 .. toctree::
   :maxdepth: 1
 
+  bugs
   pages/readme
 
-  pages/changelog
+Progress
+--------
 
-  bugs
-
-  releases/backlog
+.. toctree::
+  :maxdepth: 1
 
   todo
-
   releases/releases
+  releases/backlog
+  pages/changelog
+
+Developer
+---------
+
+.. toctree::
+  :maxdepth: 1
 
 Modules
 --------------------
 .. toctree::
-   :glob:
-   :maxdepth: 2
+   :maxdepth: 4
 
-   .tmp/utila*
+   modules
 
 Indices and tables
 ==================
