@@ -42,5 +42,6 @@ if __name__ == "__main__":
             'utila.feature',
             'utila.file',
             'utila.math',
+            'utila.string',
         ],
     )
