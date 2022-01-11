@@ -361,6 +361,7 @@ from utila.string import starts_with
 from utila.string import starts_withint
 from utila.string import strip
 from utila.string import verysimilar
+from utila.string.display import diffview
 # tuples
 from utila.tuples import from_tuple
 from utila.tuples import make_tuple
