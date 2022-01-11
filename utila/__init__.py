@@ -352,7 +352,6 @@ from utila.string import normalize_whitespaces
 from utila.string import nowhitespace
 from utila.string import rreplace
 from utila.string import shrink
-from utila.string import similar
 from utila.string import simple
 from utila.string import simplify_chars
 from utila.string import splititems
@@ -360,7 +359,8 @@ from utila.string import splitlines
 from utila.string import starts_with
 from utila.string import starts_withint
 from utila.string import strip
-from utila.string import verysimilar
+from utila.string.compare import similar
+from utila.string.compare import verysimilar
 from utila.string.display import diffview
 # tuples
 from utila.tuples import from_tuple
