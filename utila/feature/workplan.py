@@ -313,6 +313,15 @@ def prepare_inputs_file(item, inspace, search_location, lastinput, result):
     filename = f'{item.name}.{item.ext}'
     filepath = os.path.join(inspace, filename)
     if os.path.exists(filepath):
+        if utila.isfilepath(filepath):
+            # TODO: VERIFY THIS BEHAVIOR
+            # ensure that path was not added before. Remove already added
+            # file, cause this files exists and must not be genearted.
+            fname = utila.file_name(filepath, ext=True)
+            for already in result:
+                if utila.file_name(already, ext=True) == fname:
+                    result.remove(already)
+                    break
         result.append(filepath)
         # do not double add path
         return True
