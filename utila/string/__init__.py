@@ -239,6 +239,7 @@ def splitlines(
     lowers: bool = True,
     pattern: str = REGEX_NEWLINE,
     unique: bool = True,
+    unique_assert: bool = False,
 ) -> set:
     r"""Split string by newlines and convert to set.
 
@@ -253,6 +254,7 @@ def splitlines(
         pattern = re.compile(pattern)
     splitted = pattern.split(raw)
     splitted = utila.notempty(splitted)
+    assert not unique_assert or len(set(splitted)) == len(splitted)
     result = set(splitted) if unique else splitted
     return result
 
