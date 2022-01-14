@@ -1,0 +1,30 @@
+# =============================================================================
+# C O P Y R I G H T
+# -----------------------------------------------------------------------------
+# Copyright (c) 2022 by Helmut Konrad Fahrendholz. All rights reserved.
+# This file is property of Helmut Konrad Fahrendholz. Any unauthorized copy,
+# use or distribution is an offensive act against international law and may
+# be prosecuted under federal law. Its content is company confidential.
+# =============================================================================
+
+import utila
+
+
+def scramble(text: str, failure: int = 1, seed: float = 0.5) -> str:
+    """\
+    >>> scramble('Helmut')
+    'Hulmet'
+    >>> scramble('MAXIMUS HELMUTUS BONUS', failure=2)
+    'MAUIMUB HELMXTUS SONUS'
+    """
+    changes = utila.choose_random(
+        utila.ranged_list(len(text)),
+        count=failure * 2,
+        seed=seed,
+    )
+    for first, second in zip(changes[::2], changes[1::2]):
+        # TODO: THERE MUST BE A BETTER WAY
+        buf = text[first]
+        text = text[0:first] + text[second] + text[first + 1:]
+        text = text[0:second] + buf + text[second + 1:]
+    return text
