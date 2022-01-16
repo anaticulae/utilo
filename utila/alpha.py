@@ -35,7 +35,11 @@ def sort(*items):
     ['α', 'Alpha', 'beta', 'Gamma']
     >>> sort('Hulle', 'Hülle')
     ['Hülle', 'Hulle']
+
+    # >>> sort('Med. med. Med. med.'.split())
+    # >>> sort('i.S.d. IAA i.S.v.'.split())
     """
+    # TODO: INVESTIGATE OTHER ENG, FRZ ETC.
     return sorted(items, key=alphabetically)
 
 
