@@ -357,7 +357,7 @@ def write_resource(path, content, rename: callable = None):
         path = rename(path)
     # Ensure that parent folder exists. It is possible to create folder
     # via `hello/folder/content.txt`.
-    parent, _ = os.path.split(path)
+    parent = utila.path_parent(path)
     os.makedirs(parent, exist_ok=True)
     utila.info(f'write {path}')
     # write content to file.
