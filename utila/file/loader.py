@@ -124,3 +124,32 @@ class LazyFile:
 
     def __len__(self):
         return len(str(self))
+
+
+if os.getenv('YAMLFAST', None):
+    import pickle  # nosec
+
+    def yaml_dump(content: object, safe: bool = True):  # pylint:disable=W0613,E0102
+        dumped = pickle.dumps(content, pickle.HIGHEST_PROTOCOL)
+        result = dumped.decode('latin1')
+        return result
+
+    def yaml_load(
+        content: str,
+        fname: str = None,
+        ftype: str = 'yaml',
+        verify: callable = None,
+        safe: bool = True,
+    ):  # pylint:disable=W0613,E0102
+        raw = from_raw_or_path(
+            content,
+            ftype=ftype,
+            fname=fname,
+            # reader=utila.file_read_binary,
+        )
+        raw: bytes = raw.encode('latin1')
+        try:
+            result = pickle.loads(raw)  # nosec
+        except pickle.UnpicklingError as error:
+            raise ValueError('no valid yaml input') from error
+        return result
