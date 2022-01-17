@@ -289,47 +289,56 @@ def file_islocked(path: str):
 
 
 def file_copy(
-    source: str,
-    destination: str,
+    src: str = None,
+    dst: str = None,
     update: bool = True,
     exception: bool = False,
     timestamp: bool = True,
     private: bool = False,
+    **kwargs,
 ):
-    """Copy a single `source` file to `destination` file or folder.
+    """Copy a single `src` file to `dst` file or folder.
 
     Args:
-        source(str): path to existing source file
-        destination(str): a folder or a file to copy
+        src(str): path to existing source file
+        dst(str): a folder or a file to copy
         update(bool): copy only when the source file is different than
-                      the destination file or when the destination file
-                      is missing.
+                      the dst file or when the dst file is missing.
         exception(bool): if True  raise exception if copying is not possible
                          if False log error and raise exit
         timestamp(bool): if True, copy timestamp
         private(bool): encrypt data
+        kwargs(dict): backward compatible
     Raises:
         OSError: if coping is not possible and exception is True
-        SameFileError: if source and destination is equal
+        SameFileError: if src and dst is equal
     """
-    assert os.path.exists(source), f'"{source}" does not exists'
+    if kwargs.get('source', None):
+        import warnings
+        warnings.warn('use file_copy(src=) instead of source')
+        src = kwargs['source']
+    if kwargs.get('destination', None):
+        import warnings
+        warnings.warn('use file_copy(dst=) instead of source')
+        dst = kwargs['destination']
+    assert os.path.exists(src), f'"{src}" does not exists'
     try:
-        if os.path.exists(destination) and not utila.isfilepath(destination):
+        if os.path.exists(dst) and not utila.isfilepath(dst):
             # use name of current file as new file name
             # TODO: IS THIS REALLY NECESSARY?
-            destination = os.path.join(destination, utila.path_current(source))
-        if update and file_compare(source, destination):
+            dst = os.path.join(dst, utila.path_current(src))
+        if update and file_compare(src, dst):
             # file is up to date
             return
-        parent = utila.path_parent(destination)
+        parent = utila.path_parent(dst)
         os.makedirs(parent, exist_ok=True)
         # shutil.copy
-        utila.file.securewrapper.copy(source, destination, private=private)
+        utila.file.securewrapper.copy(src, dst, private=private)
         if timestamp:
-            filetime = utila.file_age(source)
-            utila.file_age_update(destination, filetime)
+            filetime = utila.file_age(src)
+            utila.file_age_update(dst, filetime)
     except OSError as error:
-        utila.error(f'could not overwrite: {destination}')
+        utila.error(f'could not overwrite: {dst}')
         if exception:
             raise error
         sys.exit(utila.FAILURE)
