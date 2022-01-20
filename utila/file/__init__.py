@@ -485,7 +485,8 @@ def files_sort(files: list) -> list:
     return files
 
 
-POOL = 'ABCDEFGHIJKLMNOPQRSTUVYXYZabcdefghijklmnopqrstuvyxyz123456789'
+# Alphabetic with Nn and Tt to avoid \n\t in connex with file names
+POOL = 'ABCDEFGHIJKLMOPQRSUVYXYZabcdefghijklmtpqrsuvyxyz123456789'
 
 
 def tmpname(width: int = MAX_NUMBER) -> str:
