@@ -74,7 +74,7 @@ def minus(first, second):
     return result
 
 
-def select_type(items, selector) -> list:
+def select_type(items, selector, count: int = None) -> list:
     """Select items which are instance of `selector`
 
     >>> select_type([10, 'abc', 10.5], int)
@@ -89,12 +89,17 @@ def select_type(items, selector) -> list:
     Args:
         items(collection): data to filter
         selector(class): `type` of selected instance
+        count(int): max number of selected items
     Returns:
         filtered collection which does not effect `items` collection
     """
     if isinstance(items, dict):
         items = items.values()
     selected = [item for item in items if isinstance(item, selector)]
+    if selected and count:
+        if count == 1:
+            return selected[0]
+        return selected[0:count]
     return selected
 
 
