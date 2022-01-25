@@ -61,6 +61,15 @@ def empty_replace(_=None, *args, **defaultargs):  # pylint:disable=W0613,W1113
     """
 
     def decorating_function(user_function):
+        defined = set(defaultargs.keys())
+        possible = set(name for (name, default) in zip(
+            utila.attributes(user_function),
+            utila.defaults(user_function),
+        ) if default == EMPTY)
+        if defined != possible:
+            msg = ('Interface does not match\n'
+                   f'defined: {defined}\npossible: {possible}')
+            raise ValueError(msg)
 
         def wrapper(*args, **kwargs):
             replace_default = utila.attributes(user_function)[len(args):]
