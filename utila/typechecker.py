@@ -225,6 +225,19 @@ def annotations(method: callable, skipstars: bool = False) -> tuple:
     return result
 
 
+def defaults(method: callable, skipstars: bool = False) -> tuple:
+    """\
+    >>> defaults(defaults)
+    (<class 'inspect._empty'>, False)
+    """
+    sig = inspect.signature(method)
+    result = (value.default
+              for key, value in sig.parameters.items()
+              if '*' not in str(value) or not skipstars)
+    result = tuple(result)
+    return result
+
+
 def pass_required(caller: callable, default=None, **kwargs):
     """\
     >>> method = lambda alpha, beta: alpha + beta
