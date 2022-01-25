@@ -64,7 +64,7 @@ def yaml_load(
     try:
         import yaml  # pylint:disable=import-outside-toplevel
         import yaml.scanner  # pylint:disable=import-outside-toplevel
-    except ImportError:
+    except ImportError:  # pragma: no cover
         utila.error('add `yaml` package to requirements, eg. `PyYAML>=5.1`')
         return None
     try:
@@ -89,7 +89,7 @@ def yaml_dump(
     """
     try:
         import yaml  # pylint:disable=import-outside-toplevel
-    except ImportError:
+    except ImportError:  # pragma: no cover
         utila.error('add `yaml` package to requirements, eg. `PyYAML>=5.1`')
         return None
     if safe:
