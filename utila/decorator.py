@@ -34,6 +34,10 @@ def decorateme(method, value):
 
 
 def decorators(method) -> set:
+    """\
+    >>> decorators(decorators)
+    {}
+    """
     assert method, str(method)
     with contextlib.suppress(AttributeError):
         return method.__control__
