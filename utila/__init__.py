@@ -264,6 +264,7 @@ from utila.math.number import Ints
 from utila.math.number import Number
 from utila.math.number import Numbers
 from utila.math.number import between
+from utila.math.number import iseven
 from utila.math.number import least
 from utila.math.number import limit
 from utila.math.number import maxs
@@ -406,7 +407,6 @@ from utila.utils import flatten
 from utila.utils import flatten_content
 from utila.utils import ifnone
 from utila.utils import index_max
-from utila.utils import iseven
 from utila.utils import iterable
 from utila.utils import minus
 from utila.utils import notempty

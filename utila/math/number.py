@@ -150,3 +150,20 @@ def numbers_random(  # pylint:disable=inconsistent-return-statements
         return mini + (generator.random() * (maxi - mini))
     for _ in range(count):
         yield mini + generator.random() * (maxi - mini)
+
+
+def iseven(number: int) -> bool:
+    """\
+    >>> iseven(3)
+    False
+    >>> iseven('10')
+    True
+    >>> iseven(0)
+    True
+    """
+    # WHAT A BABY FUNCTION :|
+    if isinstance(number, str):
+        number = int(number)
+    if not number % 2:
+        return True
+    return False
