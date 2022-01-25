@@ -167,3 +167,11 @@ def iseven(number: int) -> bool:
     if not number % 2:
         return True
     return False
+
+
+def isodd(number: int) -> bool:
+    """\
+    >>> isodd(5)
+    True
+    """
+    return not iseven(number)
