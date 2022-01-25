@@ -79,6 +79,7 @@ def empty_replace(_=None, *args, **defaultargs):  # pylint:disable=W0613,W1113
             replace_default = utila.attributes(user_function)[len(args):]
             for key in replace_default:
                 if not kwargs.get(key, EMPTY) == EMPTY:
+                    # TODO: MAY NOT REQUIRED
                     continue
                 with contextlib.suppress(KeyError):
                     kwargs[key] = defaultargs[key]
