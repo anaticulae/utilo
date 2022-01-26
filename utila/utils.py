@@ -40,6 +40,9 @@ def flatten(lists, append: bool = False) -> list:
         List of chained items
     Raises:
         TypeError: if append is False and item to chain is not iterable
+
+    >>> flatten(([1, 2, 3], 4, 'he'), append=True)
+    [1, 2, 3, 4, 'h', 'e']
     """
     result = []
     for item in lists:
