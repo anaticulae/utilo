@@ -2,6 +2,36 @@
 
 Every noteable change is logged here.
 
+## v2.64.0
+
+### Feature
+
+* add flags option to compile regex (17485e715fee)
+* ensure that empty signature matches together (aedbe0855d14)
+* add method to replace default values (c2bdfcf14cd0)
+* add method to determine method defaults (9ef7fb8cf6e3)
+* add isodd method (3925f8c1af15)
+* add parameter to shrink selection (0896d1890880)
+* add method to use pickle instead of yaml (38cf03ae23c4)
+* add option to load unique data (1b67e4023a03)
+* add method to modify string (106145ceebad)
+* add method to display list diffs (7bc9a48c9e70)
+* make sorting more precise (a0a6a7261dcf)
+* use a more beautiful path name (9b52f806b5a4)
+* make tmp folder name version independent (038667a376fa)
+* redirect all tmp to shared tmp (0c74fb20e4d3)
+* do not run with SHARED_TMP definition (49404b1c1f01)
+
+### Fix
+
+* avoid \n and \t in file names (5e31fc4791a3)
+* do not already existing file twice (99153a87c6d8)
+* accept a little difference (2bf9719f49e2)
+
+### Documentation
+
+* adjust path references (6d9e5632ceb2)
+
 ## v2.63.0
 
 ### Feature
