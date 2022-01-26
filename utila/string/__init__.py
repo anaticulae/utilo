@@ -96,6 +96,10 @@ def normalize_text(
     ''
     >>> normalize_text(' Strip ?  ', strips=True)
     'Strip ?'
+    >>> normalize_text('A B    C\nD E    F\n G H', normalize_newline=False, normalize_spaces=True)
+    'A B C\nD E F\n G H'
+    >>> normalize_text('A B    C\nD E    F\n G H', normalize_spaces=True)
+    'A B C D E F G H'
     """
     # prepare input data
     with contextlib.suppress(AttributeError, TypeError):
@@ -109,7 +113,7 @@ def normalize_text(
     if normalize_newline:
         text = text.replace('\n', ' ')
     if normalize_spaces:
-        text = re.sub(r'\s+', ' ', text)
+        text = re.sub(r'[ ]+', ' ', text)
     if strips:
         text = text.strip()
     return text
