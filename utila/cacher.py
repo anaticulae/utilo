@@ -81,7 +81,7 @@ _CacheInfo = collections.namedtuple(
 )
 
 
-def _lru_cache_wrapper(user_function, maxsize, _CacheInfo):
+def _lru_cache_wrapper(user_function, maxsize, _CacheInfo): # pragma: no cover
     # Constants shared by all lru cache instances:
     sentinel = object()  # unique object used to signal cache misses
     make_key = functools._make_key  # build a key from the function arguments
