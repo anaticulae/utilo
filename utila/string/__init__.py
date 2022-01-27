@@ -119,6 +119,15 @@ def normalize_text(
     return text
 
 
+def final_newline(text: str) -> str:
+    r"""Ensure valid unix final with a ending final newline.
+
+    >>> final_newline('hello')
+    'hello\n'
+    """
+    return text.rstrip() + utila.NEWLINE
+
+
 def simplify_chars(
     text: str,
     *,
