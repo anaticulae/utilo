@@ -2,6 +2,17 @@
 
 Every noteable change is logged here.
 
+## v2.65.0
+
+### Feature
+
+* add method to convert state string into bool (6fe9c8dcc317)
+* add method to create string with final newline (96e2352ef8d8)
+
+### Fix
+
+* do not remove newlines if not wanted (ef76f2dcdbd8)
+
 ## v2.64.0
 
 ### Feature
