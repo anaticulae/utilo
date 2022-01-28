@@ -97,13 +97,13 @@ def simplify(item, not_none: bool = True, removes: set = None):  # pylint:disabl
     return item
 
 
-def parse_numbers(text, maxcount=None) -> list:
+def parse_ints(text, maxcount=None) -> list:
     """\
-    >>> parse_numbers('Helmut')
+    >>> parse_ints('Helmut')
     []
-    >>> parse_numbers('This is 1 number an 50 apple')
+    >>> parse_ints('This is 1 number an 50 apple')
     [1, 50]
-    >>> parse_numbers('133 134 135', maxcount=2)
+    >>> parse_ints('133 134 135', maxcount=2)
     [133, 134]
     """
     result = []

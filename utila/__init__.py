@@ -81,7 +81,7 @@ from utila.config import dump_config
 from utila.config import load_config
 # convert
 from utila.convert import parse_floats
-from utila.convert import parse_numbers
+from utila.convert import parse_ints
 from utila.convert import simplify
 from utila.convert import str2bool
 from utila.convert import str2float
@@ -432,6 +432,7 @@ assert_type_list = asserts_types  # pylint:disable=C0103
 islist = iterable  # pylint:disable=C0103
 level_temp = level_tmp  # pylint:disable=C0103
 yaml_from_raw_or_path = yaml_load  # pylint:disable=C0103
+parse_numbers = parse_ints  # pylint:disable=C0103
 
 ROOT = os.path.abspath(os.path.join(os.path.dirname(__file__), '..'))
 PACKAGE = 'utila'
