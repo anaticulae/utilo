@@ -430,8 +430,8 @@ manhatten = manhattan  # pylint:disable=C0103
 log_stacktrace = print_stacktrace  # pylint:disable=C0103
 assert_type_list = asserts_types  # pylint:disable=C0103
 islist = iterable  # pylint:disable=C0103
-level_temp = level_tmp
-yaml_from_raw_or_path = yaml_load
+level_temp = level_tmp  # pylint:disable=C0103
+yaml_from_raw_or_path = yaml_load  # pylint:disable=C0103
 
 ROOT = os.path.abspath(os.path.join(os.path.dirname(__file__), '..'))
 PACKAGE = 'utila'
