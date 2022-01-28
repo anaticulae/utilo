@@ -82,6 +82,7 @@ from utila.config import load_config
 # convert
 from utila.convert import parse_floats
 from utila.convert import parse_ints
+from utila.convert import parse_state
 from utila.convert import simplify
 from utila.convert import str2bool
 from utila.convert import str2float

@@ -129,3 +129,25 @@ def parse_floats(text, maxcount=None) -> list:
     if maxcount is None:
         return result
     return result[0:maxcount]
+
+
+ON = 'TRUE 1 ON'.split()
+
+
+def parse_state(state: str) -> bool:
+    """\
+    >>> parse_state('ON')
+    True
+    >>> parse_state('True')
+    True
+    >>> parse_state(' 1 ')
+    True
+    >>> parse_state('off')
+    False
+    >>> parse_state('false')
+    False
+    >>> parse_state('0')
+    False
+    """
+    state = str(state).strip().upper()
+    return state in ON
