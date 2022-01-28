@@ -97,6 +97,10 @@ def simplify(item, not_none: bool = True, removes: set = None):  # pylint:disabl
     return item
 
 
+INTS = re.compile(r'\d+')
+FLOATS = re.compile(r'\d+\.\d+')
+
+
 def parse_ints(text, maxcount=None) -> list:
     """\
     >>> parse_ints('Helmut')
@@ -107,7 +111,7 @@ def parse_ints(text, maxcount=None) -> list:
     [133, 134]
     """
     result = []
-    for number in re.findall(r'\d+', text):
+    for number in INTS.findall(text):
         result.append(int(number))
     if maxcount is None:
         return result
@@ -124,7 +128,7 @@ def parse_floats(text, maxcount=None) -> list:
     [2.2, 3.5]
     """
     result = []
-    for number in re.findall(r'\d+\.\d+', text):
+    for number in FLOATS.findall(text):
         result.append(float(number))
     if maxcount is None:
         return result
