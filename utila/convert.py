@@ -152,6 +152,8 @@ def parse_state(state: str) -> bool:
     False
     >>> parse_state('0')
     False
+    >>> parse_state(None)
+    False
     """
     state = str(state).strip().upper()
     return state in ON
