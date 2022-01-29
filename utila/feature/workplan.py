@@ -489,7 +489,6 @@ def input_order(plan, root):
     require = collections.defaultdict(set)
     for step in plan:
         name = f'{root}{REQUIREMENT_SEPARATOR}{step.name}'
-
         if isinstance(step, utila.WorkPlanStep):
             items = step.inputs
         else:
