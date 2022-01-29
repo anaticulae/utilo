@@ -183,6 +183,7 @@ from utila.file.loader import yaml_load
 # utile
 from utila.file.utils import exists
 from utila.file.utils import exists_assert
+from utila.file.utils import join
 from utila.file.utils import pathexists
 # group
 from utila.group import groupby_ascending

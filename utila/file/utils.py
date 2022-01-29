@@ -43,6 +43,17 @@ def exists_assert(path: str):
     return path
 
 
+def join(*items, assert_exists=False) -> str:
+    """\
+    >>> join('hello', 'tello/well', 'wello')
+    'hello/tello/well/wello'
+    """
+    path = os.path.join(*items)
+    path = utila.forward_slash(path)
+    assert not assert_exists or exists(path), path
+    return path
+
+
 def pathexists(func=None) -> callable:
 
     def decorating_function(user_function):
