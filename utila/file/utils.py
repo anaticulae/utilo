@@ -33,7 +33,14 @@ def exists(path: str) -> bool:
 
 
 def exists_assert(path: str):
-    assert os.path.exists(path), utila.shrink(str(path), maxlength=100)
+    """\
+    >>> exists_assert(__file__)
+    '...utila/file/utils.py'
+    """
+    path = str(path)
+    assert os.path.exists(path), utila.shrink(path, maxlength=100)
+    path = utila.forward_slash(path)
+    return path
 
 
 def pathexists(func=None) -> callable:
