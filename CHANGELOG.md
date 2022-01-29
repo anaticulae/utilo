@@ -2,6 +2,16 @@
 
 Every noteable change is logged here.
 
+## v2.65.1
+
+### Feature
+
+* add option to check file existence and joining in one line (9fa59cb64441)
+
+### Documentation
+
+* extend interface documentation (425e11211b14)
+
 ## v2.65.0
 
 ### Feature
