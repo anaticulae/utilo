@@ -348,3 +348,47 @@ def rectangle_center(rectangle: Rectangle) -> tuple:
     )
     center = utila.roundme(center)
     return center
+
+
+def rectangle_overlapping(
+    master: Rectangle,
+    test: Rectangle,
+    *,
+    returnsize: bool = False,
+) -> float:
+    """\
+    >>> rectangle_overlapping((0, 0, 50, 50), (10, 10, 40, 40), returnsize=True)
+    (1.0, 900.0)
+    >>> rectangle_overlapping((0, 0, 50, 50), (55, 55, 100, 100))
+    0.0
+    >>> rectangle_overlapping((0, 0, 50, 50), (0, 25, 50, 75))
+    0.5
+    >>> rectangle_overlapping((0, 0, 50, 50), (25, 25, 75, 75))
+    0.25
+    >>> rectangle_overlapping((0, 0, 30, 30), (0, 20, 30, 50))
+    0.33
+    >>> rectangle_overlapping((0, 0, 30, 30), (15, 20, 30, 50))
+    0.33
+    >>> rectangle_overlapping((10, 10, 30, 30), (25, 20, 30, 40))
+    0.5
+    >>> rectangle_overlapping((10, 10, 30, 30), (29.9999, 30, 50, 50))  # check if not size
+    0.0
+    """
+    if not intersecting_rectangle(master, test):
+        return 0.0
+    ymin = max(master[1], test[1])
+    ymax = min(master[3], test[3])
+    ymin, ymax = sorted((ymin, ymax))
+    xmin = max(master[0], test[0])
+    xmax = min(master[2], test[2])
+    xmin, xmax = sorted((xmin, xmax))
+    intersecting = (xmin, ymin, xmax, ymax)
+    intersecting_size = utila.rectangle_size(intersecting)
+    if not intersecting_size:
+        return 0.0
+    size_test = utila.rectangle_size(test)
+    rate = intersecting_size / size_test
+    rate = utila.roundme(rate)
+    if returnsize:
+        return rate, intersecting_size
+    return rate

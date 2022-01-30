@@ -291,6 +291,7 @@ from utila.math.rectangle import rectangle_height
 from utila.math.rectangle import rectangle_inside
 from utila.math.rectangle import rectangle_max
 from utila.math.rectangle import rectangle_merge
+from utila.math.rectangle import rectangle_overlapping
 from utila.math.rectangle import rectangle_roundsmall
 from utila.math.rectangle import rectangle_scale
 from utila.math.rectangle import rectangle_size
