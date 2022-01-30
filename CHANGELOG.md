@@ -2,6 +2,13 @@
 
 Every noteable change is logged here.
 
+## v2.66.0
+
+### Feature
+
+* add method to determine rectangle overlapping rate (3011ebb63886)
+* add method to join different file paths (b2f2b32b35be)
+
 ## v2.65.1
 
 ### Feature
