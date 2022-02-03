@@ -238,6 +238,22 @@ def defaults(method: callable, skipstars: bool = False) -> tuple:
     return result
 
 
+def methods(item, starts=''):
+    """\
+    >>> methods('', starts='zfi')
+    [<built-in method zfill of str object at...>]
+    """
+    result = []
+    for name in dir(item):
+        method = getattr(item, name)
+        if not callable(method):
+            continue
+        if not name.startswith(starts):
+            continue
+        result.append(method)
+    return result
+
+
 def pass_required(caller: callable, default=None, **kwargs):
     """\
     >>> method = lambda alpha, beta: alpha + beta
