@@ -202,3 +202,21 @@ def test_logger_outfile(testdir, monkeypatch):
 def test_logger_multi_string(capsys):
     utila.log('helm', 'schelm', end='')
     assert utilatest.stdout(capsys) == 'helm schelm'
+
+
+def test_logger_log_return_invalid_selection(capsys):
+
+    @utila.log_return
+    def method_name(_):  # pylint:disable=W0613
+        return 10
+
+    with utila.level_tmp(utila.Level.DEBUG):
+        method_name([10, 11])
+    stdout = utilatest.stdout(capsys)
+    assert 'selected index: 0' in stdout
+
+    with utila.level_tmp(utila.Level.ERROR):
+        method_name((1, 2, 3, 4))
+
+    stderr = utilatest.stderr(capsys)
+    assert '[ERROR] method_name select 10 is not possible' in stderr

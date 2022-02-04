@@ -318,3 +318,25 @@ def print_banner(text, symbol='*', width=80, newlines: bool = True):
     utila.log(newlines + symbol * width)
     utila.log(f'{symbol}{symbol}{text}{symbol}{symbol}')
     utila.log(symbol * width + newlines)
+
+
+def log_return(func):
+    """\
+    >>> @log_return
+    ... def func(items):
+    ...     return 4
+    >>> func((1,5,6,7,4,9))
+    4
+    """
+
+    def logger(results):
+        before = results
+        selected = func(results)
+        try:
+            index = before.index(selected)
+            utila.debug(f'{func.__name__} selected index: {index}')
+        except ValueError:
+            utila.error(f'{func.__name__} select {selected} is not possible')
+        return selected
+
+    return logger
