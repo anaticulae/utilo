@@ -245,7 +245,7 @@ def returnvalue(exception: Exception) -> int:
     try:
         return int(str(exception.value))
     except ValueError as error:
-        utila.error(f'process does not providate exit value: {exception}')
+        utila.error(f'process does not provide exit value: {exception}')
         raise error
 
 
