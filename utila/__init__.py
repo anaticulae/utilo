@@ -36,7 +36,7 @@ from utila.classifier.base import determine_cluster
 from utila.classifier.public import common_items
 from utila.classifier.public import intersecting_line_cluster
 from utila.classifier.public import max_distance
-from utila.classifier.public import rectangle_intersecting_cluster
+from utila.classifier.public import rect_intersecting_cluster
 from utila.classifier.public import same_area_cluster
 from utila.classifier.public import same_line_cluster
 from utila.classifier.public import three_side_equal_cluster
@@ -283,20 +283,20 @@ from utila.math.rectangle import Rectangle
 from utila.math.rectangle import RectangleCheck
 from utila.math.rectangle import Rectangles
 from utila.math.rectangle import dot_in_rectangle
-from utila.math.rectangle import rectangle_border
-from utila.math.rectangle import rectangle_border_points
-from utila.math.rectangle import rectangle_center
-from utila.math.rectangle import rectangle_ensure_bounding
-from utila.math.rectangle import rectangle_height
-from utila.math.rectangle import rectangle_inside
-from utila.math.rectangle import rectangle_intersecting
-from utila.math.rectangle import rectangle_max
-from utila.math.rectangle import rectangle_merge
-from utila.math.rectangle import rectangle_overlapping
-from utila.math.rectangle import rectangle_roundsmall
-from utila.math.rectangle import rectangle_scale
-from utila.math.rectangle import rectangle_size
-from utila.math.rectangle import rectangle_width
+from utila.math.rectangle import rect_border
+from utila.math.rectangle import rect_border_points
+from utila.math.rectangle import rect_center
+from utila.math.rectangle import rect_ensure_bounding
+from utila.math.rectangle import rect_height
+from utila.math.rectangle import rect_inside
+from utila.math.rectangle import rect_intersecting
+from utila.math.rectangle import rect_max
+from utila.math.rectangle import rect_merge
+from utila.math.rectangle import rect_overlapping
+from utila.math.rectangle import rect_roundsmall
+from utila.math.rectangle import rect_scale
+from utila.math.rectangle import rect_size
+from utila.math.rectangle import rect_width
 from utila.math.rectangle import rectangles_intersecting
 from utila.math.rectangle import sort_leftright_topdown
 from utila.math.rectangle import sort_leftright_topdown_upper
@@ -438,8 +438,22 @@ islist = iterable  # pylint:disable=C0103
 level_temp = level_tmp  # pylint:disable=C0103
 yaml_from_raw_or_path = yaml_load  # pylint:disable=C0103
 parse_numbers = parse_ints  # pylint:disable=C0103
-intersecting_rectangle = rectangle_intersecting  # pylint:disable=C0103
-intersecting_rectangle_cluster = rectangle_intersecting_cluster  # pylint:disable=C0103
+intersecting_rectangle = rect_intersecting  # pylint:disable=C0103
+intersecting_rectangle_cluster = rect_intersecting_cluster  # pylint:disable=C0103
+rectangle_border = rect_border  # pylint:disable=C0103
+rectangle_border_points = rect_border_points  # pylint:disable=C0103
+rectangle_center = rect_center  # pylint:disable=C0103
+rectangle_ensure_bounding = rect_ensure_bounding  # pylint:disable=C0103
+rectangle_height = rect_height  # pylint:disable=C0103
+rectangle_inside = rect_inside  # pylint:disable=C0103
+rectangle_intersecting = rect_intersecting  # pylint:disable=C0103
+rectangle_max = rect_max  # pylint:disable=C0103
+rectangle_merge = rect_merge  # pylint:disable=C0103
+rectangle_overlapping = rect_overlapping  # pylint:disable=C0103
+rectangle_roundsmall = rect_roundsmall  # pylint:disable=C0103
+rectangle_scale = rect_scale  # pylint:disable=C0103
+rectangle_size = rect_scale  # pylint:disable=C0103
+rectangle_width = rect_width  # pylint:disable=C0103
 
 ROOT = os.path.abspath(os.path.join(os.path.dirname(__file__), '..'))
 PACKAGE = 'utila'
