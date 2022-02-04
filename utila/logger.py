@@ -291,11 +291,15 @@ class SkipCollector:
 
 
 def log_raw(content: str):
-    """Print `content` which raises an AssertError. Fix encoding if
-    non-utf8 character are printed.
+    """Print `content` which raises an AssertError.
+
+    Fix encoding if non-utf8 character are printed.
 
     Hint: Avoid using print() to reduce finding 'print' when searching
     in code base.
+
+    >>> log_raw('Hier Spricht Python')
+    Hier Spricht Python
 
     Example:
         assert len(abc) > 100, utila.log_raw(abc)
