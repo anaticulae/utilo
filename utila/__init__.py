@@ -35,8 +35,8 @@ from utila.classifier.base import clusterme
 from utila.classifier.base import determine_cluster
 from utila.classifier.public import common_items
 from utila.classifier.public import intersecting_line_cluster
-from utila.classifier.public import intersecting_rectangle_cluster
 from utila.classifier.public import max_distance
+from utila.classifier.public import rectangle_intersecting_cluster
 from utila.classifier.public import same_area_cluster
 from utila.classifier.public import same_line_cluster
 from utila.classifier.public import three_side_equal_cluster
@@ -283,13 +283,13 @@ from utila.math.rectangle import Rectangle
 from utila.math.rectangle import RectangleCheck
 from utila.math.rectangle import Rectangles
 from utila.math.rectangle import dot_in_rectangle
-from utila.math.rectangle import intersecting_rectangle
 from utila.math.rectangle import rectangle_border
 from utila.math.rectangle import rectangle_border_points
 from utila.math.rectangle import rectangle_center
 from utila.math.rectangle import rectangle_ensure_bounding
 from utila.math.rectangle import rectangle_height
 from utila.math.rectangle import rectangle_inside
+from utila.math.rectangle import rectangle_intersecting
 from utila.math.rectangle import rectangle_max
 from utila.math.rectangle import rectangle_merge
 from utila.math.rectangle import rectangle_overlapping
@@ -438,6 +438,8 @@ islist = iterable  # pylint:disable=C0103
 level_temp = level_tmp  # pylint:disable=C0103
 yaml_from_raw_or_path = yaml_load  # pylint:disable=C0103
 parse_numbers = parse_ints  # pylint:disable=C0103
+intersecting_rectangle = rectangle_intersecting  # pylint:disable=C0103
+intersecting_rectangle_cluster = rectangle_intersecting_cluster  # pylint:disable=C0103
 
 ROOT = os.path.abspath(os.path.join(os.path.dirname(__file__), '..'))
 PACKAGE = 'utila'

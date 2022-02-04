@@ -217,19 +217,19 @@ def sort_leftright_topdown_upper(items):
     return items
 
 
-def intersecting_rectangle(first: tuple, second: tuple) -> bool:
+def rectangle_intersecting(first: tuple, second: tuple) -> bool:
     """Check if two rectangles intersects at any point.
 
     Iterate over border points and check if border point is inside the
     other rectangle.
 
-    >>> intersecting_rectangle((0, 45, 55, 100), (45, 0, 55, 100))
+    >>> rectangle_intersecting((0, 45, 55, 100), (45, 0, 55, 100))
     True
-    >>> intersecting_rectangle((0, 0, 50, 50), (55, 55, 100, 100))
+    >>> rectangle_intersecting((0, 0, 50, 50), (55, 55, 100, 100))
     False
-    >>> intersecting_rectangle((0, 0, 50, 50), (0, 0, 50, 50)) # identical
+    >>> rectangle_intersecting((0, 0, 50, 50), (0, 0, 50, 50)) # identical
     True
-    >>> intersecting_rectangle((99.11, 112.15, 496.16, 272.75), (195.33, 296.66, 399.95, 321.37))
+    >>> rectangle_intersecting((99.11, 112.15, 496.16, 272.75), (195.33, 296.66, 399.95, 321.37))
     False
     """
     for point in rectangle_border_points(first):
@@ -248,7 +248,7 @@ def rectangles_intersecting(
     test: Rectangle,
 ) -> bool:
     for item in rectangles:
-        if utila.intersecting_rectangle(item, test):
+        if utila.rectangle_intersecting(item, test):
             return True
     return False
 
@@ -374,7 +374,7 @@ def rectangle_overlapping(
     >>> rectangle_overlapping((10, 10, 30, 30), (29.9999, 30, 50, 50))  # check if not size
     0.0
     """
-    if not intersecting_rectangle(master, test):
+    if not rectangle_intersecting(master, test):
         return 0.0
     ymin = max(master[1], test[1])
     ymax = min(master[3], test[3])
