@@ -2,6 +2,13 @@
 
 Every noteable change is logged here.
 
+## v2.67.0
+
+### Feature
+
+* add method to log return value (d974adb38f96)
+* add method to determine methods (db2f889c2612)
+
 ## v2.66.0
 
 ### Feature
