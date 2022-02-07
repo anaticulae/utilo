@@ -452,7 +452,7 @@ rectangle_merge = rect_merge  # pylint:disable=C0103
 rectangle_overlapping = rect_overlapping  # pylint:disable=C0103
 rectangle_roundsmall = rect_roundsmall  # pylint:disable=C0103
 rectangle_scale = rect_scale  # pylint:disable=C0103
-rectangle_size = rect_scale  # pylint:disable=C0103
+rectangle_size = rect_size  # pylint:disable=C0103
 rectangle_width = rect_width  # pylint:disable=C0103
 ranged_list = rlist  # pylint:disable=C0103
 ranged_tuple = rtuple  # pylint:disable=C0103
