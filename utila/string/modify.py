@@ -18,7 +18,7 @@ def scramble(text: str, failure: int = 1, seed: float = 0.5) -> str:
     'MAUIMUB HELMXTUS SONUS'
     """
     changes = utila.choose_random(
-        utila.ranged_list(len(text)),
+        utila.rlist(len(text)),
         count=failure * 2,
         seed=seed,
     )

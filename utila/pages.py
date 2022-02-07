@@ -79,7 +79,7 @@ def pages_inside(pages: tuple, minn: int = 0, maxx=None) -> tuple:
     if not pages:
         if maxx is None:
             return None
-        return utila.ranged_tuple(minn, maxx + 1)
+        return utila.rtuple(minn, maxx + 1)
     pages = tuple(item for item in pages if minn <= item <= maxx)
     return pages
 

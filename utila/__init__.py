@@ -376,9 +376,9 @@ from utila.string.modify import scramble
 from utila.tuples import from_tuple
 from utila.tuples import make_tuple
 from utila.tuples import parse_tuple
-from utila.tuples import ranged_list
-from utila.tuples import ranged_tuple
 from utila.tuples import ranges
+from utila.tuples import rlist
+from utila.tuples import rtuple
 from utila.tuples import tuple_mult
 from utila.tuples import tuple_plus
 from utila.tuples import update_tuple
@@ -454,6 +454,8 @@ rectangle_roundsmall = rect_roundsmall  # pylint:disable=C0103
 rectangle_scale = rect_scale  # pylint:disable=C0103
 rectangle_size = rect_scale  # pylint:disable=C0103
 rectangle_width = rect_width  # pylint:disable=C0103
+ranged_list = rlist  # pylint:disable=C0103
+ranged_tuple = rtuple  # pylint:disable=C0103
 
 ROOT = os.path.abspath(os.path.join(os.path.dirname(__file__), '..'))
 PACKAGE = 'utila'

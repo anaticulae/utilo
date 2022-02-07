@@ -22,9 +22,9 @@ def make_tuple(length: int, *, start: int = 0) -> tuple:
     return tuple(index + start for index in range(length))
 
 
-def ranged_tuple(start, end=None) -> tuple:
+def rtuple(start, end=None) -> tuple:
     """\
-    >>> ranged_tuple(10, 15)
+    >>> rtuple(10, 15)
     (10, 11, 12, 13, 14)
     """
     if end is None:
@@ -32,14 +32,14 @@ def ranged_tuple(start, end=None) -> tuple:
     return tuple(range(start, end))
 
 
-def ranged_list(start, end=None) -> list:
+def rlist(start, end=None) -> list:
     """\
-    >>> ranged_list(5)
+    >>> rlist(5)
     [0, 1, 2, 3, 4]
-    >>> ranged_list(5, 7)
+    >>> rlist(5, 7)
     [5, 6]
     """
-    return list(ranged_tuple(start, end))
+    return list(rtuple(start, end))
 
 
 def ranges(start: float, stop: float, step: float = 1):
