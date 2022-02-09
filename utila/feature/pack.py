@@ -294,26 +294,7 @@ def determine_todo(args: dict, flags: list) -> typing.List[str]:
     args = dict(args)
     del args['input']
     del args['output']
-
-    def remove_bool_flags(cli_args, flags):
-        # We have to remove all flags, which are not possible `to do`
-        # flags. The `to do` mechanism run all features if no to do flag
-        # is passed. If one flag is left, which is not related to todo
-        # flag like `--linter_writing` every todo-job is skipped,
-        # therefore we have to remove all external flags.
-        for item in flags:
-            try:
-                flag, _ = item
-            except ValueError:
-                flag = item
-            flag = utila.userflag_to_arg(flag)
-            with contextlib.suppress(KeyError):
-                # remove present user flags.
-                del cli_args[flag]
-        return cli_args
-
     args = remove_bool_flags(args, flags)
-
     all_selected = args.get('all', False)
     deactivated = [
         key for key, value in args.items() if value is utila.cli.DEACTIVATED
@@ -333,6 +314,26 @@ def determine_todo(args: dict, flags: list) -> typing.List[str]:
             with contextlib.suppress(ValueError):
                 result.remove(item)
     return result
+
+
+def remove_bool_flags(cli_args, flags):
+    """We have to remove all flags, which are not possible `to do` flags.
+
+    The `to do` mechanism run all features if no to do flag is passed.
+    If one flag is left, which is not related to todo flag like
+    `--linter_writing` every todo-job is skipped, therefore we have to
+    remove all external flags.
+    """
+    for item in flags:
+        try:
+            flag, _ = item
+        except ValueError:
+            flag = item
+        flag = utila.userflag_to_arg(flag)
+        with contextlib.suppress(KeyError):
+            # remove present user flags.
+            del cli_args[flag]
+    return cli_args
 
 
 def determine_instance(workplan, typ):
