@@ -95,10 +95,9 @@ class ResultFile(File):
         return '%s__%s.%s' % (self.producer, self.name, self.ext)
 
 
-RESERVED_WORKPLAN_NAMES = {
-    'all', 'cache', 'ff', 'i', 'input', 'j', 'jobs', 'o', 'output', 'pages',
-    'prefix', 'wait'
-}
+RESERVED_WORKPLAN_NAMES = """\
+all cache ff i input j jobs o output pages prefix wait
+""".split()
 
 
 @dataclasses.dataclass
