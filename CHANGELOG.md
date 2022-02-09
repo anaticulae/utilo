@@ -2,6 +2,12 @@
 
 Every noteable change is logged here.
 
+## v2.67.1
+
+### Fix
+
+* adjust naming (84f43eb8a20c)
+
 ## v2.67.0
 
 ### Feature
