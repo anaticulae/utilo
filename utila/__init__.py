@@ -228,6 +228,7 @@ from utila.logger import profile
 from utila.math import Strategy
 from utila.math import diff_mode
 from utila.math import diffs
+from utila.math import gradient
 from utila.math import isascending
 from utila.math import lookup
 from utila.math import mode

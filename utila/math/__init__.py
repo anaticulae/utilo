@@ -290,3 +290,19 @@ def diffs(items: 'utila.math.number.Numbers') -> 'utila.math.number.Numbers':
         )
     ]
     return result
+
+
+def gradient(items: list) -> list:
+    """\
+    >>> gradient((1, 2, 3, 4, 4, 4, 1.5, 0))
+    [1, 1, 1, 0, 0, -2.5, -1.5]
+    >>> gradient((1, 4))
+    [3]
+    >>> gradient((1,))
+    []
+    """
+    result = [
+        (after - current) for current, after in zip(items[0:-1], items[1:])
+    ]
+    result = [roundme(item) for item in result]
+    return result
