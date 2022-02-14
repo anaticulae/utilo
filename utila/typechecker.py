@@ -238,6 +238,40 @@ def defaults(method: callable, skipstars: bool = False) -> tuple:
     return result
 
 
+def defaults_overwrite(func: callable) -> callable:
+    """\
+    >>> @defaults_overwrite
+    ... def myfunc(a=1, b=True, c='off', overwrite: dict=None):
+    ...     print(a, b, c)
+    >>> myfunc(a=5, overwrite=dict(b=10, c='on'))
+    5 10 on
+    >>> myfunc(a=5, overwrite=dict(novalue=10))
+    Traceback (most recent call last):
+    ...
+    ValueError: invalid `overwrite` config
+    >>> myfunc()
+    1 True off
+    """
+    assert 'overwrite' in attributes(func)
+
+    @functools.wraps(func)
+    def wrapper(*args, **kwargs):
+        parameters = attributes(func)
+        if kwargs.get('overwrite', None):
+            error = 0
+            for key, value in kwargs['overwrite'].items():
+                if key not in parameters:
+                    utila.error(f'no parameter: {key} in {func}')
+                    error += 1
+                    continue
+                kwargs[key] = value
+            if error:
+                raise ValueError('invalid `overwrite` config')
+        return func(*args, **kwargs)
+
+    return wrapper
+
+
 def methods(item, starts=''):
     """\
     >>> methods('', starts='zfi')
