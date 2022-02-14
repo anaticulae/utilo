@@ -173,6 +173,7 @@ def asserts(item, typ):
         ...
     AssertionError: require: <class 'int'>, got: <class 'str'>, raw:
     'hello'
+    >>> asserts(10, int)
     """
     if isinstance(item, typ):
         return
