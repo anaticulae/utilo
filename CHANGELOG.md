@@ -2,6 +2,13 @@
 
 Every noteable change is logged here.
 
+## v2.68.0
+
+### Feature
+
+* add default overwrite decorator (35e952439589)
+* add gradient method (70cf16aa4d67)
+
 ## v2.67.1
 
 ### Fix
