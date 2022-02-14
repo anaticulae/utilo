@@ -29,13 +29,13 @@ def checkdatatype(func) -> callable:
     def wrapper(*args, **kwargs):
         parameter = list(inspect.signature(func).parameters.items())
         parameter = [(name, item.annotation) for (name, item) in parameter]
-        msg = 'parameter: %s, expected: %r, current %r:'
         errors = []
         for current, (name, expected) in zip(args, parameter):
             if isinstance(current, expected):
                 continue
             if expected is inspect.Signature.empty:
                 continue
+            msg = 'parameter: %s, expected: %r, current %r:'
             errors.append((msg % (name, expected, type(current))))
             errors.append(str(current))
         if errors:
