@@ -29,7 +29,6 @@ def checkdatatype(func) -> callable:
     def wrapper(*args, **kwargs):
         parameter = list(inspect.signature(func).parameters.items())
         parameter = [(name, item.annotation) for (name, item) in parameter]
-
         msg = 'parameter: %s, expected: %r, current %r:'
         errors = []
         for current, (name, expected) in zip(args, parameter):
