@@ -276,9 +276,14 @@ def methods(item, starts=''):
     """\
     >>> methods('', starts='zfi')
     [<built-in method zfill of str object at...>]
+    >>> names = [item.__name__ for item in methods('')]
+
+    Ensure that mehtods is not sorted
+    >>> sorted(names)!= names
+    True
     """
     result = []
-    for name in dir(item):
+    for name in item.__dir__():
         method = getattr(item, name)
         if not callable(method):
             continue
