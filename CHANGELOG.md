@@ -2,6 +2,12 @@
 
 Every noteable change is logged here.
 
+## v2.68.1
+
+### Fix
+
+* do not sort methods (ee9b23e3e59a)
+
 ## v2.68.0
 
 ### Feature
