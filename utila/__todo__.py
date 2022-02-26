@@ -22,7 +22,7 @@ import contextlib
 class todo(contextlib.ContextDecorator):  # pylint:disable=C0103
     """ContextManager and Decorator to mark code areas which must be
     replaced or refactored before upgrading the requirements. This is
-    even harder than a `todo` mark.
+    even harder than a `refactor/docu` mark.
     """
 
     def __init__(
