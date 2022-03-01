@@ -15,6 +15,8 @@
 
 import inspect
 
+import utila
+
 
 def collect_classes(classes, valid=None):
     """Collect classes from given list of modules. Use `valid` to
@@ -24,7 +26,7 @@ def collect_classes(classes, valid=None):
     >>> collect_classes(utila.collection, valid=lambda x: 'Buckets' in x.__name__)
     (<class 'utila.collection.Buckets'>,)
     """
-    if not isinstance(classes, (list, tuple)):
+    if not utila.iterable(classes):
         classes = (classes,)
     if not valid:
         valid = lambda x: True
