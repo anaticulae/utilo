@@ -373,6 +373,8 @@ from utila.string.compare import similar
 from utila.string.compare import verysimilar
 from utila.string.display import diffview
 from utila.string.modify import scramble
+from utila.string.table import TablePrinter
+from utila.string.table import table_smallest
 # tuples
 from utila.tuples import from_tuple
 from utila.tuples import make_tuple
