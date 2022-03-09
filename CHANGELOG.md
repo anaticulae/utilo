@@ -2,6 +2,17 @@
 
 Every noteable change is logged here.
 
+## v2.69.0
+
+### Feature
+
+* add method to convert colors (37e4cfd26353)
+* add table printer (66a0b814154c)
+
+### Documentation
+
+* fix method documentation (c333a03f6e03)
+
 ## v2.68.1
 
 ### Fix
