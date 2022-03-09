@@ -76,6 +76,9 @@ from utila.collection import partition
 from utila.collection import split_shuffle
 from utila.collection import splitby_count
 from utila.collection import starmap
+# color
+from utila.color import int2rgb
+from utila.color import rgb2int
 # config
 from utila.config import dump_config
 from utila.config import load_config
