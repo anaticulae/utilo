@@ -157,3 +157,20 @@ def parse_state(state: str) -> bool:
     """
     state = str(state).strip().upper()
     return state in ON
+
+
+def int_ornone(item: str) -> int:
+    """\
+    >>> assert int_ornone('') is None
+    >>> int_ornone('10')
+    10
+    >>> int_ornone(13)
+    13
+    >>> assert int_ornone(None) is None
+    """
+    if item is None:
+        return item
+    item = str(item).strip()
+    if not item:
+        return None
+    return int(item)

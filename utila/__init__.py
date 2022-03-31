@@ -83,6 +83,7 @@ from utila.color import rgb2int
 from utila.config import dump_config
 from utila.config import load_config
 # convert
+from utila.convert import int_ornone
 from utila.convert import parse_floats
 from utila.convert import parse_ints
 from utila.convert import parse_state
