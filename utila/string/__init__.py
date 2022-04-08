@@ -101,10 +101,7 @@ def normalize_text(
     >>> normalize_text('A B    C\nD E    F\n G H', normalize_spaces=True)
     'A B C D E F G H'
     """
-    # prepare input data
-    with contextlib.suppress(AttributeError, TypeError):
-        items = [item.text for item in items]
-    text = ''.join(items)
+    text = text_prepare(items)
     if merge_divis:
         # Ensure that divis of following UpperCase-Word is not merged
         # TODO: IMPORVE REGEX
@@ -117,6 +114,18 @@ def normalize_text(
     if strips:
         text = text.strip()
     return text
+
+
+def text_prepare(items: str) -> str:
+    if isinstance(items, str):
+        return items
+    with contextlib.suppress(AttributeError, TypeError):
+        items = [item.text for item in items]
+    if utila.iterable(items) and len(items) > 1:
+        items = [(item + ' ' if item[-1] not in '\n ' else item)
+                 for item in items[:-1]] + [items[-1]]
+    result = ''.join(items)
+    return result
 
 
 def final_newline(text: str) -> str:
