@@ -7,6 +7,7 @@
 # be prosecuted under federal law. Its content is company confidential.
 # =============================================================================
 
+import collections
 import contextlib
 import math
 import typing
@@ -185,6 +186,73 @@ def should_skip(page: PageNumbers, pages: tuple) -> bool:  # pylint:disable=W062
         start, end = math.floor(start), math.ceil(end)
         return any(should_skip(pp, pages) for pp in range(start, end + 1))
     return page not in pages
+
+
+class SelectPage:
+    """\
+    >>> pages = SelectPage(items={0 : 'first', 1 : 'second'}, default=10)
+    >>> pages.getpage(1)
+    'second'
+    >>> pages.getpage(2)
+    10
+    >>> pages.getpage(0)
+    'first'
+    >>> pages.getpages((0, 1, 2, 3, 4, 5))
+    ['first', 'second', 10, 10, 10, 10]
+    >>> double = SelectPage(default=None, first={2 : 'first', 4 : 'second'},
+    ... single={0 : '1', 1 : '2'})
+    >>> double.getpages((0, 1, 2, 3, 4, 5))
+    [(None, '1'), (None, '2'), ('first', None), None, ('second', None), None]
+    """
+
+    def __init__(self, default=None, **kwargs):
+        self.default = default
+        self.count = len(kwargs)
+        self.data = self.prepare_data(kwargs)
+
+    def prepare_data(self, kwargs) -> dict:
+        data = collections.defaultdict(list)
+        for index, kwdata in enumerate(kwargs.values()):
+            if not isinstance(kwdata, dict):
+                kwdata = self.convert_nodict(kwdata)
+            for page, value in kwdata.items():
+                if len(data[page]) == index:
+                    data[page].append(value)
+                    continue
+                for _ in range(index):
+                    data[page].append(None)
+                data[page].append(value)
+        for item in data.values():
+            while len(item) < self.count:
+                item.append(None)
+        result = dict(data)
+        return result
+
+    def convert_nodict(self, items):  # pylint:disable=R0201
+        if any(item is None for item in items):
+            raise ValueError(f'`items` contain `None` pages: {items}')
+        pages = sorted([item.page for item in items])
+        items: dict = {item.page: item for item in items}
+        if len(items) != len(pages):
+            raise ValueError(f'duplicated page attributes: {pages}')
+        return items
+
+    @utila.cacheme
+    def getpage(self, page: int) -> tuple:
+        try:
+            data = self.data[page]
+        except KeyError:
+            return self.default
+        if self.count == 1:
+            return data[0]
+        return tuple(data)
+
+    @utila.cacheme
+    def getpages(self, pages: tuple) -> list:
+        assert len(pages) == len(set(pages)), f'duplicated pages: {pages}'
+        pages = sorted(pages)
+        result = [self.getpage(page) for page in pages]
+        return result
 
 
 PageContent = typing.TypeVar('PageContent', typing.List, typing.Dict)
