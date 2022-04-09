@@ -2,6 +2,15 @@
 
 Every noteable change is logged here.
 
+## v2.70.0
+
+### Feature
+
+* add verbo to log more data (9ae483c91da1)
+* use new rawmaker newline behavior (8979686dd4b1)
+* add improved page selector (937e76ab6cf6)
+* add method to convert int (1f6f34099c68)
+
 ## v2.69.0
 
 ### Feature
