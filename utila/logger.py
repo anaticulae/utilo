@@ -32,6 +32,7 @@ class Level(enum.IntEnum):
     CALLS = 1
     INFO = 2
     DEBUG = 3
+    VERBOSE = 4
     ERROR = -1
     INFORMATION = 2  # TODO: REMOVE LATER
 
@@ -118,6 +119,11 @@ def info(*msg: str, end: str = NEWLINE):
 def debug(*msg: str, end: str = NEWLINE):
     msg = utila.from_tuple(msg) if isinstance(msg, tuple) else msg
     log(f'      {msg}', level=Level.DEBUG, end=end)
+
+
+def verbose(*msg: str, end: str = NEWLINE):
+    msg = utila.from_tuple(msg) if isinstance(msg, tuple) else msg
+    log(f'        {msg}', level=Level.VERBOSE, end=end)
 
 
 def error(msg: str, *, end: str = NEWLINE):
