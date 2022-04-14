@@ -171,7 +171,7 @@ def create_featurepack_parser(
 UserChoice = collections.namedtuple(
     'UserChoice',
     'args, inputpath, outputpath, prefix, verbose processes, failfast, pages, '
-    'profiling, wait, usecache, argv',
+    'cprofile, profiling, wait, usecache, argv',
 )
 
 
@@ -193,7 +193,7 @@ def evaluate_userchoice(config, parser) -> UserChoice:  # pylint:disable=R0914
     # overwrite input as fast as possible. This is required to overwrite
     # general flags (profiling, failfast, etc.).
     utila.feature.config.overwrite(args)
-    processes, failfast, pages, profiling, wait = utila.cli.evaluate_flags(  # pylint:disable=W0613
+    processes, failfast, pages, cprofile, profiling, wait = utila.cli.evaluate_flags(  # pylint:disable=W0613
         args,
         config.multiprocessed,
     )
@@ -223,6 +223,7 @@ def evaluate_userchoice(config, parser) -> UserChoice:  # pylint:disable=R0914
         processes,
         failfast,
         pages,
+        cprofile,
         profiling,
         wait,
         usecache,

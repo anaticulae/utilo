@@ -135,6 +135,7 @@ class ParserConfiguration:  # pylint:disable=R0902
     outputparameter: bool = False
     pages: bool = True
     prefix: bool = False
+    cprofile: bool = True
     profileflag: bool = False
     quiteflag: bool = False
     verboseflag: bool = True
@@ -266,10 +267,16 @@ def prepare_todo(
     todo = todo[:]
     todo.extend(flags_to_parameter(config.flags))
     # create parser
+    if config.cprofile:
+        profilecmd = Flag(
+            longcut='cprofile',
+            message='use cprofile and write binary',
+        )
+        todo.insert(0, profilecmd)
     if config.profileflag:
         profilecmd = Flag(
             longcut='profile',
-            message='profile feature step execution',
+            message='measure runtime and print to console',
         )
         todo.insert(0, profilecmd)
     if config.prefix:
@@ -529,28 +536,25 @@ def sources(  # pylint:disable=too-complex,too-many-branches
 
 def evaluate_flags(args, multiprocessed: bool = False):
     processes = processcount(args, multiprocessed)
-
     with contextlib.suppress(KeyError):
         del args[MULTI_FLAG]
-
     failfast = args.get('ff', False)
     with contextlib.suppress(KeyError):
         del args['ff']
-
+    cprofile = args.get('cprofile', False)
+    with contextlib.suppress(KeyError):
+        del args['cprofile']
     profiling = args.get('profile', False)
     with contextlib.suppress(KeyError):
         del args['profile']
-
     wait = args.get('wait', 0)
     with contextlib.suppress(KeyError):
         del args['wait']
-
     # evaluate multiple --pages
     pages = pages_fromargs(args)
     with contextlib.suppress(KeyError):
         del args[PAGES_FLAG]
-
-    return processes, failfast, pages, profiling, wait
+    return processes, failfast, pages, cprofile, profiling, wait
 
 
 def processcount(args: dict, multiprocessed: bool = False) -> int:
