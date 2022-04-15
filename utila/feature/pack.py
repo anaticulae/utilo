@@ -12,11 +12,13 @@ import collections
 import contextlib
 import dataclasses
 import os
+import sys
 import typing
 
 import utila
 import utila.feature.collector
 import utila.feature.config
+import utila.feature.cprofile
 import utila.feature.description
 
 
@@ -79,6 +81,7 @@ def featurepack(
     Returns:
         return SUCCESS or FAILURE
     """
+    argv = sys.argv[:]
     if config is None:
         FeaturePackConfig()
     # an empty workplan is defined by user code, feature pack does nothing
@@ -90,6 +93,9 @@ def featurepack(
     parser = create_featurepack_parser(features, workplan, config)
     # evaluate cmd input
     choice = evaluate_userchoice(config, parser)
+    if choice.cprofile:
+        # rewrite argv and run this process with cprofile invocation.
+        return utila.feature.cprofile.run(argv)
     runtime = utila.feature.workplan.create_runtime(
         workplan,
         process=config.name,
