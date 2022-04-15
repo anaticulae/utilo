@@ -229,6 +229,7 @@ from utila.logger import print_runtime
 from utila.logger import print_stacktrace
 from utila.logger import profile
 from utila.logger import verbose
+from utila.logger import warning
 # math
 from utila.math import Strategy
 from utila.math import diff_mode

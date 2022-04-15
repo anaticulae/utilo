@@ -106,6 +106,16 @@ def log(
     print(msg, file=sys.stdout, end=end, flush=True)
 
 
+@functools.lru_cache(maxsize=1024)
+def warning(*msg: str, end: str = NEWLINE):
+    """Log warning, mainly used for implementation problems.
+
+    Cache warnings to log warning only once.
+    """
+    msg = utila.from_tuple(msg) if isinstance(msg, tuple) else msg
+    log(f'    {msg}', level=Level.LOGGING, end=end)
+
+
 def call(*msg: str, end: str = NEWLINE):
     msg = utila.from_tuple(msg) if isinstance(msg, tuple) else msg
     log(f'  {msg}', level=Level.CALLS, end=end)
