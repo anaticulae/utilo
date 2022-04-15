@@ -2,6 +2,15 @@
 
 Every noteable change is logged here.
 
+## v2.71.0
+
+### Feature
+
+* add method to rename attributes (8fed7cf99711)
+* add method to log warnings (63942f9a5d64)
+* add hook to rerun process with cprofile (0a14cf0d1c5c)
+* add cprofile flag to profile code execution (e0c3c00f115b)
+
 ## v2.70.0
 
 ### Feature
