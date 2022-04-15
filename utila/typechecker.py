@@ -324,3 +324,40 @@ def load_module(path: str):
     module = importlib.util.module_from_spec(spec)
     spec.loader.exec_module(module)
     return module
+
+
+def rename(func: callable = None, **newnames):
+    """\
+    >>> @rename(old_a='a', old_b='b')
+    ... def method(a:int=10, b:str='hello'):
+    ...     print(a, b)
+    >>> method(b=8, old_a=10)
+        outdated interface: old_a => a
+    10 8
+    >>> method(b=8, a=10) # print warning only once
+    10 8
+    >>> method(b=8, old_a=10)
+    10 8
+    >>> method(old_b=8, old_a=10)
+        outdated interface: old_b => b
+    10 8
+    """
+    assert func is None
+
+    def change_args(func):
+        interface = utila.attributes(func)
+
+        def wrapper(*args, **kwargs):
+            renames = {}
+            for key, value in kwargs.items():
+                if key in interface:
+                    renames[key] = value
+                    continue
+                utila.warning(f'outdated interface: {key} => {newnames[key]}')
+                renames[newnames[key]] = value
+            updated = functools.partial(func, *args, **renames)
+            return updated()
+
+        return wrapper
+
+    return change_args

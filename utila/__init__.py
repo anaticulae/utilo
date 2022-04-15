@@ -410,6 +410,7 @@ from utila.typechecker import isstrings
 from utila.typechecker import load_module
 from utila.typechecker import methods
 from utila.typechecker import pass_required
+from utila.typechecker import rename
 # utile
 from utila.utils import ALL_PAGES
 from utila.utils import FAILURE
