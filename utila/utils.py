@@ -56,6 +56,37 @@ def flatten(lists, append: bool = False) -> list:
     return result
 
 
+def iflat(lists, append: bool = False) -> 'yield':
+    """Chain lists of list to one list.
+
+    Args:
+        lists(iter): content to chain
+        append(bool): if True do not raise TypeError if item is not iterable
+    Yields:
+        List of chained items
+    Raises:
+        TypeError: if append is False and item to chain is not iterable
+
+    >>> list(iflat(([1, 2, 3, 4], [6, 7, 8, 0])))
+    [1, 2, 3, 4, 6, 7, 8, 0]
+    >>> list(iflat(([1, 2, 3], 4, 'he'), append=True))
+    [1, 2, 3, 4, 'h', 'e']
+    >>> list(iflat(([1, 2, 3], 4, 'he')))
+    Traceback (most recent call last):
+        ...
+    TypeError: 'int' object is not iterable
+    """
+    for group in lists:
+        try:
+            for item in group:
+                yield item
+        except TypeError:
+            if append:
+                yield group
+            else:
+                raise
+
+
 def flatten_content(items: 'iamraw.PageContents') -> list:
     result = []
     for item in items:

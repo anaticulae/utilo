@@ -427,6 +427,7 @@ from utila.utils import ensure_list
 from utila.utils import ensure_tuple
 from utila.utils import flatten
 from utila.utils import flatten_content
+from utila.utils import iflat
 from utila.utils import ifnone
 from utila.utils import index_max
 from utila.utils import iterable
