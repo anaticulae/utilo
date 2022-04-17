@@ -287,6 +287,7 @@ def select_page(
         ...
     ValueError: `items` contain `None` pages: ...
     """
+    assert isinstance(page, int), type(page)
     if items is None:
         raise ValueError('no items provided')
     if not isinstance(items, dict):
