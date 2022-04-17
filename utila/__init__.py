@@ -425,7 +425,7 @@ from utila.utils import UTF8
 from utila.utils import chdir
 from utila.utils import ensure_list
 from utila.utils import ensure_tuple
-from utila.utils import flatten
+from utila.utils import flat
 from utila.utils import flatten_content
 from utila.utils import iflat
 from utila.utils import ifnone
@@ -443,6 +443,8 @@ from utila.utils import select_type
 from utila.utils import unset_env
 
 # TODO: REMOVE LATER AND INCREASE MAJOR VERSION NUMBER
+flatten = flat  # pylint:disable=C0103
+iflatten = iflat  # pylint:disable=C0103
 not_none = notnone  # pylint:disable=C0103
 manhatten = manhattan  # pylint:disable=C0103
 log_stacktrace = print_stacktrace  # pylint:disable=C0103

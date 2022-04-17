@@ -517,7 +517,10 @@ def input_order(plan, root):
             except ValueError:
                 # for example input.pdf
                 require[name].add(item)
-    order = utila.utils.determine_order(require, flat=False)
+    order = utila.utils.determine_order(
+        require,
+        flats=False,
+    )
     return order
 
 

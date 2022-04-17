@@ -30,7 +30,7 @@ ALL_PAGES = ':'
 ITERABLE = (list, tuple, set)
 
 
-def flatten(lists, append: bool = False) -> list:
+def flat(lists, append: bool = False) -> list:
     """Chain lists of list to one list.
 
     Args:
@@ -41,7 +41,7 @@ def flatten(lists, append: bool = False) -> list:
     Raises:
         TypeError: if append is False and item to chain is not iterable
 
-    >>> flatten(([1, 2, 3], 4, 'he'), append=True)
+    >>> flat(([1, 2, 3], 4, 'he'), append=True)
     [1, 2, 3, 4, 'h', 'e']
     """
     result = []
@@ -137,7 +137,7 @@ def select_type(items, selector, count: int = None) -> list:
     return selected
 
 
-def determine_order(requirements, flat=True):
+def determine_order(requirements, flats=True):
     requirements = dict(requirements)
     todo = list(requirements.keys())
     result = []
@@ -157,8 +157,8 @@ def determine_order(requirements, flat=True):
         level = sorted(level)
         result.append(level)
         assert len(todo) != before, 'cyclic definition of workplan'
-    if flat:
-        result = flatten(result)
+    if flats:
+        result = flat(result)
     return result
 
 

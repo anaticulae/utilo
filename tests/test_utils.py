@@ -20,13 +20,13 @@ def test_roundme():
     assert rounded == 2.33
 
 
-def test_flatten():
+def test_flat():
     todo = [
         [10],
         [1, 2],
         [1, 2, 3, 4],
     ]
-    flat = utila.flatten(todo)
+    flat = utila.flat(todo)
     assert len(flat) == 7, str(flat)
 
 

@@ -65,7 +65,7 @@ def score_area(area):
     4
     """
     try:
-        flat = utila.flatten(area)
+        flat = utila.flat(area)
     except TypeError:
         flat = area
     return len(flat)

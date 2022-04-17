@@ -91,7 +91,7 @@ def parse_comma(pattern, pagecount):
     result = [parse_pages(item, pagecount) for item in splitted]
     if [item for item in result if item is None]:
         return None
-    result = utila.flatten(result)
+    result = utila.flat(result)
     return result
 
 

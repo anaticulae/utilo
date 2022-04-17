@@ -40,7 +40,7 @@ def groupby_empty(items) -> list:
     items = [None if not len(item) else item for item in items]  # pylint:disable=len-as-condition
     result = groupby_none(items)
     # merge neighbors
-    result = [utila.flatten(item) for item in result]
+    result = [utila.flat(item) for item in result]
     # ensure correct data type
     result = [tuple(item) for item in result]
     return result
