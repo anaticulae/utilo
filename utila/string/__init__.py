@@ -422,8 +422,16 @@ def starts_with(line: str, start: str) -> bool:
     """\
     >>> starts_with('Methode3', '2 Methode3')
     True
+    >>> starts_with(line='5.1.2.  Einzelne  Aktionspunkte  des  OECD-BEPS-Projekts'
+    ... '  und  den  korrespondierenden Maßnahmen auf EU-Ebene',
+    ... start='5.1.2.  Einzelne  Aktionspunkte  des  OECD-BEPS-Projekts  '
+    ... 'und  den  korrespondierenden')
+    True
     """
-    start = start[0:len(line)]
+    # shrink line to start pattern to match if line is much longer than
+    # start pattern.
+    line = line[0:len(start)]
+    start = start[0:len(line)]  # TODO: REMOVE THIS?
     maxdiff = 0.9 if len(start) > 10 else 0.7  # TODO: HOLY VALUE
     if utila.similar(start, line, maxdiff=maxdiff):
         return True
