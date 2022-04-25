@@ -366,14 +366,13 @@ def sync_pages(
             return
         # lowest page number of popped content
         pagenumber = min([determine_pagenumber(item) for item in popped])
-        deliver = [
+        deliver = tuple(
             item if determine_pagenumber(item) == pagenumber else default
-            for item in popped
-        ]
+            for item in popped)
         if numbers:
-            yield pagenumber, tuple(deliver)
+            yield pagenumber, deliver
         else:
-            yield tuple(deliver)
+            yield deliver
         for index, item in enumerate(popped):
             # push back non-yielded items
             if determine_pagenumber(item) != pagenumber:
