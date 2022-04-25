@@ -2,6 +2,21 @@
 
 Every noteable change is logged here.
 
+## v2.72.0
+
+### Feature
+
+* add default type to sync (b450e909bbb1)
+* add generator approach of flatten (0b61b74c35d6)
+
+### Fix
+
+* limit start to match long lines against short start pattern (7a907e78ba1f)
+
+### Documentation
+
+* extend interface information (aac031413a50)
+
 ## v2.71.0
 
 ### Feature
