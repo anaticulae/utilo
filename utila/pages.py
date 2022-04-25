@@ -334,6 +334,7 @@ def sync_pages(
     iterators,
     *,
     numbers: bool = True,
+    default: object = None,
 ) -> typing.Tuple[int, typing.List]:
     """Generator to synchronize a list of PageContentIterators.
 
@@ -341,6 +342,7 @@ def sync_pages(
         iterators(list): list of `PageContent`-Iterators
         numbers(bool): if True, yield (pagenumber, content)
                        if False, yield content
+        default(object): return if no element is given
     Yields:
         pagenumber: (pagenumber, content of current pagenumber)
     """
@@ -358,23 +360,20 @@ def sync_pages(
             try:
                 popped.append(item.pop())
             except IndexError:
-                popped.append(None)
+                popped.append(default)
         if not any(popped):
             # nothing to do anymore
             return
         # lowest page number of popped content
         pagenumber = min([determine_pagenumber(item) for item in popped])
-
         deliver = [
-            item if determine_pagenumber(item) == pagenumber else None
+            item if determine_pagenumber(item) == pagenumber else default
             for item in popped
         ]
-
         if numbers:
             yield pagenumber, tuple(deliver)
         else:
             yield tuple(deliver)
-
         for index, item in enumerate(popped):
             # push back non-yielded items
             if determine_pagenumber(item) != pagenumber:
