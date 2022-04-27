@@ -2,6 +2,14 @@
 
 Every noteable change is logged here.
 
+## v2.73.0
+
+### Feature
+
+* add page box hash (e40e87c65681)
+* add method to replace text without ghosting (fe8bb5f639a8)
+* add all description (a1451e13b8ec)
+
 ## v2.72.0
 
 ### Feature
