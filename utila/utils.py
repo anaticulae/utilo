@@ -9,6 +9,7 @@
 
 import contextlib
 import inspect
+import math
 import os
 import typing
 
@@ -428,12 +429,18 @@ def rate_sum(first, second):
 def pagebox_hash(page=None, box=None) -> int:
     """\
     >>> pagebox_hash(page=5, box=(10.5, 10.5, 20.5, 200.51))
-    9001500105001050020520051
+    90015000105000105000205020051
+    >>> pagebox_hash(page=-1, box=(-1.13, 54.68, 494.59, 422.15))
+    90011000113005468049459042215
     """
+    page = int(math.fabs(page))
     box = box if box else (0, 0, 0, 0)
     result = '9'
     result += str(page + 10).zfill(4)
     for item in box:
-        result += str(item).zfill(6).replace('.', '')
+        item = math.fabs(item)
+        item = str(item).replace('.', '')
+        item = item.zfill(6)
+        result += item
     result: str = int(result)
     return result
