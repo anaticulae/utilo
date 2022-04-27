@@ -265,10 +265,11 @@ def commandline(features: Features, workplan: list) -> utila.Commands:
     flags = determine_instance(workplan, utila.feature.userinput.Bool)
     for item in sorted(flags):
         result.append(utila.Flag(longcut=item))
-
     # run all workplan feature
-    result.append(utila.Flag(longcut='all'))
-
+    result.append(utila.Flag(
+        longcut='all',
+        message='run all features',
+    ))
     return result
 
 
