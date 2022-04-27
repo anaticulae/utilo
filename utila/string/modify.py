@@ -28,3 +28,15 @@ def scramble(text: str, failure: int = 1, seed: float = 0.5) -> str:
         text = text[0:first] + text[second] + text[first + 1:]
         text = text[0:second] + buf + text[second + 1:]
     return text
+
+
+def ghost_replace(text: str, pattern: str, replacement='*') -> str:
+    """\
+    >>> ghost_replace('Hier spricht Helm', 'prich')
+    'Hier s*****t Helm'
+    >>> ghost_replace('Helm Helm Helm', 'elm')
+    'H*** Helm Helm'
+    """
+    new = replacement * len(pattern)
+    text = text.replace(pattern, new, 1)
+    return text
