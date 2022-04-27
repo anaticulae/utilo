@@ -423,3 +423,16 @@ def rate_sum(first, second):
         rate = first / (first + second)
     rate = utila.roundme(rate, digits=3)
     return rate
+
+
+def pagebox_hash(page=None, box=None) -> int:
+    """\
+    >>> pagebox_hash(page=5, box=(10.5, 10.5, 20.5, 200.51))
+    900150000000010510520520051
+    """
+    box = box if box else (0, 0, 0, 0)
+    bounding = f'{box[0]}{box[1]}{box[2]}{box[3]}'.replace('.', '')
+    page = str(page + 10).zfill(4)
+    raw = f'9{page}' + bounding.zfill(22)
+    result = int(raw)
+    return result
