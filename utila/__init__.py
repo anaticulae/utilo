@@ -315,6 +315,7 @@ from utila.math.roman import roman
 # optimizer
 from utila.optimizer import zip_optimizer
 # pages
+from utila.pages import PageGenerator
 from utila.pages import SelectPage
 from utila.pages import pages_inside
 from utila.pages import parse_pages

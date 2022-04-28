@@ -418,3 +418,29 @@ def simplify_pages(numbers: tuple) -> str:
     # replace with special pattern
     result = joined.replace('-', '_')
     return result
+
+
+class PageGenerator:
+    """\
+    >>> morepages = PageGenerator(pages_max=10)
+    >>> (next(morepages), next(morepages), next(morepages))
+    (0, 1, 2)
+    >>> [next(morepages) for _ in range(5)]
+    [3, 4, 5, 6, 7]
+    >>> newpages = PageGenerator(pages=(30, 31, 21, 35, 36, 37))
+    >>> list(newpages)
+    [21, 30, 31, 35, 36, 37]
+    """
+
+    def __init__(self, pages: tuple = None, pages_max: int = 512):
+        self.pages = [
+            page for page in utila.rlist(pages_max)
+            if not utila.should_skip(page, pages)
+        ]
+        self.pages = iter(self.pages)
+
+    def __iter__(self):
+        return self.pages
+
+    def __next__(self):
+        return next(self.pages)
