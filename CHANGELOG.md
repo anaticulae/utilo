@@ -2,6 +2,17 @@
 
 Every noteable change is logged here.
 
+## v2.73.1
+
+### Feature
+
+* add PageGenerator (d60abeaa750a)
+
+### Fix
+
+* handle negative values (78b47e0b11bb)
+* improve page box hash (9538489c55d4)
+
 ## v2.73.0
 
 ### Feature
