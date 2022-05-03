@@ -2,6 +2,12 @@
 
 Every noteable change is logged here.
 
+## v2.73.2
+
+### Feature
+
+* allow multiple file names (e53996209e5a)
+
 ## v2.73.1
 
 ### Feature
