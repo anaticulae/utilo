@@ -42,11 +42,11 @@ def from_raw_or_path(
         isdir = False
     if fname and isdir:
         # use default file path if exists
-        newpath = os.path.join(content, f'{fname}.{ftype}')
-        if os.path.exists(newpath):
+        if newpath := file_find(content, fnames=fname, ftype=ftype):
             content = newpath
         else:
-            raise FileNotFoundError(f'directory not found: {newpath}')
+            raise FileNotFoundError('directory not found:'
+                                    f'{content} {fname} {ftype}')
     # filepath must not have any line breaks
     if len(content.splitlines()) == 1 and os.path.isfile(content):
         content = utila.file_read(content)
@@ -97,6 +97,18 @@ def yaml_dump(
     else:
         result = yaml.dump(content, Dumper=yaml.Dumper)  #nosec
     return result
+
+
+def file_find(path, fnames, ftype):
+    """Allow multiple file names, select the first one."""
+    if isinstance(fnames, str):
+        fnames = [fnames]
+    for fname in fnames:
+        newpath = utila.join(path, f'{fname}.{ftype}')
+        if not utila.exists(newpath):
+            continue
+        return newpath
+    return None
 
 
 class LazyFile:
