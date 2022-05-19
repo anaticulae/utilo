@@ -9,6 +9,8 @@
 
 import contextlib
 
+import utila
+
 NUMBERS = {
     'I': 1,
     'II': 2,
@@ -61,6 +63,8 @@ EXCEPTION = {
     'XXXVIIII': 39,
 }
 
+NUMBERS_REVERSE = utila.dict_reverse(NUMBERS)
+
 
 def roman(*items) -> str:
     """Converts Arabic numbers to Roman numbers.
@@ -70,8 +74,7 @@ def roman(*items) -> str:
     >>> roman(1, 5, 6, 10)
     ['I', 'V', 'VI', 'X']
     """
-    reverse = {value: key for key, value in NUMBERS.items()}
-    result = [reverse[item] for item in items]
+    result = [NUMBERS_REVERSE[item] for item in items]
     if len(result) == 1:
         return result[0]
     return result
