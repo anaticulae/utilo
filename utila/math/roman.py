@@ -73,7 +73,13 @@ def roman(*items) -> str:
     'V'
     >>> roman(1, 5, 6, 10)
     ['I', 'V', 'VI', 'X']
+    >>> roman(-1, 0, 1)
+    Traceback (most recent call last):
+        ...
+    ValueError: greater than zero required: (-1, 0, 1)
     """
+    if any(item for item in items if item <= 0):
+        raise ValueError(f'greater than zero required: {items}')
     result = [NUMBERS_REVERSE[item] for item in items]
     if len(result) == 1:
         return result[0]
