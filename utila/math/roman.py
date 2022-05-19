@@ -137,3 +137,21 @@ def isarabic(item) -> bool:
         _ = int(item)
         return True
     return False
+
+
+def pagenumber(item: str) -> int:
+    """\
+    >>> pagenumber('XII')
+    12
+    >>> pagenumber('191')
+    191
+    >>> pagenumber('AGC')
+    Traceback (most recent call last):
+        ...
+    ValueError: invalid page number: AGC
+    """
+    if isarabic(item):
+        return int(item)
+    if isroman(item):
+        return arabic(item)
+    raise ValueError(f'invalid page number: {item}')
