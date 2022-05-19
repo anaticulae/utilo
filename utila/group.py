@@ -133,7 +133,7 @@ def groupby_x(items, selector: callable) -> list:
     return result
 
 
-def longest(items, number: int = 1):
+def longest(items, number: int = 1, key=len):
     """\
     >>> longest([(1, 2, 4), (2, 2, 2, 2), (5, 5, 5)])
     (2, 2, 2, 2)
@@ -143,13 +143,13 @@ def longest(items, number: int = 1):
     assert number >= 1, 'invalid number'
     if not items:
         return []
-    items = sorted(items, key=len, reverse=True)
+    items = sorted(items, key=key, reverse=True)
     if number == 1:
         return items[0]
     return items[0:number]
 
 
-def shortest(items, number: int = 1):
+def shortest(items, number: int = 1, key=len):
     """\
     >>> shortest([(1, 2, 4), (2, 2, 2, 2), (5, 5, 5)])
     (1, 2, 4)
@@ -159,7 +159,7 @@ def shortest(items, number: int = 1):
     assert number >= 1, 'invalid number'
     if not items:
         return []
-    items = sorted(items, key=len)
+    items = sorted(items, key=key)
     if number == 1:
         return items[0]
     return items[0:number]
