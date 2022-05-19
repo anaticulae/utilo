@@ -2,6 +2,12 @@
 
 Every noteable change is logged here.
 
+## v2.74.1
+
+### Feature
+
+* add parameter to run longest on complex data structures (00b795bc00fb)
+
 ## v2.74.0
 
 ### Feature
