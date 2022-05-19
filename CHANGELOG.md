@@ -2,6 +2,14 @@
 
 Every noteable change is logged here.
 
+## v2.74.0
+
+### Feature
+
+* raise ValueError for invalid roman converting (aec50d19cb41)
+* add method to add and subtract page numbers (4b7119de853c)
+* add Roman Arabic page parser (523fd9f21301)
+
 ## v2.73.2
 
 ### Feature
