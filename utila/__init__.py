@@ -312,6 +312,8 @@ from utila.math.roman import arabic
 from utila.math.roman import isarabic
 from utila.math.roman import isroman
 from utila.math.roman import pagenumber
+from utila.math.roman import pagenumber_minus
+from utila.math.roman import pagenumber_plus
 from utila.math.roman import roman
 # optimizer
 from utila.optimizer import zip_optimizer

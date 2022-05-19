@@ -155,3 +155,29 @@ def pagenumber(item: str) -> int:
     if isroman(item):
         return arabic(item)
     raise ValueError(f'invalid page number: {item}')
+
+
+def pagenumber_plus(item: str) -> str:
+    """\
+    >>> pagenumber_plus(12)
+    '13'
+    """
+    number = pagenumber(item) + 1
+    if isarabic(item):
+        return str(number)
+    if isroman(item):
+        return roman(number)
+    raise ValueError(f'invalid page number: {item}')
+
+
+def pagenumber_minus(item: str) -> str:
+    """\
+    >>> pagenumber_minus('X')
+    'IX'
+    """
+    number = pagenumber(item) - 1
+    if isarabic(item):
+        return str(number)
+    if isroman(item):
+        return roman(number)
+    raise ValueError(f'invalid page number: {item}')
