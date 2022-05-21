@@ -132,10 +132,12 @@ def create_step(
             OUTPUT: ('butter', 'tart', 'cream'),
         }
     """
-    if inputs is None:
-        inputs = []
-    if output is None:
-        output = []
+    inputs = [] if not inputs else inputs
+    output = [] if not output else output
+    if not utila.iterable(inputs):
+        inputs = [inputs]
+    if not utila.iterable(output):
+        output = [output]
     assert isinstance(inputs, list), '%s %s' % (type(inputs), str(inputs))
     for index, item in enumerate(inputs):
         assert isinstance(item, Input), f'{index} {item}'
