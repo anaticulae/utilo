@@ -75,6 +75,10 @@ def level_current() -> Level:
     return LEVEL
 
 
+def debug_enable():
+    level_setup(Level.DEBUG)
+
+
 def log(
     *msg: str,
     level: Level = Level.LOGGING,

@@ -212,6 +212,7 @@ from utila.logger import Level
 from utila.logger import SkipCollector
 from utila.logger import call
 from utila.logger import debug
+from utila.logger import debug_enable
 from utila.logger import error
 from utila.logger import format_completed
 from utila.logger import info
