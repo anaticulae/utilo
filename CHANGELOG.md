@@ -2,6 +2,14 @@
 
 Every noteable change is logged here.
 
+## v2.75.0
+
+### Feature
+
+* add methods to access container range (4de42b9354ec)
+* add method to setup debug level (ea4f194cd07b)
+* make interface less strict (a7641c79159e)
+
 ## v2.74.1
 
 ### Feature
