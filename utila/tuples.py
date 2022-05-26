@@ -7,6 +7,8 @@
 # be prosecuted under federal law. Its content is company confidential.
 # =============================================================================
 
+import contextlib
+
 import utila
 
 
@@ -133,3 +135,27 @@ def tuple_plus(items, value):
     (9, 11, 15)
     """
     return tuple(item + value for item in items)
+
+
+def cstart(item) -> int:
+    """\
+    >>> cstart(10)
+    10
+    >>> cstart((5, 10))
+    5
+    """
+    with contextlib.suppress(TypeError):
+        return item[0]
+    return item
+
+
+def crange(item) -> tuple:
+    """\
+    >>> crange((5, 10))
+    (5, 6, 7, 8, 9, 10)
+    >>> crange(0)
+    (0,)
+    """
+    with contextlib.suppress(TypeError):
+        return rtuple(item[0], item[1] + 1)
+    return (item,)

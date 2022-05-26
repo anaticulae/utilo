@@ -389,6 +389,8 @@ from utila.string.modify import scramble
 from utila.string.table import TablePrinter
 from utila.string.table import table_smallest
 # tuples
+from utila.tuples import crange
+from utila.tuples import cstart
 from utila.tuples import from_tuple
 from utila.tuples import make_tuple
 from utila.tuples import parse_tuple
