@@ -10,6 +10,7 @@
 import binascii
 import contextlib
 import difflib
+import functools
 import re
 import statistics
 import sys
@@ -279,6 +280,9 @@ def splitlines(
     assert not unique_assert or len(set(splitted)) == len(splitted)
     result = set(splitted) if unique else splitted
     return result
+
+
+splitdouble = functools.partial(splitlines, pattern=re.compile(r'\n\n'))
 
 
 def splititems(raw: str, lowers: bool = True) -> set:

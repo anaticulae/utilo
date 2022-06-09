@@ -376,6 +376,7 @@ from utila.string import rreplace
 from utila.string import shrink
 from utila.string import simple
 from utila.string import simplify_chars
+from utila.string import splitdouble
 from utila.string import splititems
 from utila.string import splitlines
 from utila.string import starts_with
