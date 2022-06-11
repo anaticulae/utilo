@@ -373,9 +373,18 @@ def rect_overlapping(
     0.5
     >>> rect_overlapping((10, 10, 30, 30), (29.9999, 30, 50, 50))  # check if not size
     0.0
+
+    Determine overlapping rate for horizonals
+    >>> rect_overlapping((92.13, 425.58, 499.79, 514.99), (92.13, 425.58, 499.79, 425.58))
+    1.0
     """
     if not rect_intersecting(master, test):
         return 0.0
+    if not rect_height(test):
+        # increase test rectangle to enable matching horizontal lines
+        master = (master[0] - 0.01, master[1] - 0.01, master[2] + 0.01,
+                  master[3] + 0.01)
+        test = (test[0] - 0.01, test[1] - 0.01, test[2] + 0.01, test[3] + 0.01)
     ymin = max(master[1], test[1])
     ymax = min(master[3], test[3])
     ymin, ymax = sorted((ymin, ymax))
