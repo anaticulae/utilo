@@ -2,6 +2,17 @@
 
 Every noteable change is logged here.
 
+## v2.76.0
+
+### Feature
+
+* add method to split double lines (fbcb473747f5)
+* add parameter to change number of replacements (11e4923d9474)
+
+### Fix
+
+* determine overlapping rate for horizontals correctly (f67927890ff3)
+
 ## v2.75.0
 
 ### Feature
