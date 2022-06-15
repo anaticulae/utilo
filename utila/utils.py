@@ -444,3 +444,10 @@ def pagebox_hash(page=None, box=None) -> int:
         result += item
     result: str = int(result)
     return result
+
+
+def testing() -> bool:
+    """Determine if environment is exectued in test mode."""
+    if os.environ.get('PYTEST_CURRENT_TEST', None):
+        return True
+    return False
