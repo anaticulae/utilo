@@ -2,6 +2,12 @@
 
 Every noteable change is logged here.
 
+## v2.76.1
+
+### Feature
+
+* add method to determine if pytest is running (60c689c7b603)
+
 ## v2.76.0
 
 ### Feature
