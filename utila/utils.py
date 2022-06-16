@@ -12,6 +12,7 @@ import contextlib
 import inspect
 import math
 import os
+import sys
 import typing
 
 import utila
@@ -448,8 +449,14 @@ def pagebox_hash(page=None, box=None) -> int:
 
 
 def testing() -> bool:
-    """Determine if environment is exectued in test mode."""
+    """Determine if environment is exectued in test mode.
+
+    >>> testing()
+    True
+    """
     if os.environ.get('PYTEST_CURRENT_TEST', None):
+        return True
+    if 'pytest' in sys.modules:
         return True
     return False
 
