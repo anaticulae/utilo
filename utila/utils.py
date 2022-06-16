@@ -7,6 +7,7 @@
 # be prosecuted under federal law. Its content is company confidential.
 #==============================================================================
 
+import collections
 import contextlib
 import inspect
 import math
@@ -451,3 +452,13 @@ def testing() -> bool:
     if os.environ.get('PYTEST_CURRENT_TEST', None):
         return True
     return False
+
+
+def driver(**kwargs):
+    """\
+    >>> driver(name='Helmut', age=33)
+    Driver(name='Helmut', age=33)
+    """
+    Driver = collections.namedtuple('Driver', kwargs.keys())
+    result = Driver(**kwargs)
+    return result
