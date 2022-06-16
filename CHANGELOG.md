@@ -2,6 +2,14 @@
 
 Every noteable change is logged here.
 
+## v2.77.0
+
+### Feature
+
+* extend test lookup (1bbece93de87)
+* log cwd of timeout run (28050937d0d3)
+* add driver creator (b1986dde8df8)
+
 ## v2.76.1
 
 ### Feature
