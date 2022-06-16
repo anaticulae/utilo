@@ -73,15 +73,24 @@ def run(
             gracefully,
             ontimeout,
             cmd,
+            cwd,
         )
     return completed
 
 
-def handle_run(proc, expect, timeout, gracefully, ontimeout, cmd):
+def handle_run(
+    proc,
+    expect,
+    timeout,
+    gracefully,
+    ontimeout,
+    cmd: str,
+    cwd: str,
+):
     try:
         stdout, stderr = proc.communicate(timeout=timeout)
     except subprocess.TimeoutExpired as error:
-        utila.error(f'timeout: {cmd} !failed!')
+        utila.error(f'timeout: {cmd} in {cwd} !failed!')
         proc.kill()
         if not gracefully:
             raise error
