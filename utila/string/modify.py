@@ -41,7 +41,18 @@ def ghost_replace(
     'Hier s*****t Helm'
     >>> ghost_replace('Helm Helm Helm', 'elm', count=1)
     'H*** Helm Helm'
+    >>> ghost_replace('ABCDEFG', ('A', 'D', 'F'))
+    '*BC*E*G'
     """
+    if not isinstance(pattern, str):
+        for patt in pattern:
+            text = ghost_replace(
+                text,
+                pattern=patt,
+                replacement=replacement,
+                count=1,
+            )
+        return text
     new = replacement * len(pattern)
     text = text.replace(pattern, new, count)
     return text
