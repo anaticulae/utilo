@@ -2,6 +2,12 @@
 
 Every noteable change is logged here.
 
+## v2.77.1
+
+### Feature
+
+* add option to run more than one pattern (703ebf3a04d1)
+
 ## v2.77.0
 
 ### Feature
