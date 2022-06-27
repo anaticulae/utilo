@@ -248,7 +248,7 @@ def file_compare(first: str, second: str) -> bool:
     return first == second
 
 
-def file_lock(path: str):
+def file_lock(path: str, noerror: bool = False):
     """Protect file `path` with write protection.
 
     Before locking check that file exists and no lock is already set. If file
@@ -256,16 +256,17 @@ def file_lock(path: str):
 
     Args:
         path(str): path to protect
+        noerror(bool): do not fail on locked file
     Raises:
         AssertionError
     """
     # set read only
     assert os.path.exists(path), f'{path} does not exists'
-    assert not file_islocked(path), 'file is already locked'
+    assert noerror or not file_islocked(path), 'file is already locked'
     os.chmod(path, mode=stat.S_IREAD)
 
 
-def file_unlock(path: str):
+def file_unlock(path: str, noerror: bool = False):
     """Remove write protection of file `path`.
 
     Before unlock check that file exists and lock protection is set. If
@@ -273,11 +274,12 @@ def file_unlock(path: str):
 
     Args:
         path(str): path to unprotect
+        noerror(bool): do not fail on unlocked file
     Raises:
         AssertionError
     """
     assert os.path.exists(path), f'{path} does not exists'
-    assert file_islocked(path), 'file is not locked'
+    assert noerror or file_islocked(path), 'file is not locked'
     os.chmod(path, mode=stat.S_IWRITE)
 
 
