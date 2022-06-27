@@ -20,3 +20,31 @@ def directory_list(path: str) -> list:
             continue
         result.append(item.name)
     return result
+
+
+def directory_lock(path: str, recursive: bool = True, noerror: bool = True):
+    utila.exists_assert(path)
+    assert not utila.isfilepath(path), path
+    for item in utila.file_list(
+            path,
+            absolute=True,
+            recursive=recursive,
+    ):
+        utila.file_lock(
+            item,
+            noerror=noerror,
+        )
+
+
+def directory_unlock(path: str, recursive: bool = True, noerror: bool = True):
+    utila.exists_assert(path)
+    assert not utila.isfilepath(path), path
+    for item in utila.file_list(
+            path,
+            recursive=recursive,
+            absolute=True,
+    ):
+        utila.file_unlock(
+            item,
+            noerror=noerror,
+        )
