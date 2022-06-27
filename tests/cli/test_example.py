@@ -309,13 +309,10 @@ def test_cli_multiple_input_with_double_input(
 MULTI_RUNNER = create_runner(multiprocessed=True)
 
 
-@pytest.mark.parametrize(
-    'jobs',
-    [
-        1,  # single processed
-        10,
-    ],
-)
+@pytest.mark.parametrize('jobs', [
+    pytest.param(1, id='single'),
+    pytest.param(10, id='multiple'),
+])
 def test_cli_multiple_jobs(
     testdir,
     monkeypatch,
@@ -323,10 +320,8 @@ def test_cli_multiple_jobs(
     jobs: int,
 ):
     cli_example(testdir)
-    root = str(testdir)
-
-    cmd = '-j %d --all' % jobs
-    with run_cli(root, monkeypatch, cmd, MULTI_RUNNER) as result:
+    cmd = f'-j {jobs} --all'
+    with run_cli(testdir.tmpdir, monkeypatch, cmd, MULTI_RUNNER) as result:
         out, err = capsys.readouterr()
     error_message = '%s\n%s\n%s' % (result, out, err)
     assert utila.returncode(result) == utila.SUCCESS, str(error_message)
