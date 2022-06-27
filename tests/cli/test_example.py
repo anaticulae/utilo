@@ -13,6 +13,7 @@ import os
 import sys
 
 import pytest
+import utilatest
 
 import utila
 
@@ -134,6 +135,7 @@ def create_runner(
     pages=True,
     version='beta',
     workplan=None,
+    profile: bool = False,
 ):
     if workplan is None:
         workplan = list(WORKPLAN)
@@ -143,6 +145,7 @@ def create_runner(
         name=name,
         pages=pages,
         version=version,
+        profileflag=profile,
     )
     runner = functools.partial(
         featurepack_,
@@ -231,6 +234,15 @@ def test_cli_print_processing_step(testdir, monkeypatch, capsys):
     assert utila.returncode(result) == utila.SUCCESS, str(result)
     assert len(out) > 100
     assert 'processing: first_cli_step' in out, utila.log_raw(out)
+
+
+def test_cli_profile(testdir, monkeypatch, capsys):
+    """Ensure that profiling is logged."""
+    root, _ = cli_example(testdir)
+    runner = create_runner(profile=True)
+    with run_cli(root, monkeypatch, '--profile', runner=runner):
+        out = utilatest.stdout(capsys)
+    assert 'runtime(first_cli_step):' in out
 
 
 @pytest.mark.parametrize(
