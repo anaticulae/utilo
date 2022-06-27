@@ -44,5 +44,9 @@ if __name__ == "__main__":
             'utila.file',
             'utila.math',
             'utila.string',
+            'utila.xyz',
         ],
+        entry_points={
+            'console_scripts': ['utila_lock = utila.xyz.lock:main'],
+        },
     )
