@@ -39,6 +39,7 @@ if __name__ == "__main__":
         packages=[
             'utila',
             'utila.classifier',
+            'utila.cli',
             'utila.feature',
             'utila.file',
             'utila.math',
