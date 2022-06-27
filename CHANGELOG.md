@@ -2,6 +2,18 @@
 
 Every noteable change is logged here.
 
+## v2.78.0
+
+### Feature
+
+* add method to lock a whole directory (2d1b96f356f8)
+* add flag to disable locking error (2aa3e41b89c2)
+* add parameter to shrink detected indexes (8ff43a91b9ee)
+
+### Fix
+
+* always print profiling information if --profile (249c588e2579)
+
 ## v2.77.1
 
 ### Feature
