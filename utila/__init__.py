@@ -455,6 +455,7 @@ from utila.utils import selbstwirksamkeit
 from utila.utils import select_type
 from utila.utils import testing
 from utila.utils import unset_env
+from utila.utils import wait
 
 # TODO: REMOVE LATER AND INCREASE MAJOR VERSION NUMBER
 flatten = flat  # pylint:disable=C0103

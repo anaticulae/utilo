@@ -469,3 +469,11 @@ def driver(**kwargs):
     Driver = collections.namedtuple('Driver', kwargs.keys())
     result = Driver(**kwargs)
     return result
+
+
+def wait():
+    """Ask user to continue program."""
+    answer = input('continue?\n')
+    answer = answer.strip().lower()
+    if answer in ('no', 'n'):
+        sys.exit(utila.SUCCESS)
