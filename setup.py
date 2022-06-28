@@ -47,6 +47,9 @@ if __name__ == "__main__":
             'utila.xyz',
         ],
         entry_points={
-            'console_scripts': ['utila_lock = utila.xyz.lock:main'],
+            'console_scripts': [
+                'utila_lock = utila.xyz.lock:main',
+                'utila_unlock = utila.xyz.lock:unlock',
+            ],
         },
     )

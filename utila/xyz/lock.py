@@ -23,3 +23,15 @@ def main():
     utila.wait()
     utila.directory_lock(cwd)
     return utila.SUCCESS
+
+
+def unlock():
+    parser = argparse.ArgumentParser(prog='utila_unlock')
+    args = parser.parse_args()  # pylint:disable=W0612
+    cwd = os.getcwd()
+    utila.exists_assert(cwd)
+    utila.log(cwd)
+    # ask user to continue
+    utila.wait()
+    utila.directory_unlock(cwd)
+    return utila.SUCCESS
