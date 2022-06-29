@@ -45,7 +45,7 @@ def from_raw_or_path(
         if newpath := file_find(content, fnames=fname, ftype=ftype):
             content = newpath
         else:
-            raise FileNotFoundError('directory not found:'
+            raise FileNotFoundError('directory not found: '
                                     f'{content} {fname} {ftype}')
     # filepath must not have any line breaks
     if len(content.splitlines()) == 1 and os.path.isfile(content):
