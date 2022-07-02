@@ -50,6 +50,7 @@ if __name__ == "__main__":
             'console_scripts': [
                 'utila_lock = utila.xyz.lock:main',
                 'utila_unlock = utila.xyz.lock:unlock',
+                'utila_table = utila.xyz.table:main',
             ],
         },
     )
