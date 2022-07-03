@@ -16,6 +16,9 @@ import utila
 def unique(items, converter: callable = None):
     """Convert collection where every element exists only once.
 
+    >>> unique((1, 2, 3, 3, 4, 5, 1))
+    [1, 2, 3, 4, 5]
+
     Hint:
         stable algorithm which holds the previous order
     """
