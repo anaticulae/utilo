@@ -70,12 +70,12 @@ from utila.collection import counts
 from utila.collection import dict_reverse
 from utila.collection import dicts_united
 from utila.collection import first_one
-from utila.collection import make_unique
 from utila.collection import minimal
 from utila.collection import partition
 from utila.collection import split_shuffle
 from utila.collection import splitby_count
 from utila.collection import starmap
+from utila.collection import unique
 # color
 from utila.color import int2rgb
 from utila.color import rgb2int
@@ -486,6 +486,7 @@ rectangle_size = rect_size  # pylint:disable=C0103
 rectangle_width = rect_width  # pylint:disable=C0103
 ranged_list = rlist  # pylint:disable=C0103
 ranged_tuple = rtuple  # pylint:disable=C0103
+make_unique = unique
 
 ROOT = os.path.abspath(os.path.join(os.path.dirname(__file__), '..'))
 PACKAGE = 'utila'

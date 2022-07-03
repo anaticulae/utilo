@@ -13,7 +13,7 @@ import random
 import utila
 
 
-def make_unique(items, converter: callable = None):
+def unique(items, converter: callable = None):
     """Convert collection where every element exists only once.
 
     Hint:
