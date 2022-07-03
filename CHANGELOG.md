@@ -2,6 +2,15 @@
 
 Every noteable change is logged here.
 
+## v2.79.0
+
+### Feature
+
+* add cli to beautify column files (6137cb81f17c)
+* add cli to unlock files (de32dcbc14e2)
+* add runner to lock whole directory (d613bd5732a1)
+* add method to ask user (dd2ceebc797a)
+
 ## v2.78.0
 
 ### Feature
