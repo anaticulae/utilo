@@ -17,3 +17,20 @@ def test_directory_lock(tmpdir):
     assert utila.file_islocked(write)
     utila.directory_unlock(tmpdir)
     assert not utila.file_islocked(write)
+
+
+def test_directory_list_noparam(testdir):
+    testdir.tmpdir.mkdir('abc')
+    testdir.tmpdir.mkdir('abcd')
+    utila.file_create('abc.txt')
+    listed = utila.directory_list(testdir.tmpdir)
+    assert len(listed) == 2
+
+
+def test_directory_list_recursive_absolute():
+    directories = utila.directory_list(
+        utila.ROOT,
+        recursive=True,
+        absolute=True,
+    )
+    assert len(directories) > 50

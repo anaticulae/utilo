@@ -12,13 +12,29 @@ import os
 import utila
 
 
-def directory_list(path: str) -> list:
+def directory_list(
+    path: str,
+    absolute: bool = False,
+    recursive: bool = False,
+) -> list:
+    if recursive:
+        absolute = True
     utila.exists_assert(path)
     result = []
     for item in os.scandir(path):
         if not item.is_dir():
             continue
-        result.append(item.name)
+        if absolute:
+            result.append(os.path.join(path, item.name))
+        else:
+            result.append(item.name)
+        if recursive:
+            result.extend(
+                directory_list(
+                    os.path.join(path, item.name),
+                    absolute=absolute,
+                    recursive=recursive,
+                ))
     return result
 
 
