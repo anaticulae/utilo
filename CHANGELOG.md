@@ -2,6 +2,13 @@
 
 Every noteable change is logged here.
 
+## v2.80.0
+
+### Feature
+
+* add method to kill processes by id (9693b89d276a)
+* add parameter recursive and absolute (148be5500a4b)
+
 ## v2.79.0
 
 ### Feature
