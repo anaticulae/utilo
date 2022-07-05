@@ -15,6 +15,7 @@ import functools
 import inspect
 import os
 import subprocess  # nosec
+import sys
 import threading
 
 import utila
@@ -300,3 +301,29 @@ class Waiter:
 
     def hashme(self, args):  # pylint:disable=R0201
         return hash(str(args))
+
+
+def killpid(pid):
+    """\
+    COPIED FROM EXECNET
+    """
+    if hasattr(os, 'kill'):
+        os.kill(pid, 15)
+    elif sys.platform == "win32" or getattr(os, '_name', None) == 'nt':
+        try:
+            import ctypes
+        except ImportError as ioerr:
+            # T: treekill, F: Force
+            cmd = ("taskkill /T /F /PID %d" % (pid)).split()
+            ret = subprocess.call(cmd)  # nosec
+            if ret:
+                raise EnvironmentError("taskkill returned %r" %
+                                       (ret,)) from ioerr
+        else:
+            process_terminate = 1
+            handle = ctypes.windll.kernel32.OpenProcess(process_terminate,
+                                                        False, pid)
+            ctypes.windll.kernel32.TerminateProcess(handle, -1)
+            ctypes.windll.kernel32.CloseHandle(handle)
+    else:
+        raise EnvironmentError("no method to kill %s" % (pid,))
