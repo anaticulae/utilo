@@ -20,6 +20,10 @@ from utila.__todo__ import todo
 from utila.alpha import alphabetically
 from utila.alpha import replace
 from utila.alpha import sort
+# project
+from utila.baw import baw_config
+from utila.baw import baw_name
+from utila.baw import baw_root
 # cacher
 from utila.cacher import cache_clear
 from utila.cacher import cache_disable
