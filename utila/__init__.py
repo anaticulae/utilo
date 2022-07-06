@@ -76,6 +76,7 @@ from utila.collection import dicts_united
 from utila.collection import first_one
 from utila.collection import minimal
 from utila.collection import partition
+from utila.collection import sort_both
 from utila.collection import split_shuffle
 from utila.collection import splitby_count
 from utila.collection import starmap

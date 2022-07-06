@@ -366,3 +366,22 @@ def counts(items: list, selector: callable) -> int:
     """
     counted = len([item for item in items if selector(item)])
     return counted
+
+
+def sort_both(firsts,
+              seconds,
+              key: callable = None,
+              reverse: bool = False) -> tuple:
+    """\
+    >>> sort_both([5, 1, 3, 10], 'Konrad Frank Theodor Elsa'.split())
+    ([1, 3, 5, 10], ['Frank', 'Theodor', 'Konrad', 'Elsa'])
+    """
+    assert len(firsts) == len(seconds), f'{len(firsts)} == {len(seconds)}'
+    merged = list(zip(firsts, seconds))
+    if key is None:
+        key = lambda x: x
+    # x[0] first column
+    merged.sort(key=lambda x: key(x[0]), reverse=reverse)
+    firsts = [item[0] for item in merged]
+    seconds = [item[1] for item in merged]
+    return firsts, seconds
