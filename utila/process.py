@@ -327,3 +327,19 @@ def killpid(pid):
             ctypes.windll.kernel32.CloseHandle(handle)
     else:
         raise EnvironmentError("no method to kill %s" % (pid,))
+
+
+def process_ids(process: str) -> tuple:
+    """\
+    >>> process_ids('python')
+    (...,)
+    >>> process_ids('noprocess')
+    ()
+    """
+    result = []
+    completed = utila.run(f'ps | grep {process}', expect=None)
+    raw = completed.stdout.strip()
+    for line in raw.splitlines():
+        index = int(line.split()[0])
+        result.append(index)
+    return tuple(result)

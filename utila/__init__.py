@@ -344,6 +344,7 @@ from utila.process import assert_failure
 from utila.process import assert_success
 from utila.process import fork
 from utila.process import killpid
+from utila.process import process_ids
 from utila.process import returnvalue as returncode
 from utila.process import run
 from utila.process import run_parallel
