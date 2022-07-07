@@ -2,6 +2,14 @@
 
 Every noteable change is logged here.
 
+## v2.81.0
+
+### Feature
+
+* add method to determine process id (883ea9825594)
+* add method to sort two lists (86f93e62f39e)
+* add method to analyze baw config (46972392a8e1)
+
 ## v2.80.0
 
 ### Feature
