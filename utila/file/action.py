@@ -14,6 +14,7 @@ import re
 import shutil
 
 import utila
+import utila.typechecker
 
 
 def file_read_lines(
@@ -36,9 +37,10 @@ def file_read_lines(
     return result
 
 
+@utila.typechecker.rename(dest='dst')
 def copy_content(  # pylint:disable=R1260,too-many-branches
     src: str,
-    dest: str,
+    dst: str,
     pattern: str = None,
     ignore: callable = None,
     rename: callable = None,
@@ -55,7 +57,7 @@ def copy_content(  # pylint:disable=R1260,too-many-branches
 
     Args:
         src(str): file or directory to copy
-        dest(str): directory to copy src item(s)
+        dst(str): directory to copy src item(s)
         pattern(str): accept files which matches this pattern, if None
                       all files matches.
         ignore(callable): option to skip files by path or filename
@@ -80,9 +82,9 @@ def copy_content(  # pylint:disable=R1260,too-many-branches
         dest does not exists, but we need this.
     """
     assert src, str(src)
-    assert dest, str(dest)
+    assert dst, str(dst)
     if os.path.isfile(src):
-        _copy_file(src, dest, ignore, rename, update, skip_equal, verbose,
+        _copy_file(src, dst, ignore, rename, update, skip_equal, verbose,
                    private, unlock)
         return
     if pattern is None:
@@ -90,10 +92,10 @@ def copy_content(  # pylint:disable=R1260,too-many-branches
 
     multiple = split_multipattern(pattern)
     if multiple:
-        _copy_multiple(src, dest, pattern, ignore, rename, recursive, update,
+        _copy_multiple(src, dst, pattern, ignore, rename, recursive, update,
                        skip_equal, verbose, private, unlock)
         return
-    _copy_folder(src, dest, pattern, recursive, ignore, rename, update,
+    _copy_folder(src, dst, pattern, recursive, ignore, rename, update,
                  skip_equal, verbose, private, unlock)
 
 
