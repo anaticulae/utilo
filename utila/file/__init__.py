@@ -299,6 +299,7 @@ def file_copy(
     exception: bool = False,
     timestamp: bool = True,
     private: bool = False,
+    unlock: bool = False,
 ):
     """Copy a single `src` file to `dst` file or folder.
 
@@ -311,11 +312,14 @@ def file_copy(
                          if False log error and raise exit
         timestamp(bool): if True, copy timestamp
         private(bool): encrypt data
+        unlock(bool): do not copy lock
     Raises:
         OSError: if coping is not possible and exception is True
         SameFileError: if src and dst is equal
     """
     utila.exists_assert(src)
+    # TODO: THINK ABOUT THIS
+    assert not (private and unlock), 'do not unlock private files'
     try:
         if os.path.exists(dst) and not utila.isfilepath(dst):
             # use name of current file as new file name
@@ -331,6 +335,8 @@ def file_copy(
         if timestamp:
             filetime = utila.file_age(src)
             utila.file_age_update(dst, filetime)
+        if unlock:
+            utila.file_unlock(dst, noerror=True)
     except OSError as error:
         utila.error(f'could not overwrite: {dst}')
         if exception:

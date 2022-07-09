@@ -48,6 +48,7 @@ def copy_content(  # pylint:disable=R1260,too-many-branches
     skip_equal: bool = False,
     verbose: bool = False,
     private: bool = False,
+    unlock: bool = False,
 ):
     """Copy the content from `src` to `dest` folder. If `dest` folder
     does not exists, it will be created.
@@ -66,6 +67,7 @@ def copy_content(  # pylint:disable=R1260,too-many-branches
                           dest is equal.
         verbose(bool): explain what is being done
         private(bool): encrypt data
+        unlock(bool): if True, remove file lock
 
     Pattern-Syntax:
         In the current implementation only one multiple field is
@@ -81,7 +83,7 @@ def copy_content(  # pylint:disable=R1260,too-many-branches
     assert dest, str(dest)
     if os.path.isfile(src):
         _copy_file(src, dest, ignore, rename, update, skip_equal, verbose,
-                   private)
+                   private, unlock)
         return
     if pattern is None:
         pattern = '*'
@@ -89,10 +91,10 @@ def copy_content(  # pylint:disable=R1260,too-many-branches
     multiple = split_multipattern(pattern)
     if multiple:
         _copy_multiple(src, dest, pattern, ignore, rename, recursive, update,
-                       skip_equal, verbose, private)
+                       skip_equal, verbose, private, unlock)
         return
     _copy_folder(src, dest, pattern, recursive, ignore, rename, update,
-                 skip_equal, verbose, private)
+                 skip_equal, verbose, private, unlock)
 
 
 def _copy_file(
@@ -104,6 +106,7 @@ def _copy_file(
     skip_equal,
     verbose,
     private,
+    unlock: bool = False,
 ):
     if ignore and ignore(src):
         utila.debug(f'skip: {src}')
@@ -123,10 +126,11 @@ def _copy_file(
             update=update,
             exception=skip_equal,
             private=private,
+            unlock=unlock,
         )
 
 
-def _copy_folder(
+def _copy_folder(  # pylint:disable=R0913,R0914
     src,
     dest,
     pattern,
@@ -137,13 +141,12 @@ def _copy_folder(
     skip_equal,
     verbose,
     private,
+    unlock: bool = False,
 ):
     pattern = f'**/{pattern}' if recursive else pattern
-
     with utila.chdir(src):
         # TODO: NOT THREAD SAFE!
         selected = list(glob.glob(pattern, recursive=recursive))
-
     suppress = contextlib.suppress if skip_equal else utila.nothing
     for item in selected:
         inpath = os.path.join(src, item)
@@ -163,6 +166,7 @@ def _copy_folder(
                     update=update,
                     exception=skip_equal,
                     private=private,
+                    unlock=unlock,
                 )
         else:
             if verbose:
@@ -170,7 +174,7 @@ def _copy_folder(
             os.makedirs(outpath, exist_ok=True)
 
 
-def _copy_multiple(
+def _copy_multiple(  # pylint:disable=R0913
     src,
     dest,
     pattern,
@@ -181,6 +185,7 @@ def _copy_multiple(
     skip_equal,
     verbose,
     private,
+    unlock: bool = False,
 ):
     multiple = split_multipattern(pattern)
     if verbose:
@@ -200,6 +205,7 @@ def _copy_multiple(
                 update=update,
                 verbose=verbose,
                 private=private,
+                unlock=unlock,
             )
 
 
