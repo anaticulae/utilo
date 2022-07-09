@@ -303,6 +303,27 @@ def test_file_copy_content_access_error(
         assert 'single.pdf' in err, (out + err)
 
 
+def test_file_copy_lock_nolock(testdir):
+    locked = testdir.tmpdir.join('path')
+    utila.file_create(locked, content='locked')
+    utila.file_lock(locked)
+    utila.file_islocked(locked)
+    # copy without lock
+    unlocked = testdir.tmpdir.join('unlocked')
+    utila.copy_content(src=locked, dest=unlocked, unlock=True)
+    assert not utila.file_islocked(unlocked.join('path'))
+
+
+def test_file_copy_lock_withlock(testdir):
+    locked = testdir.tmpdir.join('path')
+    utila.file_create(locked, content='locked')
+    utila.file_lock(locked)
+    # copy with lock
+    skip_unlock = testdir.tmpdir.join('superlock')
+    utila.copy_content(src=locked, dest=skip_unlock)
+    assert utila.file_islocked(skip_unlock.join('path'))
+
+
 def prepare_example(directory):
     folder = os.path.join(directory, 'first')
 
