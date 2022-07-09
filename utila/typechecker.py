@@ -345,7 +345,7 @@ def rename(func: callable = None, **newnames):
     assert func is None
 
     def change_args(func):
-        interface = utila.attributes(func)
+        interface = attributes(func)
 
         def wrapper(*args, **kwargs):
             renames = {}

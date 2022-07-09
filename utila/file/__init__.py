@@ -23,6 +23,7 @@ import sys
 
 import utila
 import utila.file.securewrapper
+import utila.typechecker
 
 # width of tempfile name
 MAX_NUMBER = 32
@@ -290,6 +291,7 @@ def file_islocked(path: str):
     return not os.access(path, os.W_OK)
 
 
+@utila.typechecker.rename(source='src', destination='dest')
 def file_copy(
     src: str = None,
     dst: str = None,
@@ -297,7 +299,6 @@ def file_copy(
     exception: bool = False,
     timestamp: bool = True,
     private: bool = False,
-    **kwargs,
 ):
     """Copy a single `src` file to `dst` file or folder.
 
@@ -310,20 +311,11 @@ def file_copy(
                          if False log error and raise exit
         timestamp(bool): if True, copy timestamp
         private(bool): encrypt data
-        kwargs(dict): backward compatible
     Raises:
         OSError: if coping is not possible and exception is True
         SameFileError: if src and dst is equal
     """
-    if kwargs.get('source', None):
-        import warnings
-        warnings.warn('use file_copy(src=) instead of source')
-        src = kwargs['source']
-    if kwargs.get('destination', None):
-        import warnings
-        warnings.warn('use file_copy(dst=) instead of source')
-        dst = kwargs['destination']
-    assert os.path.exists(src), f'"{src}" does not exists'
+    utila.exists_assert(src)
     try:
         if os.path.exists(dst) and not utila.isfilepath(dst):
             # use name of current file as new file name
