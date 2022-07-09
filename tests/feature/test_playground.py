@@ -40,7 +40,6 @@ def run_playground(
     result = tests.feature.runner.run_featurepack(
         cmd=cmd,
         main=main,
-        td=td,
         mp=mp,
         exe=exe,
         capsys=capsys,

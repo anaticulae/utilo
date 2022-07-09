@@ -19,7 +19,6 @@ import utila.logger
 def run_featurepack(
     cmd: str,
     main: dict,
-    td,
     mp,
     exe=None,
     capsys=None,
@@ -28,14 +27,12 @@ def run_featurepack(
     """Setup working step with main(dict) which defines the passed
     parameter to featurepack(**main). `cmd` is passed as argv to run."""
     root = exe.ROOT
-
     with contextlib.suppress(AttributeError):
         cmd = cmd.split()
     cmd = [exe.PROCESS] + cmd
     with mp.context() as context:
         context.syspath_prepend(root)
         context.setattr(sys, 'argv', cmd)
-
         with pytest.raises(SystemExit) as result:
             exe.main(**main)
     verified = (utila.returncode(result) == utila.SUCCESS)

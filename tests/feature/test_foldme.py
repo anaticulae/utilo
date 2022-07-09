@@ -29,15 +29,12 @@ def run_foldme(
     create: create default input data
     """
     import tests.examples.featurepack.foldme.morefeatures as exe  # pylint:disable=C0415
-
     if create:
         # directory_input step resource
         td.mkdir('iamadirectory')
-
     result = tests.feature.runner.run_featurepack(
         cmd=cmd,
         main=main,
-        td=td,
         mp=mp,
         exe=exe,
         capsys=capsys,

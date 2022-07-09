@@ -67,7 +67,8 @@ def test_file_from_path_or_raw_not_exists():
         utila.from_raw_or_path('/c/test.yaml')
 
 
-def test_yaml_from_path(td):
+@pytest.mark.usefixtures('testdir')
+def test_yaml_from_path():
     dumped = utila.yaml_dump(['test', 'data'])
     utila.file_create('test.yaml', dumped)
 
@@ -502,7 +503,7 @@ def test_file_count(tmpdir):
     assert utila.file_count(tmpdir) == 2
 
 
-def test_file_tmpdir(td):
+def test_file_tmpdir():
     create = utila.tmpdir(utila.ROOT)
     assert os.path.exists(create), create
 
@@ -547,7 +548,7 @@ def test_make_tmpdir():
     assert os.path.exists(tmp_dir)
 
 
-def test_make_tmpdir_remove(td):
+def test_make_tmpdir_remove():
     with utila.make_tmpdir(utila.ROOT, remove=True) as tmp_dir:
         assert os.path.exists(tmp_dir)
         os.makedirs(os.path.join(tmp_dir, 'recursive_path'))

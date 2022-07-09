@@ -58,13 +58,13 @@ def test_georg_fork(capsys):
     assert '5 13' in stdout
 
 
-def test_run_timeout_complex(td):
+def test_run_timeout_complex():
     cmd = 'sleep 2'
     error = utila.run(cmd, timeout=utila.Timeout(seconds=0))
     assert isinstance(error, subprocess.TimeoutExpired)
 
 
-def test_run_timeout_float(td):
+def test_run_timeout_float():
     cmd = 'sleep 2'
     error = utila.run(cmd, timeout=0.0)
     assert isinstance(error, subprocess.TimeoutExpired)
