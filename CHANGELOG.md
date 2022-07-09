@@ -2,6 +2,12 @@
 
 Every noteable change is logged here.
 
+## v2.82.0
+
+### Feature
+
+* add file unlock parameter (177c7edc7acd)
+
 ## v2.81.0
 
 ### Feature
