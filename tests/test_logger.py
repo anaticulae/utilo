@@ -84,8 +84,8 @@ def test_profiler_decorator(capsys):
     assert 'decorated profiler' in stdout, str(stdout)
 
 
-def test_logger_print_env(capsys, monkeypatch):
-    with monkeypatch.context() as context:
+def test_logger_print_env(capsys, mp):
+    with mp.context() as context:
         context.setattr(utila.logger, 'LEVEL', utila.Level.INFO)
         utila.print_env()
     stdout = capsys.readouterr().out
@@ -121,8 +121,8 @@ def add(x, y, z):  # pylint:disable=C0103
         id='logging calls',
     ),
 ])
-def test_logger_log_args(level, expected_log, capsys, monkeypatch):
-    with monkeypatch.context() as context:
+def test_logger_log_args(level, expected_log, capsys, mp):
+    with mp.context() as context:
         context.setattr(utila.logger, 'LEVEL', level)
         add(1, 2, 3)
 
@@ -135,9 +135,9 @@ def test_logger_log_args(level, expected_log, capsys, monkeypatch):
     assert len(''.join(expected_log)) <= len(captured.strip())
 
 
-def test_logger_log_args_loglevel_to_low(capsys, monkeypatch):
+def test_logger_log_args_loglevel_to_low(capsys, mp):
     """Set `LEVEL` to `LOGGING` to avoid any output"""
-    with monkeypatch.context() as context:
+    with mp.context() as context:
         level = utila.Level.LOGGING
         context.setattr(utila.logger, 'LEVEL', level)
         add(1, 2, 3)
@@ -146,10 +146,10 @@ def test_logger_log_args_loglevel_to_low(capsys, monkeypatch):
     assert not captured, str(captured)
 
 
-def test_logger_level_tmp(monkeypatch):
+def test_logger_level_tmp(mp):
     utila.level_setup(utila.LEVEL_DEFAULT)  # TODO: REMOVE LATER
     assert utila.level_current() == utila.LEVEL_DEFAULT
-    with monkeypatch.context() as context:
+    with mp.context() as context:
         context.setattr(utila.logger, 'LEVEL', utila.Level.ERROR)
 
         setme = utila.Level.DEBUG
@@ -164,10 +164,10 @@ def test_logger_level_tmp(monkeypatch):
     assert utila.level_current() == utila.LEVEL_DEFAULT
 
 
-def test_logger_level_setup(monkeypatch):
+def test_logger_level_setup(mp):
     utila.level_setup(utila.LEVEL_DEFAULT)  # TODO: REMOVE LATER
     assert utila.level_current() == utila.LEVEL_DEFAULT
-    with monkeypatch.context() as context:
+    with mp.context() as context:
         context.setattr(utila.logger, 'LEVEL', utila.Level.ERROR)
 
         setme = utila.Level.DEBUG
@@ -180,10 +180,10 @@ def test_logger_level_setup(monkeypatch):
     assert utila.level_current() == utila.LEVEL_DEFAULT
 
 
-def test_logger_outfile(testdir, monkeypatch):
-    logger = os.path.join(testdir.tmpdir, 'logging.txt')
+def test_logger_outfile(td, mp):
+    logger = os.path.join(td.tmpdir, 'logging.txt')
 
-    with monkeypatch.context() as context:
+    with mp.context() as context:
         context.setattr(utila.logger, 'OUTFILE', logger)
 
         utila.log('First Line')

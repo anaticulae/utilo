@@ -19,11 +19,11 @@ def test_directory_lock(tmpdir):
     assert not utila.file_islocked(write)
 
 
-def test_directory_list_noparam(testdir):
-    testdir.tmpdir.mkdir('abc')
-    testdir.tmpdir.mkdir('abcd')
+def test_directory_list_noparam(td):
+    td.tmpdir.mkdir('abc')
+    td.tmpdir.mkdir('abcd')
     utila.file_create('abc.txt')
-    listed = utila.directory_list(testdir.tmpdir)
+    listed = utila.directory_list(td.tmpdir)
     assert len(listed) == 2
 
 

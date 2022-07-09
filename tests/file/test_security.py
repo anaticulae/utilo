@@ -12,32 +12,32 @@ import os
 import utila
 
 
-def test_file_create_private_str(testdir):
+def test_file_create_private_str(td):
     content = 'This is Helmut.'
-    path = os.path.join(testdir.tmpdir, 'helm.txt')
+    path = os.path.join(td.tmpdir, 'helm.txt')
     utila.file_create(path, content, private=True)
     assert utila.file_read(path) == content
 
 
-def test_file_append_private_str(testdir):
+def test_file_append_private_str(td):
     content = 'This is Helmut.'
-    path = os.path.join(testdir.tmpdir, 'helm.txt')
+    path = os.path.join(td.tmpdir, 'helm.txt')
     utila.file_append(path, content, create=True, private=True)
     utila.file_append(path, content, private=True)
     utila.file_append(path, content, private=True)
     assert utila.file_read(path) == content + content + content
 
 
-def test_file_create_private_binary(testdir):
+def test_file_create_private_binary(td):
     content = b'This is Helmut.'
-    path = os.path.join(testdir.tmpdir, 'helm.txt')
+    path = os.path.join(td.tmpdir, 'helm.txt')
     utila.file_create_binary(path, content, private=True)
     assert utila.file_read_binary(path) == content
 
 
-def test_copy_content_private(testdir):
-    testdir.mkdir('open')
-    testdir.mkdir('second')
+def test_copy_content_private(td):
+    td.mkdir('open')
+    td.mkdir('second')
 
     utila.file_create('open/public.txt', utila.file_read(__file__))
     binary_content = b'\xAA& Binary Content &\n'

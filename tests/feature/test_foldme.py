@@ -18,8 +18,8 @@ import utila
 def run_foldme(
     cmd: str,
     main: dict,
-    testdir,
-    monkeypatch,
+    td,
+    mp,
     capsys=None,
     success: bool = True,
     create: bool = True,
@@ -32,13 +32,13 @@ def run_foldme(
 
     if create:
         # directory_input step resource
-        testdir.mkdir('iamadirectory')
+        td.mkdir('iamadirectory')
 
     result = tests.feature.runner.run_featurepack(
         cmd=cmd,
         main=main,
-        testdir=testdir,
-        monkeypatch=monkeypatch,
+        td=td,
+        mp=mp,
         exe=exe,
         capsys=capsys,
         success=success,
@@ -47,9 +47,9 @@ def run_foldme(
 
 
 @utilatest.longrun
-def test_directory_asinput(testdir, monkeypatch):
-    root = testdir.tmpdir
-    run_foldme('--directory_input', {}, testdir, monkeypatch)
+def test_directory_asinput(td, mp):
+    root = td.tmpdir
+    run_foldme('--directory_input', {}, td, mp)
 
     written = os.path.join(root, 'foldme__directory_input_message.yaml')
     loaded = utila.file_read(written)
@@ -57,40 +57,40 @@ def test_directory_asinput(testdir, monkeypatch):
 
 
 @utilatest.longrun
-def test_directory_asinput_missing_input(testdir, monkeypatch):
+def test_directory_asinput_missing_input(td, mp):
     # input directory does not exists
     run_foldme(
         '--directory_input',
         {},
-        testdir,
-        monkeypatch,
+        td,
+        mp,
         create=False,
         success=True,
     )
 
 
 @utilatest.longrun
-def test_custom_output_folder_file(testdir, monkeypatch):
+def test_custom_output_folder_file(td, mp):
     # input directory does not exists
     run_foldme(
         '--custom_output',
         {},
-        testdir,
-        monkeypatch,
+        td,
+        mp,
     )
-    expected = os.path.join(testdir.tmpdir, 'helm/iamsounique.txt')
+    expected = os.path.join(td.tmpdir, 'helm/iamsounique.txt')
     assert os.path.exists(expected), str(expected)
 
 
 @utilatest.longrun
-def test_custom_output_folder_different_datatype(testdir, monkeypatch):
+def test_custom_output_folder_different_datatype(td, mp):
     # input directory does not exists
     run_foldme(
         '--different_datatype',
         {},
-        testdir,
-        monkeypatch,
+        td,
+        mp,
     )
     for item in ['0.txt', '1.fdp', '2.png']:
-        expected = os.path.join(testdir.tmpdir, f'schelm/{item}')
+        expected = os.path.join(td.tmpdir, f'schelm/{item}')
         assert os.path.exists(expected), str(expected)

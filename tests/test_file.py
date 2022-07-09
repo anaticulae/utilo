@@ -49,15 +49,15 @@ def test_file_from_path_or_raw(tmpdir):
     assert from_path == from_raw
 
 
-def test_file_from_path_or_raw_default(testdir):
-    root = str(testdir.tmpdir)
+def test_file_from_path_or_raw_default(td):
+    root = str(td.tmpdir)
     utila.file_create(os.path.join(root, 'example.yaml'), 'defaultcontent')
     default = utila.from_raw_or_path(root, ftype='yaml', fname='example')
     assert default == 'defaultcontent'
 
 
-def test_file_from_path_or_raw_default_not_exists(testdir):
-    root = str(testdir.tmpdir)
+def test_file_from_path_or_raw_default_not_exists(td):
+    root = str(td.tmpdir)
     with pytest.raises(FileNotFoundError):
         utila.from_raw_or_path(root, ftype='yaml', fname='abc')
 
@@ -67,7 +67,7 @@ def test_file_from_path_or_raw_not_exists():
         utila.from_raw_or_path('/c/test.yaml')
 
 
-def test_yaml_from_path(testdir):
+def test_yaml_from_path(td):
     dumped = utila.yaml_dump(['test', 'data'])
     utila.file_create('test.yaml', dumped)
 
@@ -93,10 +93,10 @@ def test_file_tmpfile():
     assert not os.path.exists(random_path), random_path
 
 
-def test_file_tmp_redirect(testdir, monkeypatch):
+def test_file_tmp_redirect(td, mp):
     """Redirect tmp-path with KIWI_TEMPBASE environ variable"""
-    with monkeypatch.context() as context:
-        context.setattr(os, 'environ', {utila.file.SHARED_TMP: str(testdir)})
+    with mp.context() as context:
+        context.setattr(os, 'environ', {utila.file.SHARED_TMP: str(td)})
         temp = utila.tmp(utila.ROOT)
         assert os.path.exists(temp), temp
 
@@ -126,9 +126,9 @@ def content_folder(tmpdir):
     return root
 
 
-def test_file_copy_content_recursive(testdir, content_folder):  #pylint:disable=W0621
+def test_file_copy_content_recursive(td, content_folder):  #pylint:disable=W0621
     """Test to copy `content_folder` recursive"""
-    goal = str(testdir)
+    goal = str(td)
     utila.copy_content(content_folder, goal, recursive=True)
 
     assert os.path.exists(os.path.join(goal, 'test.txt'))
@@ -140,9 +140,9 @@ def test_file_copy_content_recursive(testdir, content_folder):  #pylint:disable=
     assert os.path.exists(os.path.join(goal, 'abc/def/ghi/jklm/ggg.txt'))
 
 
-def test_file_copy_content_verbose(testdir, content_folder, capsys):  #pylint:disable=W0621
+def test_file_copy_content_verbose(td, content_folder, capsys):  #pylint:disable=W0621
     """Test that operation are logged to console"""
-    goal = str(testdir)
+    goal = str(td)
     utila.copy_content(content_folder, goal, recursive=True, verbose=True)
 
     stdout = capsys.readouterr().out
@@ -151,9 +151,9 @@ def test_file_copy_content_verbose(testdir, content_folder, capsys):  #pylint:di
     assert stdout.count('cp:') == 5, stdout
 
 
-def test_file_copy_content_recursive_false(testdir, content_folder):  #pylint:disable=W0621
+def test_file_copy_content_recursive_false(td, content_folder):  #pylint:disable=W0621
     """Test to copy `content_folder` non recursive"""
-    goal = str(testdir)
+    goal = str(td)
     utila.copy_content(content_folder, goal, recursive=False)
 
     assert os.path.exists(os.path.join(goal, 'test.txt'))
@@ -186,21 +186,21 @@ def test_file_copy_content_pattern(
     pattern,
     recursive,
     expected,
-    testdir,
+    td,
     content_folder,
 ):  # pylint:disable=W0621
     source = content_folder
     utila.file_create(os.path.join(source, 'hallotxt'))
 
-    root = str(testdir)
+    root = str(td)
 
     utila.copy_content(source, root, pattern=pattern, recursive=recursive)
     files = [item for item in os.listdir(root) if utila.isfilepath(item)]
     assert len(files) == expected, root
 
 
-def test_file_replace_file(testdir):
-    path = os.path.join(str(testdir), 'file.txt')
+def test_file_replace_file(td):
+    path = os.path.join(str(td), 'file.txt')
     assert not os.path.exists(path)
 
     utila.file_replace(path, 'Content')
@@ -216,31 +216,31 @@ def test_file_replace_file(testdir):
     assert content == 'NewContent'
 
 
-def test_file_copy_content_file_to_directory(testdir):
-    testdir = str(testdir)
+def test_file_copy_content_file_to_directory(td):
+    td = str(td)
     filename = 'abc.txt'
     utila.file_create(filename)
-    destination = os.path.join(testdir, 'destination')
+    destination = os.path.join(td, 'destination')
     utila.copy_content(filename, destination)
 
     assert os.path.exists(os.path.join(destination, filename))
 
 
-def test_file_copy_content_file_to_file(testdir):
-    testdir = str(testdir)
+def test_file_copy_content_file_to_file(td):
+    td = str(td)
     filename = 'abc.txt'
     utila.file_create(filename)
-    destination = os.path.join(testdir, 'cba.txt')
+    destination = os.path.join(td, 'cba.txt')
     utila.copy_content(filename, destination)
 
     assert os.path.exists(destination)
 
 
-def test_file_copy_content_directory_to_directory(testdir):
-    testdir = str(testdir)
-    folder = prepare_example(testdir)
+def test_file_copy_content_directory_to_directory(td):
+    td = str(td)
+    folder = prepare_example(td)
 
-    goal = os.path.join(testdir, 'goal')
+    goal = os.path.join(td, 'goal')
     utila.copy_content(folder, goal)
 
     assert len(os.listdir(goal)) == 3, os.listdir(goal)
@@ -252,8 +252,8 @@ def test_file_copy_content_directory_to_directory(testdir):
 ])
 def test_file_copy_content_access_error(
     update,
-    testdir,
-    monkeypatch,
+    td,
+    mp,
     capsys,
 ):
     """Copy file to path which exists and is not overwriteable like an
@@ -266,11 +266,11 @@ def test_file_copy_content_access_error(
 
     update: if True, the copy process which raises OSError is
             not reached and therefore no SystemExit is raised.
-    monkeypatch: patch copy command to introduce overwrite error
+    mp: patch copy command to introduce overwrite error
 
     TODO: refactor/simplify with: file_lock/file_unlock
     """
-    root = str(testdir)
+    root = str(td)
     source = os.path.join(root, 'source')
     sink = os.path.join(root, 'sink')
 
@@ -287,7 +287,7 @@ def test_file_copy_content_access_error(
             return
         raise OSError()
 
-    with monkeypatch.context() as context:
+    with mp.context() as context:
         context.setattr(utila.file.securewrapper, 'copy', copy)
         context.setattr(utila, 'file_age_update', lambda path, seconds: True)
         if update:
@@ -382,8 +382,8 @@ def test_file_yaml_path_given():
     ('', 'This is content', False),
     ('We are equal!\nRealy!', 'We are equal!\nRealy!', True),
 ])
-def test_file_compare(first_content, second_content, expected_result, testdir):
-    root = str(testdir)
+def test_file_compare(first_content, second_content, expected_result, td):
+    root = str(td)
 
     first = os.path.join(root, 'first')
     second = os.path.join(root, 'second')
@@ -396,8 +396,8 @@ def test_file_compare(first_content, second_content, expected_result, testdir):
     assert equals == expected_result
 
 
-def test_file_compare_binary_file(testdir):
-    root = str(testdir)
+def test_file_compare_binary_file(td):
+    root = str(td)
     utf32 = os.path.join(root, 'example.utf32')
 
     with open(utf32, mode='w', encoding='utf32') as fp:
@@ -417,8 +417,8 @@ def test_file_compare_not_exists():
     assert not equals
 
 
-def test_file_lock(testdir):
-    root = str(testdir)
+def test_file_lock(td):
+    root = str(td)
     first = os.path.join(root, 'locked.abc')
 
     utila.file_create(first, 'file to lock')
@@ -460,8 +460,8 @@ def test_file_make_package_root():
     assert result == expected, str(result)
 
 
-def test_file_copy_single_file(testdir):
-    root = str(testdir)
+def test_file_copy_single_file(td):
+    root = str(td)
     source = os.path.join(root, 'source')
     dest = os.path.join(root, 'destination')
     os.makedirs(source)
@@ -474,11 +474,11 @@ def test_file_copy_single_file(testdir):
     assert os.path.exists(os.path.join(dest, 'hello'))
 
 
-def test_file_copy_content_mult(testdir):
-    testdir.mkdir('source')
+def test_file_copy_content_mult(td):
+    td.mkdir('source')
     utila.file_create('source/groupme__selm.yaml')
     utila.file_create('source/rawmaker__helm.yaml')
-    testdir.mkdir('dest')
+    td.mkdir('dest')
 
     utila.copy_content(
         'source',
@@ -502,7 +502,7 @@ def test_file_count(tmpdir):
     assert utila.file_count(tmpdir) == 2
 
 
-def test_file_tmpdir(testdir):
+def test_file_tmpdir(td):
     create = utila.tmpdir(utila.ROOT)
     assert os.path.exists(create), create
 
@@ -533,11 +533,11 @@ def test_file_list():
     assert len(exclude_txt) == (len(files) - len(txt))
 
 
-def test_file_list_relative(testdir):
+def test_file_list_relative(td):
     utila.file_create('test.txt')
-    files = utila.file_list(testdir.tmpdir)
+    files = utila.file_list(td.tmpdir)
     assert files == ['test.txt']
-    files = utila.file_list(testdir.tmpdir, absolute=True)
+    files = utila.file_list(td.tmpdir, absolute=True)
     assert files != ['test.txt']
 
 
@@ -547,7 +547,7 @@ def test_make_tmpdir():
     assert os.path.exists(tmp_dir)
 
 
-def test_make_tmpdir_remove(testdir):
+def test_make_tmpdir_remove(td):
     with utila.make_tmpdir(utila.ROOT, remove=True) as tmp_dir:
         assert os.path.exists(tmp_dir)
         os.makedirs(os.path.join(tmp_dir, 'recursive_path'))

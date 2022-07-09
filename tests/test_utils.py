@@ -43,10 +43,10 @@ def test_select_type():
     assert len(utila.select_type(todo, B)) == 1
 
 
-def test_chdir(testdir):
+def test_chdir(td):
     """Test to change working directory given path. Ensure that
     exceptions are handled correctly."""
-    root = str(testdir)
+    root = str(td)
 
     folder = os.path.join(root, 'folder')
     os.makedirs(folder)
@@ -71,9 +71,9 @@ def test_chdir(testdir):
     assert str(os.getcwd()) == root
 
 
-def test_chdir_to_filepath(testdir):
+def test_chdir_to_filepath(td):
     """Test to change to a file location with contextmanager."""
-    root = str(testdir)
+    root = str(td)
 
     filepath = os.path.join(root, 'hello')
     utila.file_create(filepath)
@@ -84,8 +84,8 @@ def test_chdir_to_filepath(testdir):
             pass
 
 
-def test_unset_env(monkeypatch):
-    with monkeypatch.context() as context:
+def test_unset_env(mp):
+    with mp.context() as context:
         context.setattr(os, 'environ', {})
         os.environ['abc'] = '10'
         with utila.unset_env('abc'):
@@ -94,8 +94,8 @@ def test_unset_env(monkeypatch):
         del os.environ['abc']
 
 
-def test_unset_env_keyerror(monkeypatch):
-    with monkeypatch.context() as context:
+def test_unset_env_keyerror(mp):
+    with mp.context() as context:
         context.setattr(os, 'environ', {})
         with pytest.raises(KeyError):
             with utila.unset_env('abc', skip=False):

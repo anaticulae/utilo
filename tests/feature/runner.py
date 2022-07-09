@@ -19,8 +19,8 @@ import utila.logger
 def run_featurepack(
     cmd: str,
     main: dict,
-    testdir,
-    monkeypatch,
+    td,
+    mp,
     exe=None,
     capsys=None,
     success: bool = True,
@@ -32,7 +32,7 @@ def run_featurepack(
     with contextlib.suppress(AttributeError):
         cmd = cmd.split()
     cmd = [exe.PROCESS] + cmd
-    with monkeypatch.context() as context:
+    with mp.context() as context:
         context.syspath_prepend(root)
         context.setattr(sys, 'argv', cmd)
 

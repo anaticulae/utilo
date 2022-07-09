@@ -30,16 +30,16 @@ FIRE-ACE                                   First International Satellite Cloud C
 """
 
 TABLE = functools.partial(
-    utilatest.run_command,
+    utilatest.run_cov,
     main=utila.xyz.table.main,
     process='utila_table',
     success=True,
 )
 
 
-def test_normalize_table(testdir, monkeypatch):
-    todo = testdir.tmpdir.join('table.txt')
+def test_normalize_table(td, mp):
+    todo = td.tmpdir.join('table.txt')
     utila.file_create(todo, DATA)
-    TABLE(f'{todo}', monkeypatch=monkeypatch)
+    TABLE(f'{todo}', mp=mp)
     better = utila.file_read(todo)
     assert better != DATA

@@ -30,7 +30,7 @@ from utila.cli import create_parser
 from utila.cli import sort
 
 
-def test_cli_parse_args(monkeypatch):
+def test_cli_parse_args(mp):
     """Create a parser with 2 parameter, pass arguments and evaluate the
     result"""
     todo = [
@@ -50,7 +50,7 @@ def test_cli_parse_args(monkeypatch):
     )
 
     argv = ['parser', '--alls', '"hallo this is helmut"', '--nothing', 'aaa']
-    with monkeypatch.context() as context:
+    with mp.context() as context:
         context.setattr(sys, 'argv', argv)
         parser.print_help()
         args = parse(parser)
@@ -63,7 +63,7 @@ def test_cli_parse_args(monkeypatch):
 
 
 @pytest.mark.parametrize('prefix', [True, False])
-def test_cli_prefix_activation(monkeypatch, prefix):
+def test_cli_prefix_activation(mp, prefix):
     todo = [
         Flag(longcut='--longcut', message='display longcuts'),
     ]
@@ -77,7 +77,7 @@ def test_cli_prefix_activation(monkeypatch, prefix):
     )
 
     argv = [parsername, '--longcut']
-    with monkeypatch.context() as context:
+    with mp.context() as context:
         context.setattr(sys, 'argv', argv)
         args = parse(parser)
         source = sources(args)
@@ -86,24 +86,24 @@ def test_cli_prefix_activation(monkeypatch, prefix):
     assert len(source) == expected_return_count
 
 
-def test_cli_non_existing_input(tmpdir, monkeypatch):
+def test_cli_non_existing_input(tmpdir, mp):
     """Non existing input will raise an SystemExit error with value > 0"""
     result = None
     with pytest.raises(SystemExit) as result:
         create_and_run_parser(
             tmpdir,
-            monkeypatch,
+            mp,
             ['-i', 'abc'],
         )
     assert returncode(result) == 2, str(result)
 
 
-def test_cli_non_existing_output(tmpdir, monkeypatch):
+def test_cli_non_existing_output(tmpdir, mp):
     """First invocation creates the folder, second invocation use it"""
     expected_out = os.path.join(tmpdir.strpath, 'abc')
     _, outpath = create_and_run_parser(
         tmpdir,
-        monkeypatch,
+        mp,
         ['-o', 'abc'],
     )
     assert os.path.exists(expected_out), expected_out
@@ -112,35 +112,35 @@ def test_cli_non_existing_output(tmpdir, monkeypatch):
     # invoke parser twice
     create_and_run_parser(
         tmpdir,
-        monkeypatch,
+        mp,
         ['-o', 'abc'],
     )
 
 
-def test_cli_existing_input(tmpdir, monkeypatch):
+def test_cli_existing_input(tmpdir, mp):
     create_and_run_parser(
         tmpdir,
-        monkeypatch,
+        mp,
         ['-i', tmpdir.strpath],
     )
 
 
-def test_cli_relative_output(tmpdir, monkeypatch):
+def test_cli_relative_output(tmpdir, mp):
     os.makedirs(os.path.join(tmpdir, 'abc'))
     create_and_run_parser(
         tmpdir,
-        monkeypatch,
+        mp,
         ['-o', './abc'],
     )
     assert os.path.exists(os.path.join(tmpdir, 'abc'))
 
 
-def test_cli_file_as_output(tmpdir, monkeypatch):
+def test_cli_file_as_output(tmpdir, mp):
     file_create(os.path.join(tmpdir, 'test.txt'), 'I am a file.')
     with pytest.raises(SystemExit) as result:
         create_and_run_parser(
             tmpdir,
-            monkeypatch,
+            mp,
             ['-o', os.path.join(tmpdir, 'test.txt')],
         )
     assert returncode(result) == 2, str(result)
@@ -261,8 +261,8 @@ def test_cli_parse_version_parser_version(tmpdir):
 
 
 def create_and_run_parser(
-    testdir,
-    monkeypatch,
+    td,
+    mp,
     argv,
     prefix: bool = True,
     singleinput: bool = False,
@@ -279,9 +279,9 @@ def create_and_run_parser(
         config=config,
     )
 
-    with monkeypatch.context() as context:
+    with mp.context() as context:
         context.setattr(sys, 'argv', argv)
-        context.setattr(os, 'getcwd', lambda: str(testdir))
+        context.setattr(os, 'getcwd', lambda: str(td))
         parsed = parse(parser)
         inpath, outpath, _ = sources(  # pylint:disable=unbalanced-tuple-unpacking
             parsed,
@@ -291,7 +291,7 @@ def create_and_run_parser(
 
 
 @pytest.mark.parametrize('singlefile', [True, False])
-def test_cli_singlefile_input(testdir, monkeypatch, singlefile):
+def test_cli_singlefile_input(td, mp, singlefile):
     """Test reading a file direct from input
 
     1. singlefile = True
@@ -301,7 +301,7 @@ def test_cli_singlefile_input(testdir, monkeypatch, singlefile):
         read root       ok
         read sample.txt SystemExit
     """
-    root = str(testdir)
+    root = str(td)
     # Create input file
     filepath = os.path.join(root, 'sample.txt')
     file_create(filepath)
@@ -309,8 +309,8 @@ def test_cli_singlefile_input(testdir, monkeypatch, singlefile):
     # read root
     argv = ['-i', root, '-o', root]
     inpath, _ = create_and_run_parser(
-        testdir,
-        monkeypatch,
+        td,
+        mp,
         argv=argv,
         singleinput=True,
     )
@@ -320,8 +320,8 @@ def test_cli_singlefile_input(testdir, monkeypatch, singlefile):
     argv = ['-i', filepath, '-o', root]
     if singlefile:
         inpath, _ = create_and_run_parser(
-            testdir,
-            monkeypatch,
+            td,
+            mp,
             argv=argv,
             singleinput=True,
         )
@@ -330,8 +330,8 @@ def test_cli_singlefile_input(testdir, monkeypatch, singlefile):
         with pytest.raises(SystemExit) as result:
             argv = ['-i', filepath, '-o', root]
             create_and_run_parser(
-                testdir,
-                monkeypatch,
+                td,
+                mp,
                 argv=argv,
                 singleinput=False,
             )

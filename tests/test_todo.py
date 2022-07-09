@@ -12,7 +12,7 @@ import pytest
 import utila
 
 
-def test_refactor_contextmanager(monkeypatch):
+def test_refactor_contextmanager(mp):
     with utila.refactor(major=5, minor=10):
         pass
 
@@ -20,7 +20,7 @@ def test_refactor_contextmanager(monkeypatch):
         with utila.refactor(major=1, minor=1):
             pass
 
-    with monkeypatch.context() as context:
+    with mp.context() as context:
         context.setattr(utila, '__version__', '2.1.0')
         with pytest.raises(AssertionError):
             with utila.refactor(major=2, minor=1, patch=0):

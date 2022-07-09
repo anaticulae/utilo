@@ -94,8 +94,8 @@ def pack(plan, root, featurepackage):
 
 
 @pytest.fixture
-def featureexample(testdir):
-    root = str(testdir)
+def featureexample(td):
+    root = str(td)
     featurepackage = 'feedback.features.border'
     feature_path = os.path.join(root, featurepackage.replace('.', '/'))
     os.makedirs(feature_path)
@@ -126,11 +126,11 @@ def work(path : str) -> Tuple[str, str]:
 
 
 # pylint:disable=W0621
-def test_featurepack_without_input(featureexample, monkeypatch):
+def test_featurepack_without_input(featureexample, mp):
     """Running process without any args, runs all features in current working
     directory."""
     root, package = featureexample
-    with monkeypatch.context() as context:
+    with mp.context() as context:
         context.setattr(sys, 'argv', [PROCESS_NAME])
         context.syspath_prepend(root)
         with pytest.raises(SystemExit) as result:
@@ -138,13 +138,13 @@ def test_featurepack_without_input(featureexample, monkeypatch):
         assert returncode(result) == SUCCESS
 
 
-def test_featurepack_with_broken_feature(featureexample, monkeypatch):
+def test_featurepack_with_broken_feature(featureexample, mp):
     """Skip broken worker"""
     root, package = featureexample
     # create the broken feature
     file_create(os.path.join(package.replace('.', '/'), 'broken_worker.py'))
 
-    with monkeypatch.context() as context:
+    with mp.context() as context:
         context.setattr(sys, 'argv', [PROCESS_NAME, '-i', root, '-o', root])
         context.syspath_prepend(root)
         with pytest.raises(SystemExit) as result:
@@ -171,11 +171,11 @@ def test_featurepack_with_broken_feature(featureexample, monkeypatch):
 )
 @utilatest.longrun
 def test_featurepack_with_different_worker(  #pylint:disable=W0621
-    featureexample,
-    monkeypatch,
-    name,
-    worker,
-    expected_result,
+        featureexample,
+        mp,
+        name,
+        worker,
+        expected_result,
 ):
     root, package = featureexample
     featurepath = os.path.join(root, package.replace('.', '/'))
@@ -184,7 +184,7 @@ def test_featurepack_with_different_worker(  #pylint:disable=W0621
         featurepath,
         '%s.py' % name,
     ), worker)
-    with monkeypatch.context() as context:
+    with mp.context() as context:
         context.setattr(sys, 'argv', [PROCESS_NAME, '-i', root, '-o', root])
         context.syspath_prepend(root)
 
@@ -193,9 +193,9 @@ def test_featurepack_with_different_worker(  #pylint:disable=W0621
         assert returncode(result) == expected_result, str(result)
 
 
-def test_featurepack(featureexample, monkeypatch):  #pylint:disable=W0621
+def test_featurepack(featureexample, mp):  #pylint:disable=W0621
     root, package = featureexample
-    with monkeypatch.context() as context:
+    with mp.context() as context:
         context.setattr(sys, 'argv', [PROCESS_NAME, '-i', root, '-o', root])
         context.syspath_prepend(root)
         with pytest.raises(SystemExit) as result:
@@ -203,9 +203,9 @@ def test_featurepack(featureexample, monkeypatch):  #pylint:disable=W0621
         assert returncode(result) == SUCCESS, str(result)
 
 
-def test_featurepack_wrong_featurepath(featureexample, monkeypatch, capsys):  #pylint:disable=W0621
+def test_featurepack_wrong_featurepath(featureexample, mp, capsys):  #pylint:disable=W0621
     root, _ = featureexample
-    with monkeypatch.context() as context:
+    with mp.context() as context:
         context.setattr(sys, 'argv', [PROCESS_NAME, '-i', root, '-o', root])
         context.syspath_prepend(root)
         with pytest.raises(SystemExit) as result:
@@ -253,7 +253,7 @@ def create_example(
 
 
 @utilatest.longrun
-def test_feature_featurepack_workplan_pdf_parser(testdir, monkeypatch):
+def test_feature_featurepack_workplan_pdf_parser(td, mp):
     """Test featurepack with multiple input via `*.PDF`
 
     Create worker which detect resource by *.PDF-Filepattern and accept
@@ -265,7 +265,7 @@ def test_feature_featurepack_workplan_pdf_parser(testdir, monkeypatch):
 
     TODO: This example is very dirty and must be reworked.
     """
-    root = str(testdir)
+    root = str(td)
     processname = 'pdfparser'
     featurepackage = 'feedback.features'
     featurepath = os.path.join(root, featurepackage.replace('.', '/'))
@@ -316,7 +316,7 @@ def work(pdf : str, result: str, char_margin : float, char_align : float) -> str
             (('result'),),
         ))
 
-    with monkeypatch.context() as context:
+    with mp.context() as context:
         context.setattr(sys, 'argv', [
             processname,
             '-i',
@@ -349,9 +349,9 @@ def work(pdf : str, result: str, char_margin : float, char_align : float) -> str
 
 
 @utilatest.longrun
-def test_feature_featurepack_help_with_variable(testdir, monkeypatch, capsys):
+def test_feature_featurepack_help_with_variable(td, mp, capsys):
     # TODO: DIRTY CODE
-    root = str(testdir)
+    root = str(td)
     processname = 'pdfparser'
     featurepackage = 'feedback.features'
     featurepath = os.path.join(root, featurepackage.replace('.', '/'))
@@ -380,7 +380,7 @@ def work(pdf : str, result: str, char_margin : float, char_align : float) -> str
     ))]
 
     # check --help
-    with monkeypatch.context() as context:
+    with mp.context() as context:
         context.setattr(sys, 'argv', [
             processname,
             '--help',
@@ -415,16 +415,16 @@ def work(pdf : str, result: str, char_margin : float, char_align : float) -> str
     (False, True),
 ])
 @utilatest.longrun
-def test_error_hook(hook, failfast, testdir, monkeypatch):
+def test_error_hook(hook, failfast, td, mp):
     """Test passing exception to error hook and without hook"""
     import tests.examples.featurepack.withexception.withexception as exe  # pylint:disable=C0415
     root = exe.ROOT
-    utila.file_create(os.path.join(str(testdir), 'inputso.yaml'))
+    utila.file_create(os.path.join(str(td), 'inputso.yaml'))
 
     def errorhook(name, exception):  # pylint:disable=W0613
         errorhook.hooked = True
 
-    with monkeypatch.context() as context:
+    with mp.context() as context:
         context.syspath_prepend(root)
         if hook:
             context.setattr(exe, 'errorhook', errorhook)

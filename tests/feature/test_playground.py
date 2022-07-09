@@ -31,17 +31,17 @@ import utila.logger
 def run_playground(
     cmd: str,
     main: dict,
-    testdir,
-    monkeypatch,
+    td,
+    mp,
     capsys=None,
 ):
     import tests.examples.featurepack.testfield.playground as exe  # pylint:disable=C0415
-    utila.file_create(os.path.join(str(testdir), 'infile.yaml'))
+    utila.file_create(os.path.join(str(td), 'infile.yaml'))
     result = tests.feature.runner.run_featurepack(
         cmd=cmd,
         main=main,
-        testdir=testdir,
-        monkeypatch=monkeypatch,
+        td=td,
+        mp=mp,
         exe=exe,
         capsys=capsys,
     )
@@ -50,13 +50,13 @@ def run_playground(
 
 @pytest.mark.parametrize('cmd', ['', '--profile'])
 @utilatest.longrun
-def test_feature_playground_cli_profile(cmd, testdir, monkeypatch, capsys):
+def test_feature_playground_cli_profile(cmd, td, mp, capsys):
     """Print runtime for each working step."""
     stdout, _, = run_playground(
         f'{cmd} -VV' if cmd else cmd,
         {'profileflag': True},
-        testdir,
-        monkeypatch,
+        td,
+        mp,
         capsys,
     )
     assert ('runtime(household):' in stdout) == bool(cmd)
@@ -64,9 +64,9 @@ def test_feature_playground_cli_profile(cmd, testdir, monkeypatch, capsys):
 
 @pytest.mark.parametrize('quite', ['', '--quite'])
 @utilatest.longrun
-def test_feature_playground_cli_quite(quite, testdir, monkeypatch, capsys):
+def test_feature_playground_cli_quite(quite, td, mp, capsys):
     """Test to suppress logging when using --quite flag."""
-    with monkeypatch.context() as context:
+    with mp.context() as context:
         context.setattr(utila.logger, 'LEVEL', utila.logger.LEVEL_DEFAULT)
         cmd = f'--profile {quite}'
         stdout, _ = run_playground(
@@ -75,16 +75,16 @@ def test_feature_playground_cli_quite(quite, testdir, monkeypatch, capsys):
                 'profileflag': True,
                 'quiteflag': True
             },
-            testdir,
-            monkeypatch,
+            td,
+            mp,
             capsys,
         )
     assert bool(stdout) != bool(quite)
 
 
-def test_feature_playground_pass_config_file(testdir, monkeypatch, capsys):
+def test_feature_playground_pass_config_file(td, mp, capsys):
     """Test overwriting global flag in input parameter of working step."""
-    config = str(os.path.join(testdir.tmpdir, 'config.cfg'))
+    config = str(os.path.join(td.tmpdir, 'config.cfg'))
 
     utila.file_create(
         config, """\
@@ -97,8 +97,8 @@ def test_feature_playground_pass_config_file(testdir, monkeypatch, capsys):
     stdout, _, = run_playground(
         f'{cmd} -VV',
         {},
-        testdir,
-        monkeypatch,
+        td,
+        mp,
         capsys,
     )
     # parameter was passed
@@ -109,13 +109,13 @@ def test_feature_playground_pass_config_file(testdir, monkeypatch, capsys):
 
 @pytest.mark.parametrize('flag', [True, False])
 @utilatest.longrun
-def test_feature_playground_pass_flag(flag, testdir, monkeypatch, capsys):
+def test_feature_playground_pass_flag(flag, td, mp, capsys):
     cmd = '--sync' if flag else ''
     stdout, _, = run_playground(
         cmd,
         {},
-        testdir,
-        monkeypatch,
+        td,
+        mp,
         capsys,
     )
     # parameter was passed
@@ -125,17 +125,17 @@ def test_feature_playground_pass_flag(flag, testdir, monkeypatch, capsys):
         assert 'False' in stdout, stdout
 
 
-def test_write_binary_data(testdir, monkeypatch):
+def test_write_binary_data(td, mp):
     # test writing hex file
-    run_playground('--binary', {}, testdir, monkeypatch)
-    expected_path = os.path.join(testdir.tmpdir, 'testfield__binary_binary.hex')
+    run_playground('--binary', {}, td, mp)
+    expected_path = os.path.join(td.tmpdir, 'testfield__binary_binary.hex')
     binary = utila.file_read_binary(expected_path)
     assert binary == b'I Love Binaries.', binary
 
 
-def test_write_list_of_tuple(testdir, monkeypatch):
+def test_write_list_of_tuple(td, mp):
     # test writing hex file
-    run_playground('--multiple', {}, testdir, monkeypatch)
+    run_playground('--multiple', {}, td, mp)
 
     expected = [
         'testfield__multiple_0_info.yaml',
@@ -143,59 +143,59 @@ def test_write_list_of_tuple(testdir, monkeypatch):
         'testfield__multiple_1_info.yaml',
         'testfield__multiple_1_binary.hex',
     ]
-    expected = [os.path.join(testdir.tmpdir, item) for item in expected]
+    expected = [os.path.join(td.tmpdir, item) for item in expected]
     for item in expected:
         assert os.path.exists(item), str(item)
 
 
-def test_write_selective_datatype(testdir, monkeypatch):
-    with utilatest.increased_filecount(testdir.tmpdir, mindiff=2, maxdiff=2):
-        run_playground('--datatype', {}, testdir, monkeypatch)
-    path = os.path.join(testdir.tmpdir, 'testfield__datatype_selected.txt')
+def test_write_selective_datatype(td, mp):
+    with utilatest.increased_filecount(td.tmpdir, mindiff=2, maxdiff=2):
+        run_playground('--datatype', {}, td, mp)
+    path = os.path.join(td.tmpdir, 'testfield__datatype_selected.txt')
     assert os.path.exists(path), path
     written = utila.file_read(path)
     assert written == 'CONTENT', written
 
 
-def test_write_selective_datatype_multi(testdir, monkeypatch):
+def test_write_selective_datatype_multi(td, mp):
     expected = [
         (b'first', 'testfield__datatype_multi_0.txt'),
         (b'second', 'testfield__datatype_multi_1.fdp'),
         (b'\x00\x11\x22', 'testfield__datatype_multi_2.png'),
     ]
 
-    with utilatest.increased_filecount(testdir.tmpdir, mindiff=4, maxdiff=4):
-        run_playground('--datatype_multi', {}, testdir, monkeypatch)
+    with utilatest.increased_filecount(td.tmpdir, mindiff=4, maxdiff=4):
+        run_playground('--datatype_multi', {}, td, mp)
 
     for content, filename in expected:
-        path = os.path.join(testdir.tmpdir, filename)
+        path = os.path.join(td.tmpdir, filename)
         assert os.path.exists(path), path
         written = utila.file_read_binary(path)
         assert written == content, written
 
 
 @utilatest.longrun
-def test_write_binary_data_disable(testdir, monkeypatch):
+def test_write_binary_data_disable(td, mp):
     # test writing hex file
-    run_playground('--binary!', {}, testdir, monkeypatch)
-    expected_path = os.path.join(testdir.tmpdir, 'testfield__binary_binary.hex')
+    run_playground('--binary!', {}, td, mp)
+    expected_path = os.path.join(td.tmpdir, 'testfield__binary_binary.hex')
     assert not os.path.exists(expected_path)
 
 
 @utilatest.longrun
-def test_write_binary_data_all_and_disable(testdir, monkeypatch):
+def test_write_binary_data_all_and_disable(td, mp):
     # test writing hex file
     with utilatest.increased_filecount(mindiff=3):
-        run_playground('--binary! --all', {}, testdir, monkeypatch)
-    expected_path = os.path.join(testdir.tmpdir, 'testfield__binary_binary.hex')
+        run_playground('--binary! --all', {}, td, mp)
+    expected_path = os.path.join(td.tmpdir, 'testfield__binary_binary.hex')
     assert not os.path.exists(expected_path)
 
 
-def test_run_hashed_step(testdir, monkeypatch):
+def test_run_hashed_step(td, mp):
     with utilatest.increased_filecount(mindiff=3):
-        run_playground('--hashed', {}, testdir, monkeypatch)
+        run_playground('--hashed', {}, td, mp)
 
-    current = utila.file_list(testdir.tmpdir, include='bin')
+    current = utila.file_list(td.tmpdir, include='bin')
     assert len(current) == 2
 
     expected_first = utila.freehash(b'second')
@@ -204,9 +204,9 @@ def test_run_hashed_step(testdir, monkeypatch):
     assert expected_second in current[1]
 
 
-def test_run_hashed_multi_step(testdir, monkeypatch):
+def test_run_hashed_multi_step(td, mp):
     with utilatest.increased_filecount(mindiff=6):
-        run_playground('--hashed_multi', {}, testdir, monkeypatch)
+        run_playground('--hashed_multi', {}, td, mp)
 
     expected = set([
         b'info: yaml',
@@ -224,9 +224,9 @@ def test_run_hashed_multi_step(testdir, monkeypatch):
     assert content == expected
 
 
-def test_run_hashed_list_ext(testdir, monkeypatch):
+def test_run_hashed_list_ext(td, mp):
     with utilatest.increased_filecount(mindiff=3):
-        run_playground('--hashed_list_ext', {}, testdir, monkeypatch)
+        run_playground('--hashed_list_ext', {}, td, mp)
 
     expected = set([
         b'content',

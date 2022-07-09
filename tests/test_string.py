@@ -20,9 +20,9 @@ import utila
     ('cygwin', '\x80', '&#128;'),
     ('linux', '\x80', '\x80'),
 ])
-def test_fix_encoding(platform, given, expected, monkeypatch):
+def test_fix_encoding(platform, given, expected, mp):
     """Fix encoding depending used platform"""
-    with monkeypatch.context() as context:
+    with mp.context() as context:
         context.setattr(sys, 'platform', platform)
         fixed = utila.fix_encoding(given)
     assert fixed == expected
