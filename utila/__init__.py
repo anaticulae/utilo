@@ -218,6 +218,8 @@ from utila.logger import LEVEL_DEFAULT
 from utila.logger import Level
 from utila.logger import SkipCollector
 from utila.logger import call
+from utila.logger import capture_stderr
+from utila.logger import capture_stdout
 from utila.logger import debug
 from utila.logger import debug_enable
 from utila.logger import error

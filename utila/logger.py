@@ -11,6 +11,7 @@ import contextlib
 import enum
 import functools
 import inspect
+import io
 import os
 import subprocess  # nosec
 import sys
@@ -364,3 +365,29 @@ def log_return(func):
         return selected
 
     return logger
+
+
+@contextlib.contextmanager
+def capture_stdout():
+    r"""\
+    >>> with capture_stdout() as stdout:
+    ...     print('helmut first')
+    >>> stdout()
+    'helmut first\n'
+    """
+    buffer = io.StringIO()
+    with contextlib.redirect_stdout(buffer):
+        yield buffer.getvalue
+
+
+@contextlib.contextmanager
+def capture_stderr():
+    r"""\
+    >>> with capture_stderr() as stderr:
+    ...     import utila;utila.error('helmut first')
+    >>> stderr()
+    '[ERROR] helmut first\n'
+    """
+    buffer = io.StringIO()
+    with contextlib.redirect_stderr(buffer):
+        yield buffer.getvalue
