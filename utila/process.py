@@ -330,9 +330,9 @@ def killpid(pid):
 
 
 def process_ids(process: str) -> tuple:
-    """\
-    >>> process_ids('python')
-    (...,)
+    """Determine process ids of running application.
+
+    >>> assert process_ids('python')
     >>> process_ids('noprocess')
     ()
     """
