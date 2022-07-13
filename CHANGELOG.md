@@ -2,6 +2,12 @@
 
 Every noteable change is logged here.
 
+## v2.83.0
+
+### Feature
+
+* add methods to capture stdout and stderr (8a43a5f9368e)
+
 ## v2.82.0
 
 ### Feature
