@@ -9,6 +9,6 @@
 
 utilatest==0.15.1
 
-PyYAML==5.4.1
+PyYAML>=5.1.0<6.0.0
 
 utilasafe==0.3.1
