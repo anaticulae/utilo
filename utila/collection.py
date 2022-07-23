@@ -368,10 +368,12 @@ def counts(items: list, selector: callable) -> int:
     return counted
 
 
-def sort_both(firsts,
-              seconds,
-              key: callable = None,
-              reverse: bool = False) -> tuple:
+def sort_both(
+    firsts,
+    seconds,
+    key: callable = None,
+    reverse: bool = False,
+) -> tuple:
     """\
     >>> sort_both([5, 1, 3, 10], 'Konrad Frank Theodor Elsa'.split())
     ([1, 3, 5, 10], ['Frank', 'Theodor', 'Konrad', 'Elsa'])
