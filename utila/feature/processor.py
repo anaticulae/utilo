@@ -201,7 +201,8 @@ def callback(
         pages=pages,
         argv=argv,
     )
-    with utila.profile(msg=stepname, always=True) if profiling else utila.nothing(): # yapf:disable
+    profiler = utila.profile if profiling else utila.nothing
+    with profiler(msg=stepname, always=True):
         try:
             result = runnable()
             utila.log(f'completed: {stepname}')
