@@ -2,6 +2,16 @@
 
 Every noteable change is logged here.
 
+## v2.84.0
+
+### Feature
+
+* add pipeline to communicate between steps (e2fed1b90cae)
+
+### Documentation
+
+* format docs (37089fd2d255)
+
 ## v2.83.0
 
 ### Feature
