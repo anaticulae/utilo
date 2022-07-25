@@ -288,7 +288,7 @@ def write_level_result(
     success = True
     for result in results:
         completed = result.result()
-        result, name, _ = completed
+        result, name = completed[0:2]
         if isinstance(result, Exception):
             if errorhook:
                 errorhook(result, name)
