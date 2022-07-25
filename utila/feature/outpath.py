@@ -142,11 +142,9 @@ def replace_filehash(index: int, path: str, content):
         replacement = utila.freehash(content[index])
         path = path.replace('{FILEHASH}', replacement)
         return path
-
     number = filenumber(path)
     if number is None:
         return path
-
     replacement = utila.freehash(content[number])
     pattern = '{FILEHASH_' + str(number) + '}'
     path = path.replace(pattern, replacement)
