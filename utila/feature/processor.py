@@ -68,6 +68,7 @@ def process(  # pylint:disable=R0913,R0914
     Returns:
         SUCCESS if all features process successfully, if not FAILURE
     """
+    # TODO: CONVERT INTO A CLASS TO REDUCE COMPLEXITY
     executor = select_executor()
     if executor == concurrent.futures.ThreadPoolExecutor:
         # we do not require intializer with signal
