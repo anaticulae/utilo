@@ -192,19 +192,17 @@ def callback(
         utila.log('.', end='')
         wait -= 1
         time.sleep(1)
-    # run runnable
-    runnable = functools.partial(
-        run_hook_safely,
-        hook=hook,
-        name=stepname,
-        stepoutput=output,
-        pages=pages,
-        argv=argv,
-    )
     profiler = utila.profile if profiling else utila.nothing
     with profiler(msg=stepname, always=True):
         try:
-            result = runnable()
+            # run runnable
+            result = run_hook_safely(
+                hook=hook,
+                name=stepname,
+                stepoutput=output,
+                pages=pages,
+                argv=argv,
+            )
             utila.log(f'completed: {stepname}')
         except Exception as exception:  # pylint:disable=broad-except
             utila.error(f'failed: {stepname}')
