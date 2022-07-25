@@ -12,6 +12,7 @@ import functools
 import os
 import signal
 import sys
+import threading
 import time
 import typing
 
@@ -25,7 +26,7 @@ ErrorHook = typing.Tuple[Exception, str]
 NO_RESULT = object()
 
 
-def process(  # pylint:disable=R0913,R0914
+def process(  # pylint:disable=R0913,R0914,R1260
     workplan: 'ProcessSteps',
     name: str = None,
     todo: typing.List = None,
@@ -89,6 +90,11 @@ def process(  # pylint:disable=R0913,R0914
         root=name,
         max_processes=processes,
     )
+    pipeline = Pipeline()
+    if not argv:
+        argv = dict(pipeline=pipeline)
+    else:
+        argv['pipeline'] = pipeline
     with executor(max_workers=processes, initializer=initializer) as pool:
         failure = 0
         if before:
@@ -391,3 +397,26 @@ def register_signals(ctrlbreak=None):
             return True
 
     signal.signal(signal.SIGBREAK, ctrlbreak)
+
+
+class Pipeline:
+    """\
+    >>> pipe = Pipeline()
+    >>> pipe.run(sum, 20, 35, start=5)
+    60
+    >>> pipe.run(sum, 20, 35, start=5)
+    60
+    """
+
+    def __init__(self):
+        self.lock = threading.Semaphore()
+        self.done = {}
+
+    def run(self, method, *argv, **kwargs):
+        identifier = hash(str(method) + str(argv) + str(kwargs))
+        with self.lock:
+            try:
+                return self.done[identifier]
+            except KeyError:
+                self.done[identifier] = method(argv, **kwargs)
+            return self.done[identifier]
