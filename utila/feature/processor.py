@@ -245,12 +245,12 @@ def run_hook_safely(
         raise
     if isinstance(result, (str, bytes)) or result == NO_RESULT:
         result = [result]
+    if result == [NO_RESULT]:
+        # TODO: UNITE WITH LINE -3
+        result = []
     # Verify result
     variable_returnvalues = utila.feature.outpath.variable_parameter(stepoutput)
     variable_datatype = utila.feature.outpath.variable_datatype(stepoutput)
-    if result == [NO_RESULT]:
-        # TODO: UNITE WITH LINE -6
-        result = []
     result_length = len(result) - variable_datatype
     if all((
             result,
