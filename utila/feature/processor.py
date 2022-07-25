@@ -376,9 +376,8 @@ def write_resource(path, content, rename: callable = None):
 
 def select_executor():
     # TODO: how to use multiprocessing with pytest, see pytest: 38.3.1
-    testrun = os.environ.get('PYTEST_PLUGINS', False)
     executor = concurrent.futures.ProcessPoolExecutor
-    if testrun:
+    if utila.testing():
         executor = concurrent.futures.ThreadPoolExecutor
     return executor
 
