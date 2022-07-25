@@ -228,8 +228,9 @@ def run_hook_safely(
     pages,
     argv,
 ) -> int:
-    """Verify interface, run hook and catch Exception and log problem if
-    required.
+    """Verify interface, run hook and catch Exception.
+
+    Log problem if required.
     """
     try:
         # run optional before hook before running work
