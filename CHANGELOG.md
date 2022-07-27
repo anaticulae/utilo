@@ -2,6 +2,12 @@
 
 Every noteable change is logged here.
 
+## v2.85.0
+
+### Feature
+
+* add method to verify that collections contains unique items (1f87a0191e37)
+
 ## v2.84.0
 
 ### Feature
