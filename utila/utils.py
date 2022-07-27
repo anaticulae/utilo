@@ -477,3 +477,20 @@ def wait():
     answer = answer.strip().lower()
     if answer in ('no', 'n'):
         sys.exit(utila.SUCCESS)
+
+def assert_unique(items):
+    """\
+    >>> assert_unique((1,2,3,4))
+    >>> assert_unique((2,2,6,4))
+    Traceback (most recent call last):
+    ...
+    ValueError: duplicate value: [2]
+    """
+    duplicated = []
+    single =utila.Single()
+    for item in items:
+        if single.contains(item):
+            utila.error(f'duplicated: {item}')
+            duplicated.append(item)
+    if duplicated:
+        raise ValueError(f'duplicate value: {duplicated}')
