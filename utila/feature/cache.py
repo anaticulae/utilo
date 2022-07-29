@@ -77,8 +77,9 @@ def datapackage(call: str, version: str) -> str:
     return cached
 
 
-def use_cache(program, version) -> int:
-    call = ' '.join([program] + sys.argv[1:])
+def use_cache(program, version, argv=None) -> int:
+    argv = argv if argv else []
+    call = ' '.join([program] + argv)
     cached = utila.datapackage(call, version=version)
     if not cached:
         # no cache
@@ -97,8 +98,9 @@ def use_cache(program, version) -> int:
     return extracted.returncode == utila.SUCCESS
 
 
-def write_cache(program, version) -> bool:
-    call = ' '.join([program] + sys.argv[1:])
+def write_cache(program, version, argv=None) -> bool:
+    argv = argv if argv else []
+    call = ' '.join([program] + argv)
     cached = utila.datapackage(call, version=version)
     if not cached:
         # no cache
@@ -124,8 +126,9 @@ def write_cache(program, version) -> bool:
 
 @contextlib.contextmanager
 def cacheme(program, version):
-    if use_cache(program, version=version):
+    argv = sys.argv[1:]
+    if use_cache(program, version=version, argv=argv):
         yield True
     else:
         yield False
-    write_cache(program, version)
+    write_cache(program, version, argv=argv)
