@@ -524,15 +524,13 @@ def input_order(plan, root):
 
 
 def remove_common_path(inputs):
-    """Remove common path, which is equal for every inputs but
+    r"""Remove common path, which is equal for every input but
     destroy the required file analysis in `determine_order`.
 
-    'C:\\restruct\\rawmaker__text_positions.yaml',
-    'C:\\restruct\\groupme__pagenumbers_pagenumbers.yaml'
-
-    'rawmaker__text_positions.yaml',
-    'groupme__pagenumbers_pagenumbers.yaml'
+    >>> remove_common_path(['C:\\restruct\\rawmaker__text_positions.yaml',
+    ... 'C:\\restruct\\groupme__pagenumbers_pagenumbers.yaml'])
+    ['rawmaker__text_positions.yaml', 'groupme__pagenumbers_pagenumbers.yaml']
     """
     inputs = [str(item) for item in inputs]
-    inputs = [os.path.split(item)[1] for item in inputs]
+    inputs = [utila.file_name(item, ext=True) for item in inputs]
     return inputs
