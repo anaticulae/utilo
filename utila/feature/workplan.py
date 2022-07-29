@@ -519,8 +519,12 @@ def remove_common_path(inputs):
     >>> remove_common_path(['C:\\restruct\\rawmaker__text_positions.yaml',
     ... 'C:\\restruct\\groupme__pagenumbers_pagenumbers.yaml'])
     ['rawmaker__text_positions.yaml', 'groupme__pagenumbers_pagenumbers.yaml']
+
+    Cleanup has single folder as input
+    >>> remove_common_path(('',))
+    []
     """
-    inputs = [str(item) for item in inputs]
+    inputs = [str(item) for item in inputs if item]  # remove empty item
     inputs = [utila.file_name(item, ext=True) for item in inputs]
     return inputs
 
