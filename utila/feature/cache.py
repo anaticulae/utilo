@@ -67,9 +67,11 @@ def datapackage(call: str, version: str) -> str:
         return None
     sources = inputs(call)
     hashed = utila.directory_hash(sources, ftype=('yaml', 'png', 'pdf'))
-    simple = simple_call(call)
-    if ' ' in simple.strip():
-        program, parameter = simple.strip().split(maxsplit=1)
+    if hashed is None:
+        hashed = utila.freehash([])
+    simple = simple_call(call).strip()
+    if ' ' in simple:
+        program, parameter = simple.split(maxsplit=1)
     else:
         program, parameter = simple, ''
     parameter = utila.freehash(parameter)
@@ -78,6 +80,11 @@ def datapackage(call: str, version: str) -> str:
 
 
 def use_cache(program, version, argv=None) -> int:
+    """\
+    cache does not exists
+    >>> use_cache('rawmaker', '1.3.2', ['-h'])
+    False
+    """
     argv = argv if argv else []
     call = ' '.join([program] + argv)
     cached = utila.datapackage(call, version=version)
@@ -91,7 +98,6 @@ def use_cache(program, version, argv=None) -> int:
     outpath = output(call)
     if not outpath:
         outpath = os.getcwd()
-
     os.makedirs(outpath, exist_ok=True)
     todo = f'python -m zipfile -e {cached} {outpath}'
     extracted = utila.run(todo)
