@@ -12,7 +12,6 @@ import functools
 import os
 import signal
 import sys
-import threading
 import time
 import typing
 
@@ -409,8 +408,12 @@ class Pipeline:
     """
 
     def __init__(self):
-        self.lock = threading.Semaphore()
-        self.done = {}
+        self.done = dict()
+        self.lock = utila.Nothing()
+        # TODO: ENABLE AFTER KNOWING HOW TO TO IT
+        # manager = multiprocessing.Manager()
+        # self.done = manager.dict()
+        # self.lock = manager.RLock()
 
     def run(self, method, *argv, **kwargs):
         identifier = hash(str(method) + str(argv) + str(kwargs))

@@ -208,6 +208,7 @@ def nothing(*args, **kwargs):  # pylint:disable=W0613
     """
     yield
 
+
 class Nothing(contextlib.ContextDecorator):
 
     def __enter__(self):
@@ -215,6 +216,7 @@ class Nothing(contextlib.ContextDecorator):
 
     def __exit__(self, *exc_info):
         pass
+
 
 def notnone(items):
     """\
@@ -485,6 +487,7 @@ def wait():
     if answer in ('no', 'n'):
         sys.exit(utila.SUCCESS)
 
+
 def assert_unique(items):
     """\
     >>> assert_unique((1,2,3,4))
@@ -494,7 +497,7 @@ def assert_unique(items):
     ValueError: duplicate value: [2]
     """
     duplicated = []
-    single =utila.Single()
+    single = utila.Single()
     for item in items:
         if single.contains(item):
             utila.error(f'duplicated: {item}')
