@@ -500,19 +500,8 @@ def input_order(plan, root):
             _ = require[name]  # create empty set
         for item in inputs:
             try:
-                item = item.replace('.yaml', '')
-                producer, file_ = item.split('__', maxsplit=1)
-                # TODO: THINK ABOUT EXTETERNAL FILE WHICH CONTAINS DUNDER _
-                if '_' in file_:
-                    if file_.count('_') == 2:
-                        # with prefix
-                        _, step, __ = file_.split('_', maxsplit=2)
-                    else:
-                        # without prefix
-                        step, _ = file_.split('_', maxsplit=1)
-                else:
-                    step = file_
-                require[name].add(f'{producer}{REQUIREMENT_SEPARATOR}{step}')
+                fname = input_name(item)
+                require[name].add(fname)
             except ValueError:
                 # for example input.pdf
                 require[name].add(item)
@@ -534,3 +523,24 @@ def remove_common_path(inputs):
     inputs = [str(item) for item in inputs]
     inputs = [utila.file_name(item, ext=True) for item in inputs]
     return inputs
+
+
+def input_name(item: str) -> str:
+    """\
+    >>> input_name('rawmaker__text_positions.yaml')
+    'rawmaker:text'
+    """
+    item = item.replace('.yaml', '')
+    producer, filename = item.split('__', maxsplit=1)
+    # TODO: THINK ABOUT EXTETERNAL FILE WHICH CONTAINS DUNDER _
+    if '_' in filename:
+        if filename.count('_') == 2:
+            # with prefix
+            _, step, __ = filename.split('_', maxsplit=2)
+        else:
+            # without prefix
+            step, _ = filename.split('_', maxsplit=1)
+    else:
+        step = filename
+    result = f'{producer}{REQUIREMENT_SEPARATOR}{step}'
+    return result
