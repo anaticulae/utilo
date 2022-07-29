@@ -2,6 +2,18 @@
 
 Every noteable change is logged here.
 
+## v2.85.1
+
+### Feature
+
+* add Pipeline to public API (b107a9e2af31)
+* add empty context-decorator (6f1589d1f4e9)
+
+### Fix
+
+* do not fail with concurrent processes (29ed856899b1)
+* add pipeline as magic value (bd0ca605b5d3)
+
 ## v2.85.0
 
 ### Feature
