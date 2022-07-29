@@ -2,6 +2,13 @@
 
 Every noteable change is logged here.
 
+## v2.85.2
+
+### Fix
+
+* do not fail on folder inputs (6aef0eecc7c6)
+* do not fail on empty caching folder (7667fc47dacb)
+
 ## v2.85.1
 
 ### Feature
