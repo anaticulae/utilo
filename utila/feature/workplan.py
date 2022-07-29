@@ -493,8 +493,7 @@ def input_order(plan, root):
             items = step.inputs
         else:
             items = step.hooks.work.args
-        inputs = [str(item) for item in items]
-        inputs = remove_common_path(inputs)
+        inputs = remove_common_path(items)
         if not inputs:
             # no required input - for example a random number generator
             # without using a seed :).
@@ -534,5 +533,6 @@ def remove_common_path(inputs):
     'rawmaker__text_positions.yaml',
     'groupme__pagenumbers_pagenumbers.yaml'
     """
+    inputs = [str(item) for item in inputs]
     inputs = [os.path.split(item)[1] for item in inputs]
     return inputs
