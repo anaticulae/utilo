@@ -419,7 +419,7 @@ def verify_resources(inputs):
     return ret
 
 
-MAGICS = 'inputs outputs prefix'.split()
+MAGICS = 'inputs outputs prefix pipeline'.split()
 
 
 def verify_interface(inputs, outputs, worker, stepname, args: dict = None):
