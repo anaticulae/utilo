@@ -122,6 +122,7 @@ from utila.feature.path import connector as pathconnector
 # processor
 from utila.feature.processor import NO_RESULT
 from utila.feature.processor import InterfaceMismatch
+from utila.feature.processor import Pipeline
 from utila.feature.processor import select_executor
 # user input
 from utila.feature.userinput import Bool
