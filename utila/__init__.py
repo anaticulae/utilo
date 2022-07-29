@@ -442,6 +442,7 @@ from utila.utils import SUCCESS
 from utila.utils import TMP
 from utila.utils import U8
 from utila.utils import UTF8
+from utila.utils import Nothing
 from utila.utils import assert_unique
 from utila.utils import chdir
 from utila.utils import driver

@@ -208,6 +208,13 @@ def nothing(*args, **kwargs):  # pylint:disable=W0613
     """
     yield
 
+class Nothing(contextlib.ContextDecorator):
+
+    def __enter__(self):
+        pass
+
+    def __exit__(self, *exc_info):
+        pass
 
 def notnone(items):
     """\

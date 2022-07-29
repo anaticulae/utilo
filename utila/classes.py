@@ -10,7 +10,7 @@
 >>> import utila
 >>> collected = collect_classes(utila)
 >>> name_classes(collected)
-{...>, 'TablePrinter': <class 'utila.string.table.TablePrinter'>}
+{...>, 'TablePrinter': <class 'utila.string.table.TablePrinter'>...}
 """
 
 import inspect
