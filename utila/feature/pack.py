@@ -262,7 +262,10 @@ def commandline(features: Features, workplan: list) -> utila.Commands:
     for item in sorted(variables):
         result.append(utila.Parameter(longcut=item))
     # add sorted, unique flag as parametrization point
-    flags = determine_instance(workplan, utila.feature.userinput.Bool)
+    flags = determine_instance(
+        workplan,
+        typ=utila.feature.userinput.Bool,
+    )
     for item in sorted(flags):
         result.append(utila.Flag(longcut=item))
     # run all workplan feature
