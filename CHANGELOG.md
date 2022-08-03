@@ -2,6 +2,13 @@
 
 Every noteable change is logged here.
 
+## v2.85.3
+
+### Feature
+
+* move select maxi selector from headnote (2616a9b4b313)
+* add option to return a defined number of result (98bab0de3535)
+
 ## v2.85.2
 
 ### Fix
