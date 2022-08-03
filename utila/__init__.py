@@ -213,6 +213,7 @@ from utila.hash import secure_hash
 # likelihood
 from utila.likelihood import maxi
 from utila.likelihood import mini
+from utila.likelihood import select_maxi
 from utila.likelihood import uniform_result
 # Logging
 from utila.logger import LEVEL_DEFAULT

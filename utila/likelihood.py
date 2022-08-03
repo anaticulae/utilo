@@ -47,6 +47,11 @@ def mini(items, count: int = 1) -> list:
     return _max_mini(items, method=min, count=count)
 
 
+def select_maxi(items, caller=len, count=1):
+    selected = _select(items, decider=max, caller=caller, count=count)
+    return selected
+
+
 def _uniform_list(items: list):
     assert isinstance(items, (list, tuple)), type(items)
     assert all(isinstance(item, (int, float)) for item in items)
@@ -87,3 +92,29 @@ def _max_mini(items, method=max, count: int = 1):
     if isinstance(selected, list):
         return selected[0:count]
     return selected
+
+
+def _select(items, decider, caller: callable, count: int):
+    # TODO: SUPPORT DICT
+    result = []
+    items = items[:]  # make a copy to avoid changing the source
+    for _ in range(count + 1):
+        called = [caller(item) for item in items]
+        maximized: list = _max_mini(called, method=decider, count=count)
+        # finding
+        # XXX: a little bit dirty here
+        collected = [
+            item for item, selector in zip(items, called)
+            if selector in maximized
+        ]
+        # cluster can contain more than one item, if maxi detect more than
+        # one max item. For example: if two cluster have 20 items.
+        # TODO: require second judger
+        result.extend(collected)
+        # remove finding of rest
+        for item in collected:
+            items.remove(item)
+        # stop if no items are left
+        if not items:
+            break
+    return result
