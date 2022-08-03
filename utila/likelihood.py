@@ -23,26 +23,28 @@ def uniform_result(items) -> list:
     return _uniform_list(items)
 
 
-def maxi(items) -> list:
+def maxi(items, count: int = 1) -> list:
     """Determine the maximized likelihood of an uniformed collection.
 
     Args:
         items(list,dict): data for determining uniformed data
+        count(int): number of possible results
     Returns:
         element(s) with maximized likelihood
     """
-    return _max_mini(items, method=max)
+    return _max_mini(items, method=max, count=count)
 
 
-def mini(items) -> list:
+def mini(items, count: int = 1) -> list:
     """Determine the minimized likelihood of an uniformed collection.
 
     Args:
         items(list,dict): data for determining uniformed data
+        count(int): number of possible results
     Returns:
         element(s) with minimized likelihood
     """
-    return _max_mini(items, method=min)
+    return _max_mini(items, method=min, count=count)
 
 
 def _uniform_list(items: list):
@@ -65,7 +67,7 @@ def _uniform_dict(items: dict) -> dict:
     return result
 
 
-def _max_mini(items, method=max):
+def _max_mini(items, method=max, count: int = 1):
     uniformed = uniform_result(items)
     if uniformed is None:
         return None
@@ -82,6 +84,6 @@ def _max_mini(items, method=max):
             value for value, occurrence in zip(items, uniformed)
             if occurrence == finding
         ]
-    if len(selected) == 1 and isinstance(selected, list):
-        return selected[0]
+    if isinstance(selected, list):
+        return selected[0:count]
     return selected

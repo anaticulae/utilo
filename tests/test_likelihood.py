@@ -64,7 +64,7 @@ def test_likelihood_uniform_result_none(items):
 
 @pytest.mark.parametrize('items, expected', [
     ([0, 20, 20, 20, 15, 10], [20, 20, 20]),
-    ([0, 20, 15, 10], 20),
+    ([0, 20, 15, 10], [20]),
     (
         {
             'A': 100,
@@ -85,12 +85,12 @@ def test_likelihood_uniform_result_none(items):
 def test_likelihood_maxi(items, expected):
     """Test to extract maximized feature for `list` and `dict` example.
     If there are more than one minimal items, all are returned."""
-    maximized = utila.maxi(items)
+    maximized = utila.maxi(items, count=3)
     assert maximized == expected
 
 
 @pytest.mark.parametrize('items, expected', [
-    ([0, 20, 20, 20, 15, 10], 0),
+    ([0, 20, 20, 20, 15, 10], [0]),
     ([20, 10, 10], [10, 10]),
     (
         {
@@ -108,5 +108,5 @@ def test_likelihood_maxi(items, expected):
 def test_likelihood_mini(items, expected):
     """Test to extract minimized feature for `list` and `dict` example.
     If there are more than one minimal items, all are returned."""
-    minimized = utila.mini(items)
+    minimized = utila.mini(items, count=2)
     assert minimized == expected
