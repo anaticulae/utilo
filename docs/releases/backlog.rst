@@ -11,11 +11,9 @@ backlog
 
 * file_list extend pattern to check more than file extension
 
-* utila.test: add method to evaluate capsys from pytest
-
 * utila.run: add support for asyncio
 
-* uitla.file.make_absoulte: support more than one file
+* uitla.file.make_absolute: support more than one file
 
 * add --list* to select all required steps
 
