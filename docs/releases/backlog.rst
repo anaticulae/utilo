@@ -24,3 +24,6 @@ backlog
 * add separate cluster project
 
 * cmd: add --interactive flag to control process execution
+
+* split methods roundme into roundme and roundus to round single value and
+  multiple values
