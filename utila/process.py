@@ -337,7 +337,8 @@ def process_ids(process: str) -> tuple:
     ()
     """
     result = []
-    completed = utila.run(f'ps | grep {process}', expect=None)
+    cmd = f'ps | grep {process}'
+    completed = utila.run(cmd, expect=None)
     raw = completed.stdout.strip()
     for line in raw.splitlines():
         index = int(line.split()[0])
