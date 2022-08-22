@@ -504,3 +504,11 @@ def assert_unique(items):
             duplicated.append(item)
     if duplicated:
         raise ValueError(f'duplicate value: {duplicated}')
+
+
+def iswin() -> bool:
+    """\
+    >>> str(iswin())  # dependens on platform
+    '...'
+    """
+    return 'win' in sys.platform
