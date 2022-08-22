@@ -341,6 +341,10 @@ def process_ids(process: str) -> tuple:
     completed = utila.run(cmd, expect=None)
     raw = completed.stdout.strip()
     for line in raw.splitlines():
+        if cmd in line:
+            # ps is linux displays themself when its runned, therefore the
+            # process is always detected.
+            continue
         index = int(line.split()[0])
         result.append(index)
     return tuple(result)
