@@ -264,7 +264,11 @@ def file_lock(path: str, noerror: bool = False):
     # set read only
     assert os.path.exists(path), f'{path} does not exists'
     assert noerror or not file_islocked(path), 'file is already locked'
-    os.chmod(path, mode=stat.S_IREAD)
+    if utila.iswin():
+        os.chmod(path, mode=stat.S_IREAD)
+    else:
+        # TODO: VERIFY THIS
+        os.chmod(path, mode=stat.S_IRUSR)
 
 
 def file_unlock(path: str, noerror: bool = False):
@@ -281,7 +285,11 @@ def file_unlock(path: str, noerror: bool = False):
     """
     assert os.path.exists(path), f'{path} does not exists'
     assert noerror or file_islocked(path), 'file is not locked'
-    os.chmod(path, mode=stat.S_IWRITE)
+    if utila.iswin():
+        os.chmod(path, mode=stat.S_IWRITE)
+    else:
+        # TODO: VERIFY THIS
+        os.chmod(path, mode=stat.S_IWUSR)
 
 
 def file_islocked(path: str):
