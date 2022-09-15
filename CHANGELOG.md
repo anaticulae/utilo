@@ -2,6 +2,17 @@
 
 Every noteable change is logged here.
 
+## v2.86.0
+
+### Feature
+
+* add method to check win platform (621af71498cd)
+
+### Fix
+
+* add separate linux lock mechanism (c57ad535a40b)
+* do not detect process by grep command (b061cff1efd6)
+
 ## v2.85.3
 
 ### Feature
