@@ -7,9 +7,14 @@
 # be prosecuted under federal law. Its content is company confidential.
 # =============================================================================
 
+import sys
+
+import pytest
+
 import utila
 
 
+@pytest.mark.skipif('win' not in sys.platform, reason='skip on linux')
 def test_directory_lock(tmpdir):
     write = tmpdir.mkdir('sub').join('hello.txt')
     write.write('content')

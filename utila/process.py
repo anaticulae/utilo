@@ -332,7 +332,7 @@ def killpid(pid):
 def process_ids(process: str) -> tuple:
     """Determine process ids of running application.
 
-    >>> assert process_ids('python')
+    #>>> assert process_ids('python')
     >>> process_ids('noprocess')
     ()
     """
@@ -341,7 +341,7 @@ def process_ids(process: str) -> tuple:
     completed = utila.run(cmd, expect=None)
     raw = completed.stdout.strip()
     for line in raw.splitlines():
-        if cmd in line:
+        if f'grep {process}' in line:
             # ps is linux displays themself when its runned, therefore the
             # process is always detected.
             continue

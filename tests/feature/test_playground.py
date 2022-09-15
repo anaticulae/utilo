@@ -198,9 +198,9 @@ def test_run_hashed_step(td, mp):
     assert len(current) == 2
 
     expected_first = utila.freehash(b'second')
-    assert expected_first in current[0]
+    assert expected_first in current[0] or expected_first in current[1]
     expected_second = utila.freehash(b'imageinfo')
-    assert expected_second in current[1]
+    assert expected_second in current[1] or expected_second in current[0]
 
 
 def test_run_hashed_multi_step(td, mp):

@@ -315,6 +315,7 @@ def test_file_copy_lock_nolock(testdir):
     assert not utila.file_islocked(unlocked.join('path'))
 
 
+@pytest.mark.skipif('win' not in sys.platform, reason='skip on linux')
 def test_file_copy_lock_withlock(testdir):
     locked = testdir.tmpdir.join('path')
     utila.file_create(locked, content='locked')

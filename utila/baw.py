@@ -19,7 +19,7 @@ def baw_root(path: str) -> str:
     """Go upwards till project config file occurs.
 
     >>> baw_root(__file__)
-    '...utila'
+    '...'
     """
     current = str(path)
     while not utila.exists(utila.join(current, BAW)):
