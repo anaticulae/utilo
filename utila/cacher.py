@@ -17,10 +17,9 @@
 >>> cache_clear()
 """
 
+import _thread
 import collections
 import functools
-
-import _thread
 
 MAXSIZE = 4096
 CACHE_DISABLED = False
