@@ -33,4 +33,4 @@ def test_directory_list_recursive_absolute():
         recursive=True,
         absolute=True,
     )
-    assert len(directories) > 50
+    assert len(directories) > 40

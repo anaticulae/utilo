@@ -8,6 +8,7 @@
 #==============================================================================
 
 import os
+import sys
 
 import pytest
 
@@ -439,6 +440,7 @@ def test_file_compare_not_exists():
     assert not equals
 
 
+@pytest.mark.skipif('win' not in sys.platform, reason='skip on linux')
 def test_file_lock(td):
     root = str(td)
     first = os.path.join(root, 'locked.abc')
