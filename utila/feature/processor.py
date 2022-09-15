@@ -395,7 +395,7 @@ def register_signals(ctrlbreak=None):
             # do nothing if signal handler is not defined
             return True
 
-    signal.signal(signal.SIGBREAK, ctrlbreak)
+    signal.signal(signal.SIGBREAK, ctrlbreak)  # pylint:disable=E1101
 
 
 class Pipeline:
