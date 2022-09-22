@@ -2,6 +2,12 @@
 
 Every noteable change is logged here.
 
+## v2.87.0
+
+### Feature
+
+* add method to verify if program is installed (7dc500d54283)
+
 ## v2.86.1
 
 ## v2.86.0
