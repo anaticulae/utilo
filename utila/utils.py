@@ -12,6 +12,7 @@ import contextlib
 import inspect
 import math
 import os
+import subprocess
 import sys
 import typing
 
@@ -512,3 +513,25 @@ def iswin() -> bool:
     '...'
     """
     return 'win' in sys.platform
+
+
+def hasprog(program: str):
+    """\
+    >>> hasprog('utila_lock')
+    True
+    >>> hasprog('superdupermagic')
+    False
+    """
+    assert program, 'define program'
+    completed = subprocess.run(  # pylint:disable=c2001 # nosec
+        f'which {program}'.split(),
+        check=False,
+        capture_output=True,
+    )
+    installed = completed.returncode == utila.SUCCESS
+    if installed:
+        expected = f'{program}:'
+        if completed.stdout.strip() in (expected, expected.encode('utf8')):
+            # workaround for `whereis` of arch
+            installed = False
+    return installed
