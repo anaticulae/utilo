@@ -2,6 +2,12 @@
 
 Every noteable change is logged here.
 
+## v2.87.1 (2022-09-23)
+
+### Chore
+
+* upgrade Jenkinsfile (ecdc7f69c47d)
+
 ## v2.87.0 (2022-09-23)
 
 ### Feature
