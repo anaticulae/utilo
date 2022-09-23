@@ -1,8 +1,8 @@
 pipeline {
     agent {
         docker {
-            image '169.254.149.20:6001/test:0.3.0'
-            args '--privileged -u root -v $WORKSPACE:/var/test'
+            image '169.254.149.20:6001/arch_python_baw:0.8.1'
+            args  '--privileged -u root -v $WORKSPACE:/var/workdir'
         }
     }
 
@@ -35,13 +35,12 @@ pipeline {
         }
         stage('lint'){
             steps{
-                sh 'baw --lint'
+                sh 'baw lint'
             }
         }
         stage('nightly'){
             steps{
-                // TODO: ADD JUNIT OPTION TO BAW
-                sh 'baw --testconfig="++junit+xml=report.xml" test nightly -n16 --cov'
+                sh 'baw test nightly -n16 --cov --junit_xml=report.xml'
                 junit '**/report.xml'
             }
         }
@@ -50,7 +49,8 @@ pipeline {
                 expression { return params.RELEASE }
             }
             steps{
-                sh 'baw install && baw release'
+                sh 'baw install && baw release && baw publish'
+                // TODO: GIT COMMIT?
             }
         }
     }
