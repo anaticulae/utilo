@@ -2,6 +2,17 @@
 
 Every noteable change is logged here.
 
+## v2.87.0 (2022-09-23)
+
+### Feature
+
+* add method to verify if program is installed (7dc500d54283)
+
+### Chore
+
+* fix bad upgrade (04b66418e256)
+* upgrade requirements.txt (bd19f9dd39b9)
+
 ## v2.86.1
 
 ## v2.86.0
