@@ -11,4 +11,4 @@ utilatest==0.18.0
 
 PyYAML>=5.1.0<6.0.0
 
-utilasafe==0.4.1
+utilasafe==0.5.0
