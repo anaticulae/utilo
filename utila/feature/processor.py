@@ -395,7 +395,16 @@ def register_signals(ctrlbreak=None):
             # do nothing if signal handler is not defined
             return True
 
-    signal.signal(signal.SIGBREAK, ctrlbreak)  # pylint:disable=E1101
+    if utila.iswin():
+        signal.signal(signal.SIGBREAK, ctrlbreak)  # pylint:disable=E1101
+    else:
+        pass
+        # TODO: IS THIS REQUIRED?
+        # THINK ABOUT THIS:
+        # signal.SIGINT
+        # Interrupt from keyboard (CTRL + C).
+
+
 
 
 class Pipeline:
