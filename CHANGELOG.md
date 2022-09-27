@@ -2,6 +2,18 @@
 
 Every noteable change is logged here.
 
+## v2.87.2 (2022-09-27)
+
+### Fix
+
+* sIGBREAK is not available at linux (ca7d352fb1e3)
+
+### Chore
+
+* upgrade Jenkinsfile (b759a55c8d7d)
+* this version does not exist (582a919673ff)
+* upgrade requirements.txt (a17d200a3664)
+
 ## v2.87.1 (2022-09-23)
 
 ### Chore
