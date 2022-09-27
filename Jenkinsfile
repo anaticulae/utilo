@@ -1,7 +1,7 @@
 pipeline {
     agent {
         docker {
-            image '169.254.149.20:6001/arch_python_baw:0.8.1'
+            image '169.254.149.20:6001/arch_python_baw:0.10.1'
             args  '--privileged -u root -v $WORKSPACE:/var/workdir'
         }
     }
@@ -14,8 +14,8 @@ pipeline {
     stages{
         stage('sync'){
             steps{
-                sh 'ls -al /tmp'
                 sh 'baw sync all'
+                sh 'baw sh "pip install ."'
             }
         }
         stage('doctest'){
