@@ -2,6 +2,16 @@
 
 Every noteable change is logged here.
 
+## v2.88.0 (2022-09-28)
+
+### Feature
+
+* sort file names by name to have same behavior on win/lin (9e4627bbb84e)
+
+### Chore
+
+* upgrade requirements.txt (caa933018d96)
+
 ## v2.87.2 (2022-09-27)
 
 ### Fix
