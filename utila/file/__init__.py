@@ -359,12 +359,13 @@ def file_count(path: str, ext: str = None, recursive: bool = True) -> int:
     return len(collected)
 
 
-def file_list(
+def file_list(  # pylint:disable=R1260
     path: str,
     include: list = None,
     exclude: list = None,
     recursive: bool = True,
     absolute: bool = False,
+    sort: bool = True,
 ) -> list:
     """Scans `path` recursively and returns list of relative file path
     which matches `include` or `exclude` pattern.
@@ -375,6 +376,7 @@ def file_list(
         exclude(list): list of patterns to exclude
         recursive(bool): visit child folder
         absolute(bool): if True add `path` to extracted files
+        sort(bool): sort file path by name
     Returns:
         List of selected files.
     """
@@ -408,6 +410,8 @@ def file_list(
         if absolute:
             filepath = os.path.join(path, item)
         result.append(filepath)
+    if sort:
+        result = files_sort(result)
     return result
 
 
