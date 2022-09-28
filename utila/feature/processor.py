@@ -405,8 +405,6 @@ def register_signals(ctrlbreak=None):
         # Interrupt from keyboard (CTRL + C).
 
 
-
-
 class Pipeline:
     """\
     >>> pipe = Pipeline()
