@@ -44,6 +44,16 @@ pipeline {
                 junit '**/report.xml'
             }
         }
+        stage('others'){
+            // TODO: REQUIRE INTEGRATION BRANCH BECAUSE MASTER ALWAYS WORKS
+            when{ branch 'master' }
+            parallel{
+                stage('utilatest'){steps{build job: 'caelum/utilatest/master'}}
+                stage('configo')  {steps{build job: 'caelum/configo/master'}}
+                stage('iamraw')   {steps{build job: 'caelum/iamraw/master'}}
+                stage('protocol') {steps{build job: 'caelum/protocol/master'}}
+            }
+        }
         stage('release'){
             when {
                 expression { return params.RELEASE }
