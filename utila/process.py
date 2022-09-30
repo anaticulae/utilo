@@ -15,7 +15,6 @@ import functools
 import inspect
 import os
 import subprocess  # nosec
-import sys
 import threading
 
 import utila
@@ -309,7 +308,7 @@ def killpid(pid):
     """
     if hasattr(os, 'kill'):
         os.kill(pid, 15)
-    elif sys.platform == "win32" or getattr(os, '_name', None) == 'nt':
+    elif utila.iswin():
         try:
             import ctypes
         except ImportError as ioerr:
