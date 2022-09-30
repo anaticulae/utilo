@@ -293,8 +293,10 @@ def file_unlock(path: str, noerror: bool = False):
 
 
 def file_islocked(path: str):
-    """Check if write protection is set. If `path` does not exists,
-    AssertionError is raised."""
+    """Check if write protection is set.
+
+    If `path` does not exists, AssertionError is raised.
+    """
     assert os.path.exists(path), f'{path} does not exists'
     return not os.access(path, os.W_OK)
 
