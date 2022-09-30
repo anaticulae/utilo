@@ -11,6 +11,7 @@ import os
 import sys
 
 import pytest
+import utilatest
 
 import utila
 import utila.file
@@ -578,3 +579,14 @@ def test_make_tmpdir_remove():
         os.makedirs(os.path.join(tmp_dir, 'recursive_path'))
         utila.file_create(os.path.join(tmp_dir, 'helm.txt'))
     assert not os.path.exists(tmp_dir), tmp_dir
+
+
+@utilatest.no_linux
+def test_inform_file_permission(tmpdir, capsys):
+    path = tmpdir.join('locked')
+    utila.file_create(path)
+    utila.file_lock(path)
+    assert utila.file_islocked(path)
+    with pytest.raises(PermissionError, match='Permission denied'):
+        utila.file_append(path, content='data')
+    assert 'HINT: Ensure that' in utilatest.stderr(capsys)

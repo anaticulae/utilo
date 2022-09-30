@@ -87,11 +87,16 @@ def open(  # pylint:disable=redefined-builtin
     write = 'w' in mode
     append = 'a' in mode
     read = 'r' in mode
+    # TODO: CHECK WRITE LOCK IF FAIL
     if not private and (write or append):
-        if binary:
-            yield OPEN(path, mode=mode)
-        else:
-            yield OPEN(path, mode=mode, newline=newline, encoding=encoding)
+        try:
+            if binary:
+                yield OPEN(path, mode=mode)
+            else:
+                yield OPEN(path, mode=mode, newline=newline, encoding=encoding)
+        except PermissionError as permission:
+            utila.error(f'HINT: Ensure that {path} is not locked')
+            raise permission
         return
     with SecureFile(path, binary, append, read) as secure:
         yield secure
