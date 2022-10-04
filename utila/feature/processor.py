@@ -76,7 +76,7 @@ def process(  # pylint:disable=R0913,R0914,R1260
     else:
         register_signals(ctrlbreak)
         initializer = functools.partial(register_signals, ctrlbreak)
-    todo = prepare_process(todo, name, processes)
+    todo = prepare_process(todo, name, processes, steps=len(workplan))
     if todo:
         # remove non selected items. Removing inactivate items is required
         # to determine the levels correctly. Why?
@@ -270,7 +270,7 @@ def run_hook_safely(
     return result
 
 
-def prepare_process(todo, name, processes):
+def prepare_process(todo, name, processes, steps: int):
     # make todo unique
     todo = set() if todo is None else set(todo)
     # process all features, see some lines below
@@ -279,6 +279,7 @@ def prepare_process(todo, name, processes):
     # log start of executable
     utila.log(name)
     if processes > 1:
+        processes = min((processes, steps))
         utila.log(f'use {processes} processes')
     utila.log()
     return todo
