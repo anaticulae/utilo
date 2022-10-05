@@ -452,9 +452,8 @@ def test_file_lock(td):
 
     utila.file_lock(first)
     assert utila.file_islocked(first)
-
     # test write protection
-    with pytest.raises(OSError):
+    with pytest.raises(PermissionError):
         utila.file_remove(first)
     assert os.path.exists(first)
 

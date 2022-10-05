@@ -18,7 +18,6 @@ import glob
 import os
 import random
 import shutil
-import stat
 import sys
 
 import utila
@@ -174,6 +173,8 @@ def file_read_binary(path: str, size: int = -1, private: bool = False) -> bytes:
 def file_remove(path: str):
     utila.exists_assert(path)
     assert os.path.isfile(path), path
+    if file_islocked(path):
+        raise PermissionError(f'file locked: {path}')
     os.remove(path)
 
 
@@ -264,11 +265,7 @@ def file_lock(path: str, noerror: bool = False):
     # set read only
     assert os.path.exists(path), f'{path} does not exists'
     assert noerror or not file_islocked(path), 'file is already locked'
-    if utila.iswin():
-        os.chmod(path, mode=stat.S_IREAD)
-    else:
-        # TODO: VERIFY THIS
-        os.chmod(path, mode=stat.S_IRUSR)
+    os.chmod(path, mode=0o444)
 
 
 def file_unlock(path: str, noerror: bool = False):
@@ -285,11 +282,7 @@ def file_unlock(path: str, noerror: bool = False):
     """
     assert os.path.exists(path), f'{path} does not exists'
     assert noerror or file_islocked(path), 'file is not locked'
-    if utila.iswin():
-        os.chmod(path, mode=stat.S_IWRITE)
-    else:
-        # TODO: VERIFY THIS
-        os.chmod(path, mode=stat.S_IWUSR)
+    os.chmod(path, mode=0o644)
 
 
 def file_islocked(path: str):
