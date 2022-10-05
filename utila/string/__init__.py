@@ -61,7 +61,7 @@ def fix_encoding(msg: str) -> str:
     # ensure to have str
     msg = str(msg)
     # convert for windows console
-    encoding = 'cp1252' if utila.iswin() else 'utf-8'
+    encoding = 'cp1252' if 'win' in sys.platform else 'utf-8'
     # remove non valid char to avoid errors on win-console
     msg = msg.encode(encoding, errors='xmlcharrefreplace').decode(encoding)
     return msg
