@@ -2,6 +2,23 @@
 
 Every noteable change is logged here.
 
+## v2.89.0 (2022-10-05)
+
+### Feature
+
+* limit used processes by max step count (f14888d98b73)
+* inform about locked file (835b0d3c5088)
+
+### Fix
+
+* make lock less restrict (bf4b127d2c53)
+
+### Chore
+
+* increase baw version (830a323b8b89)
+* privileged user is not required (05b2937f4149)
+* run other project before release (64a76668debe)
+
 ## v2.88.0 (2022-09-28)
 
 ### Feature
