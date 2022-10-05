@@ -50,10 +50,14 @@ def test_file_from_path_or_raw(tmpdir):
     assert from_path == from_raw
 
 
-def test_file_from_path_or_raw_default(td):
-    root = str(td.tmpdir)
-    utila.file_create(os.path.join(root, 'example.yaml'), 'defaultcontent')
-    default = utila.from_raw_or_path(root, ftype='yaml', fname='example')
+def test_file_from_path_or_raw_default(tmpdir):
+    path = tmpdir.join('example.yaml')
+    utila.file_create(path, 'defaultcontent')
+    default = utila.from_raw_or_path(
+        path,
+        ftype='yaml',
+        fname='example',
+    )
     assert default == 'defaultcontent'
 
 
@@ -315,7 +319,6 @@ def test_file_copy_lock_nolock(testdir):
     assert not utila.file_islocked(unlocked.join('path'))
 
 
-@utilatest.no_linux
 def test_file_copy_lock_withlock(testdir):
     locked = testdir.tmpdir.join('path')
     utila.file_create(locked, content='locked')
@@ -441,7 +444,6 @@ def test_file_compare_not_exists():
     assert not equals
 
 
-@utilatest.no_linux
 def test_file_lock(td):
     root = str(td)
     first = os.path.join(root, 'locked.abc')
@@ -579,7 +581,6 @@ def test_make_tmpdir_remove():
     assert not os.path.exists(tmp_dir), tmp_dir
 
 
-@utilatest.no_linux
 def test_inform_file_permission(tmpdir, capsys):
     path = tmpdir.join('locked')
     utila.file_create(path)
