@@ -515,6 +515,15 @@ def iswin() -> bool:
     return 'win' in sys.platform
 
 
+def isci() -> bool:
+    """Is this a continous integration server?
+
+    >>> str(isci())
+    '...'
+    """
+    return os.environ.get('JENKINS_HOME', False)
+
+
 def hasprog(program: str):
     """\
     >>> hasprog('utila_lock')
