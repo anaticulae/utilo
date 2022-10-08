@@ -457,6 +457,7 @@ from utila.utils import iflat
 from utila.utils import ifnone
 from utila.utils import index_max
 from utila.utils import isci
+from utila.utils import ismainthread
 from utila.utils import iswin
 from utila.utils import iterable
 from utila.utils import minus

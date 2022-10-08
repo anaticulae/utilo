@@ -515,6 +515,10 @@ def iswin() -> bool:
     return 'win' in sys.platform
 
 
+def ismainthread() -> bool:
+    return False
+
+
 def isci() -> bool:
     """Is this a continous integration server?
 
