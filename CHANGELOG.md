@@ -2,6 +2,24 @@
 
 Every noteable change is logged here.
 
+## v2.90.0 (2022-10-18)
+
+### Feature
+
+* add method check threading env (91f193e45846)
+* add method to verify if we run on Jenkins (b05442f77eff)
+
+### Fix
+
+* allow empty file extension (507823f837fe)
+
+### Chore
+
+* upgrade baw (91d68caeee5d)
+* convert nightly to all (30bd28662f37)
+* disable useless parallel (0f02ad2cdd9f)
+* upgrade requirements.txt (73c14b42a483)
+
 ## v2.89.0 (2022-10-05)
 
 ### Feature
