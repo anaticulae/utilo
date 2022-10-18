@@ -16,7 +16,6 @@ import glob
 import inspect
 import os
 import sys
-import typing
 
 import utila
 import utila.cli
@@ -31,7 +30,7 @@ class ProcessStep:
     hooks: 'utila.feature.collector.FeatureHooks' = None
 
 
-ProcessSteps = typing.List[ProcessStep]
+ProcessSteps = list[ProcessStep]
 
 
 def create_runtime(  # pylint:disable=too-many-locals
@@ -61,7 +60,7 @@ def create_runtime(  # pylint:disable=too-many-locals
     Returns:
         Parsed list of worksteps with verified inputs.
     """
-    assert used_processes >= 1, 'invalid process count %d' % used_processes
+    assert used_processes >= 1, f'invalid process count {used_processes}'
     # if no outspace is defined, use the first passed inspace to write output
     outspace = outspace if outspace else inspace[0]
     prefix = f'{prefix}_' if prefix else ''
@@ -86,7 +85,7 @@ def create_runtime(  # pylint:disable=too-many-locals
         try:
             caller = hooks[name].work
         except KeyError:
-            utila.error('missing hook with name %s' % name)
+            utila.error(f'missing hook with name {name}')
             ret += 1
             continue
         outputs = prepare_outputs(
@@ -207,7 +206,7 @@ def prepare_variables(variables, args):
         typ = variable.typ
         if typ is None:
             # do not convert data type, just pass it as it is
-            typ = lambda x: x
+            typ = lambda x: x  # pylint:disable=C3001
         if typ is bool:
             # convert cause every non empty string is converted to true
             typ = utila.str2bool
@@ -219,9 +218,8 @@ def prepare_variables(variables, args):
             converted = typ(values) if values is not None else defaultvalues
             result.append(converted)
         except ValueError:
-            msg = 'while processing %s with value %s'
-            utila.error(msg % (variable.name, variable.typ))
-            utila.error('given args %r' % args)
+            utila.error(f'while process {variable.name} value: {variable.typ}')
+            utila.error(f'given args {args!r}')
     return result
 
 
@@ -229,7 +227,7 @@ def prepare_inputs(  # pylint:disable=R1260
     inputs: list,
     inspaces: list,
     outspace: str,
-) -> typing.List[str]:
+) -> list[str]:
     """Parse single and multiple file input
 
     Locate files by defined pattern in `Workplan`. A file pattern is
@@ -367,7 +365,7 @@ def prepare_outputs(
     prefix: str,
     outputs: list,
     outspace: str,
-) -> typing.List[str]:
+) -> list[str]:
     """Support different output types
 
     Args:
@@ -393,7 +391,7 @@ def prepare_outputs(
                        f' got: {item!r} {type(item)}')
                 utila.error(msg)
                 ret += 1
-        if isinstance(item, utila.File):
+        if isinstance(item, utila.File):  # pylint:disable=W0160
             outitem = f'{filename}.{datatype}'
         else:
             outitem = f'{process}__{prefix}{stepname}_{filename}.{datatype}'
@@ -410,7 +408,7 @@ def verify_resources(inputs):
     for path in inputs:
         if os.path.exists(path):
             continue
-        if path[0] in ('_', '?'):
+        if path[0] in {'_', '?'}:
             # recursive input-definition start with _. We do not check
             # recursive inputs, because there will be generated later.
             continue
@@ -450,7 +448,7 @@ def verify_interface(inputs, outputs, worker, stepname, args: dict = None):
     # check output parameter
     return_parameter = str(inspect.signature(worker).return_annotation)
     supported = ('str', 'bytes')
-    return_count = sum([return_parameter.count(typ) for typ in supported])
+    return_count = sum((return_parameter.count(typ) for typ in supported))
     variable_returnvalues = utila.feature.outpath.variable_parameter(outputs)
     if not len(outputs) == return_count and not variable_returnvalues:
         utila.error(f'missing output resources: '
@@ -489,7 +487,7 @@ def input_order(plan, root):
     require = collections.defaultdict(set)
     for step in plan:
         name = f'{root}{REQUIREMENT_SEPARATOR}{step.name}'
-        if isinstance(step, utila.WorkPlanStep):
+        if isinstance(step, utila.WorkPlanStep):  # pylint:disable=W0160
             items = step.inputs
         else:
             items = step.hooks.work.args

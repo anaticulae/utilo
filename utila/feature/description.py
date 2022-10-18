@@ -82,7 +82,7 @@ def format_inputs(step) -> str:
                 fname, fending = source, 'yaml'
             inputs.append(f'{fname}.{fending}{optional}')
     inputs = sorted(inputs)
-    raw = ''.join('+%s   ' % item.ljust(30, ' ') for item in inputs)
+    raw = ''.join('+%s   ' % item.ljust(30, ' ') for item in inputs)  # pylint:disable=C0209
     raw = textwrap.fill(raw, 132)
     return raw
 
@@ -101,6 +101,6 @@ def format_outputs(step, name, rename: callable = None) -> str:
     # sort outputs alphabetically
     outputs = sorted(outputs)
     # group outputs into columns
-    raw = ''.join('>%s   ' % item.ljust(30, ' ') for item in outputs)
+    raw = ''.join('>%s   ' % item.ljust(30, ' ') for item in outputs)  # pylint:disable=C0209
     raw = textwrap.fill(raw, 120)
     return raw

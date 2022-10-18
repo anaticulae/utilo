@@ -41,7 +41,7 @@ def forward_slash(content: str, keep_newline: bool = False, **kwargs) -> str:  #
     """
     assert isinstance(content, str), str(content)
     pattern = BACKSLASH
-    if 'newline' in kwargs.keys():
+    if 'newline' in kwargs:
         keep_newline = kwargs['newline']
         warnings.warn("replace with keep_newline", DeprecationWarning)
     if keep_newline:
@@ -184,7 +184,7 @@ def shrink(content: str, maxlength: int = 300) -> str:
     "['a[...]a']"
     """
     assert maxlength >= 0, str(maxlength)
-    if isinstance(content, bytes):
+    if isinstance(content, bytes):  # pylint:disable=W0160
         content = content.decode('utf8', errors='replace')
     else:
         # convert list, int etc. to str
@@ -336,7 +336,7 @@ def findindex(text: str, token: str, count=None) -> list:
     """
     result = []
     index = -1
-    while True:
+    while True:  # pylint:disable=W0149
         index = text.find(token, index + 1)
         if index == -1:
             break
@@ -369,7 +369,7 @@ def rreplace(content: str, pattern: str, replace: str, count: int = 1):
     ... 'figureo__standard_figures/62711c57d36', 'figureo__standard_figures', 'repl')
     '/test_figures_run_bachelor56page270/repl/62711c57d36'
     """
-    while count > 0:
+    while count > 0:  # pylint:disable=W0149
         index = content.rfind(pattern)
         if index == -1:
             break

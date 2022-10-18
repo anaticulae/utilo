@@ -25,7 +25,7 @@ def encrypt(plaintext: bytes) -> bytes:
             encoding='utf8',
             errors='xmlcharrefreplace',
         )
-    if utilasafe:
+    if utilasafe:  # pylint:disable=W0160
         ciphertext = utilasafe.encrypt_password(plaintext)
     else:
         ciphertext = _encrypt_toy(plaintext)
@@ -34,7 +34,7 @@ def encrypt(plaintext: bytes) -> bytes:
 
 def decrypt(ciphertext: bytes, string: bool = False) -> bytes:
     """Convert cipher text to plain text."""
-    if utilasafe:
+    if utilasafe:  # pylint:disable=W0160
         plaintext = utilasafe.decrypt_password(ciphertext)
     else:
         plaintext = _decrypt_toy(ciphertext)

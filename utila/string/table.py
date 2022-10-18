@@ -35,7 +35,7 @@ class TablePrinter:  # pylint:disable=too-many-instance-attributes
 
     @property
     def tablewidth(self) -> int:
-        if utila.iterable(self.width):
+        if utila.iterable(self.width):  # pylint:disable=W0160
             width = sum(self.width) + len(self.width)
         else:
             width = (self.width + 1) * self.cols + (len(self.border_lr) * 2) + 1

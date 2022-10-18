@@ -163,7 +163,7 @@ def test_cli_parse_required_command_missing(tmpdir):
     runner = os.path.join(tmpdir, 'run.py')
     file_create(runner, RUN_ME % forward_slash(ROOT))
 
-    command = 'python "%s"' % runner
+    command = f'python "{runner}"'
     completed = utilatest.run(command, tmpdir, expect=False)
 
     in_stderr = 'the following arguments are required'
@@ -175,7 +175,7 @@ def test_cli_parse_required_command_missing(tmpdir):
 def test_cli_parse_required_command(tmpdir):
     runner = os.path.join(tmpdir, 'run.py')
     file_create(runner, RUN_ME % forward_slash(ROOT))
-    command = 'python "%s" -a Samba' % runner
+    command = f'python "{runner}" -a Samba'
     completed = utilatest.run(command, tmpdir)
     assert not completed.returncode, str(completed)
 
@@ -211,7 +211,7 @@ def parser_example(tmpdir):
 def test_cli_parse_empty_parser_help(parser_example):  # pylint: disable=W0621
     """Test default parser with --help"""
     cwd, runner = parser_example
-    command = 'python "%s" --help' % runner
+    command = f'python "{runner}" --help'
     completed = utilatest.run(command, cwd)
 
     assert completed.returncode == SUCCESS, str(completed)
@@ -222,10 +222,8 @@ def test_cli_parser_source_in_out(parser_example):  # pylint: disable=W0621
     """Test default parser with --help"""
     cwd, runner = parser_example
     file_append(runner, SOURCES)
-
-    command = 'python "%s" -i %s -o out.file' % (runner, runner)
+    command = f'python "{runner}" -i {runner} -o out.file'
     completed = utilatest.run(command, cwd, expect=False)
-
     assert completed.returncode == INVALID_COMMAND, str(completed)
 
 
@@ -233,9 +231,8 @@ def test_cli_parser_source_in_out(parser_example):  # pylint: disable=W0621
 def test_cli_parse_empty_parser_version(parser_example):  # pylint: disable=W0621
     """Test default parser with --version"""
     cwd, runner = parser_example
-    command = 'python "%s" --version' % runner
+    command = f'python "{runner}" --version'
     completed = utilatest.run(command, cwd, expect=False)
-
     assert completed.returncode == INVALID_COMMAND, str(completed)
 
 
@@ -281,7 +278,7 @@ def create_and_run_parser(
 
     with mp.context() as context:
         context.setattr(sys, 'argv', argv)
-        context.setattr(os, 'getcwd', lambda: str(td))
+        context.setattr(os, 'getcwd', lambda: str(td))  # pylint:disable=C3001
         parsed = parse(parser)
         inpath, outpath, _ = sources(  # pylint:disable=unbalanced-tuple-unpacking
             parsed,

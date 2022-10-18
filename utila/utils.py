@@ -145,7 +145,7 @@ def determine_order(requirements, flats=True):
     requirements = dict(requirements)
     todo = list(requirements.keys())
     result = []
-    while todo:
+    while todo:  # pylint:disable=W0149
         level = []
         before = len(todo)
         for item in todo[:]:
@@ -342,13 +342,13 @@ def collect_data(data, required, usenone) -> list:
     if isinstance(data, tuple):
         given = data._fields  # pylint:disable=W0212
         if usenone:
-            access = lambda x: getattr(data, x, None)
+            access = lambda x: getattr(data, x, None)  # pylint:disable=C3001
         else:
-            access = lambda x: getattr(data, x)
+            access = lambda x: getattr(data, x)  # pylint:disable=C3001
     else:
         given = data.keys()
         if usenone:
-            access = lambda x: data.get(x, None)
+            access = lambda x: data.get(x, None)  # pylint:disable=C3001
         else:
             access = data.get
     try:
@@ -476,7 +476,7 @@ def driver(**kwargs):
     >>> driver(name='Helmut', age=33)
     Driver(name='Helmut', age=33)
     """
-    Driver = collections.namedtuple('Driver', kwargs.keys())
+    Driver = collections.namedtuple('Driver', kwargs.keys())  # pylint:disable=C0103
     result = Driver(**kwargs)
     return result
 
@@ -485,7 +485,7 @@ def wait():
     """Ask user to continue program."""
     answer = input('continue?\n')
     answer = answer.strip().lower()
-    if answer in ('no', 'n'):
+    if answer in {'no', 'n'}:
         sys.exit(utila.SUCCESS)
 
 
@@ -544,7 +544,7 @@ def hasprog(program: str):
     installed = completed.returncode == utila.SUCCESS
     if installed:
         expected = f'{program}:'
-        if completed.stdout.strip() in (expected, expected.encode('utf8')):
+        if completed.stdout.strip() in {expected, expected.encode('utf8')}:
             # workaround for `whereis` of arch
             installed = False
     return installed

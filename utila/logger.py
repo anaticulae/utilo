@@ -204,11 +204,11 @@ def print_runtime(before: int, msg: str = '') -> float:
     Returns:
         Runtime diff
     """
-    time_diff = time.time() - before
+    time_diff = utila.roundme(time.time() - before)
     if msg:
-        log('runtime(%s): %.2f secs' % (msg, time_diff))
+        log(f'runtime({msg}): {time_diff} secs')
     else:
-        log('runtime: %.2f secs' % time_diff)
+        log(f'runtime: {time_diff} secs')
     return time_diff
 
 
@@ -219,7 +219,7 @@ def print_env():
         Log level higher equal than `INFO` is required
     """
     for key, value in os.environ.items():
-        info('{:<40}{}'.format(key, value))
+        info('{:<40}{}'.format(key, value))  # pylint:disable=C0209
 
 
 def format_completed(completed: subprocess.CompletedProcess) -> str:

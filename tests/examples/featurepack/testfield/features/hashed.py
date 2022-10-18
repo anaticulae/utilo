@@ -7,10 +7,8 @@
 # be prosecuted under federal law. Its content is company confidential.
 # =============================================================================
 
-import typing
 
-
-def work() -> typing.List[bytes]:
+def work() -> list[bytes]:
     result = [
         (b'imageinfo'),
         (b'second'),

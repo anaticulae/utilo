@@ -43,7 +43,7 @@ def common_items(
         ]
     """
     assert min_elements >= 1, str(min_elements)
-    selector = selector if selector else lambda x: x[0]
+    selector = selector if selector else lambda x: x[0]  # pylint:disable=C3001
     flat = utila.flat(collected)
     assert all(selector(item) is not None for item in flat), flat
 
@@ -85,7 +85,7 @@ def three_side_equal_cluster(
     max_diff=2.0,
     selector=None,
 ):
-    selector = selector if selector else lambda x: x[0]
+    selector = selector if selector else lambda x: x[0]  # pylint:disable=C3001
 
     def classifier(candidat, clusteritem):
 
@@ -93,10 +93,9 @@ def three_side_equal_cluster(
             bounding_cluster = selector(clusteritem)
             bounding_test = selector(candidat)
 
-            equal = sum([
-                utila.near(first, second, diff=max_diff)
-                for (first, second) in zip(bounding_test, bounding_cluster)
-            ])
+            equal = sum(
+                (utila.near(first, second, diff=max_diff)
+                 for (first, second) in zip(bounding_test, bounding_cluster)))
             return equal >= 3
 
         return matcher(candidat, clusteritem)
@@ -114,7 +113,7 @@ def same_area_cluster(
     min_elements: int = 2,
     selector=None,
 ):
-    selector = selector if selector else lambda x: x[0]
+    selector = selector if selector else lambda x: x[0]  # pylint:disable=C3001
 
     def classifier(candidat, clusteritem, max_difference=max_difference):
 
@@ -154,7 +153,7 @@ def same_line_cluster(
     2
     """
     if not matcher:
-        matcher = lambda bounding: bounding[3]
+        matcher = lambda bounding: bounding[3]  # pylint:disable=C3001
 
     def classifier(candidat, clusteritem):
         return utila.near(
@@ -175,7 +174,7 @@ def rect_intersecting_cluster(
     >>> len(rect_intersecting_cluster(((99.11, 112.15, 496.16, 272.75), (195.33, 296.66, 399.95, 321.37))))
     2
     """
-    bounding = bounding if bounding else lambda item: item
+    bounding = bounding if bounding else lambda item: item  # pylint:disable=C3001
 
     def classifier(candidat, clusteritem):
         return utila.rect_intersecting(

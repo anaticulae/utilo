@@ -33,7 +33,6 @@ import dataclasses
 import os
 import re
 import sys
-import typing
 
 import utila
 
@@ -56,7 +55,7 @@ class Command:
             yield item
 
 
-Commands = typing.List[Command]
+Commands = list[Command]
 
 
 @dataclasses.dataclass
@@ -231,11 +230,11 @@ def add_todo_to_parser(parser, todo):
     for shortcut, longcut, msg, args in todo:
         # support defining shortcut without -
         if shortcut and not shortcut.startswith('-'):
-            shortcut = '-%s' % shortcut
+            shortcut = f'-{shortcut}'
         # support defining longcut without --
         if longcut and not longcut.startswith('--'):
-            longcut = '--%s' % longcut
-        if longcut:
+            longcut = f'--{longcut}'
+        if longcut:  # pylint:disable=W0160
             shortcuts = (shortcut, longcut) if shortcut else (longcut,)
         else:
             # no longcut is defined
@@ -496,16 +495,16 @@ def sources(  # pylint:disable=too-complex,too-many-branches
         for inputpath in inputpaths:
             if not singleinput:
                 if os.path.isfile(inputpath):
-                    utila.error('Input %s must be a directory' % inputpath)
+                    utila.error(f'Input {inputpath} must be a directory')
                     sys.exit(INVALID_COMMAND)
             if not os.path.exists(inputpath):
-                utila.error('Input %s does not exists' % inputpath)
+                utila.error(f'Input {inputpath} does not exists')
                 sys.exit(INVALID_COMMAND)
     if outputpath:
         if not os.path.isabs(outputpath):
             outputpath = os.path.join(cwd, outputpath)
         if os.path.isfile(outputpath):
-            utila.error('Output %s must be a directory' % outputpath)
+            utila.error(f'Output {outputpath} must be a directory')
             sys.exit(INVALID_COMMAND)
         if not os.path.exists(outputpath):
             try:

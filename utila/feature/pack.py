@@ -13,7 +13,6 @@ import contextlib
 import dataclasses
 import os
 import sys
-import typing
 
 import utila
 import utila.feature.collector
@@ -58,10 +57,10 @@ class FeaturePackConfig:  # pylint:disable=too-many-instance-attributes
 
 
 Name = str
-CommandLineInterface = typing.List[utila.Command]
+CommandLineInterface = list[utila.Command]
 Worker = callable  #pylint:disable=C0103
-Feature = typing.Tuple[Name, CommandLineInterface, Worker]
-Features = typing.List[Feature]
+Feature = tuple[Name, CommandLineInterface, Worker]
+Features = list[Feature]
 
 
 @utila.saveme(systemexit=True)
@@ -188,7 +187,7 @@ def evaluate_userchoice(config, parser) -> UserChoice:  # pylint:disable=R0914
         install(parser)
     # evaluate create parser
     args = utila.parse(parser)
-    optional_data = dict()
+    optional_data = {}
     for _, run in hooked:
         if not run:
             continue
@@ -217,7 +216,7 @@ def evaluate_userchoice(config, parser) -> UserChoice:  # pylint:disable=R0914
     level = utila.Level(verbose)
     if args.get('quite', False):
         # suppress logging - log errors only
-        level = utila.Level.ERROR
+        level = utila.Level.ERROR  # pylint:disable=R0204
     utila.level_setup(level)
     usecache = args.get('cache', False)
     result = UserChoice(
@@ -290,7 +289,7 @@ def remove_workplan_flags(args, plan):
     return args
 
 
-def determine_todo(args: dict, flags: list) -> typing.List[str]:
+def determine_todo(args: dict, flags: list) -> list[str]:
     """Remove flags from feature todo list
 
     Hint:
@@ -311,7 +310,7 @@ def determine_todo(args: dict, flags: list) -> typing.List[str]:
         key for key, value in args.items() if value is utila.cli.DEACTIVATED
     ]
     seletected = any(item for item in args.values() if item is True)
-    if not seletected or all_selected:
+    if not seletected or all_selected:  # pylint:disable=W0160
         # run all features
         result = [key for key, value in args.items()]
     else:

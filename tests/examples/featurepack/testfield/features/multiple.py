@@ -7,10 +7,8 @@
 # be prosecuted under federal law. Its content is company confidential.
 # =============================================================================
 
-import typing
 
-
-def work() -> typing.List[typing.Tuple[str, bytes]]:
+def work() -> list[tuple[str, bytes]]:
     result = [
         ('imageinfo', '\x00\xff'),
         ('second', '\x12\xff'),

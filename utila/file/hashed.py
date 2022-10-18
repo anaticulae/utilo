@@ -25,7 +25,7 @@ def directory_hash(paths: str, *, ftype='yaml') -> str:
         return None
     collected = []
     for path in paths:
-        if os.path.isfile(path):
+        if os.path.isfile(path):  # pylint:disable=W0160
             files = [path]
         else:
             files = utila.file_list(

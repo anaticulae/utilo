@@ -68,7 +68,7 @@ def yaml_load(
         utila.error('add `yaml` package to requirements, eg. `PyYAML>=5.1`')
         return None
     try:
-        if safe:
+        if safe:  # pylint:disable=W0160
             result = yaml.safe_load(loaded)
         else:
             result = yaml.load(loaded, Loader=yaml.FullLoader)  #nosec
@@ -92,7 +92,7 @@ def yaml_dump(
     except ImportError:  # pragma: no cover
         utila.error('add `yaml` package to requirements, eg. `PyYAML>=5.1`')
         return None
-    if safe:
+    if safe:  # pylint:disable=W0160
         result = yaml.safe_dump(content)
     else:
         result = yaml.dump(content, Dumper=yaml.Dumper)  #nosec
@@ -130,6 +130,9 @@ class LazyFile:
 
     def __eq__(self, value):
         return str(self) == value
+
+    def __hash__(self):
+        return hash(str(self))
 
     def __str__(self):
         return self.lazy()

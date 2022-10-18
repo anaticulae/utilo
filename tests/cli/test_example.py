@@ -214,12 +214,10 @@ def test_cli_example(td, mp, capsys):  # pylint:disable=W0621
 def test_cli_example_all(td, mp, capsys, command):
     """Run cli example with commands"""
     root, _ = cli_example(td)
-
-    with run_cli(root, mp, '%s -VVV' % command) as result:
+    with run_cli(root, mp, f'{command} -VVV') as result:
         out, err = capsys.readouterr()
     assert len(out) > 50, str(out) + str(err)
     assert not err, str(err)
-
     assert utila.returncode(result) == utila.SUCCESS, str(result)
 
 
@@ -227,10 +225,8 @@ def test_cli_print_processing_step(td, mp, capsys):
     """Ensure that processing: process_step is printed when running
     working step."""
     root, _ = cli_example(td)
-
     with run_cli(root, mp, '--all -VVV') as result:
         out = capsys.readouterr().out
-
     assert utila.returncode(result) == utila.SUCCESS, str(result)
     assert len(out) > 100
     assert 'processing: first_cli_step' in out, utila.log_raw(out)
@@ -262,24 +258,20 @@ def test_cli_multiple_input(
     assert os.path.exists(first_yaml), first_yaml
     utila.file_remove(first_yaml)
     assert not os.path.exists(first_yaml), first_yaml
-
     second_input = os.path.join(root, 'second')
     os.makedirs(second_input)
-
     if create_missing_input:
         second_first_yaml = os.path.join(second_input, 'first.yaml')
         assert not os.path.exists(second_first_yaml), second_first_yaml
         utila.file_create(second_first_yaml)
         assert os.path.exists(second_first_yaml), second_first_yaml
-
     # run
-    inputcmd = '-i %s -i %s -VVV' % (root, second_input)
+    inputcmd = f'-i {root} -i {second_input} -VVV'
     with run_cli(root, mp, inputcmd) as result:
         out, err = capsys.readouterr()
-
     # check
     expected_result = utila.SUCCESS if create_missing_input else utila.FAILURE
-    error_message = '%s\n%s\n%s' % (result, out, err)
+    error_message = f'{result}\n{out}\n{err}'
     assert utila.returncode(result) == expected_result, error_message
 
 
@@ -291,15 +283,12 @@ def test_cli_multiple_input_with_double_input(
     """Test that resources exists in both input source"""
     cli_example(td)
     root = str(td)
-
     second_input = os.path.join(root, 'second')
     os.makedirs(second_input)
-
     third_path = os.path.join(second_input, 'third.yaml')
     utila.file_create(third_path)
     assert os.path.exists(third_path)
-
-    inputcmd = '-i %s -i %s -VVV' % (root, second_input)
+    inputcmd = f'-i {root} -i {second_input} -VVV'
     with run_cli(root, mp, inputcmd) as result:
         out, err = capsys.readouterr()
     assert utila.returncode(
@@ -323,7 +312,7 @@ def test_cli_multiple_jobs(
     cmd = f'-j {jobs} --all'
     with run_cli(td.tmpdir, mp, cmd, MULTI_RUNNER) as result:
         out, err = capsys.readouterr()
-    error_message = '%s\n%s\n%s' % (result, out, err)
+    error_message = f'{result}\n{out}\n{err}'
     assert utila.returncode(result) == utila.SUCCESS, str(error_message)
 
 

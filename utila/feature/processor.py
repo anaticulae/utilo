@@ -13,14 +13,13 @@ import os
 import signal
 import sys
 import time
-import typing
 
 import utila
 import utila.feature
 import utila.feature.outpath
 import utila.feature.workplan
 
-ErrorHook = typing.Tuple[Exception, str]
+ErrorHook = tuple[Exception, str]
 
 NO_RESULT = object()
 
@@ -28,7 +27,7 @@ NO_RESULT = object()
 def process(  # pylint:disable=R0913,R0914,R1260
     workplan: 'ProcessSteps',
     name: str = None,
-    todo: typing.List = None,
+    todo: list = None,
     processes: int = 1,
     pages: list = None,
     errorhook: ErrorHook = None,
@@ -194,7 +193,7 @@ def callback(
     """
     utila.log(f'processing: {stepname}')
     # wait = -1 run forever
-    while require_wait(hook.work.args) and wait:
+    while require_wait(hook.work.args) and wait:  # pylint:disable=W0149
         utila.log('.', end='')
         wait -= 1
         time.sleep(1)
@@ -220,10 +219,7 @@ def callback(
 
 
 def require_wait(inputs: list) -> bool:
-    for item in inputs:
-        if not utila.exists(item):
-            return True
-    return False
+    return any((not utila.exists(item) for item in inputs))
 
 
 def run_hook_safely(
@@ -315,9 +311,9 @@ def write_level_result(
 
 
 def write_result_safely(
-    result: typing.List[str],
+    result: list[str],
     processstep: str,
-    outputstep: typing.List[str],
+    outputstep: list[str],
     rename: callable = None,
 ) -> int:
     """Write `result`s to desired `outputstep`s and catch problems.
@@ -416,7 +412,7 @@ class Pipeline:
     """
 
     def __init__(self):
-        self.done = dict()
+        self.done = {}
         self.lock = utila.Nothing()
         # TODO: ENABLE AFTER KNOWING HOW TO TO IT
         # manager = multiprocessing.Manager()

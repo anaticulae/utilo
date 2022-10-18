@@ -52,7 +52,7 @@ def ranges(start: float, stop: float, step: float = 1):
     assert start <= stop
     assert step > 0
 
-    while start <= stop:
+    while start <= stop:  # pylint:disable=W0149
         yield start
         start += step
 

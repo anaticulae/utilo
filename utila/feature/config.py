@@ -34,7 +34,7 @@ def read(config: str) -> dict:
         except ValueError:
             utila.error(f'could not parse {item}')
             continue
-        if value.lower() in ('true', 'false'):
+        if value.lower() in {'true', 'false'}:
             result[name] = utila.str2bool(value)
             continue
         with contextlib.suppress(ValueError):

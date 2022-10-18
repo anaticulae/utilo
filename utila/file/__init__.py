@@ -690,8 +690,8 @@ def assert_file(files, filetype: str):
     filetype = filetype[1:] if filetype[0] == '.' else filetype
     raises = 0
     for item in files:
-        if not item.endswith('.%s' % filetype):
-            utila.error('No %s file: %s' % (filetype, item))
+        if not item.endswith(f'.{filetype}'):
+            utila.error(f'No {filetype} file: {item}')
             raises += 1
     assert not raises, 'wrong file types'
 

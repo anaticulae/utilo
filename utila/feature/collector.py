@@ -11,7 +11,6 @@ import dataclasses
 import importlib
 import os
 import sys
-import typing
 
 import utila
 
@@ -32,7 +31,7 @@ class FeatureInterface:
     hooks: FeatureHooks = None
 
 
-FeatureInterfaces = typing.List[FeatureInterface]
+FeatureInterfaces = list[FeatureInterface]
 
 
 def find_features(root: str, featurepackage: str) -> FeatureInterfaces:

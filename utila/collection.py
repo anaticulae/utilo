@@ -139,7 +139,7 @@ class Single:
     """
 
     def __init__(self, converter: callable = None):
-        self.converter = converter if converter else lambda x: x
+        self.converter = converter if converter else lambda x: x  # pylint:disable=C3001
         self.visited = set()
 
     def contains(self, item: object, mark: bool = True) -> bool:
@@ -183,7 +183,7 @@ class Buckets:
 
     def __init__(self, border, selector=None, sorting: bool = False):
         self.sorting = sorting
-        self.selector = selector if selector else lambda x: x
+        self.selector = selector if selector else lambda x: x  # pylint:disable=C3001
 
         self.border = [
             item if utila.isnumber(item) else self.selector(item)
@@ -326,7 +326,7 @@ def minimal(items) -> list:
     todo = [len(item) for item in items]
     current = [0] * len(items)
     result = []
-    while sum(todo) != sum(current):
+    while sum(todo) != sum(current):  # pylint:disable=W0149
         step = []
         for pos, _ in enumerate(items):
             if current[pos] < todo[pos]:
@@ -381,9 +381,9 @@ def sort_both(
     assert len(firsts) == len(seconds), f'{len(firsts)} == {len(seconds)}'
     merged = list(zip(firsts, seconds))
     if key is None:
-        key = lambda x: x
+        key = lambda x: x  # pylint:disable=C3001
     # x[0] first column
-    merged.sort(key=lambda x: key(x[0]), reverse=reverse)
+    merged.sort(key=lambda x: key(x[0]), reverse=reverse)  # pylint:disable=C3001
     firsts = [item[0] for item in merged]
     seconds = [item[1] for item in merged]
     return firsts, seconds

@@ -20,16 +20,16 @@ def today(sortable: bool = True) -> str:
     """
     cur = time.localtime(time.time())
     if sortable:
-        return "%04d.%02d.%02d" % (cur.tm_year, cur.tm_mon, cur.tm_mday)
-    return "%02d.%02d.%04d" % (cur.tm_mday, cur.tm_mon, cur.tm_year)
+        return "%04d.%02d.%02d" % (cur.tm_year, cur.tm_mon, cur.tm_mday)  # pylint:disable=C0209
+    return "%02d.%02d.%04d" % (cur.tm_mday, cur.tm_mon, cur.tm_year)  # pylint:disable=C0209
 
 
 def current(seconds: bool = False) -> str:
     """Determine time in `German` format."""
     cur = time.localtime(time.time())
     if seconds:
-        return "%02d:%02d:%02d" % (cur.tm_hour, cur.tm_min, cur.tm_sec)
-    return "%02d:%02d" % (cur.tm_hour, cur.tm_min)
+        return "%02d:%02d:%02d" % (cur.tm_hour, cur.tm_min, cur.tm_sec)  # pylint:disable=C0209
+    return "%02d:%02d" % (cur.tm_hour, cur.tm_min)  # pylint:disable=C0209
 
 
 def timedate(sortable: bool = True) -> str:
@@ -51,8 +51,8 @@ def filetime():
     True
     """
     cur = time.localtime(time.time())
-    day = "%04d%02d%02d" % (cur.tm_year, cur.tm_mon, cur.tm_mday)
-    times = "%02d%02d%02d" % (cur.tm_hour, cur.tm_min, cur.tm_sec)
+    day = "%04d%02d%02d" % (cur.tm_year, cur.tm_mon, cur.tm_mday)  # pylint:disable=C0209
+    times = "%02d%02d%02d" % (cur.tm_hour, cur.tm_min, cur.tm_sec)  # pylint:disable=C0209
     result = f'{day}_{times}'
     return result
 

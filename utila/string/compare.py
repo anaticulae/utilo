@@ -30,10 +30,12 @@ def similar(expected: str, current: str, maxdiff=0.6) -> bool:
     expected = utila.lower(*expected)
     expected = utila.nowhitespace(*expected)
     if isinstance(current, utila.ITERABLE):
-        for item in current:
-            if similar(expected=expected, current=item, maxdiff=maxdiff):
-                return True
-        return False
+        return any(
+            similar(
+                expected=expected,
+                current=item,
+                maxdiff=maxdiff,
+            ) for item in current)
     current = current.strip().replace(' ', '').lower()
     matched = difflib.get_close_matches(
         word=current,

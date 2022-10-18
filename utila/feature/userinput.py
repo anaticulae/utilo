@@ -8,7 +8,6 @@
 # =============================================================================
 
 import dataclasses
-import typing
 
 import utila.feature
 
@@ -51,7 +50,7 @@ class Pattern(Input):
     optional: bool = False
 
     def __str__(self):
-        return '%s.%s' % (self.name, self.ext)
+        return f'{self.name}.{self.ext}'
 
     def __getitem__(self, index):
         # make pattern iterable
@@ -82,17 +81,19 @@ class ResultFile(File):
         ext: str = 'yaml',
         optional: bool = False,
     ):
+        super().__init__(
+            name=name,
+            ext=ext,
+            optional=optional,
+        )
         self.producer = producer
-        self.name = name
-        self.ext = ext
-        self.optional = optional
 
     def __str__(self):
         if not self.name and not self.ext:
             return self.producer
         if not self.ext:
-            return '%s__%s' % (self.producer, self.name)
-        return '%s__%s.%s' % (self.producer, self.name, self.ext)
+            return f'{self.producer}__{self.name}'
+        return f'{self.producer}__{self.name}.{self.ext}'
 
 
 RESERVED_WORKPLAN_NAMES = """\
@@ -111,13 +112,13 @@ class WorkPlanStep:
             f'reserved workstep name: {self.name.lower()}')
 
 
-WorkPlanSteps = typing.List[WorkPlanStep]
+WorkPlanSteps = list[WorkPlanStep]
 
 
 def create_step(
     name: str,
-    inputs: typing.List['Input'] = None,
-    output: typing.Tuple[str] = None,
+    inputs: list['Input'] = None,
+    output: tuple[str] = None,
 ) -> 'WorkPlanStep':
     """Create a WorkPlanStep from definition.
 
@@ -138,9 +139,9 @@ def create_step(
         inputs = [inputs]
     if not utila.iterable(output):
         output = [output]
-    assert isinstance(inputs, list), '%s %s' % (type(inputs), str(inputs))
+    assert isinstance(inputs, list), f'{type(inputs)} {inputs}'
     for index, item in enumerate(inputs):
         assert isinstance(item, Input), f'{index} {item}'
-    msg = '%s %s' % (type(output), str(output))
+    msg = f'{type(output)} {output}'
     assert isinstance(output, (tuple, list)), msg
     return utila.WorkPlanStep(name, inputs, output)

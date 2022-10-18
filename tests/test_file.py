@@ -295,7 +295,7 @@ def test_file_copy_content_access_error(
 
     with mp.context() as context:
         context.setattr(utila.file.securewrapper, 'copy', copy)
-        context.setattr(utila, 'file_age_update', lambda path, seconds: True)
+        context.setattr(utila, 'file_age_update', lambda path, seconds: True)  # pylint:disable=C3001
         if update:
             utila.copy_content(source, sink, update=True)
             return

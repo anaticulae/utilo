@@ -9,13 +9,12 @@
 
 import contextlib
 import sys
-import typing
 
 import utila
 
 
 @contextlib.contextmanager
-def handle_error(*exceptions: typing.Tuple, code: int = None):
+def handle_error(*exceptions: tuple, code: int = None):
     """Catch given `exceptions` and print there message to `stderr`.
     Exit system with given `code`.
 

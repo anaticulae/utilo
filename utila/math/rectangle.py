@@ -9,13 +9,12 @@
 
 import math
 import operator
-import typing
 
 import utila
 
 # x0, y0, x1, y1
-Rectangle = typing.Tuple[float, float, float, float]
-Rectangles = typing.List[Rectangle]
+Rectangle = tuple[float, float, float, float]
+Rectangles = list[Rectangle]
 
 
 def rect_merge(rectangles: Rectangles) -> Rectangles:
@@ -40,7 +39,7 @@ def rect_merge(rectangles: Rectangles) -> Rectangles:
         # sort top down, left right
         items = sorted(items, key=operator.itemgetter(1, 0))
         result = []
-        while len(items) >= 2:
+        while len(items) >= 2:  # pylint:disable=W0149
             item = items.pop()
             if any((rect_inside(check, item) for check in items)):
                 continue
@@ -50,7 +49,7 @@ def rect_merge(rectangles: Rectangles) -> Rectangles:
 
     current = rectangles[:]
     merged = merge(current)
-    while merged != current:
+    while merged != current:  # pylint:disable=W0149
         # repeat till algorithm does not change the list
         current = merged
         merged = merge(current)
@@ -169,7 +168,7 @@ class RectangleCheck:
 
     def contains(self, x0, y0, x1, y1) -> bool:
         diff = self.diff_max / 2
-        for x00, y00, x11, y11 in self.content:
+        for x00, y00, x11, y11 in self.content:  # pylint:disable=C0501
             if all((
                 (x00 - diff) <= x0 <= x1 <= (x11 + diff),
                 (y00 - diff) <= y0 <= y1 <= (y11 + diff),
@@ -247,10 +246,7 @@ def rectangles_intersecting(
     rectangles: Rectangles,
     test: Rectangle,
 ) -> bool:
-    for item in rectangles:
-        if utila.rect_intersecting(item, test):
-            return True
-    return False
+    return any(utila.rect_intersecting(item, test) for item in rectangles)
 
 
 def dot_in_rectangle(rectangle, dot) -> bool:

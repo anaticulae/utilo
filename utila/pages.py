@@ -223,7 +223,7 @@ class SelectPage:
                     data[page].append(None)
                 data[page].append(value)
         for item in data.values():
-            while len(item) < self.count:
+            while len(item) < self.count:  # pylint:disable=W0149
                 item.append(None)
         result = dict(data)
         return result
@@ -255,7 +255,7 @@ class SelectPage:
         return result
 
 
-PageContent = typing.TypeVar('PageContent', typing.List, typing.Dict)
+PageContent = typing.TypeVar('PageContent', list, dict)
 
 
 def select_page(
@@ -335,7 +335,7 @@ def sync_pages(
     *,
     numbers: bool = True,
     default: object = None,
-) -> typing.Tuple[int, typing.List]:
+) -> tuple[int, list]:
     """Generator to synchronize a list of PageContentIterators.
 
     Args:
@@ -353,7 +353,7 @@ def sync_pages(
     # TODO: NOT GOOD, BUT WORKS
     # reverse list to use as a stack with push and pop
     copy = [list(reversed(item)) for item in iterators]
-    while copy:
+    while copy:  # pylint:disable=W0149
         popped = []
         # iterate over all iterators and pop the first element
         for item in copy:
@@ -365,7 +365,7 @@ def sync_pages(
             # nothing to do anymore
             return
         # lowest page number of popped content
-        pagenumber = min([determine_pagenumber(item) for item in popped])
+        pagenumber = min((determine_pagenumber(item) for item in popped))
         deliver = tuple(
             item if determine_pagenumber(item) == pagenumber else default
             for item in popped)

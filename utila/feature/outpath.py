@@ -124,7 +124,7 @@ def replace_star_pattern(outputstep, result, rename: callable = None):
 def replace_filehash_pattern(outputstep, resultcontent):
     result = []
     for path, content in zip(outputstep, resultcontent):
-        if isinstance(path, str):
+        if isinstance(path, str):  # pylint:disable=W0160
             path = replace_filehash(0, path, [content])
         else:
             path = [

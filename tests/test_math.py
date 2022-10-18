@@ -32,7 +32,7 @@ def test_math_isascending_negative():
     ([1.1, 2.5, 3.0], 1, [1.1, 2.5, 3.0]),
 ])
 def test_roundme(value, digits, expected):
-    if isinstance(value, list):
+    if isinstance(value, list):  # pylint:disable=W0160
         result = utila.roundme(*value, digits=digits)
     else:
         result = utila.roundme(value, digits=digits)

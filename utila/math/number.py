@@ -14,13 +14,13 @@ import typing
 import utila
 
 Number = typing.TypeVar('Number', int, float)  # pylint:disable=C0103
-Numbers = typing.List[Number]  # pylint:disable=C0103
+Numbers = list[Number]  # pylint:disable=C0103
 
-Floats = typing.List[float]
-Ints = typing.List[int]
+Floats = list[float]
+Ints = list[int]
 
 
-def numbers(items: typing.List) -> Numbers:
+def numbers(items: list) -> Numbers:
     """Convert iterable `items` to list of int's. Replace none
     convertible items to `None`.
 
@@ -120,7 +120,7 @@ def between(border: list, func: callable = None):
     """
     assert utila.isascending(border), str(border)
     if func is None:
-        func = lambda first, second: (first + second) / 2
+        func = lambda first, second: (first + second) / 2  # pylint:disable=C3001
     result = [
         func(first, second) for first, second in zip(border[:-1], border[1:])
     ]

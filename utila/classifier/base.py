@@ -7,8 +7,6 @@
 # be prosecuted under federal law. Its content is company confidential.
 # =============================================================================
 
-import typing
-
 import utila
 import utila.classifier.strategy
 
@@ -40,7 +38,7 @@ class Cluster:
         return self.content[index]
 
 
-Clusters = typing.List[Cluster]
+Clusters = list[Cluster]
 
 
 def determine_cluster(
@@ -77,7 +75,7 @@ def determine_cluster(
     # Break when cluster does not change result
     # Cluster till cluster move does not change the result
     single = utila.Single()
-    while True:
+    while True:  # pylint:disable=W0149
         result = clusterme(result, classifier=classifier, strategy=strategy)
         if len(result) == 1:
             # all elements are in the same group
@@ -99,7 +97,7 @@ def clusterme(
 ) -> Clusters:
     current, todo = clusters[0], clusters[1:]
     result = [current]
-    while todo:
+    while todo:  # pylint:disable=W0149
         test = todo.pop()
         index = utila.classifier.strategy.match(
             test,

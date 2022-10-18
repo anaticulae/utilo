@@ -11,7 +11,6 @@ import contextlib
 import functools
 import importlib.util
 import inspect
-import typing
 
 import utila
 
@@ -40,16 +39,16 @@ def checkdatatype(func) -> callable:
             errors.append(str(current))
         if errors:
             uf_name = func.__name__
-            utila.error('invalid function input `%s`' % uf_name)
+            utila.error(f'invalid function input `{uf_name}`')
             for item in errors:
                 utila.error(item)
-            raise ValueError('invalid function input %s' % uf_name)
+            raise ValueError(f'invalid function input {uf_name}')
         return func(*args, **kwargs)
 
     return wrapper
 
 
-Strings = typing.List[str]
+Strings = list[str]
 
 
 def isstrings(items) -> bool:
@@ -159,10 +158,7 @@ def isfloat(*floats) -> bool:
     # TODO: RENAME TO isfloats
     # TODO: use isfloat for single checkup
     # TODO: add str support
-    for item in floats:
-        if not isinstance(item, float):
-            return False
-    return True
+    return all(isinstance(item, float) for item in floats)
 
 
 def asserts(item, typ):
@@ -283,7 +279,7 @@ def methods(item, starts=''):
     True
     """
     result = []
-    for name in item.__dir__():
+    for name in dir(item):
         method = getattr(item, name)
         if not callable(method):
             continue

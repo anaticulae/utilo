@@ -13,7 +13,6 @@ import enum
 import functools
 import math
 import statistics
-import typing
 
 # default number of digits to round
 NDIGITS = 2
@@ -218,7 +217,7 @@ class Strategy(enum.Enum):
 
 def lookup(
     value: 'utila.math.number.Number',
-    table: typing.List,
+    table: list,
     strategy: Strategy = None,
     right_outranges_none: bool = True,
     left_outranges_none: bool = True,

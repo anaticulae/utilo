@@ -250,7 +250,7 @@ def assert_failure(process: subprocess.CompletedProcess):
 def returnvalue(exception: Exception) -> int:
     """Determine return code raised from exit()"""
     msg = 'process return `None` as returnvalue instead of returncode'
-    assert exception.value not in (None, 'None'), msg
+    assert exception.value not in {None, 'None'}, msg
     try:
         return int(str(exception.value))
     except ValueError as error:
@@ -283,7 +283,7 @@ class Waiter:
 
     def __init__(self, lock=None, done=None):
         self.lock = threading.Lock() if not lock else lock
-        self.done = dict() if done is None else done
+        self.done = {} if done is None else done
 
     def please(self, method, **kwargs):
         assert callable(method), str(method)
@@ -313,19 +313,21 @@ def killpid(pid):
             import ctypes
         except ImportError as ioerr:
             # T: treekill, F: Force
-            cmd = ("taskkill /T /F /PID %d" % (pid)).split()
+            cmd = f'taskkill /T /F /PID {pid}'.split()
             ret = subprocess.call(cmd)  # nosec
             if ret:
-                raise EnvironmentError("taskkill returned %r" %
-                                       (ret,)) from ioerr
+                raise EnvironmentError(f'taskkill returned: {ret!r}') from ioerr
         else:
             process_terminate = 1
-            handle = ctypes.windll.kernel32.OpenProcess(process_terminate,
-                                                        False, pid)
+            handle = ctypes.windll.kernel32.OpenProcess(
+                process_terminate,
+                False,
+                pid,
+            )
             ctypes.windll.kernel32.TerminateProcess(handle, -1)
             ctypes.windll.kernel32.CloseHandle(handle)
     else:
-        raise EnvironmentError("no method to kill %s" % (pid,))
+        raise EnvironmentError(f'no method to kill {pid}')
 
 
 def process_ids(process: str) -> tuple:

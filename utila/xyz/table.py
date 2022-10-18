@@ -51,7 +51,7 @@ def action(content: str, space_min=SPACE_MIN) -> str:
         collected.append(re.split(r'[ ]{5,}', line, maxsplit=COLUMNS - 1))
     if not collected:
         return utila.NEWLINE
-    collected.sort(key=lambda x: utila.alphabetically(x[0]))
+    collected.sort(key=lambda x: utila.alphabetically(x[0]))  # pylint:disable=C3001
     column_wdith = max(len(item[0]) for item in collected) + space_min
     result = []
     for item in collected:
@@ -63,7 +63,7 @@ def action(content: str, space_min=SPACE_MIN) -> str:
         result.append(line)
     result: str = utila.NEWLINE.join(result)
     # ensure newline at the end
-    result = utila.final_newline(result)
+    result: str = utila.final_newline(result)
     return result
 
 

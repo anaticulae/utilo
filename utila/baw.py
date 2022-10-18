@@ -22,7 +22,7 @@ def baw_root(path: str) -> str:
     '...'
     """
     current = str(path)
-    while not utila.exists(utila.join(current, BAW)):
+    while not utila.exists(utila.join(current, BAW)):  # pylint:disable=W0149
         current, base = os.path.split(current)
         if not str(base).strip():
             # root of file sytem

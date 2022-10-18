@@ -182,7 +182,7 @@ def test_featurepack_with_different_worker(  #pylint:disable=W0621
     # create feature
     file_create(os.path.join(
         featurepath,
-        '%s.py' % name,
+        f'{name}.py',
     ), worker)
     with mp.context() as context:
         context.setattr(sys, 'argv', [PROCESS_NAME, '-i', root, '-o', root])
@@ -233,7 +233,7 @@ def commandline():
 """
 
     example = example.format(stepname=stepname, worker=worker)
-    outputpath = os.path.join(featurepath, '%s.py' % stepname)
+    outputpath = os.path.join(featurepath, f'{stepname}.py')
     file_create(outputpath, example)
 
 

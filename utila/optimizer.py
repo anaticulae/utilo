@@ -25,7 +25,7 @@ def zip_optimizer(first, second, *, selector=None):
     ... )
     [(0, 1), (2, 3), (4, 5), (6, 7, 8)]
     """
-    selector = selector if selector else lambda x: x
+    selector = selector if selector else lambda x: x  # pylint:disable=C3001
     result = list(first)
     current = score_area(selector(item) for item in result)
     for todo in second:
@@ -42,7 +42,7 @@ def tryit(items, test, selector):
     for item in items:
         if unique(selector(item), selector(test)):
             result.append(item)
-    result.sort(key=lambda x: selector(x)[0])
+    result.sort(key=lambda x: selector(x)[0])  # pylint:disable=C3001
     return result
 
 
