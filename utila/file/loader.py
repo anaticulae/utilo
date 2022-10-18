@@ -99,12 +99,15 @@ def yaml_dump(
     return result
 
 
-def file_find(path, fnames, ftype):
+def file_find(path, fnames, ftype=None):
     """Allow multiple file names, select the first one."""
     if isinstance(fnames, str):
         fnames = [fnames]
     for fname in fnames:
-        newpath = utila.join(path, f'{fname}.{ftype}')
+        if ftype:
+            # append file-ext to ftype
+            fname = f'{fname}.{ftype}'
+        newpath = utila.join(path, fname)
         if not utila.exists(newpath):
             continue
         return newpath
