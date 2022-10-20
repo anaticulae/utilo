@@ -66,15 +66,17 @@ def run(
             stdout=None if live else subprocess.PIPE,
             universal_newlines=True,
     ) as proc:
-        completed = handle_run(
-            proc,
-            expect,
-            timeout,
-            gracefully,
-            ontimeout,
-            cmd,
-            cwd,
-        )
+        doit = utila.profile if verbose else utila.nothing
+        with doit(msg=cmd, always=True):
+            completed = handle_run(
+                proc,
+                expect,
+                timeout,
+                gracefully,
+                ontimeout,
+                cmd,
+                cwd,
+            )
     return completed
 
 
