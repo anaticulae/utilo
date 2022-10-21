@@ -274,7 +274,7 @@ def methods(item, starts=''):
     [<built-in method zfill of str object at...>]
     >>> names = [item.__name__ for item in methods('')]
 
-    Ensure that mehtods is not sorted
+    Ensure that methods are not sorted
     >>> sorted(names)!= names
     True
     """
