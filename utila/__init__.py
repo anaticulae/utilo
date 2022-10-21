@@ -468,8 +468,16 @@ from utila.utils import pagebox_hash
 from utila.utils import rate_rel
 from utila.utils import rate_sum
 from utila.utils import removekeys
+from utila.utils import sall_false
+from utila.utils import sall_none
+from utila.utils import sall_true
+from utila.utils import sattr
+from utila.utils import scall_or_me
 from utila.utils import selbstwirksamkeit
 from utila.utils import select_type
+from utila.utils import sfirst
+from utila.utils import ssecond
+from utila.utils import sthird
 from utila.utils import testing
 from utila.utils import unset_env
 from utila.utils import wait

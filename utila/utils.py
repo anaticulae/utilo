@@ -141,6 +141,81 @@ def select_type(items, selector, count: int = None) -> list:
     return selected
 
 
+def sfirst(item, convert=None):
+    """\
+    >>> sfirst('ABCDEF')
+    'A'
+    """
+    return convert(item[0]) if convert else item[0]
+
+
+def ssecond(item, convert=None):
+    """\
+    >>> ssecond('ABCDEF')
+    'B'
+    """
+    return convert(item[1]) if convert else item[1]
+
+
+def sthird(item, convert=None):
+    """\
+    >>> sthird('ABCDEF', convert=str.lower)
+    'c'
+    """
+    return convert(item[2]) if convert else item[2]
+
+
+def sattr(name: str, convert=None):
+    """Select value by attribute name.
+
+    >>> import utila
+    >>> sorted((utila.Command(shortcut='C'), utila.Command(shortcut='Aello')), key=sattr('shortcut'))
+    [Command(shortcut='Aello', longcut='', message='', args={}), Command(shortcut='C', longcut='', message='', args={})]
+    """
+    data = lambda x: getattr(x, name)  # pylint:disable=C3001
+    return convert(data) if convert else data
+
+
+def scall_or_me(selector=None, convert=None):
+    """Use selector if given. If not, use value.
+
+    Do not use any selector, use the value.
+    >>> sorted((5,4,3,2,1), key=scall_or_me)
+    [1, 2, 3, 4, 5]
+    >>> sorted((5,4,3,2,1), key=scall_or_me(lambda x: -x))
+    [5, 4, 3, 2, 1]
+    """
+    if selector:
+        if convert:
+            return lambda x: convert(selector(x))
+        return selector
+    return lambda x: convert(x) if convert else x  # pylint:disable=C3001
+
+
+def sall_true(*args, **kwargs):  # pylint:disable=W0613
+    """\
+    >>> sall_true(False, False)
+    True
+    """
+    return True
+
+
+def sall_false(*args, **kwargs):  # pylint:disable=W0613
+    """\
+    >>> sall_false(True, False)
+    False
+    """
+    return False
+
+
+def sall_none(*args, **kwargs):  # pylint:disable=W0613
+    """\
+    >>> sall_none(True, False) is None
+    True
+    """
+    return None
+
+
 def determine_order(requirements, flats=True):
     requirements = dict(requirements)
     todo = list(requirements.keys())
