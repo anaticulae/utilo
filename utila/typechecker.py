@@ -277,9 +277,15 @@ def methods(item, starts=''):
     Ensure that methods are not sorted
     >>> sorted(names)!= names
     True
+
+    Regression that
+    >>> methods('')
+    [<method-wrapper '__repr__'...<built-in method __dir__ of str object at 0x...>, <class 'str'>]
     """
     result = []
-    for name in dir(item):
+    # TODO: dir() and __dir__() is not the same, dir() sorts the keys
+    # alphabetically.
+    for name in item.__dir__(): # pylint:disable=C2801
         method = getattr(item, name)
         if not callable(method):
             continue
