@@ -13,37 +13,23 @@ import sys
 import pytest
 import utilatest
 
+import utila
 import utila.cli
-from utila import INVALID_COMMAND
-from utila import ROOT
-from utila import SUCCESS
-from utila import Flag
-from utila import NumberedParameter
-from utila import Parameter
-from utila import file_append
-from utila import file_create
-from utila import forward_slash
-from utila import parse
-from utila import returncode
-from utila import sources
-from utila.cli import ParserConfiguration
-from utila.cli import create_parser
-from utila.cli import sort
 
 
 def test_cli_parse_args(mp):
     """Create a parser with 2 parameter, pass arguments and evaluate the
     result"""
     todo = [
-        Parameter('-a', '--alls', 'Do all!'),
-        Parameter('-n', '--nothing', 'Do nothing!'),
+        utila.Parameter('-a', '--alls', 'Do all!'),
+        utila.Parameter('-n', '--nothing', 'Do nothing!'),
     ]
-    config = ParserConfiguration(
+    config = utila.cli.ParserConfiguration(
         failfastflag=True,
         verboseflag=True,
         prefix=True,
     )
-    parser = create_parser(
+    parser = utila.cli.create_parser(
         description='This is just a sample parser',
         prog='parser',
         todo=todo,
@@ -54,7 +40,7 @@ def test_cli_parse_args(mp):
     with mp.context() as context:
         context.setattr(sys, 'argv', argv)
         parser.print_help()
-        args = parse(parser)
+        args = utila.parse(parser)
     # for verbose level
     verbose_prefix_failfast = len('--verbose --prefix --ff --cache --cprofile '
                                   '--pages --j --wait'.split())
@@ -66,11 +52,11 @@ def test_cli_parse_args(mp):
 @pytest.mark.parametrize('prefix', [True, False])
 def test_cli_prefix_activation(mp, prefix):
     todo = [
-        Flag(longcut='--longcut', message='display longcuts'),
+        utila.Flag(longcut='--longcut', message='display longcuts'),
     ]
     parsername = 'parser'
-    config = ParserConfiguration(prefix=prefix,)
-    parser = create_parser(
+    config = utila.cli.ParserConfiguration(prefix=prefix,)
+    parser = utila.cli.create_parser(
         description='This is just a sample parser',
         prog=parsername,
         todo=todo,
@@ -80,8 +66,8 @@ def test_cli_prefix_activation(mp, prefix):
     argv = [parsername, '--longcut']
     with mp.context() as context:
         context.setattr(sys, 'argv', argv)
-        args = parse(parser)
-        source = sources(args)
+        args = utila.parse(parser)
+        source = utila.sources(args)
 
     expected_return_count = 3 if prefix else 2
     assert len(source) == expected_return_count
@@ -96,7 +82,7 @@ def test_cli_non_existing_input(tmpdir, mp):
             mp,
             ['-i', 'abc'],
         )
-    assert returncode(result) == 2, str(result)
+    assert utila.returncode(result) == 2, str(result)
 
 
 def test_cli_non_existing_output(tmpdir, mp):
@@ -137,14 +123,14 @@ def test_cli_relative_output(tmpdir, mp):
 
 
 def test_cli_file_as_output(tmpdir, mp):
-    file_create(os.path.join(tmpdir, 'test.txt'), 'I am a file.')
+    utila.file_create(os.path.join(tmpdir, 'test.txt'), 'I am a file.')
     with pytest.raises(SystemExit) as result:
         create_and_run_parser(
             tmpdir,
             mp,
             ['-o', os.path.join(tmpdir, 'test.txt')],
         )
-    assert returncode(result) == 2, str(result)
+    assert utila.returncode(result) == 2, str(result)
 
 
 RUN_ME = """\
@@ -161,7 +147,7 @@ parser.parse_args()
 
 def test_cli_parse_required_command_missing(tmpdir):
     runner = os.path.join(tmpdir, 'run.py')
-    file_create(runner, RUN_ME % forward_slash(ROOT))
+    utila.file_create(runner, RUN_ME % utila.forward_slash(utila.ROOT))
 
     command = f'python "{runner}"'
     completed = utilatest.run(command, tmpdir, expect=False)
@@ -173,7 +159,7 @@ def test_cli_parse_required_command_missing(tmpdir):
 
 def test_cli_parse_required_command(tmpdir):
     runner = os.path.join(tmpdir, 'run.py')
-    file_create(runner, RUN_ME % forward_slash(ROOT))
+    utila.file_create(runner, RUN_ME % utila.forward_slash(utila.ROOT))
     command = f'python "{runner}" -a Samba'
     completed = utilatest.run(command, tmpdir)
     assert not completed.returncode, str(completed)
@@ -200,8 +186,8 @@ def parser_example(tmpdir):
     runner = os.path.join(tmpdir, 'empty.py')
     config = ("config=ParserConfiguration('inputparameter=True, "
               "outputparameter=True')")
-    content = EMPTY_PARSER % (forward_slash(ROOT), config)
-    file_create(runner, content)
+    content = EMPTY_PARSER % (utila.forward_slash(utila.ROOT), config)
+    utila.file_create(runner, content)
     cwd = os.path.split(tmpdir)[0]
     return cwd, runner
 
@@ -212,16 +198,16 @@ def test_cli_parse_empty_parser_help(parser_example):  # pylint: disable=W0621
     command = f'python "{runner}" --help'
     completed = utilatest.run(command, cwd)
 
-    assert completed.returncode == SUCCESS, str(completed)
+    assert completed.returncode == utila.SUCCESS, str(completed)
 
 
 def test_cli_parser_source_in_out(parser_example):  # pylint: disable=W0621
     """Test default parser with --help"""
     cwd, runner = parser_example
-    file_append(runner, SOURCES)
+    utila.file_append(runner, SOURCES)
     command = f'python "{runner}" -i {runner} -o out.file'
     completed = utilatest.run(command, cwd, expect=False)
-    assert completed.returncode == INVALID_COMMAND, str(completed)
+    assert completed.returncode == utila.INVALID_COMMAND, str(completed)
 
 
 def test_cli_parse_empty_parser_version(parser_example):  # pylint: disable=W0621
@@ -229,7 +215,7 @@ def test_cli_parse_empty_parser_version(parser_example):  # pylint: disable=W062
     cwd, runner = parser_example
     command = f'python "{runner}" --version'
     completed = utilatest.run(command, cwd, expect=False)
-    assert completed.returncode == INVALID_COMMAND, str(completed)
+    assert completed.returncode == utila.INVALID_COMMAND, str(completed)
 
 
 def test_cli_parse_version_parser_version(tmpdir):
@@ -237,11 +223,11 @@ def test_cli_parse_version_parser_version(tmpdir):
     version = "1.1.1"
     runner = os.path.join(tmpdir, 'version.py')
 
-    root = forward_slash(ROOT)
+    root = utila.forward_slash(utila.ROOT)
     config = (f'version="{version}", prog="testo",'
               'config=ParserConfiguration(verboseflag=True,)')
     parser = EMPTY_PARSER % (root, config)
-    file_create(runner, parser)
+    utila.file_create(runner, parser)
 
     cmd = f'python {runner} --version'
     completed = utilatest.run(cmd, tmpdir)
@@ -261,12 +247,12 @@ def create_and_run_parser(
 ):
     prog = 'parser'
     argv = [prog] + argv
-    config = ParserConfiguration(
+    config = utila.cli.ParserConfiguration(
         inputparameter=True,
         outputparameter=True,
         prefix=prefix,
     )
-    parser = create_parser(
+    parser = utila.cli.create_parser(
         prog=prog,
         config=config,
     )
@@ -274,8 +260,8 @@ def create_and_run_parser(
     with mp.context() as context:
         context.setattr(sys, 'argv', argv)
         context.setattr(os, 'getcwd', lambda: str(td))  # pylint:disable=C3001
-        parsed = parse(parser)
-        inpath, outpath, _ = sources(  # pylint:disable=unbalanced-tuple-unpacking
+        parsed = utila.parse(parser)
+        inpath, outpath, _ = utila.sources(  # pylint:disable=unbalanced-tuple-unpacking
             parsed,
             singleinput=singleinput,
         )
@@ -296,7 +282,7 @@ def test_cli_singlefile_input(td, mp, singlefile):
     root = str(td)
     # Create input file
     filepath = os.path.join(root, 'sample.txt')
-    file_create(filepath)
+    utila.file_create(filepath)
 
     # read root
     argv = ['-i', root, '-o', root]
@@ -327,12 +313,12 @@ def test_cli_singlefile_input(td, mp, singlefile):
                 argv=argv,
                 singleinput=False,
             )
-        assert returncode(result) == INVALID_COMMAND
+        assert utila.returncode(result) == utila.INVALID_COMMAND
 
 
 def test_cli_sort_parameter():
     expected = [
-        NumberedParameter(
+        utila.NumberedParameter(
             shortcut='j',
             longcut='',
             message='select number of jobs',
@@ -343,31 +329,31 @@ def test_cli_sort_parameter():
             },
             default=1,
         ),
-        Flag(
+        utila.Flag(
             shortcut='V',
             longcut='verbose',
             message='define verbose level of logging',
             args={'action': 'count'},
         ),
-        Flag(
+        utila.Flag(
             shortcut='',
             longcut='all',
             message='',
             args={},
         ),
-        Flag(
+        utila.Flag(
             shortcut='',
             longcut='brokenworker',
             message='export brokenworker',
             args={},
         ),
-        Flag(
+        utila.Flag(
             shortcut='',
             longcut='ff',
             message='failfast: quit after the first error',
             args={},
         ),
-        Parameter(
+        utila.Parameter(
             shortcut='',
             longcut='pages',
             message='shrink to given pages',
@@ -376,14 +362,14 @@ def test_cli_sort_parameter():
                 'default': ':'
             },
         ),
-        Parameter(
+        utila.Parameter(
             shortcut='',
             longcut='prefix',
             message='add prefix to separate different output files',
             args={'dest': 'prefix'},
         ),
     ]
-    result = sort(expected)
+    result = utila.cli.sort(expected)
     assert result == expected, 'is not sorted correctly'
 
 
