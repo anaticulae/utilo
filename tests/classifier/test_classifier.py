@@ -42,7 +42,7 @@ def test_classifier_three_side_equal():
         ((0, 0, 200, 50), 'D'),
     ]]
     assert len(clusters) == len(expected), clusters
-    sorted_result = sorted(clusters[0], key=lambda item: item[1])  # pylint:disable=C3001
+    sorted_result = sorted(clusters[0], key=utila.ssecond)
     assert sorted_result == expected[0], sorted_result
 
 
