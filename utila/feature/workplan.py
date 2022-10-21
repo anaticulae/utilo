@@ -206,7 +206,7 @@ def prepare_variables(variables, args):
         typ = variable.typ
         if typ is None:
             # do not convert data type, just pass it as it is
-            typ = lambda x: x  # pylint:disable=C3001
+            typ = utila.scall_or_me(typ)
         if typ is bool:
             # convert cause every non empty string is converted to true
             typ = utila.str2bool

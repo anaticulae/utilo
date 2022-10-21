@@ -139,7 +139,7 @@ class Single:
     """
 
     def __init__(self, converter: callable = None):
-        self.converter = converter if converter else lambda x: x  # pylint:disable=C3001
+        self.converter = utila.scall_or_me(converter)
         self.visited = set()
 
     def contains(self, item: object, mark: bool = True) -> bool:
@@ -183,8 +183,7 @@ class Buckets:
 
     def __init__(self, border, selector=None, sorting: bool = False):
         self.sorting = sorting
-        self.selector = selector if selector else lambda x: x  # pylint:disable=C3001
-
+        self.selector = utila.scall_or_me(selector)
         self.border = [
             item if utila.isnumber(item) else self.selector(item)
             for item in border
@@ -380,8 +379,7 @@ def sort_both(
     """
     assert len(firsts) == len(seconds), f'{len(firsts)} == {len(seconds)}'
     merged = list(zip(firsts, seconds))
-    if key is None:
-        key = lambda x: x  # pylint:disable=C3001
+    key = utila.scall_or_me(key)
     # x[0] first column
     merged.sort(key=lambda x: key(x[0]), reverse=reverse)  # pylint:disable=C3001
     firsts = [item[0] for item in merged]

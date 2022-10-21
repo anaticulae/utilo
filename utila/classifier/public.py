@@ -43,7 +43,7 @@ def common_items(
         ]
     """
     assert min_elements >= 1, str(min_elements)
-    selector = selector if selector else lambda x: x[0]  # pylint:disable=C3001
+    selector = selector if selector else utila.sfirst
     flat = utila.flat(collected)
     assert all(selector(item) is not None for item in flat), flat
 
@@ -85,7 +85,7 @@ def three_side_equal_cluster(
     max_diff=2.0,
     selector=None,
 ):
-    selector = selector if selector else lambda x: x[0]  # pylint:disable=C3001
+    selector = selector if selector else utila.sfirst
 
     def classifier(candidat, clusteritem):
 
@@ -113,7 +113,7 @@ def same_area_cluster(
     min_elements: int = 2,
     selector=None,
 ):
-    selector = selector if selector else lambda x: x[0]  # pylint:disable=C3001
+    selector = selector if selector else utila.sfirst
 
     def classifier(candidat, clusteritem, max_difference=max_difference):
 
@@ -174,7 +174,7 @@ def rect_intersecting_cluster(
     >>> len(rect_intersecting_cluster(((99.11, 112.15, 496.16, 272.75), (195.33, 296.66, 399.95, 321.37))))
     2
     """
-    bounding = bounding if bounding else lambda item: item  # pylint:disable=C3001
+    bounding = utila.scall_or_me(bounding)
 
     def classifier(candidat, clusteritem):
         return utila.rect_intersecting(

@@ -25,7 +25,7 @@ def zip_optimizer(first, second, *, selector=None):
     ... )
     [(0, 1), (2, 3), (4, 5), (6, 7, 8)]
     """
-    selector = selector if selector else lambda x: x  # pylint:disable=C3001
+    selector = utila.scall_or_me(selector)
     result = list(first)
     current = score_area(selector(item) for item in result)
     for todo in second:

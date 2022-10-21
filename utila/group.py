@@ -105,7 +105,7 @@ def groupby_diff(
     assert maxdiff >= 0, f'negative maxdiff: {maxdiff}'
     if not items:
         return []
-    selector = selector if selector else lambda x: x  # pylint:disable=C3001
+    selector = utila.scall_or_me(selector)
     if sort:
         items = sorted(items, key=selector)
     result = [[items[0]]]

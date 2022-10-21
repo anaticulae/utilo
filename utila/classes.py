@@ -29,7 +29,7 @@ def collect_classes(classes, valid=None):
     if not utila.iterable(classes):
         classes = (classes,)
     if not valid:
-        valid = lambda x: True  # pylint:disable=C3001
+        valid = utila.sall_true
     result = []
     for item in classes:
         for value in vars(item).values():
