@@ -285,7 +285,7 @@ def methods(item, starts=''):
     result = []
     # TODO: dir() and __dir__() is not the same, dir() sorts the keys
     # alphabetically.
-    for name in item.__dir__(): # pylint:disable=C2801
+    for name in item.__dir__():  # pylint:disable=C2801
         method = getattr(item, name)
         if not callable(method):
             continue
