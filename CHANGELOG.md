@@ -2,6 +2,16 @@
 
 Every noteable change is logged here.
 
+## v2.91.0 (2022-10-21)
+
+### Feature
+
+* profile runtime on verbose (f32945eb263e)
+
+### Fix
+
+* do not sort methods (2e28d2a4be32)
+
 ## v2.90.0 (2022-10-18)
 
 ### Feature
