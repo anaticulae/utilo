@@ -2,6 +2,12 @@
 
 Every noteable change is logged here.
 
+## v2.92.0 (2022-10-21)
+
+### Feature
+
+* add method to select different items (af93f82eb410)
+
 ## v2.91.0 (2022-10-21)
 
 ### Feature
