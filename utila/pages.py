@@ -330,11 +330,23 @@ def select_content(
     return default
 
 
+def some(items) -> bool:
+    """Return True if any item is not None.
+
+    >>> some((None, None, None))
+    False
+    >>> some(([], None, None))
+    True
+    """
+    return any(item is not None for item in items)
+
+
 def sync_pages(
     iterators,
     *,
     numbers: bool = True,
     default: object = None,
+    somes: callable = some,
 ) -> tuple[int, list]:
     """Generator to synchronize a list of PageContentIterators.
 
@@ -343,6 +355,7 @@ def sync_pages(
         numbers(bool): if True, yield (pagenumber, content)
                        if False, yield content
         default(object): return if no element is given
+        somes(callable): check if single item is not None
     Yields:
         pagenumber: (pagenumber, content of current pagenumber)
     """
@@ -361,7 +374,7 @@ def sync_pages(
                 popped.append(item.pop())
             except IndexError:
                 popped.append(default)
-        if not any(popped):
+        if not somes(popped):
             # nothing to do anymore
             return
         # lowest page number of popped content
