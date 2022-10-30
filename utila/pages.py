@@ -394,13 +394,18 @@ def sync_pages(
                 copy[index].append(item)
 
 
-def determine_pagenumber(item):
+def determine_pagenumber(item) -> int:
+    """\
+    >>> determine_pagenumber([]) == utila.INF
+    True
+    """
     if item is None:
         return utila.INF
-    try:
+    with contextlib.suppress(AttributeError):
         return item.page
-    except AttributeError:
+    with contextlib.suppress(AttributeError):
         return item.number
+    return utila.INF
 
 
 def simplify_pages(numbers: tuple) -> str:
