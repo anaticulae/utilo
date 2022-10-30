@@ -2,6 +2,17 @@
 
 Every noteable change is logged here.
 
+## v2.92.1 (2022-10-30)
+
+### Fix
+
+* only None is empty (1cbea5530e6b)
+
+### Chore
+
+* upgrade requirements.txt (6a3a901179ca)
+* upgrade environment (aef2d7666a7b)
+
 ## v2.92.0 (2022-10-21)
 
 ### Feature
