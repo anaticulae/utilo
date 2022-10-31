@@ -94,14 +94,15 @@ EXAMPLE = [
     ],
 ]
 
+EXPECTED = [
+    (0, (MiniPageContent(0, 'zero'), MiniPageContent(0, 'zero'), None)),
+    (1, (None, MiniPageContent(1, 'eins'), None)),
+    (2, (MiniPageContent(2, 'zwei'), None, None)),
+    (3, (None, MiniPageContent(3, 'drei'), None)),
+    (5, (MiniPageContent(5, 'fuenf'), None, MiniPageContent(5, 'fuenf'))),
+]
+
 
 def test_sync_pages_iterator():
     synced = list(utila.sync_pages(EXAMPLE))
-    expected = [
-        (0, (MiniPageContent(0, 'zero'), MiniPageContent(0, 'zero'), None)),
-        (1, (None, MiniPageContent(1, 'eins'), None)),
-        (2, (MiniPageContent(2, 'zwei'), None, None)),
-        (3, (None, MiniPageContent(3, 'drei'), None)),
-        (5, (MiniPageContent(5, 'fuenf'), None, MiniPageContent(5, 'fuenf'))),
-    ]
-    assert synced == expected
+    assert synced == EXPECTED
