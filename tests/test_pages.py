@@ -10,6 +10,7 @@
 import collections
 
 import pytest
+import texmex
 
 import utila
 
@@ -147,3 +148,29 @@ def test_sync_double_list():
         default=[],
     ))
     assert synced == DOUBLE_LIST
+
+
+PTNS = [
+    [
+        texmex.PTN(page=0),
+        texmex.PTN(page=1),
+        texmex.PTN(page=2),
+        texmex.PTN(page=4),
+    ],
+    [],
+]
+
+PTNS_EXPECTED = [
+    (0, (texmex.PTN(page=0), [])),
+    (1, (texmex.PTN(page=1), [])),
+    (2, (texmex.PTN(page=2), [])),
+    (4, (texmex.PTN(page=4), [])),
+]
+
+
+def test_sync_ptns():
+    synced = list(utila.sync_pages(
+        PTNS,
+        default=[],
+    ))
+    assert synced == PTNS_EXPECTED
