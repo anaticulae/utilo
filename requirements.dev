@@ -12,3 +12,5 @@ utilatest==0.24.1
 PyYAML>=6.0.0<7.0.0
 
 utilasafe==0.4.2
+# test data
+iamraw>=4.86.1<5.0.0
