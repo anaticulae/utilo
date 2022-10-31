@@ -88,6 +88,7 @@ EXAMPLE = [
         MiniPageContent(0, 'zero'),
         MiniPageContent(1, 'eins'),
         MiniPageContent(3, 'drei'),
+        MiniPageContent(4, 0),
     ],
     [
         MiniPageContent(5, 'fuenf'),
@@ -99,6 +100,7 @@ EXPECTED = [
     (1, (None, MiniPageContent(1, 'eins'), None)),
     (2, (MiniPageContent(2, 'zwei'), None, None)),
     (3, (None, MiniPageContent(3, 'drei'), None)),
+    (4, (None, MiniPageContent(4, 0), None)),
     (5, (MiniPageContent(5, 'fuenf'), None, MiniPageContent(5, 'fuenf'))),
 ]
 
