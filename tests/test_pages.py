@@ -132,3 +132,18 @@ def test_sync_double_empty():
         default=None,
     ))
     assert synced == DOUBLE_EXPECTED
+
+
+DOUBLE_LIST = [
+    (0, (MiniPageContent(page=0, content='zero'), [])),
+    (2, (MiniPageContent(page=2, content='zwei'), [])),
+    (5, (MiniPageContent(page=5, content='fuenf'), [])),
+]
+
+
+def test_sync_double_list():
+    synced = list(utila.sync_pages(
+        DOUBLE_EMPTY,
+        default=[],
+    ))
+    assert synced == DOUBLE_LIST
