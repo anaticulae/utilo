@@ -108,3 +108,27 @@ EXPECTED = [
 def test_sync_pages_iterator():
     synced = list(utila.sync_pages(EXAMPLE))
     assert synced == EXPECTED
+
+
+DOUBLE_EMPTY = [
+    [
+        MiniPageContent(0, 'zero'),
+        MiniPageContent(2, 'zwei'),
+        MiniPageContent(5, 'fuenf'),
+    ],
+    [],
+]
+
+DOUBLE_EXPECTED = [
+    (0, (MiniPageContent(page=0, content='zero'), None)),
+    (2, (MiniPageContent(page=2, content='zwei'), None)),
+    (5, (MiniPageContent(page=5, content='fuenf'), None)),
+]
+
+
+def test_sync_double_empty():
+    synced = list(utila.sync_pages(
+        DOUBLE_EMPTY,
+        default=None,
+    ))
+    assert synced == DOUBLE_EXPECTED
