@@ -2,6 +2,20 @@
 
 Every noteable change is logged here.
 
+## v2.93.0 (2022-10-31)
+
+### Feature
+
+* improve data selector (d486344cbb7d)
+
+### Fix
+
+* adjust page number selector (32cd471c84bb)
+
+### Chore
+
+* add iamraw (63bd601f802f)
+
 ## v2.92.1 (2022-10-30)
 
 ### Fix
