@@ -361,11 +361,12 @@ def sync_pages(
     for index, iterator in enumerate(iterators):
         pages = [determine_pagenumber(item) for item in iterator]
         assert utila.isascending(pages), f'iter: {index} not sorted: {iterator}'
-    copy = [list(item) for item in iterators]
-    while any(item for item in copy):
-        pnumber = pagenumber_next(copy)
+    # avoid side effects
+    iterators = [list(item) for item in iterators]
+    while any(item for item in iterators):
+        pnumber = pagenumber_next(iterators)
         popped = []
-        for item in copy:
+        for item in iterators:
             try:
                 use = determine_pagenumber(item[0]) == pnumber
             except IndexError:
