@@ -135,7 +135,7 @@ def test_sync_double_empty():
     assert synced == DOUBLE_EXPECTED
 
 
-DOUBLE_LIST = [
+DOUBLE_LIST_EXPECTED = [
     (0, (MiniPageContent(page=0, content='zero'), [])),
     (2, (MiniPageContent(page=2, content='zwei'), [])),
     (5, (MiniPageContent(page=5, content='fuenf'), [])),
@@ -147,7 +147,7 @@ def test_sync_double_list():
         DOUBLE_EMPTY,
         default=[],
     ))
-    assert synced == DOUBLE_LIST
+    assert synced == DOUBLE_LIST_EXPECTED
 
 
 PTNS = [
@@ -159,7 +159,6 @@ PTNS = [
     ],
     [],
 ]
-
 PTNS_EXPECTED = [
     (0, (texmex.PTN(page=0), [])),
     (1, (texmex.PTN(page=1), [])),
