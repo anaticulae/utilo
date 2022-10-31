@@ -363,35 +363,33 @@ def sync_pages(
     for index, iterator in enumerate(iterators):
         pages = [determine_pagenumber(item) for item in iterator]
         assert utila.isascending(pages), f'iter: {index} not sorted: {iterator}'
-    # TODO: NOT GOOD, BUT WORKS
-    # reverse list to use as a stack with push and pop
-    copy = [list(reversed(item)) for item in iterators]
-    while copy:  # pylint:disable=W0149
+    copy = [list(item) for item in iterators]
+    while any(item for item in copy):
+        pnumber = pagenumber_next(copy)
         popped = []
-        # iterate over all iterators and pop the first element
         for item in copy:
             try:
-                popped.append(item.pop())
+                use = determine_pagenumber(item[0]) == pnumber
             except IndexError:
+                use = False
+            if use:
+                popped.append(item[0])
+                item.remove(item[0])
+            else:
                 popped.append(default)
-        if not somes(popped):
-            # nothing to do anymore
-            return
-        # lowest page number of popped content
-        pagenumber = min((determine_pagenumber(item) for item in popped))
-        deliver = tuple(
-            item if determine_pagenumber(item) == pagenumber else default
-            for item in popped)
+        popped: tuple = tuple(popped)
         if numbers:
-            yield pagenumber, deliver
+            yield pnumber, popped
         else:
-            yield deliver
-        for index, item in enumerate(popped):
-            # push back non-yielded items
-            if determine_pagenumber(item) != pagenumber:
-                # use as a stack, therefore push(append) and pop(pop), not
-                # insert on pos 0.
-                copy[index].append(item)
+            yield popped
+
+
+def pagenumber_next(items) -> int:
+    result = utila.INF
+    for item in items:
+        with contextlib.suppress(IndexError):
+            result = min((result, determine_pagenumber(item[0])))
+    return result
 
 
 def determine_pagenumber(item) -> int:
