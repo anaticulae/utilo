@@ -136,6 +136,8 @@ class Single:
     False
     >>> container.contains(1)
     True
+    >>> 1 in container
+    True
     """
 
     def __init__(self, converter: callable = None):
@@ -166,6 +168,9 @@ class Single:
         if mark:
             self.visited.add(item)
         return False
+
+    def __contains__(self, item):
+        return self.contains(item)
 
 
 class Buckets:
