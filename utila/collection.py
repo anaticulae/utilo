@@ -7,6 +7,7 @@
 # be prosecuted under federal law. Its content is company confidential.
 # =============================================================================
 
+import contextlib
 import math
 import random
 
@@ -126,7 +127,7 @@ def chunks(items, size: int = 1) -> list:
     return result
 
 
-class Single:
+class Single(contextlib.ContextDecorator):
     """Ensure to use item only once.
 
     >>> container = Single()
@@ -138,11 +139,24 @@ class Single:
     True
     >>> 1 in container
     True
+    >>> with Single() as single:
+    ...     1 in single
+    ...     1 in single
+    ...     1 in single
+    False
+    True
+    True
     """
 
     def __init__(self, converter: callable = None):
         self.converter = utila.scall_or_me(converter)
         self.visited = set()
+
+    def __enter__(self):
+        return self
+
+    def __exit__(self, *exc_info):
+        pass
 
     def contains(self, item: object, mark: bool = True) -> bool:
         """Check if items contains Single container and add item
