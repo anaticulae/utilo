@@ -90,7 +90,8 @@ def use_cache(program, version, argv=None) -> int:
     cached = utila.datapackage(call, version=version)
     if not cached:
         # no cache
-        utila.debug('no cache')
+        if not utila.testing():
+            utila.debug('no cache')
         return False
     if not os.path.exists(cached):
         return False
