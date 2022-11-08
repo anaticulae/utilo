@@ -149,6 +149,20 @@ def parse_floats(text, maxcount=None) -> list:
     return result[0:maxcount]
 
 
+def parse_float(text: str) -> int:
+    """Parses single float out of str.
+
+    >>> parse_int('Helmut') is None
+    True
+    >>> parse_float('90 48 1.0')
+    1.0
+    """
+    parsed = parse_floats(text, maxcount=1)
+    if len(parsed) == 0:  # pylint:disable=compare-to-zero
+        return None
+    return parsed[0]
+
+
 ON = 'TRUE 1 ON'.split()
 
 

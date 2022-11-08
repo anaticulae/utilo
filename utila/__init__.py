@@ -89,6 +89,7 @@ from utila.config import dump_config
 from utila.config import load_config
 # convert
 from utila.convert import int_ornone
+from utila.convert import parse_float
 from utila.convert import parse_floats
 from utila.convert import parse_int
 from utila.convert import parse_ints
