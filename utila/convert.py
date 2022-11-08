@@ -118,6 +118,20 @@ def parse_ints(text, maxcount=None) -> list:
     return result[0:maxcount]
 
 
+def parse_int(text: str) -> int:
+    """Parses single int out of str.
+
+    >>> parse_int('Helmut') is None
+    True
+    >>> parse_int('90 48 1.0')
+    90
+    """
+    parsed = parse_ints(text, maxcount=1)
+    if len(parsed) == 0:  # pylint:disable=compare-to-zero
+        return None
+    return parsed[0]
+
+
 def parse_floats(text, maxcount=None) -> list:
     """\
     >>> parse_floats('Helmut')
