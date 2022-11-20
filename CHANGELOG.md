@@ -2,6 +2,24 @@
 
 Every noteable change is logged here.
 
+## v2.94.0 (2022-11-20)
+
+### Feature
+
+* add method to exit interpreter (c31d0bbdb66c)
+* ensure that git installed (be8d9bc06fc1)
+* add method to simplify installation (d0f21e82cd89)
+* add method to parse package description (25f86db16690)
+* add method to parse single float (956ab265732e)
+* add method to parse single int (04b7fe90946a)
+* add context behavior to Single (7926d568ef70)
+* support in operator (c577013405d7)
+
+### Chore
+
+* make version names more expressive (e7a055ffb37d)
+* upgrade requirements.txt (f2ea684b551d)
+
 ## v2.93.0 (2022-10-31)
 
 ### Feature
