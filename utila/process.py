@@ -15,9 +15,11 @@ import functools
 import inspect
 import os
 import subprocess  # nosec
+import sys
 import threading
 
 import utila
+import utila.utils
 
 
 def run(
@@ -78,6 +80,16 @@ def run(
                 cwd,
             )
     return completed
+
+
+def exitx(msg='', returncode=utila.utils.FAILURE):
+    """End progam. Log optional exit message as failure or success."""
+    if msg:
+        if returncode:
+            utila.error(msg)
+        else:
+            utila.log(msg)
+    sys.exit(returncode)
 
 
 def handle_run(

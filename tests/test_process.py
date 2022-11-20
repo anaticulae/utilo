@@ -91,3 +91,8 @@ def test_waiter():
     assert first == third
     for _ in range(10):
         assert waiter.please(run, a=15, b=10)
+
+
+def test_exit():
+    with pytest.raises(SystemExit):
+        utila.exitx('this is a failure')
