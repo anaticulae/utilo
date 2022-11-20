@@ -10,6 +10,7 @@
 
 import os
 import re
+import subprocess
 
 import setuptools
 
@@ -21,6 +22,23 @@ with open(os.path.join(ROOT, 'README.md'), encoding='utf8') as fp:
 with open(os.path.join(ROOT, 'utila/__init__.py'), encoding='utf8') as fp:
     VERSION = re.search(r'__version__ = \'(.*?)\'', fp.read()).group(1)
 
+
+def version() -> str:
+    completed = subprocess.run(
+        'git describe'.split(),
+        capture_output=True,
+    )
+    value: str = completed.stdout.strip().decode('utf8')
+    if value == VERSION:
+        return VERSION
+    # transform v2.40.1-5-gc1b4bee to
+    # utila-2.93.0.post6+g3b6726a
+    value = value[1:]
+    value = value.replace('-', '.post', 1)
+    value = value.replace('-g', '+')
+    return value
+
+
 if __name__ == "__main__":
     setuptools.setup(
         author='Helmut Konrad Fahrendholz',
@@ -31,7 +49,7 @@ if __name__ == "__main__":
         name='utila',
         platforms='any',
         url='http://dev.package.checkitweg.de/utila',
-        version=VERSION,
+        version=version(),
         zip_safe=False,  # create 'zip'-file if True. Don't do it!
         classifiers=[
             'Programming Language :: Python :: 3.8',
