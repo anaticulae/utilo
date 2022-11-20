@@ -41,6 +41,17 @@ def baw_name(path: str) -> str:
     return config.get('project').get('short')
 
 
+def baw_desc(path: str) -> str:
+    """\
+    >>> baw_desc(__file__)
+    'write it once'
+    """
+    config = baw_config(path)
+    if not config:
+        return None
+    return config.get('project').get('name')
+
+
 @functools.lru_cache
 def baw_config(path: str) -> dict:
     """\

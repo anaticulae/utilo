@@ -22,6 +22,7 @@ from utila.alpha import replace
 from utila.alpha import sort
 # project
 from utila.baw import baw_config
+from utila.baw import baw_desc
 from utila.baw import baw_name
 from utila.baw import baw_root
 # cacher
