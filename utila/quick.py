@@ -8,6 +8,7 @@
 # =============================================================================
 
 import re
+import sys
 
 import setuptools
 
@@ -59,6 +60,9 @@ def readme(root):
 
 
 def version(root) -> str:
+    if not utila.hasprog('git'):
+        utila.error('please install git')
+        sys.exit(utila.FAILURE)
     completed = utila.run(
         'git describe',
         cwd=root,
