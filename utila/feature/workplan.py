@@ -15,7 +15,6 @@ import functools
 import glob
 import inspect
 import os
-import sys
 
 import utila
 import utila.cli
@@ -130,7 +129,7 @@ def create_runtime(  # pylint:disable=too-many-locals
                 outputs=outputs,
             ))
     if ret and verify:
-        sys.exit(utila.FAILURE)
+        utila.exitx()
     return result
 
 
@@ -397,7 +396,7 @@ def prepare_outputs(
             outitem = f'{process}__{prefix}{stepname}_{filename}.{datatype}'
         _outputs.append(outitem)
     if ret:
-        sys.exit(utila.FAILURE)
+        utila.exitx()
     outputs = [os.path.join(outspace, item) for item in _outputs]
     return outputs
 

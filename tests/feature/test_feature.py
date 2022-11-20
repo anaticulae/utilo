@@ -211,8 +211,9 @@ def test_featurepack_wrong_featurepath(featureexample, mp, capsys):  #pylint:dis
         with pytest.raises(SystemExit) as result:
             pack(workplan(), root=root, featurepackage='features.wrongpath')
         assert returncode(result) == FAILURE, str(result)
-        _, err = capsys.readouterr()
-        assert '[ERROR] wrong featurepack configuration, check' in err, str(err)
+        err = utilatest.stderr(capsys)
+        expected = '[ERROR] wrong featurepack configuration,\n check'
+        assert expected in err, err
 
 
 def create_worker(

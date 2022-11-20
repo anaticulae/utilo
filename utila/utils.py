@@ -561,7 +561,7 @@ def wait():
     answer = input('continue?\n')
     answer = answer.strip().lower()
     if answer in {'no', 'n'}:
-        sys.exit(utila.SUCCESS)
+        utila.exitx(returncode=utila.SUCCESS)
 
 
 def assert_unique(items):

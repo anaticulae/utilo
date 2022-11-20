@@ -51,8 +51,7 @@ def tmp(root) -> str:
     try:
         path = os.path.join(os.environ[SHARED_TMP], projectname)
     except KeyError:
-        utila.error('DEFINE $SHARED_TMP')
-        sys.exit(utila.FAILURE)
+        utila.exitx('DEFINE $SHARED_TMP')
     os.makedirs(path, exist_ok=True)
     return path
 
@@ -344,7 +343,7 @@ def file_copy(
         utila.error(f'could not overwrite: {dst}')
         if exception:
             raise error
-        sys.exit(utila.FAILURE)
+        utila.exitx()
 
 
 def file_count(path: str, ext: str = None, recursive: bool = True) -> int:

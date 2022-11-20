@@ -413,10 +413,11 @@ def parse(parser: argparse.ArgumentParser):
         try:
             version += parser.__version
         except AttributeError:
-            utila.error('missing version flag')
-            sys.exit(utila.INVALID_COMMAND)
-        utila.log(version)
-        sys.exit(utila.SUCCESS)
+            utila.exitx(
+                'missing version flag',
+                returncode=utila.INVALID_COMMAND,
+            )
+        utila.exitx(version, returncode=utila.SUCCESS)
     args = vars(parser.parse_args())
     # use disable with None
     args = {
@@ -495,17 +496,23 @@ def sources(  # pylint:disable=too-complex,too-many-branches
         for inputpath in inputpaths:
             if not singleinput:
                 if os.path.isfile(inputpath):
-                    utila.error(f'Input {inputpath} must be a directory')
-                    sys.exit(INVALID_COMMAND)
+                    utila.exitx(
+                        f'Input {inputpath} must be a directory',
+                        returncode=INVALID_COMMAND,
+                    )
             if not os.path.exists(inputpath):
-                utila.error(f'Input {inputpath} does not exists')
-                sys.exit(INVALID_COMMAND)
+                utila.exitx(
+                    f'Input {inputpath} does not exists',
+                    returncode=INVALID_COMMAND,
+                )
     if outputpath:
         if not os.path.isabs(outputpath):
             outputpath = os.path.join(cwd, outputpath)
         if os.path.isfile(outputpath):
-            utila.error(f'Output {outputpath} must be a directory')
-            sys.exit(INVALID_COMMAND)
+            utila.exitx(
+                f'Output {outputpath} must be a directory',
+                returncode=INVALID_COMMAND,
+            )
         if not os.path.exists(outputpath):
             try:
                 os.makedirs(outputpath)
@@ -574,8 +581,10 @@ def processcount(args: dict, multiprocessed: bool = False) -> int:
         try:
             processes = int(selected)
         except ValueError:
-            utila.error(f'invalid process count: {selected}')
-            sys.exit(utila.INVALID_COMMAND)
+            utila.exitx(
+                f'invalid process count: {selected}',
+                returncode=utila.INVALID_COMMAND,
+            )
     return processes
 
 

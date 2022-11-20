@@ -11,7 +11,6 @@ import concurrent.futures
 import functools
 import os
 import signal
-import sys
 import time
 
 import utila
@@ -372,9 +371,8 @@ def write_resource(path, content, rename: callable = None):
         return
     if content == [NO_RESULT]:
         return
-    utila.error(f'invalid content type: {type(content)}')
-    utila.error(utila.shrink(content))
-    sys.exit(utila.FAILURE)
+    msg = f'invalid content type: {type(content)}\nutila.shrink(content)'
+    utila.exitx(msg)
 
 
 def select_executor():

@@ -10,7 +10,6 @@
 import argparse
 import os
 import re
-import sys
 
 import utila
 
@@ -27,7 +26,7 @@ def main():
         content = utila.file_read(path)
         content = action(content)
         utila.file_replace(path, content)
-    sys.exit(utila.SUCCESS)
+    utila.exitx(returncode=utila.SUCCESS)
 
 
 SPACE_MIN = 30
@@ -87,5 +86,5 @@ def sources() -> list:
             utila.error(f'file does not exists: {item}')
         failure = True
     if failure:
-        sys.exit(utila.FAILURE)
+        utila.exitx()
     return result

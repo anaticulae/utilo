@@ -10,7 +10,6 @@
 import dataclasses
 import importlib
 import os
-import sys
 
 import utila
 
@@ -42,10 +41,8 @@ def find_features(root: str, featurepackage: str) -> FeatureInterfaces:
     utila.exists_assert(root)
     featurepath = os.path.join(root, featurepackage.replace('.', '/'))
     if not os.path.exists(featurepath):
-        utila.error('wrong featurepack configuration, '
-                    'check `featurepackage` path')
-        utila.error(f'featurepath {featurepath} does not exists')
-        sys.exit(utila.FAILURE)
+        msg = 'wrong featurepack configuration,\n check `featurepackage` path'
+        utila.exitx(f'{msg}\n featurepath {featurepath} does not exists')
     collected = [
         item.replace('.py', '')
         for item in os.listdir(featurepath)
@@ -66,7 +63,7 @@ def find_features(root: str, featurepackage: str) -> FeatureInterfaces:
             utila.error(exception)
             ret += 1
     if ret:
-        sys.exit(utila.FAILURE)
+        utila.exitx()
     return result
 
 

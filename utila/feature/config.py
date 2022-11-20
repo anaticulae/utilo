@@ -9,7 +9,6 @@
 
 import contextlib
 import os
-import sys
 
 import utila
 
@@ -59,8 +58,7 @@ def overwrite(args):
     if not configpath:
         return
     if not os.path.exists(configpath):
-        utila.error(f'config does not exists: {configpath}')
-        sys.exit(utila.FAILURE)
+        utila.exitx(msg=f'config does not exists: {configpath}')
     loaded = utila.feature.config.read(utila.file_read(configpath))
     for key, value in loaded.items():
         try:
