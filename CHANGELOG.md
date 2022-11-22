@@ -2,6 +2,12 @@
 
 Every noteable change is logged here.
 
+## v2.94.1 (2022-11-22)
+
+### Fix
+
+* stdout is already str (34a66c70315c)
+
 ## v2.94.0 (2022-11-20)
 
 ### Feature
