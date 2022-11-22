@@ -42,7 +42,7 @@ def install(root: str):
         name=short,
         platforms='any',
         url=f'https//pip.ostia.la/{short}',
-        version=version(root),
+        version=git_hash(root),
         zip_safe=False,  # create 'zip'-file if True. Don't do it!
         classifiers=CLASSIFIERS,
         packages=packages,
@@ -58,7 +58,7 @@ def readme(root):
     raise ValueError(f'could not locate any README: {root}')
 
 
-def version(root) -> str:
+def git_hash(root) -> str:
     if not utila.hasprog('git'):
         utila.exitx('install git, please')
     completed = utila.run(
