@@ -7,6 +7,7 @@
 # be prosecuted under federal law. Its content is company confidential.
 # =============================================================================
 
+import importlib.metadata
 import re
 
 import setuptools
@@ -48,6 +49,25 @@ def install(root: str):
         packages=packages,
         entry_points=entry,
     )
+
+
+def version(package):
+    """Determine precise package version/githash.
+
+    >>> import utila; version(utila)
+    '...'
+    >>> import re; version(re)
+    Traceback (most recent call last):
+        ...
+    ValueError: re not installed/no metadata
+    """
+    assert not isinstance(package, str), f'require module: {package}'
+    name = package.__name__
+    try:
+        live = importlib.metadata.version(name)
+    except importlib.metadata.PackageNotFoundError as notfound:
+        raise ValueError(f'{name} not installed/no metadata') from notfound
+    return live
 
 
 def readme(root):

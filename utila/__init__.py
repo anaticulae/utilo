@@ -358,6 +358,7 @@ from utila.process import run
 from utila.process import run_parallel
 # quick
 from utila.quick import install
+from utila.quick import version
 # regex
 from utila.regex import NOCASE_VERBOSE
 from utila.regex import compiles
