@@ -414,22 +414,17 @@ def test_file_compare(first_content, second_content, expected_result, td):
 
     first = os.path.join(root, 'first')
     second = os.path.join(root, 'second')
-
     utila.file_create(first, first_content)
     utila.file_create(second, second_content)
-
     equals = utila.file_compare(first, second)
-
     assert equals == expected_result
 
 
 def test_file_compare_binary_file(td):
     root = str(td)
     utf32 = os.path.join(root, 'example.utf32')
-
     with open(utf32, mode='w', encoding='utf32') as fp:
         fp.write('\u1234')
-
     equal = utila.file_compare(utf32, __file__)
     assert not equal
 
@@ -439,7 +434,6 @@ def test_file_compare_not_exists():
     second = __file__
     equals = utila.file_compare(first, second)
     assert not equals
-
     equals = utila.file_compare(first=second, second=first)
     assert not equals
 
@@ -447,21 +441,16 @@ def test_file_compare_not_exists():
 def test_file_lock(td):
     root = str(td)
     first = os.path.join(root, 'locked.abc')
-
     utila.file_create(first, 'file to lock')
-
     assert not utila.file_islocked(first)
-
     utila.file_lock(first)
     assert utila.file_islocked(first)
     # test write protection
     with pytest.raises(PermissionError):
         utila.file_remove(first)
     assert os.path.exists(first)
-
     utila.file_unlock(first)
     assert not utila.file_islocked(first)
-
     utila.file_remove(first)
     assert not os.path.exists(first), 'write protection is already there'
 
