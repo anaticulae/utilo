@@ -16,7 +16,7 @@ import setuptools
 
 ROOT = os.path.dirname(__file__)
 
-with open(os.path.join(ROOT, 'README.md'), encoding='utf8') as fp:
+with open(os.path.join(ROOT, 'README'), encoding='utf8') as fp:
     README = fp.read()
 
 with open(os.path.join(ROOT, 'utila/__init__.py'), encoding='utf8') as fp:
