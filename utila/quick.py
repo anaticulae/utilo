@@ -65,7 +65,7 @@ def version(root) -> str:
         'git describe',
         cwd=root,
     )
-    value: str = completed.stdout.strip().decode('utf8')
+    value = completed.stdout.strip()
     if value == static(root):
         return value
     # transform v2.40.1-5-gc1b4bee to
