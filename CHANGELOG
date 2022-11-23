@@ -2,6 +2,27 @@
 
 Every noteable change is logged here.
 
+## v2.95.0 (2022-11-23)
+
+### Feature
+
+* add method to determine software version (111ae47bab56)
+
+### Fix
+
+* adjust file access (0562acfb3355)
+
+### Documentation
+
+* remove md suffix (48d62e61fa42)
+
+### Chore
+
+* adjust release step (1139c3aae57e)
+* run tests in parallel (35879d48b237)
+* use new test library (bb0ad1ba7d62)
+* add pipe library (ff457394afcf)
+
 ## v2.94.1 (2022-11-22)
 
 ### Fix
