@@ -570,6 +570,7 @@ def test_make_tmpdir_remove():
     assert not os.path.exists(tmp_dir), tmp_dir
 
 
+@pytest.mark.skip(reason='no PermissionError on linux')
 def test_inform_file_permission(tmpdir, capsys):
     path = tmpdir.join('locked')
     utila.file_create(path)
