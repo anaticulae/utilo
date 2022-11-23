@@ -10,19 +10,24 @@ pipeline {
         stage('setup'){
             steps{script{baw.setup()}}
         }
-        stage('doc'){
-            steps{
-                script{baw.doctest()}
-            }
-        }
-        stage('fast'){
-            steps{
-                script{baw.fast()}
-            }
-        }
-        stage('long'){
-            steps{
-                script{baw.longrun()}
+        stage('test'){
+            failFast true
+            parallel{
+                stage('doc'){
+                    steps{
+                        script{baw.doctest()}
+                    }
+                }
+                stage('fast'){
+                    steps{
+                        script{baw.fast()}
+                    }
+                }
+                stage('long'){
+                    steps{
+                        script{baw.longrun()}
+                    }
+                }
             }
         }
         stage('all'){
@@ -30,14 +35,19 @@ pipeline {
                 script{baw.all()}
             }
         }
-        stage('lint'){
-            steps{
-                script{baw.lint()}
-            }
-        }
-        stage('format'){
-            steps{
-                script{baw.format()}
+        stage('quality'){
+            failFast true
+            parallel{
+                stage('lint'){
+                    steps{
+                        script{baw.lint()}
+                    }
+                }
+                stage('format'){
+                    steps{
+                        script{baw.format()}
+                    }
+                }
             }
         }
         // stage('others'){
