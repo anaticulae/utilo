@@ -66,7 +66,7 @@ def file_append(path: str, content: str, create: bool = False, private: bool = F
         create(bool): if True, create File if not exists
         private(bool): if True, use encryption
     Hint:
-        If file not exists and create == False, an assertion is fired.
+        If file not exists and create == False, an AssertException is raised.
     """
     assert create or os.path.exists(path), str(path)
     if not os.path.exists(path):
