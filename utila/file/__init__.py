@@ -18,6 +18,7 @@ import glob
 import os
 import random
 import shutil
+import stat
 import sys
 
 import utila
@@ -290,7 +291,9 @@ def file_islocked(path: str):
     If `path` does not exists, AssertionError is raised.
     """
     assert os.path.exists(path), f'{path} does not exists'
-    return not os.access(path, os.W_OK)
+    mode = os.stat(path)
+    filemode = stat.filemode(mode.st_mode)
+    return 'w' not in filemode
 
 
 @utila.typechecker.rename(source='src', destination='dest')
