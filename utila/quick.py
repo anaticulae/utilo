@@ -43,7 +43,7 @@ def install(root: str):
         name=short,
         platforms='any',
         url=f'https//pip.ostia.la/{short}',
-        version=git_hash(root),
+        version=current(root),
         zip_safe=False,  # create 'zip'-file if True. Don't do it!
         classifiers=CLASSIFIERS,
         packages=packages,
