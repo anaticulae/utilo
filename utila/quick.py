@@ -85,6 +85,8 @@ def current(root, backup: bool = False):
     """
     root = utila.baw_root(root)
     backup |= not utila.hasprog('git')
+    # git is installed, but no git repository is available
+    backup |= not utila.exists(utila.join(root, '.git'))
     if backup:
         package = utila.baw_name(root)
         content = utila.file_read(utila.join(root, package, '__init__.py'))
