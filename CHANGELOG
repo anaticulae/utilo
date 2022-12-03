@@ -2,6 +2,19 @@
 
 Every noteable change is logged here.
 
+## v2.96.0 (2022-12-03)
+
+### Feature
+
+* use backup installer to setup without git repo (4d5922769a78)
+* add method to determine version with backup (18355ee64da3)
+
+### Chore
+
+* upgrade Jenkinsfile (1b5ec0242487)
+* upgrade requirements.txt (8589c348f3e2)
+* upgrade pipe library (e45d401421df)
+
 ## v2.95.0 (2022-11-23)
 
 ### Feature
