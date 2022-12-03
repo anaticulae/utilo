@@ -2,6 +2,12 @@
 
 Every noteable change is logged here.
 
+## v2.96.1 (2022-12-03)
+
+### Fix
+
+* use backup if no git repository is given (aa6101952a63)
+
 ## v2.96.0 (2022-12-03)
 
 ### Feature
