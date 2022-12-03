@@ -78,6 +78,23 @@ def readme(root):
     raise ValueError(f'could not locate any README: {root}')
 
 
+def current(root, backup: bool = False):
+    """\
+    >>> current(__file__, backup=True) == utila.__version__
+    True
+    """
+    root = utila.baw_root(root)
+    if not utila.hasprog('git') or backup:
+        package = utila.baw_name(root)
+        content = utila.file_read(utila.join(root, package, '__init__.py'))
+        result = re.search(
+            r'__version__ = \'(.*?)\'',
+            content,
+        ).group(1)
+        return result
+    return git_hash(root)
+
+
 def git_hash(root) -> str:
     if not utila.hasprog('git'):
         utila.exitx('install git, please')
