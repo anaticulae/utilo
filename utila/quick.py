@@ -84,7 +84,8 @@ def current(root, backup: bool = False):
     True
     """
     root = utila.baw_root(root)
-    if not utila.hasprog('git') or backup:
+    backup |= not utila.hasprog('git')
+    if backup:
         package = utila.baw_name(root)
         content = utila.file_read(utila.join(root, package, '__init__.py'))
         result = re.search(
