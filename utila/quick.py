@@ -97,7 +97,7 @@ def git_hash(root) -> str:
 
 
 def static(root):
-    short = utila.baw.baw_name(root)
+    short = utila.baw_name(root)
     path = utila.join(root, short, '__init__.py', exist=True)
     content = utila.file_read(path)
     result = re.search(r'__version__ = \'(.*?)\'', content).group(1)
