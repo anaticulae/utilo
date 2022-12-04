@@ -23,7 +23,10 @@ CLASSIFIERS = [
 ]
 
 
-def install(root: str):
+def install(
+    root: str,
+    include_package_data: bool = True,
+):
     module = utila.load_module(root)
     packages = module.PACKAGES
     try:
@@ -40,7 +43,7 @@ def install(root: str):
         author_email=AUTHOR_EMAIL,
         description=description,
         install_requires=xrequires,
-        include_package_data=True,
+        include_package_data=include_package_data,
         long_description=xreadme,
         name=short,
         platforms='any',
