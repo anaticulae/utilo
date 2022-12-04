@@ -2,6 +2,16 @@
 
 Every noteable change is logged here.
 
+## v2.97.0 (2022-12-04)
+
+### Feature
+
+* add parameter to disable package data inclusion (7fdce541d6b0)
+
+### Fix
+
+* add missing install requirements (c6b9133c9b12)
+
 ## v2.96.1 (2022-12-03)
 
 ### Fix
