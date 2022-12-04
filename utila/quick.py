@@ -33,11 +33,13 @@ def install(root: str):
     root = utila.baw_root(root)
     short = utila.baw.baw_name(root)
     xreadme = readme(root)
+    xrequires = requires(root)
     description = utila.baw_desc(root)
     setuptools.setup(
         author=AUTHOR,
         author_email=AUTHOR_EMAIL,
         description=description,
+        install_requires=xrequires,
         include_package_data=True,
         long_description=xreadme,
         name=short,
@@ -68,6 +70,20 @@ def version(package):
     except importlib.metadata.PackageNotFoundError as notfound:
         raise ValueError(f'{name} not installed/no metadata') from notfound
     return live
+
+
+def requires(root) -> list:
+    """\
+    >>> requires(__file__)
+    []
+    """
+    root = utila.baw_root(root)
+    path = utila.join(root, 'requirements.txt')
+    if not utila.exists(path):
+        return []
+    content = utila.file_read(path)
+    result = [line for line in content.splitlines() if line and '#' not in line]
+    return result
 
 
 def readme(root):
