@@ -1,4 +1,4 @@
-@Library('caelum@108f81811f363bfda4a3fd6110a5c190e56b2fa0') _
+@Library('caelum@a1411f1288b8bc739b27c2e76f50554a6fdcda8c') _
 
 pipeline {
     agent {
