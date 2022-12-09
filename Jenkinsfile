@@ -50,16 +50,16 @@ pipeline {
                 }
             }
         }
-        // stage('others'){
-        // TODO: REQUIRE INTEGRATION BRANCH BECAUSE MASTER ALWAYS WORKS
-        // when{ branch 'master' }
-        //parallel{
-        //    stage('utilatest'){steps{build job: 'caelum/utilatest/master'}}
-        //    stage('configo')  {steps{build job: 'caelum/configo/master'}}
-        //    stage('iamraw')   {steps{build job: 'caelum/iamraw/master'}}
-        //    stage('protocol') {steps{build job: 'caelum/protocol/master'}}
-        //}
-        // }
+        stage('others'){
+            // TODO: REQUIRE INTEGRATION BRANCH BECAUSE MASTER ALWAYS WORKS
+            when{branch 'develop'}
+            parallel{
+                //stage('utilatest'){steps{build job: 'caelum/utilatest/master'}}
+                //stage('configo')  {steps{build job: 'caelum/configo/master'}}
+                stage('iamraw'){steps{build job: 'caelum/iamraw/integrate'}}
+                //stage('protocol') {steps{build job: 'caelum/protocol/master'}}
+            }
+        }
         stage('release'){
             steps{
                 script{publish.release()}
