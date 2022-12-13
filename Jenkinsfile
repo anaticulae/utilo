@@ -7,6 +7,9 @@ pipeline {
         }
     }
     stages{
+        stage('integrate'){
+            steps{script{baw.integrate()}}
+        }
         stage('setup'){
             steps{script{baw.setup()}}
         }
@@ -49,6 +52,10 @@ pipeline {
                     }
                 }
             }
+        }
+        stage('pre-release'){
+            when{not{branch 'master'}}
+            steps{sh 'baw publish --pre'}
         }
         stage('others'){
             // TODO: REQUIRE INTEGRATION BRANCH BECAUSE MASTER ALWAYS WORKS
