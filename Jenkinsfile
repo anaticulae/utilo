@@ -61,10 +61,10 @@ pipeline {
             // TODO: REQUIRE INTEGRATION BRANCH BECAUSE MASTER ALWAYS WORKS
             when{branch 'develop'}
             parallel{
-                //stage('utilatest'){steps{build job: 'caelum/utilatest/master'}}
-                //stage('configo')  {steps{build job: 'caelum/configo/master'}}
+                stage('configo'){steps{build job: 'caelum/protocol/integrate'}}
                 stage('iamraw'){steps{build job: 'caelum/iamraw/integrate'}}
-                //stage('protocol') {steps{build job: 'caelum/protocol/master'}}
+                stage('protocol'){steps{build job: 'caelum/protocol/integrate'}}
+                stage('utilatest'){steps{build job: 'caelum/utilatest/integrate'}}
             }
         }
         stage('release'){
