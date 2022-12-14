@@ -7,10 +7,10 @@
 # be prosecuted under federal law. Its content is company confidential.
 # =============================================================================
 
-utilatest==0.24.1
+utilatest==0.24.3
 
 PyYAML>=6.0.0<7.0.0
 
 utilasafe==0.4.2
 # test data
-iamraw>=4.88.5<5.0.0
+iamraw>=4.88.9<5.0.0
