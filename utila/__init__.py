@@ -7,7 +7,7 @@
 # be prosecuted under federal law. Its content is company confidential.
 #==============================================================================
 
-__version__ = '2.97.0'
+__version__ = '2.98.0'
 
 import os
 

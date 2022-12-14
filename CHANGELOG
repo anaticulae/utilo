@@ -2,6 +2,19 @@
 
 Every noteable change is logged here.
 
+## v2.98.0 (2022-12-14)
+
+### Feature
+
+* ensure that packages is defined correctly (299f96ae6ee0)
+
+### Chore
+
+* add integration branch, add pre-release (e35ee21bb70a)
+* add integration step (5d95796746f5)
+* upgrade pipe library (0822a83c8134)
+* upgrade Jenkinsfile (63e03dec12e3)
+
 ## v2.97.0 (2022-12-04)
 
 ### Feature
