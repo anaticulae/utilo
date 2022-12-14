@@ -28,7 +28,7 @@ def install(
     include_package_data: bool = True,
 ):
     module = utila.load_module(root)
-    packages = module.PACKAGES
+    xpackages = packages(module)
     try:
         entry = module.ENTRY_POINTS
     except AttributeError:
@@ -51,9 +51,31 @@ def install(
         version=current(root),
         zip_safe=False,  # create 'zip'-file if True. Don't do it!
         classifiers=CLASSIFIERS,
-        packages=packages,
+        packages=xpackages,
         entry_points=entry,
     )
+
+
+def packages(module):
+    """\
+    >>> import collections; Module=collections.namedtuple('Module', 'PACKAGES')
+    >>> packages(Module('first second third'.split()))
+    ['first', 'second', 'third']
+    >>> PACKAGES=['first', 'second', 'third'],
+    >>> packages(Module(PACKAGES))
+    Traceback (most recent call last):
+      ...
+    ValueError: require list or single tuple: (['first', 'second', 'third'],)
+    """
+    result = module.PACKAGES
+    if not all(isinstance(item, str) for item in result):
+        # PACKAGES = [
+        # 'lists',
+        # 'lists.features',
+        # 'lists.strategies',
+        # ], <-ATTENTION COMMA!
+        raise ValueError(f'require list or single tuple: {result}')
+    return result
 
 
 def version(package):
