@@ -17,7 +17,7 @@ import utila
 import utila.logger
 
 
-def test_logger_skipcollector():
+def test_skipcollector():
     to_skip = [0, 5, 10]
     skipped = []
 
@@ -29,13 +29,13 @@ def test_logger_skipcollector():
     assert skipped == to_skip, str(skipped)
 
 
-def test_logger_skipcollector_none():
+def test_skipcollector_none():
     with utila.SkipCollector() as collector:
         assert not collector.skip(10)
         assert not collector.skip(20)
 
 
-def test_logger_skipcollector_single_int():
+def test_skipcollector_single_int():
     """Skip all other pages than zero."""
     single_int = 0
     with utila.SkipCollector(pages=single_int) as collector:
@@ -43,7 +43,7 @@ def test_logger_skipcollector_single_int():
         assert collector.skip(1)
 
 
-def test_logger_skipcollector_zero_tuple():
+def test_skipcollector_zero_tuple():
     """Skip all other pages than zero."""
     zero_tuple = (0,)
     with utila.SkipCollector(pages=zero_tuple) as collector:
@@ -52,7 +52,7 @@ def test_logger_skipcollector_zero_tuple():
 
 
 @pytest.mark.parametrize('message', ['', 'setup'])
-def test_logger_profile(capsys, message):
+def test_profile(capsys, message):
     """Test that profiler print the `message` in combination of runtime"""
     with utila.level_tmp(utila.Level.INFO):
         with utila.profile(message):
@@ -61,7 +61,7 @@ def test_logger_profile(capsys, message):
     assert message in stdout, str(stdout)
 
 
-def test_logger_profile_with_exception(capsys):
+def test_profile_with_exception(capsys):
     """Catch error while running profiling"""
     with pytest.raises(ValueError):
         with utila.level_tmp(utila.Level.INFO):
@@ -84,7 +84,7 @@ def test_profiler_decorator(capsys):
     assert 'decorated profiler' in stdout, str(stdout)
 
 
-def test_logger_print_env(capsys, mp):
+def test_print_env(capsys, mp):
     with mp.context() as context:
         context.setattr(utila.logger, 'LEVEL', utila.Level.INFO)
         utila.print_env()
@@ -92,7 +92,7 @@ def test_logger_print_env(capsys, mp):
     assert len(stdout) > 500, str(stdout)
 
 
-def test_logger_format_completed():
+def test_format_completed():
     completed = utilatest.run('pingosuperdumpa --help', expect=None)
     formatted = utila.format_completed(completed)
     assert len(formatted) > 150, str(formatted)
@@ -121,7 +121,7 @@ def add(x, y, z):  # pylint:disable=C0103
         id='logging calls',
     ),
 ])
-def test_logger_log_args(level, expected_log, capsys, mp):
+def test_log_args(level, expected_log, capsys, mp):
     with mp.context() as context:
         context.setattr(utila.logger, 'LEVEL', level)
         add(1, 2, 3)
@@ -135,7 +135,7 @@ def test_logger_log_args(level, expected_log, capsys, mp):
     assert len(''.join(expected_log)) <= len(captured.strip())
 
 
-def test_logger_log_args_loglevel_to_low(capsys, mp):
+def test_log_args_loglevel_to_low(capsys, mp):
     """Set `LEVEL` to `LOGGING` to avoid any output"""
     with mp.context() as context:
         level = utila.Level.LOGGING
@@ -146,7 +146,7 @@ def test_logger_log_args_loglevel_to_low(capsys, mp):
     assert not captured, str(captured)
 
 
-def test_logger_level_tmp(mp):
+def test_level_tmp(mp):
     utila.level_setup(utila.LEVEL_DEFAULT)  # TODO: REMOVE LATER
     assert utila.level_current() == utila.LEVEL_DEFAULT
     with mp.context() as context:
@@ -164,7 +164,7 @@ def test_logger_level_tmp(mp):
     assert utila.level_current() == utila.LEVEL_DEFAULT
 
 
-def test_logger_level_setup(mp):
+def test_level_setup(mp):
     utila.level_setup(utila.LEVEL_DEFAULT)  # TODO: REMOVE LATER
     assert utila.level_current() == utila.LEVEL_DEFAULT
     with mp.context() as context:
@@ -180,7 +180,7 @@ def test_logger_level_setup(mp):
     assert utila.level_current() == utila.LEVEL_DEFAULT
 
 
-def test_logger_outfile(td, mp):
+def test_outfile(td, mp):
     logger = os.path.join(td.tmpdir, 'logging.txt')
 
     with mp.context() as context:
@@ -199,12 +199,12 @@ def test_logger_outfile(td, mp):
     assert written == expected
 
 
-def test_logger_multi_string(capsys):
+def test_multi_string(capsys):
     utila.log('helm', 'schelm', end='')
     assert utilatest.stdout(capsys) == 'helm schelm'
 
 
-def test_logger_log_return_invalid_selection(capsys):
+def test_log_return_invalid_selection(capsys):
 
     @utila.log_return
     def method_name(_):  # pylint:disable=W0613
