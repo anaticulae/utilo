@@ -44,17 +44,21 @@ LEVEL_DEFAULT = Level.LOGGING
 OUTFILE = None
 
 
-def outfile(path):
+def outfile():
+    return OUTFILE
+
+
+def outfile_setup(path):
     global OUTFILE  # pylint:disable=global-statement
     OUTFILE = path
 
 
 @contextlib.contextmanager
 def outfile_tmp(path):
-    before = OUTFILE
-    outfile(path)
+    before = outfile()
+    outfile_setup(path)
     yield
-    outfile(before)
+    outfile_setup(before)
 
 
 @contextlib.contextmanager
@@ -165,11 +169,11 @@ SINGLE_LOGGING = threading.Semaphore()
 
 
 def write_log(msg: str, end: str):
-    if OUTFILE is None:
+    if outfile() is None:
         return
     with SINGLE_LOGGING:
         # ensure that only one thread writes to file
-        utila.file_append(OUTFILE, msg + end, create=True)
+        utila.file_append(outfile(), msg + end, create=True)
 
 
 def print_stacktrace():

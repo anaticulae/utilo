@@ -238,6 +238,7 @@ from utila.logger import log_args
 from utila.logger import log_raw
 from utila.logger import log_return
 from utila.logger import outfile
+from utila.logger import outfile_setup
 from utila.logger import outfile_tmp
 from utila.logger import print_banner
 from utila.logger import print_env
