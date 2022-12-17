@@ -467,6 +467,7 @@ from utila.utils import isci
 from utila.utils import ismainthread
 from utila.utils import iswin
 from utila.utils import iterable
+from utila.utils import mainthread
 from utila.utils import minus
 from utila.utils import notempty
 from utila.utils import nothing

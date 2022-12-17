@@ -16,6 +16,7 @@ import subprocess
 import sys
 import threading
 import typing
+import multiprocessing
 
 import utila
 
@@ -599,6 +600,18 @@ def ismainthread() -> bool:
     if threading.current_thread() == threading.main_thread():
         return True
     return False
+
+
+def mainthread() -> int:
+    """Determine id of main_thread.
+
+    >>> mainthread() > 0
+    True
+    """
+    # TODO: REWORK THIS! THIS IS NOT REALY THE PROCESS ID
+    key = multiprocessing.current_process()._config['authkey'] # pylint:disable=W0212
+    process =  utila.binhash(key)
+    return process
 
 
 def isci() -> bool:
