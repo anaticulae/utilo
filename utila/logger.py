@@ -50,6 +50,14 @@ def outfile(path):
 
 
 @contextlib.contextmanager
+def outfile_tmp(path):
+    before = OUTFILE
+    outfile(path)
+    yield
+    outfile(before)
+
+
+@contextlib.contextmanager
 def level_tmp(level: Level):
     """Set logging level, yield context and reset to previous logging level."""
     before = level_current()
