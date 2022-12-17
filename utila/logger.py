@@ -40,17 +40,24 @@ class Level(enum.IntEnum):
 
 LEVEL_DEFAULT = Level.LOGGING
 
-# define output file where logs written to. If None, do nothing.
-OUTFILE = None
 
 
 def outfile():
-    return OUTFILE
+    logfile = f'UTILA_LOG_OUTFILE_{utila.mainthread()}'
+    # TODO: REWORK THIS CONCEPT
+    try:
+        return os.environ[logfile]
+    except KeyError:
+        return None
 
 
 def outfile_setup(path):
-    global OUTFILE  # pylint:disable=global-statement
-    OUTFILE = path
+    """Define output file where logs written to. If None, do nothing."""
+    logfile = f'UTILA_LOG_OUTFILE_{utila.mainthread()}'
+    if path is None:
+        del os.environ[logfile]
+        return
+    os.environ[logfile] = str(path)
 
 
 @contextlib.contextmanager
