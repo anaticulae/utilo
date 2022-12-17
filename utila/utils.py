@@ -14,6 +14,7 @@ import math
 import os
 import subprocess
 import sys
+import threading
 import typing
 
 import utila
@@ -591,6 +592,12 @@ def iswin() -> bool:
 
 
 def ismainthread() -> bool:
+    """\
+    >>> str(ismainthread())
+    '...'
+    """
+    if threading.current_thread() == threading.main_thread():
+        return True
     return False
 
 
