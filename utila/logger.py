@@ -39,23 +39,9 @@ class Level(enum.IntEnum):
 
 
 LEVEL_DEFAULT = Level.LOGGING
-LEVEL = LEVEL_DEFAULT
 
 # define output file where logs written to. If None, do nothing.
 OUTFILE = None
-
-
-def level_setup(level: Level):
-    """\
-    Use ints to choose logging level:
-    >>> level_setup(2)
-    >>> assert utila.level_current() == Level.INFO
-    >>> level_setup(LEVEL_DEFAULT)
-    """
-    if isinstance(level, int):
-        level = Level(level)
-    global LEVEL  # pylint:disable=global-statement
-    LEVEL = level
 
 
 def outfile(path):
@@ -72,8 +58,23 @@ def level_tmp(level: Level):
     level_setup(before)
 
 
+def level_setup(level: Level):
+    """\
+    Use ints to choose logging level:
+    >>> level_setup(2)
+    >>> assert utila.level_current() == Level.INFO
+    >>> level_setup(LEVEL_DEFAULT)
+    """
+    # TODO: REWORK THIS CONCEPT
+    os.environ[f'UTILA_LOG_LEVEL_{utila.mainthread()}'] = str(int(level))
+
+
 def level_current() -> Level:
-    return LEVEL
+    try:
+        level = os.environ[f'UTILA_LOG_LEVEL_{utila.mainthread()}']
+    except KeyError:
+        return LEVEL_DEFAULT
+    return Level(int(level))
 
 
 def debug_enable():
@@ -101,7 +102,7 @@ def log(
     if level == Level.ERROR:
         error(msg)
         return
-    if level > LEVEL:
+    if level > level_current():
         return
     # avoid problems when using with windows console(cp1252)
     msg = fix_encoding(msg)
@@ -181,7 +182,7 @@ def log_args(func) -> callable:
 
     @functools.wraps(func)
     def wrapper(*args, **kwargs):
-        if LEVEL >= MIN_LEVEL:
+        if level_current() >= MIN_LEVEL:
             signature = inspect.signature(func)
             parameter = list(signature.parameters.items())
             log(f'call({func.__qualname__}) with:', level=MIN_LEVEL)
