@@ -138,6 +138,7 @@ def test_log_args_loglevel_to_low(capsys):
 
 
 def test_level_tmp():
+    start = utila.level_current()
     with utila.level_tmp(utila.Level.ERROR):
         setme = utila.Level.DEBUG
         before = utila.level_current()
@@ -147,11 +148,11 @@ def test_level_tmp():
     assert setme != before, f'{setme} must differ from default level {before}'
     assert before != now, 'context manager has no effect'
     assert after == before, 'the level was not set back to default'
-    assert utila.level_current() == utila.LEVEL_DEFAULT
+    assert utila.level_current() == start
 
 
 def test_level_setup():
-    utila.level_setup(utila.LEVEL_DEFAULT)  # TODO: REMOVE LATER
+    start = utila.level_current()
     assert utila.level_current() == utila.LEVEL_DEFAULT
     with utila.level_tmp(utila.Level.ERROR):
         setme = utila.Level.DEBUG
@@ -160,7 +161,7 @@ def test_level_setup():
         utila.level_setup(setme)
         after = utila.level_current()
         assert after == setme, 'could not update log level'
-    assert utila.level_current() == utila.LEVEL_DEFAULT
+    assert utila.level_current() == start
 
 
 def test_outfile(td):
