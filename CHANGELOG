@@ -2,6 +2,24 @@
 
 Every noteable change is logged here.
 
+## v2.99.0 (2022-12-17)
+
+### Feature
+
+* keep Outfile thread safe (ae86b75bfaf2)
+* add context-manager to redirect logging file (8d3ec7d62471)
+* add method to determine id of main_thread (a9377249984d)
+* implement main thread check (35659e1252d2)
+
+### Fix
+
+* ensure to delete outfile correctly (7844e8951dba)
+* use global env to make log level thread safe (e7e3375ae7a3)
+
+### Chore
+
+* upgrade Jenkinsfile (c8391fd4df33)
+
 ## v2.98.1 (2022-12-14)
 
 ### Chore
