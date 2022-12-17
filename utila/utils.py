@@ -11,12 +11,12 @@ import collections
 import contextlib
 import inspect
 import math
+import multiprocessing
 import os
 import subprocess
 import sys
 import threading
 import typing
-import multiprocessing
 
 import utila
 
@@ -609,8 +609,8 @@ def mainthread() -> int:
     True
     """
     # TODO: REWORK THIS! THIS IS NOT REALY THE PROCESS ID
-    key = multiprocessing.current_process()._config['authkey'] # pylint:disable=W0212
-    process =  utila.binhash(key)
+    key = multiprocessing.current_process()._config['authkey']  # pylint:disable=W0212
+    process = utila.binhash(key)
     return process
 
 
