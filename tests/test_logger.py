@@ -83,9 +83,8 @@ def test_profiler_decorator(capsys):
     assert 'decorated profiler' in stdout, str(stdout)
 
 
-def test_print_env(capsys, mp):
-    with mp.context() as context:
-        context.setattr(utila.logger, 'LEVEL', utila.Level.INFO)
+def test_print_env(capsys):
+    with utila.level_tmp(utila.Level.INFO):
         utila.print_env()
     stdout = utilatest.stdout(capsys)
     assert len(stdout) > 500, str(stdout)
@@ -120,9 +119,8 @@ def add(x, y, z):  # pylint:disable=C0103
         id='logging calls',
     ),
 ])
-def test_log_args(level, expected_log, capsys, mp):
-    with mp.context() as context:
-        context.setattr(utila.logger, 'LEVEL', level)
+def test_log_args(level, expected_log, capsys):
+    with utila.level_tmp(level):
         add(1, 2, 3)
     stdout = utilatest.stdout(capsys)
     for item in expected_log:
@@ -131,44 +129,34 @@ def test_log_args(level, expected_log, capsys, mp):
     assert len(''.join(expected_log)) <= len(stdout.strip())
 
 
-def test_log_args_loglevel_to_low(capsys, mp):
+def test_log_args_loglevel_to_low(capsys):
     """Set `LEVEL` to `LOGGING` to avoid any output"""
-    with mp.context() as context:
-        level = utila.Level.LOGGING
-        context.setattr(utila.logger, 'LEVEL', level)
+    with utila.level_tmp(utila.Level.LOGGING):
         add(1, 2, 3)
     stdout = utilatest.stdout(capsys)
     assert not stdout, str(stdout)
 
 
-def test_level_tmp(mp):
-    utila.level_setup(utila.LEVEL_DEFAULT)  # TODO: REMOVE LATER
-    assert utila.level_current() == utila.LEVEL_DEFAULT
-    with mp.context() as context:
-        context.setattr(utila.logger, 'LEVEL', utila.Level.ERROR)
-
+def test_level_tmp():
+    with utila.level_tmp(utila.Level.ERROR):
         setme = utila.Level.DEBUG
         before = utila.level_current()
         with utila.level_tmp(setme):
             now = utila.level_current()
         after = utila.level_current()
-
     assert setme != before, f'{setme} must differ from default level {before}'
     assert before != now, 'context manager has no effect'
     assert after == before, 'the level was not set back to default'
     assert utila.level_current() == utila.LEVEL_DEFAULT
 
 
-def test_level_setup(mp):
+def test_level_setup():
     utila.level_setup(utila.LEVEL_DEFAULT)  # TODO: REMOVE LATER
     assert utila.level_current() == utila.LEVEL_DEFAULT
-    with mp.context() as context:
-        context.setattr(utila.logger, 'LEVEL', utila.Level.ERROR)
-
+    with utila.level_tmp(utila.Level.ERROR):
         setme = utila.Level.DEBUG
         before = utila.level_current()
         assert setme != before, f'{setme} must differ from default level {before}'
-
         utila.level_setup(setme)
         after = utila.level_current()
         assert after == setme, 'could not update log level'
@@ -177,17 +165,13 @@ def test_level_setup(mp):
 
 def test_outfile(td, mp):
     logger = os.path.join(td.tmpdir, 'logging.txt')
-
     with mp.context() as context:
         context.setattr(utila.logger, 'OUTFILE', logger)
-
         utila.log('First Line')
         utila.log('Second Line')
         utila.error('Third Line')
-
     # ensure to reset OUTFILE
     assert utila.logger.OUTFILE is None
-
     written = utila.file_read(logger)
     expected = 'First Line\nSecond Line\n[ERROR] Third Line\n'
 

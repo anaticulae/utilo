@@ -65,19 +65,15 @@ def test_feature_playground_cli_profile(cmd, td, mp, capsys):
 @utilatest.longrun
 def test_feature_playground_cli_quite(quite, td, mp, capsys):
     """Test to suppress logging when using --quite flag."""
-    with mp.context() as context:
-        context.setattr(utila.logger, 'LEVEL', utila.logger.LEVEL_DEFAULT)
-        cmd = f'--profile {quite}'
-        stdout, _ = run_playground(
+    cmd = f'--profile {quite}'
+    with utila.level_tmp(utila.LEVEL_DEFAULT):
+        stdout = run_playground(
             cmd,
-            {
-                'profileflag': True,
-                'quiteflag': True
-            },
+            dict(profileflag=True, quiteflag=True),
             td,
             mp,
             capsys,
-        )
+        )[0]
     assert bool(stdout) != bool(quite)
 
 
