@@ -57,7 +57,7 @@ def test_profile(capsys, message):
     with utila.level_tmp(utila.Level.INFO):
         with utila.profile(message):
             pass
-    stdout = capsys.readouterr().out
+    stdout = utilatest.stdout(capsys)
     assert message in stdout, str(stdout)
 
 
@@ -67,7 +67,7 @@ def test_profile_with_exception(capsys):
         with utila.level_tmp(utila.Level.INFO):
             with utila.profile():
                 raise ValueError('some problems in invocation')
-    stdout = capsys.readouterr().out
+    stdout = utilatest.stdout(capsys)
     assert 'runtime' in stdout, str(stdout)
 
 
@@ -79,8 +79,7 @@ def test_profiler_decorator(capsys):
 
     with utila.level_tmp(utila.Level.INFO):
         runtime()
-
-    stdout = capsys.readouterr().out
+    stdout = utilatest.stdout(capsys)
     assert 'decorated profiler' in stdout, str(stdout)
 
 
@@ -88,7 +87,7 @@ def test_print_env(capsys, mp):
     with mp.context() as context:
         context.setattr(utila.logger, 'LEVEL', utila.Level.INFO)
         utila.print_env()
-    stdout = capsys.readouterr().out
+    stdout = utilatest.stdout(capsys)
     assert len(stdout) > 500, str(stdout)
 
 
@@ -125,14 +124,11 @@ def test_log_args(level, expected_log, capsys, mp):
     with mp.context() as context:
         context.setattr(utila.logger, 'LEVEL', level)
         add(1, 2, 3)
-
-    captured = capsys.readouterr().out
-
+    stdout = utilatest.stdout(capsys)
     for item in expected_log:
-        assert item in captured, captured
-
+        assert item in stdout, stdout
     # ensure that no_logging does not log anything
-    assert len(''.join(expected_log)) <= len(captured.strip())
+    assert len(''.join(expected_log)) <= len(stdout.strip())
 
 
 def test_log_args_loglevel_to_low(capsys, mp):
@@ -141,9 +137,8 @@ def test_log_args_loglevel_to_low(capsys, mp):
         level = utila.Level.LOGGING
         context.setattr(utila.logger, 'LEVEL', level)
         add(1, 2, 3)
-
-    captured = capsys.readouterr().out.strip()
-    assert not captured, str(captured)
+    stdout = utilatest.stdout(capsys)
+    assert not stdout, str(stdout)
 
 
 def test_level_tmp(mp):
