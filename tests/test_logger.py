@@ -177,6 +177,13 @@ def test_outfile(td):
     assert written == expected
 
 
+def test_outfile_delete_double(td):
+    logger = os.path.join(td.tmpdir, 'logging.txt')
+    with utila.outfile_tmp(logger):
+        utila.outfile_setup(None)
+        utila.outfile_setup(None)
+
+
 def test_multi_string(capsys):
     utila.log('helm', 'schelm', end='')
     assert utilatest.stdout(capsys) == 'helm schelm'

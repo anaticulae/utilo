@@ -41,7 +41,6 @@ class Level(enum.IntEnum):
 LEVEL_DEFAULT = Level.LOGGING
 
 
-
 def outfile():
     logfile = f'UTILA_LOG_OUTFILE_{utila.mainthread()}'
     # TODO: REWORK THIS CONCEPT
@@ -55,7 +54,8 @@ def outfile_setup(path):
     """Define output file where logs written to. If None, do nothing."""
     logfile = f'UTILA_LOG_OUTFILE_{utila.mainthread()}'
     if path is None:
-        del os.environ[logfile]
+        with contextlib.suppress(KeyError):
+            del os.environ[logfile]
         return
     os.environ[logfile] = str(path)
 
