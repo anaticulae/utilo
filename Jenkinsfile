@@ -69,7 +69,10 @@ pipeline {
         }
         stage('release'){
             steps{
-                script{publish.release()}
+                script{
+                    publish.release()
+                    baw.rebase()
+                }
             }
         }
     }
