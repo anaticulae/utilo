@@ -1,8 +1,8 @@
 @Library('caelum@refs/tags/v0.7.5') _
 
-pipeline {
-    agent {
-        docker {
+pipeline{
+    agent{
+        docker{
             image '169.254.149.20:6001/arch_python_git_baw:v1.37.3'
         }
     }
