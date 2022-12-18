@@ -2,6 +2,15 @@
 
 Every noteable change is logged here.
 
+## v2.99.1 (2022-12-18)
+
+### Chore
+
+* upgrade requirements.txt (be026534c7d7)
+* add rebase step (65d3b69d25f6)
+* upgrade pipe library (b3cf3b74ddfc)
+* upgrade Jenkinsfile (1c06bf4dd501)
+
 ## v2.99.0 (2022-12-17)
 
 ### Feature
