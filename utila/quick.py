@@ -159,6 +159,8 @@ def git_hash(root) -> str:
 
 def static(root):
     short = utila.baw_name(root)
+    if not short:
+        utila.exitx(msg=f'missing short `{short}` def in .baw: {root}')
     path = utila.join(root, short, '__init__.py', exist=True)
     content = utila.file_read(path)
     result = re.search(r'__version__ = \'(.*?)\'', content).group(1)
