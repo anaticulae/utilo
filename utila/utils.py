@@ -631,8 +631,9 @@ def hasprog(program: str):
     False
     """
     assert program, 'define program'
+    check = 'where' if utila.iswin() else 'which'
     completed = subprocess.run(  # pylint:disable=c2001 # nosec
-        f'which {program}'.split(),
+        [check, program],
         check=False,
         capture_output=True,
     )
