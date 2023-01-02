@@ -2,6 +2,23 @@
 
 Every noteable change is logged here.
 
+## v2.99.2 (2023-01-02)
+
+### Fix
+
+* select correct check tool on windows (05e8b142b819)
+* quit on missing short def (ad063e02177e)
+
+### Documentation
+
+* happy New Year! (ebe9ce87e81c)
+
+### Chore
+
+* use modern pre-release (6738b2cd199a)
+* upgrade pipe library (f06f29832d44)
+* upgrade Jenkinsfile (50cf2d11d092)
+
 ## v2.99.1 (2022-12-18)
 
 ### Chore
