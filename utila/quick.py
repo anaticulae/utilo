@@ -37,22 +37,24 @@ def install(
     short = utila.baw.baw_name(root)
     xreadme = readme(root)
     xrequires = requires(root)
+    xpackage_data = package_data(module)
     description = utila.baw_desc(root)
     setuptools.setup(
         author=AUTHOR,
         author_email=AUTHOR_EMAIL,
         description=description,
-        install_requires=xrequires,
+        classifiers=CLASSIFIERS,
+        entry_points=entry,
         include_package_data=include_package_data,
+        install_requires=xrequires,
         long_description=xreadme,
         name=short,
+        package_data=xpackage_data,
+        packages=xpackages,
         platforms='any',
         url=f'https//pip.ostia.la/{short}',
         version=current(root),
         zip_safe=False,  # create 'zip'-file if True. Don't do it!
-        classifiers=CLASSIFIERS,
-        packages=xpackages,
-        entry_points=entry,
     )
 
 
@@ -76,6 +78,13 @@ def packages(module):
         # ], <-ATTENTION COMMA!
         raise ValueError(f'require list or single tuple: {result}')
     return result
+
+
+def package_data(module):
+    try:
+        return module.PACKAGE_DATA
+    except AttributeError:
+        return {}
 
 
 def version(package):
