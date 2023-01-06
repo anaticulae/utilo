@@ -323,6 +323,8 @@ def load_module(path: str):
         f'{parent}.{item}',
         path,
     )
+    if not spec:
+        raise ValueError(f'invalid spec in {path}; parent: {parent}')
     module = importlib.util.module_from_spec(spec)
     spec.loader.exec_module(module)
     return module
