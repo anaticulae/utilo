@@ -153,7 +153,7 @@ def git_hash(root) -> str:
     if not utila.hasprog('git'):
         utila.exitx('install git, please')
     completed = utila.run(
-        'git describe --tags',
+        'git describe',
         cwd=root,
     )
     value = completed.stdout.strip()

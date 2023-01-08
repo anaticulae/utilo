@@ -25,7 +25,7 @@ with open(os.path.join(ROOT, 'utila/__init__.py'), encoding='utf8') as fp:
 
 def version() -> str:
     completed = subprocess.run(
-        'git describe --tags'.split(),
+        'git describe'.split(),
         capture_output=True,
     )
     value: str = completed.stdout.strip().decode('utf8')
