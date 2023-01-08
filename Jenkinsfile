@@ -3,7 +3,7 @@
 pipeline{
     agent{
         docker{
-            image '169.254.149.20:6001/arch_python_git_baw:v1.46.0'
+            image '169.254.149.20:6001/arch_python_git_baw:v1.49.2'
         }
     }
     stages{
