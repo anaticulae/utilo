@@ -13,4 +13,4 @@ PyYAML>=6.0.0<7.0.0
 
 utilasafe==0.4.3
 # test data
-iamraw>=4.88.11<5.0.0
+iamraw>=4.88.13<5.0.0
