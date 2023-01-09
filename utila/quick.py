@@ -30,10 +30,7 @@ def install(
     root = str(root)
     module = utila.load_module(root)
     xpackages = packages(module)
-    try:
-        entry = module.ENTRY_POINTS
-    except AttributeError:
-        entry = None
+    xentry = entry_points(module)
     root = utila.baw_root(root)
     short = utila.baw.baw_name(root)
     xreadme = readme(root)
@@ -45,7 +42,7 @@ def install(
         author_email=AUTHOR_EMAIL,
         description=description,
         classifiers=CLASSIFIERS,
-        entry_points=entry,
+        entry_points=xentry,
         include_package_data=include_package_data,
         install_requires=xrequires,
         long_description=xreadme,
@@ -79,6 +76,14 @@ def packages(module):
         # ], <-ATTENTION COMMA!
         raise ValueError(f'require list or single tuple: {result}')
     return result
+
+
+def entry_points(module):
+    try:
+        entry = module.ENTRY_POINTS
+    except AttributeError:
+        entry = None
+    return entry
 
 
 def package_data(module):
