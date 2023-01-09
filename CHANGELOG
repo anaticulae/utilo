@@ -2,6 +2,12 @@
 
 Every noteable change is logged here.
 
+## v2.101.0 (2023-01-09)
+
+### Feature
+
+* catch lower case definition error (2b6af2af99e5)
+
 ## v2.100.1 (2023-01-09)
 
 ### Fix
