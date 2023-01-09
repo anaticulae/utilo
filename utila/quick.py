@@ -79,6 +79,15 @@ def packages(module):
 
 
 def entry_points(module):
+    """\
+    >>> import collections; Module=collections.namedtuple('Module', 'entry_points')
+    >>> entry_points(Module(dict()))
+    Traceback (most recent call last):
+    ...
+    ValueError: require upper-case: entry_points:...
+    """
+    if hasattr(module, 'entry_points'):
+        raise ValueError(f'require upper-case: entry_points: {dir(module)}')
     try:
         entry = module.ENTRY_POINTS
     except AttributeError:
