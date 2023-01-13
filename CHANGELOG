@@ -2,6 +2,13 @@
 
 Every noteable change is logged here.
 
+## v2.101.1 (2023-01-13)
+
+### Chore
+
+* upgrade pipe library (d1db68fe7303)
+* upgrade Jenkinsfile (a9ab1a736fb9)
+
 ## v2.101.0 (2023-01-09)
 
 ### Feature
