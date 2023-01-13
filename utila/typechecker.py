@@ -280,7 +280,7 @@ def methods(item, starts=''):
 
     Regression that
     >>> methods('')
-    [<method-wrapper '__repr__'...<built-in method __dir__ of str object at 0x...>, <class 'str'>]
+    [...<method-wrapper '__repr__'...<built-in method __dir__ of str object at 0x...>, <class 'str'>]
     """
     result = []
     # TODO: dir() and __dir__() is not the same, dir() sorts the keys
