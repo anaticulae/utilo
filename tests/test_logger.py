@@ -152,6 +152,7 @@ def test_level_tmp():
 
 
 def test_level_setup():
+    utila.level_setup(utila.LEVEL_DEFAULT)
     start = utila.level_current()
     assert utila.level_current() == utila.LEVEL_DEFAULT
     with utila.level_tmp(utila.Level.ERROR):
