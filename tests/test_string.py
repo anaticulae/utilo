@@ -28,7 +28,7 @@ def test_fix_encoding(platform, given, expected, mp):
     assert fixed == expected
 
 
-def test_string_forward_slash_do_not_replace_newline():
+def test_forward_slash_do_not_replace_newline():
     text_with_newline = r'Hello\n\nHello' + '\n'
     forwarded = utila.forward_slash(text_with_newline, keep_newline=True)
     assert forwarded == text_with_newline
@@ -40,12 +40,12 @@ def test_string_forward_slash_do_not_replace_newline():
     pytest.param('\n', '\n', id='do not replace newline'),
     pytest.param('\\\n', '/\n', id='replace backslash before newline'),
 ])
-def test_string_forward_slash_replace_backslash(string, expected):
+def test_forward_slash_replace_backslash(string, expected):
     replaced = utila.forward_slash(string, keep_newline=True)
     assert replaced == expected
 
 
-def test_string_extract_match():
+def test_extract_match():
     content = 'hallo 123 hallo'
     pattern = r'\d+'
 
