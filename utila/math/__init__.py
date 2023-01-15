@@ -278,7 +278,8 @@ def lookup(
                 return result_lower
             return result_upper  # if strategy == Strategy.UPPER: always upper
         lower, result_lower = upper, result_upper
-    return None
+    # already checked at the beginning of the method
+    return None  # pragma: no cover
 
 
 def diffs(items: 'utila.math.number.Numbers') -> 'utila.math.number.Numbers':
