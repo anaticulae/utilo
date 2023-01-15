@@ -62,6 +62,8 @@ def isstrings(items) -> bool:
     False
     >>> isstrings({'hi': 'me'})
     False
+    >>> isstrings(('H', 'B', 10))
+    False
     """
     if not isinstance(items, list):
         return False
@@ -316,6 +318,10 @@ def load_module(path: str):
     """\
     >>> load_module(__file__).__name__
     'utila.typechecker'
+    >>> import utila; load_module(utila.ROOT)
+    Traceback (most recent call last):
+    ...
+    ValueError: invalid spec in ...; parent: ...
     """
     item = utila.file_name(path)
     parent = utila.file_name(utila.path_parent(path))
