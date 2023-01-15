@@ -94,6 +94,10 @@ def iflat(lists, append: bool = False) -> 'yield':
 
 
 def flatten_content(items: 'iamraw.PageContents') -> list:
+    """\
+    >>> import utila; flatten_content([utila.driver(content=['Helmut'])])
+    ['Helmut']
+    """
     result = []
     for item in items:
         result.extend(item.content)
@@ -125,6 +129,10 @@ def select_type(items, selector, count: int = None) -> list:
     []
     >>> select_type({'a':1, 'b':'zwei', 'c' : []}, list)
     [[]]
+    >>> select_type([10, 10, 9, 'abc', 10.5], int, count=2)
+    [10, 10]
+    >>> select_type([9, 10, 10, 9, 'abc', 10.5], int, count=1)
+    9
 
     Args:
         items(collection): data to filter
@@ -219,6 +227,14 @@ def sall_none(*args, **kwargs):  # pylint:disable=W0613
 
 
 def determine_order(requirements, flats=True):
+    """\
+    >>> determine_order(dict(iamraw='utila', hello='iamraw'))
+    ['hello', 'iamraw']
+    >>> determine_order(dict(hello='iamraw', iamraw='utila'))
+    ['hello', 'iamraw']
+    >>> determine_order(dict())
+    []
+    """
     requirements = dict(requirements)
     todo = list(requirements.keys())
     result = []
@@ -345,6 +361,14 @@ def unset_env(
     Raises:
         KeyError: if skip is False and env variable does not exists
         Exception: if user code does not work properly
+
+    >>> with unset_env('ABC_NO_VAR'):
+    ...     raise ValueError('hello')
+    Traceback (most recent call last):
+    ...
+    ValueError: hello
+    >>> with unset_env('ABC_NO_VAR'):
+    ...     pass
     """
     # TODO: ADD MULTIPLE UNSET
     assert var, 'invalid environment variable'
@@ -385,6 +409,8 @@ def index_max(*items):
     1
     >>> index_max(1, 2, 3, 4)
     3
+    >>> index_max() is None
+    True
     """
     if not items:
         return None
@@ -415,6 +441,16 @@ def selbstwirksamkeit(func=None, *, usenone=False) -> callable:
 
 
 def collect_data(data, required, usenone) -> list:
+    """\
+    >>> collect_data(dict(hello=10), ['hello'], False)
+    [10]
+    >>> collect_data(dict(hello=[10, 12]), ['hello'], False)
+    [[10, 12]]
+    >>> collect_data({}, [], True)
+    []
+    >>> collect_data({}, [], False)
+    []
+    """
     # TODO: WE HAVE TO EXTEND THIS ACCESS LATER
     if isinstance(data, tuple):
         given = data._fields  # pylint:disable=W0212
@@ -458,6 +494,8 @@ def ensure_tuple(items, skipnone: bool = True) -> bool:
     >>> ensure_tuple(1)
     (1,)
     >>> assert ensure_tuple(None) is None
+    >>> ensure_tuple((5,))
+    (5,)
     """
     if not isinstance(items, tuple):
         if skipnone and items is None:
@@ -473,6 +511,8 @@ def ensure_list(items, skipnone: bool = True) -> bool:
     >>> ensure_list(1)
     [1]
     >>> assert ensure_list(None) is None
+    >>> ensure_list([9])
+    [9]
     """
     if not isinstance(items, list):
         if skipnone and items is None:
@@ -481,12 +521,14 @@ def ensure_list(items, skipnone: bool = True) -> bool:
     return items
 
 
-def rate_rel(first, second):
+def rate_rel(first, second) -> float:
     """\
     >>> rate_rel((1, 2, 3), (1, 2, 3, 4, 5))
     0.6
     >>> rate_rel(5, 10)
     0.5
+    >>> rate_rel(1, 0)
+    0.0
     """
     if not second:
         return 0.0
@@ -498,12 +540,14 @@ def rate_rel(first, second):
     return rate
 
 
-def rate_sum(first, second):
+def rate_sum(first, second) -> float:
     """\
     >>> rate_sum((1, 2, 3), (1, 2, 3, 4, 5))
     0.375
     >>> rate_sum(5, 10)
     0.333
+    >>> rate_sum(5, 0)
+    0.0
     """
     if not second:
         return 0.0
