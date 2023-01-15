@@ -48,6 +48,9 @@ def run(
         Completed process.
     Raises:
         TimeoutExpired: if timeout is defined and gracefully flag is not set
+
+    >>> str(run('ls', verbose=True).returncode)
+    cd...runtime(ls):...'0'
     """
     cwd = cwd if cwd else utila.cwdget()
     utila.exists_assert(cwd)
