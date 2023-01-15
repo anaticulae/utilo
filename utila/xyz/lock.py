@@ -25,7 +25,7 @@ def main():
     # ask user to continue
     utila.wait()
     utila.directory_lock(cwd)
-    return utila.SUCCESS
+    utila.exitx(returncode=utila.SUCCESS)
 
 
 def unlock():
@@ -37,4 +37,4 @@ def unlock():
     # ask user to continue
     utila.wait()
     utila.directory_unlock(cwd)
-    return utila.SUCCESS
+    utila.exitx(returncode=utila.SUCCESS)
