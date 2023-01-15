@@ -25,6 +25,8 @@ def collect_classes(classes, valid=None):
     >>> import utila.collection
     >>> collect_classes(utila.collection, valid=lambda x: 'Buckets' in x.__name__)
     (<class 'utila.collection.Buckets'>,)
+    >>> collect_classes((utila.collection,), valid=lambda x: 'Buckets' in x.__name__)
+    (<class 'utila.collection.Buckets'>,)
     """
     if not utila.iterable(classes):
         classes = (classes,)
