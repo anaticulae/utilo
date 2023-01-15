@@ -160,6 +160,10 @@ def modes(data: 'utila.math.number.Numbers') -> 'utila.math.number.Number':
 
 
 def _counts(data):
+    """\
+    >>> _counts([])
+    []
+    """
     # HINT: COPIED FROM PYTHON
     # Generate a table of sorted (value, frequency) pairs.
     table = collections.Counter(iter(data)).most_common()
@@ -241,6 +245,8 @@ def lookup(
     10
     >>> lookup(15, [(10,10), (20, 30), (30, 0.5)], strategy = Strategy.LINEARISE)
     20.0
+    >>> lookup(100, [(10,10), (20, 30), (30, 0.5)]) is None
+    True
 
     Args:
         value: selector to determine holy value
