@@ -52,23 +52,23 @@ def test_chdir(td):
     os.makedirs(folder)
     assert os.path.exists(folder)
 
-    assert root == str(os.getcwd())
+    assert root == utila.cwdget()
 
     with utila.chdir(folder):
         # check to change current working directory
-        assert str(os.getcwd()) == folder
+        assert utila.cwdget() == folder
 
     # check going back to preview working directory
-    assert str(os.getcwd()) == root
+    assert utila.cwdget() == root
 
     with pytest.raises(ValueError):
         with utila.chdir(folder):
             # check to change current working directory
-            assert str(os.getcwd()) == folder
+            assert utila.cwdget() == folder
             raise ValueError()
 
     # check going back to preview working directory
-    assert str(os.getcwd()) == root
+    assert utila.cwdget() == root
 
 
 def test_chdir_to_filepath(td):

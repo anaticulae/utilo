@@ -49,7 +49,7 @@ def run(
     Raises:
         TimeoutExpired: if timeout is defined and gracefully flag is not set
     """
-    cwd = cwd if cwd else os.getcwd()
+    cwd = cwd if cwd else utila.cwdget()
     utila.exists_assert(cwd)
     msg = f'cwd {cwd} is not a valid directory'
     assert os.path.isdir(cwd), msg

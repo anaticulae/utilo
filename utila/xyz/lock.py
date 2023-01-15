@@ -8,7 +8,6 @@
 # =============================================================================
 
 import argparse
-import os
 
 import utila
 
@@ -19,7 +18,7 @@ UNLOCK = 'utila_unlock'
 def main():
     parser = argparse.ArgumentParser(prog=LOCK)
     args = parser.parse_args()  # pylint:disable=W0612
-    cwd = os.getcwd()
+    cwd = utila.cwdget()
     utila.exists_assert(cwd)
     utila.log(cwd)
     # ask user to continue
@@ -31,7 +30,7 @@ def main():
 def unlock():
     parser = argparse.ArgumentParser(prog=UNLOCK)
     args = parser.parse_args()  # pylint:disable=W0612
-    cwd = os.getcwd()
+    cwd = utila.cwdget()
     utila.exists_assert(cwd)
     utila.log(cwd)
     # ask user to continue

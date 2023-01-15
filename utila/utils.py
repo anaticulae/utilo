@@ -262,7 +262,7 @@ def chdir(path: str) -> typing.NoReturn:
             pass
     """
     assert os.path.exists(path) and not os.path.isfile(path), str(path)
-    before = os.getcwd()
+    before = utila.cwdget()
     try:
         os.chdir(path)
         yield

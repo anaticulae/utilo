@@ -481,7 +481,7 @@ def sources(  # pylint:disable=too-complex,too-many-branches
     Returns:
         (input, output): path(str) to in-/ and output-location
     """
-    cwd = os.path.abspath(os.getcwd())
+    cwd = os.path.abspath(utila.cwdget())
     # multiple inputs are possible
     inputpaths = args.get('input', None)
     outputpath = args.get('output', None)
@@ -524,9 +524,9 @@ def sources(  # pylint:disable=too-complex,too-many-branches
                 utila.log(f'creating: {outputpath}')
     # run application in current working directory if no path's are provided
     if not inputpaths and use_cwd:
-        inputpaths = [os.getcwd()]
+        inputpaths = [utila.cwdget()]
     if not outputpath and use_cwd:
-        outputpath = os.getcwd()
+        outputpath = utila.cwdget()
     # prepare output
     result = [inputpaths, outputpath]
     if prefix is not False:  # pylint:disable=C2001

@@ -98,7 +98,7 @@ def use_cache(program, version, argv=None) -> int:
     utila.log('use cache')
     outpath = output(call)
     if not outpath:
-        outpath = os.getcwd()
+        outpath = utila.cwdget()
     os.makedirs(outpath, exist_ok=True)
     todo = f'python -m zipfile -e {cached} {outpath}'
     extracted = utila.run(todo)
@@ -118,7 +118,7 @@ def write_cache(program, version, argv=None) -> bool:
         return True
     outpath = output(call)
     if not outpath:
-        outpath = os.getcwd()
+        outpath = utila.cwdget()
     parent_cache = utila.forward_slash(os.path.split(cached)[0])
     os.makedirs(parent_cache, exist_ok=True)
     collected = utila.file_list(

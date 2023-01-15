@@ -587,7 +587,7 @@ def make_absolute(path: str, cwd=None) -> str:
         absolute path belong to current working directory
     """
     if cwd is None:
-        cwd = os.getcwd()
+        cwd = utila.cwdget()
 
     if not os.path.isabs(path):
         # Make path absolute
@@ -610,7 +610,7 @@ def make_relative(path: str, root: str = None) -> str:
         os.path.relpath
     """
     if root is None:
-        root = os.getcwd()
+        root = utila.cwdget()
     root = utila.forward_slash(root)
     path = utila.forward_slash(path)
 
