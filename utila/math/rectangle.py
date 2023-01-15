@@ -155,6 +155,12 @@ class RectangleCheck:
     >>> assert check.contains(25, 25, 50, 50)
     >>> assert check.contains(75, 75, 100, 100)
     >>> assert not check.contains(100, 100, 150, 150)
+    >>> len(check)
+    2
+    >>> check[1]
+    (50, 50, 100, 100)
+    >>> list(RectangleCheck(max_diff=10))
+    []
     """
 
     def __init__(self, diff_max: float = 0.0, max_diff: float = None):
@@ -246,6 +252,10 @@ def rectangles_intersecting(
     rectangles: Rectangles,
     test: Rectangle,
 ) -> bool:
+    """\
+    >>> rectangles_intersecting(test=(20, 20, 30, 30), rectangles=[(10, 10, 40, 40)])
+    True
+    """
     return any(utila.rect_intersecting(item, test) for item in rectangles)
 
 
