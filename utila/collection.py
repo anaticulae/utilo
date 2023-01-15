@@ -59,6 +59,8 @@ def choose_random(
     [5, 5]
     >>> choose_random((1, 2, 3), count=7, repeat=True, seed=0.5)
     [1, 3, 2, 1, 1, 1, 3]
+    >>> choose_random((1,2,3), count=10, seed=0.5)
+    [1, 3, 2]
 
     Hint:
         This process does not change the source collection. There are no
