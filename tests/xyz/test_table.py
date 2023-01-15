@@ -29,17 +29,27 @@ FIRE                                   First International Satellite Cloud Clima
 FIRE-ACE                                   First International Satellite Cloud Climatology Project (ISCCP) Regional Experiment-Arctic Cloud Experiment
 """
 
-table = functools.partial(
+run = functools.partial(
     utilatest.run_cov,
     main=utila.xyz.table.main,
     process='utila_table',
-    success=True,
+    expect=True,
+)
+fail = functools.partial(
+    utilatest.run_cov,
+    main=utila.xyz.table.main,
+    process='utila_table',
+    expect=False,
 )
 
 
 def test_normalize_table(td, mp):
     todo = td.tmpdir.join('table.txt')
     utila.file_create(todo, DATA)
-    table(f'{todo}', mp=mp)
+    run(f'{todo}', mp=mp)
     better = utila.file_read(todo)
     assert better != DATA
+
+
+def test_table_invalid_input(mp):
+    fail('INVALID', mp=mp)
