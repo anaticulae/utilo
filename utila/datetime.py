@@ -17,6 +17,9 @@ def today(sortable: bool = True) -> str:
         sortable(bool): if True, use (year, month, day)
     Returns:
         Date of today in YYYY:MM:DD
+
+    >>> today(False)
+    '...'
     """
     cur = time.localtime(time.time())
     if sortable:
@@ -39,10 +42,13 @@ def timedate(sortable: bool = True) -> str:
         sortable(bool): if True, use (year, month, day)
     Returns:
         Date of and time today in YYYY:MM:DD hh:mm:ss
+
+    >>> timedate(False)
+    '...'
     """
     if sortable:
         return f'{today(sortable)} {current()}'
-    return f'{current()} {today(sortable)} '
+    return f'{current()} {today(sortable)}'
 
 
 def filetime():
