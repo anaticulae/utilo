@@ -42,6 +42,7 @@ def test_math_intersecting_line_with_offset():
     assert with_error
 
 
+@utilatest.no_cov
 @utilatest.longrun
 def test_intersecting_timeit(lines):
     """Measure intersecting line times."""
