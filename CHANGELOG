@@ -2,6 +2,20 @@
 
 Every noteable change is logged here.
 
+## v2.102.0 (2023-01-15)
+
+### Feature
+
+* make interface more robust (8778db7c869b)
+* add method to determine cwd (3e6c38ed03ed)
+* return success (aeee467b9993)
+
+### Chore
+
+* add cov step (ea342ac85585)
+* upgrade requirements.txt (0e4e98d4fe12)
+* remove default behavior (5694a6da5c69)
+
 ## v2.101.1 (2023-01-13)
 
 ### Chore
