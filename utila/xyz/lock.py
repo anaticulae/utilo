@@ -12,9 +12,12 @@ import os
 
 import utila
 
+LOCK = 'utila_lock'
+UNLOCK = 'utila_unlock'
+
 
 def main():
-    parser = argparse.ArgumentParser(prog='utila_lock')
+    parser = argparse.ArgumentParser(prog=LOCK)
     args = parser.parse_args()  # pylint:disable=W0612
     cwd = os.getcwd()
     utila.exists_assert(cwd)
@@ -26,7 +29,7 @@ def main():
 
 
 def unlock():
-    parser = argparse.ArgumentParser(prog='utila_unlock')
+    parser = argparse.ArgumentParser(prog=UNLOCK)
     args = parser.parse_args()  # pylint:disable=W0612
     cwd = os.getcwd()
     utila.exists_assert(cwd)
