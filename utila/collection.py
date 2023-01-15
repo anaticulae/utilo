@@ -200,6 +200,13 @@ class Buckets:
     ...    bucket.add(item)
     >>> list(bucket)
     [[], [70, 85], [100, 130], [500]]
+    >>> bucket = Buckets((50, 100, 400), sorting=False)
+    >>> for item in (70, 85, 500, 130, 100):
+    ...    bucket.add(item)
+    >>> bucket[0], bucket[1]
+    ([], [70, 85])
+    >>> bucket.add(1000)
+
 
     Possible selector:
         selector=operator.attrgetter('y1')
@@ -221,7 +228,7 @@ class Buckets:
             if self.selector(item) >= border:
                 continue
             bucket.append(item)
-            return
+            break
 
     def __getitem__(self, index):
         data = self.bucket[index]
@@ -266,6 +273,8 @@ class CasedSet:
     >>> assert 'HELM' in data
     >>> assert len(list(data)) == 3
     >>> assert data | data
+    >>> sorted(data | {'hello'})
+    ['gelm', 'hello', 'helm', 'melm']
     """
 
     def __init__(self, values, method=str.lower):
