@@ -101,7 +101,10 @@ def splitby_count(items, count) -> tuple:
     """\
     >>> splitby_count('hello my friend this is smart', (3, 5, 9))
     ['hel', 'lo my', ' friend t', 'his is smart']
+    >>> splitby_count('Hello', (5, ))
+    ['Hello']
     """
+    assert utila.iterable(count), count
     result = []
     index = 0
     for part in count:
