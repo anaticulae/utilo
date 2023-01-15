@@ -58,6 +58,11 @@ pipeline{
                 script{baw.pre()}
             }
         }
+        stage('cov'){
+            steps{
+                script{baw.cov(16, false, true)}
+            }
+        }
         stage('others'){
             // TODO: REQUIRE INTEGRATION BRANCH BECAUSE MASTER ALWAYS WORKS
             when{branch 'develop'}
