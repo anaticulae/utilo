@@ -20,10 +20,10 @@ def zip_optimizer(first, second, *, selector=None):
     ...  ((3, 4, 5),),
     ... )
     [(0, 1), (3, 4, 5), (8, 9)]
-    >>> zip_optimizer(((0, 1), (4, 5)),
+    >>> zip_optimizer(((10, 1), (4, 5)),
     ... ((2, 3), (6, 7, 8))
     ... )
-    [(0, 1), (2, 3), (4, 5), (6, 7, 8)]
+    [(2, 3), (4, 5), (6, 7, 8), (10, 1)]
     """
     selector = utila.scall_or_me(selector)
     result = list(first)
