@@ -22,6 +22,8 @@ def similar(expected: str, current: str, maxdiff=0.6) -> bool:
     True
     >>> similar({'WWW', 'HTTP', 'SSH'}, 'http')
     True
+    >>> similar({'WWW', 'HTTP', 'SSH'}, 'AAA')
+    False
     """
     # TODO: SWITCH EXPECTED AND CURRENT PARAMETER AND INCREASE MAJOR VERSION
     if not isinstance(expected, utila.ITERABLE):
@@ -30,12 +32,15 @@ def similar(expected: str, current: str, maxdiff=0.6) -> bool:
     expected = utila.lower(*expected)
     expected = utila.nowhitespace(*expected)
     if isinstance(current, utila.ITERABLE):
-        return any(
+        sim = any(
             similar(
                 expected=expected,
                 current=item,
                 maxdiff=maxdiff,
             ) for item in current)
+        if sim:
+            return True
+        return False
     current = current.strip().replace(' ', '').lower()
     matched = difflib.get_close_matches(
         word=current,
@@ -56,6 +61,8 @@ def verysimilar(current: str, expected: str) -> bool:
     True
     >>> verysimilar('A B S T R A C T', {'zusammenfassung', 'kurzfassung', 'abstract'})
     True
+    >>> verysimilar(['current'], 'noe')
+    False
     """
     if isinstance(current, str):
         current = [current]
