@@ -644,3 +644,11 @@ def hasprog(program: str):
             # workaround for `whereis` of arch
             installed = False
     return installed
+
+
+def cwdget():
+    """\
+    >>> str(cwdget())
+    '...'
+    """
+    return os.getcwd()

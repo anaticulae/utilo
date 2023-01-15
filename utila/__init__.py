@@ -456,6 +456,7 @@ from utila.utils import UTF8
 from utila.utils import Nothing
 from utila.utils import assert_unique
 from utila.utils import chdir
+from utila.utils import cwdget
 from utila.utils import driver
 from utila.utils import ensure_list
 from utila.utils import ensure_tuple
