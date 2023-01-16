@@ -64,6 +64,8 @@ def isstrings(items) -> bool:
     False
     >>> isstrings(('H', 'B', 10))
     False
+    >>> isstrings(None)
+    False
     """
     if not utila.iterable(items):
         return False
