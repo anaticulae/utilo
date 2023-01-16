@@ -494,7 +494,6 @@ def test_file_copy_content_mult(td):
     utila.file_create('source/groupme__selm.yaml')
     utila.file_create('source/rawmaker__helm.yaml')
     td.mkdir('dest')
-
     utila.copy_content(
         'source',
         'dest',
@@ -504,6 +503,22 @@ def test_file_copy_content_mult(td):
     )
     assert os.path.exists('dest/groupme__selm.yaml')
     assert os.path.exists('dest/rawmaker__helm.yaml')
+
+
+def test_file_copy_content_verbose_ignore(td):
+    td.mkdir('src')
+    utila.file_create('src/groupme__selm.yaml')
+    utila.file_create('src/rawmaker__helm.yaml')
+    td.mkdir('dst')
+    utila.copy_content(
+        'src',
+        'dst',
+        pattern='(rawmaker|groupme)__*.yaml',
+        recursive=True,
+        verbose=True,
+        ignore=lambda x: 'groupme' in x,
+    )
+    assert utila.file_count(td.tmpdir.join('dst')) == 1
 
 
 def test_file_count(tmpdir):
