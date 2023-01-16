@@ -204,6 +204,20 @@ class SelectPage:
     ... single={0 : '1', 1 : '2'})
     >>> double.getpages((0, 1, 2, 3, 4, 5))
     [(None, '1'), (None, '2'), ('first', None), None, ('second', None), None]
+    >>> PI = collections.namedtuple('PI', 'page, cp')
+    >>> SP = SelectPage(default='DEFAULT', first=[PI(1, 10), PI(2, 20)])
+    >>> SP.getpage(2)
+    PI(page=2, cp=20)
+    >>> SP.getpage(10)
+    'DEFAULT'
+    >>> SelectPage(first=[PI(1, 10), PI(1, 20)])
+    Traceback (most recent call last):
+    ...
+    ValueError: duplicated page attributes: [1, 1]
+    >>> SelectPage(first=[PI(1, 10), None])
+    Traceback (most recent call last):
+    ...
+    ValueError: `items` contain `None` pages: [PI(page=1, cp=10), None]
     """
 
     def __init__(self, default=None, **kwargs):
