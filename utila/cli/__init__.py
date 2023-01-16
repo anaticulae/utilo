@@ -393,21 +393,22 @@ def create_io_ports(
 DEACTIVATED = (None, None)
 
 
-def parse(parser: argparse.ArgumentParser):
+def parse(parser: argparse.ArgumentParser, argv: list = None):
     """Parse arguments from sys-args and return the result as dictionary.
 
     Disable -f! --flags! with acclamation mark.
     """
+    argv = sys.argv if argv is None else argv
     # divide in activate and disable commands
-    enable, disable = split_args(sys.argv)
+    enable, disable = split_args(argv)
     # remove disabling commands out of sys args to avoid problems with
     # `parse_args`.
     sys.argv = enable
     # verify version and/or verbose before parsing to avoid conflicts with
     # required resources when using e.g. `abel --version --verbose`
-    if '--version' in sys.argv or '-v' in sys.argv:
+    if '--version' in argv or '-v' in argv:
         version = ''
-        if isverbose(sys.argv):
+        if isverbose(argv):
             assert parser.prog, 'missing cli.prog flag'
             version = f'{parser.prog} '
         try:
@@ -424,7 +425,7 @@ def parse(parser: argparse.ArgumentParser):
         key: value if key not in disable else DEACTIVATED
         for key, value in args.items()
     }
-    if isverbose(sys.argv):
+    if isverbose(argv):
         verbose = min((args['verbose'], 3))
         utila.level_setup(utila.Level(verbose))
     return args
