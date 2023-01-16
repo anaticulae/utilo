@@ -76,6 +76,7 @@ def pages_inside(pages: tuple, minn: int = 0, maxx=None) -> tuple:
     (5, 6, 7, 8, 9, 10)
     >>> pages_inside((0, 1, 2, 3, 4, 5), 2, maxx=4)
     (2, 3, 4)
+    >>> assert pages_inside(None) is None
     """
     if not pages:
         if maxx is None:
@@ -324,6 +325,13 @@ def select_content(
     page: int,
     default: typing.Any = None,
 ) -> typing.Any:
+    """\
+    >>> PageItem = collections.namedtuple('PageItem', 'page, content')
+    >>> select_content(items=[PageItem(1, 'data')], page=1)
+    'data'
+    >>> select_content(items=[PageItem(1, 'data')], page=10, default='DEFAULT')
+    'DEFAULT'
+    """
     selected = select_page(items, page=page)
     if selected:
         return selected.content
@@ -356,6 +364,12 @@ def sync_pages(
         default(object): return if no element is given
     Yields:
         pagenumber: (pagenumber, content of current pagenumber)
+
+    >>> PI = collections.namedtuple('PI', 'page, content')
+    >>> list(sync_pages(iterators=([PI(0, 5), PI(3,6)], [PI(2,6)]), numbers=False))
+    [(PI(page=0, content=5), None), (None, PI(page=2, content=6)), (PI(page=3, content=6), None)]
+    >>> list(sync_pages(iterators=([PI(0, 5), PI(3,6)], [PI(2,6)])))
+    [(0, (PI(page=0, content=5), None)), (2, (None, PI(page=2, content=6))), (3, (PI(page=3, content=6), None))]
     """
     # ensure to have sorted iterators
     for index, iterator in enumerate(iterators):
@@ -394,6 +408,8 @@ def pagenumber_next(items) -> int:
 def determine_pagenumber(item) -> int:
     """\
     >>> determine_pagenumber([]) == utila.INF
+    True
+    >>> determine_pagenumber(None) == utila.INF
     True
     """
     if item is None:
