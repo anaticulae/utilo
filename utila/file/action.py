@@ -89,7 +89,6 @@ def copy_content(  # pylint:disable=R1260,too-many-branches
         return
     if pattern is None:
         pattern = '*'
-
     multiple = split_multipattern(pattern)
     if multiple:
         _copy_multiple(src, dst, pattern, ignore, rename, recursive, update,
