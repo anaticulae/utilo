@@ -397,6 +397,11 @@ def parse(parser: argparse.ArgumentParser, argv: list = None):
     """Parse arguments from sys-args and return the result as dictionary.
 
     Disable -f! --flags! with acclamation mark.
+
+    >>> import argparse; parse(argparse.ArgumentParser(prog='test'), argv=['-v'])
+    Traceback (most recent call last):
+    ...
+    SystemExit: 2
     """
     argv = sys.argv if argv is None else argv
     # divide in activate and disable commands
