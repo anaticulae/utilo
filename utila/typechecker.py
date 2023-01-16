@@ -65,7 +65,7 @@ def isstrings(items) -> bool:
     >>> isstrings(('H', 'B', 10))
     False
     """
-    if not isinstance(items, list):
+    if not utila.iterable(items):
         return False
     try:
         return all((isinstance(item, str) for item in items))
