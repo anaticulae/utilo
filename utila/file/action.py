@@ -101,7 +101,7 @@ def copy_content(  # pylint:disable=R1260,too-many-branches
 
 def _copy_file(
     src,
-    dest,
+    dst,
     ignore,
     rename,
     update,
@@ -113,18 +113,18 @@ def _copy_file(
     if ignore and ignore(src):
         utila.debug(f'skip: {src}')
         return
-    if not utila.isfilepath(dest):
+    if not utila.isfilepath(dst):
         filename = os.path.basename(src)
-        dest = os.path.join(dest, filename)
+        dst = os.path.join(dst, filename)
         if rename:
-            dest = rename(dest)
+            dst = rename(dst)
     if verbose:
-        utila.log(f'cp: {src} -> {dest}')
+        utila.log(f'cp: {src} -> {dst}')
     suppress = contextlib.suppress if skip_equal else utila.nothing
     with suppress(shutil.SameFileError):
         utila.file_copy(
             src,
-            dest,
+            dst,
             update=update,
             exception=skip_equal,
             private=private,
