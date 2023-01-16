@@ -365,16 +365,17 @@ def sync_pages(
     Yields:
         pagenumber: (pagenumber, content of current pagenumber)
 
-    >>> PI = collections.namedtuple('PI', 'page, content')
+    >>> PI = collections.namedtuple('PI', 'page, cp')
     >>> list(sync_pages(iterators=([PI(0, 5), PI(3,6)], [PI(2,6)]), numbers=False))
-    [(PI(page=0, content=5), None), (None, PI(page=2, content=6)), (PI(page=3, content=6), None)]
+    [(PI(page=0, cp=5), None), (None, PI(page=2, cp=6)), (PI(page=3, cp=6), None)]
     >>> list(sync_pages(iterators=([PI(0, 5), PI(3,6)], [PI(2,6)])))
-    [(0, (PI(page=0, content=5), None)), (2, (None, PI(page=2, content=6))), (3, (PI(page=3, content=6), None))]
+    [(0, (PI(page=0, cp=5), None)), (2, (None, PI(page=2, cp=6))), (3, (PI(page=3, cp=6), None))]
     """
     # ensure to have sorted iterators
     for index, iterator in enumerate(iterators):
         pages = [determine_pagenumber(item) for item in iterator]
-        assert utila.isascending(pages), f'iter: {index} not sorted: {iterator}'
+        assert utila.isascending(pages), (f'iter: {index}; pages: {pages} '
+                                          f'not sorted: {iterator}')
     # avoid side effects
     iterators = [list(item) for item in iterators]
     while any(item for item in iterators):
