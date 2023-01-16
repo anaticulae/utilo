@@ -115,6 +115,10 @@ class NumberedParameter(Parameter):
 
 @dataclasses.dataclass
 class RequiredCommand(Command):
+    """\
+    >>> RequiredCommand('short', 'longcut', 'message')
+    RequiredCommand(shortcut='short', longcut='longcut', message='message', args={'required': True})
+    """
 
     def __post_init__(self):
         #pylint:disable=unsupported-assignment-operation
@@ -575,6 +579,12 @@ def processcount(args: dict, multiprocessed: bool = False) -> int:
     5
     >>> processcount(None, multiprocessed=False)
     1
+    >>> processcount({MULTI_FLAG: 'auto'}, multiprocessed=True) > 1
+    True
+    >>> processcount(dict(job='a'), multiprocessed=True)
+    Traceback (most recent call last):
+    ...
+    SystemExit: 2
     """
     processes = 1
     if not multiprocessed:
