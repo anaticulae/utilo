@@ -69,10 +69,7 @@ def isstrings(items) -> bool:
     """
     if not utila.iterable(items):
         return False
-    try:
-        return all((isinstance(item, str) for item in items))
-    except TypeError:
-        return False
+    return all((isinstance(item, str) for item in items))
 
 
 def asserts_types(items, types):
