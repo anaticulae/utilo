@@ -27,6 +27,11 @@ CACHES = set()
 
 
 def cacheme(func=None, maxsize: int = MAXSIZE):
+    """\
+    >>> def example(): return 10
+    >>> cacheme(example)
+    <function example at ...>
+    """
 
     def decorating_function(user_function):
         wrapper = _lru_cache_wrapper(user_function, maxsize, _CacheInfo)
@@ -42,11 +47,18 @@ def cacheme(func=None, maxsize: int = MAXSIZE):
 
 
 def cache_clear():
+    """\
+    >>> cache_clear()
+    """
     for item in CACHES:
         item.cache_clear()
 
 
 def cache_disable():
+    """\
+    >>> cache_disable()
+    >>> cache_enable()
+    """
     global CACHE_DISABLED
     CACHE_DISABLED = True
 
