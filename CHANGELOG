@@ -2,6 +2,17 @@
 
 Every noteable change is logged here.
 
+## v2.103.0 (2023-01-17)
+
+### Feature
+
+* make message more verbose (f49a3f99fd00)
+* make string checker more flexible (ba8f42dd94e1)
+
+### Fix
+
+* remove unreachable code (c7f1115596b7)
+
 ## v2.102.0 (2023-01-15)
 
 ### Feature
