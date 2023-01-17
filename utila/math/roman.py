@@ -170,6 +170,12 @@ def pagenumber_plus(item: str) -> str:
     """\
     >>> pagenumber_plus(12)
     '13'
+    >>> pagenumber_plus('X')
+    'XI'
+    >>> pagenumber_plus('1X')
+    Traceback (most recent call last):
+    ...
+    ValueError: invalid page number: 1X
     """
     number = pagenumber(item) + 1
     if isarabic(item):
@@ -183,6 +189,12 @@ def pagenumber_minus(item: str) -> str:
     """\
     >>> pagenumber_minus('X')
     'IX'
+    >>> pagenumber_minus('10')
+    '9'
+    >>> pagenumber_minus('1X')
+    Traceback (most recent call last):
+    ...
+    ValueError: invalid page number: 1X
     """
     number = pagenumber(item) - 1
     if isarabic(item):
