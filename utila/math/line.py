@@ -22,6 +22,10 @@ def round_line(x0, y0, x1, y1, digits: int = 1, max_noise=4.0) -> tuple:
 
     >>> round_line(*(10.9, 100, 9.8, 200))
     (10.4, 100, 10.4, 200)
+    >>> round_line(*(10.9, 100, 28, 200))
+    (10.9, 100, 28, 200)
+    >>> round_line(10, 10.5, 200, 11)
+    (10, 10.8, 200, 10.8)
     """
     if math.fabs(x0 - x1) < max_noise:
         x1 = (x1 + x0) / 2
@@ -51,6 +55,8 @@ def equal_lines(first, second, max_diff: float = 3.0) -> bool:
 
     >>> equal_lines((10, 10, 100, 10), (11, 10, 99, 10))
     True
+    >>> equal_lines((0, 10, 100, 10), (11, 10, 99, 10))
+    False
     """
     if length(first[0], first[1], second[0], second[1]) > max_diff:
         return False
