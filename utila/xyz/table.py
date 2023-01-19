@@ -50,7 +50,7 @@ def action(
     >>> action('')
     '\n'
     >>> action('A;B;C;D;E\nF;G;H', 5, separator=';')
-    'A     ;B     ;C     ;D     ;E\nF     ;G     ;H\n'
+    'A;     B;     C;     D;     E;\nF;     G;     H;\n'
     """
     rawseparator = '' if not separator else separator
     if separator:
@@ -65,7 +65,7 @@ def action(
             # split data by spaces
             collected.append(re.split(r'[ ]{5,}', line, maxsplit=COLUMNS - 1))
         else:
-            collected.append(re.split(separator, line))
+            collected.append([it.strip() for it in re.split(separator, line)])
     if not collected:
         return utila.NEWLINE
     if sortby_column is not None and sortby_column >= 0:
@@ -79,10 +79,11 @@ def action(
             continue
         # TODO: DIRTY
         data = [
-            item[number] + (column_wdith[number] - len(item[number])) * ' '
+            item[number] + rawseparator +
+            (column_wdith[number] - len(item[number])) * ' '
             for number in numbers[0:len(item)]
         ]
-        line = rawseparator.join(data).rstrip()
+        line = ''.join(data).rstrip(' ' + rawseparator)
         result.append(line)
     result: str = utila.NEWLINE.join(result)
     # ensure newline at the end
