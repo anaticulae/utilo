@@ -20,11 +20,15 @@ Parse column file and replace with beautified file.
 
 @utila.saveme
 def main():
-    paths = sources()
+    paths, separator, sortby = sources()
     for path in paths:
         utila.log(path)
         content = utila.file_read(path)
-        content = action(content)
+        content = action(
+            content,
+            separator=separator,
+            sortby_column=sortby,
+        )
         utila.file_replace(path, content)
     utila.exitx(returncode=utila.SUCCESS)
 
@@ -64,7 +68,7 @@ def action(
             collected.append(re.split(separator, line))
     if not collected:
         return utila.NEWLINE
-    if sortby_column is not None:
+    if sortby_column is not None and sortby_column >= 0:
         collected.sort(key=lambda x: utila.alphabetically(x[sortby_column]))  # pylint:disable=C3001
     column_wdith = columns(collected, space_min)
     numbers = utila.ranged_tuple(len(column_wdith))
@@ -110,10 +114,17 @@ def sources() -> list:
         help='files to process',
     )
     parser.add_argument(
-        'seperator',
-        type=str,
-        default=' ',
+        '--separator',
+        default=None,
+        nargs='?',
         help='split column by separator',
+    )
+    parser.add_argument(
+        '--sort',
+        default=0,
+        type=int,
+        nargs='?',
+        help='sort by column',
     )
     args = parser.parse_args()
     result = [utila.make_absolute(item) for item in args.files]
@@ -128,4 +139,6 @@ def sources() -> list:
         failure = True
     if failure:
         utila.exitx()
-    return result
+    separator = args.separator
+    sortby = args.sort
+    return result, separator, sortby
