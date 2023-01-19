@@ -45,7 +45,10 @@ def action(
     'Der Mut     Helmut\nHier        spricht\nSchelm\n'
     >>> action('')
     '\n'
+    >>> action('A;B;C;D;E\nF;G;H', 5, separator=';')
+    'A     ;B     ;C     ;D     ;E\nF     ;G     ;H\n'
     """
+    rawseparator = '' if not separator else separator
     if separator:
         separator = re.escape(separator)
     content = content.strip()
@@ -73,9 +76,9 @@ def action(
         # TODO: DIRTY
         data = [
             item[number] + (column_wdith[number] - len(item[number])) * ' '
-            for number in numbers
+            for number in numbers[0:len(item)]
         ]
-        line = ''.join(data).rstrip()
+        line = rawseparator.join(data).rstrip()
         result.append(line)
     result: str = utila.NEWLINE.join(result)
     # ensure newline at the end
