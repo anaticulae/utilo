@@ -2,6 +2,16 @@
 
 Every noteable change is logged here.
 
+## v2.103.1 (2023-01-19)
+
+### Fix
+
+* we want to have the g, see baw tool (24dd4abe91ab)
+
+### Chore
+
+* upgrade requirements.txt (720616a2f000)
+
 ## v2.103.0 (2023-01-17)
 
 ### Feature
