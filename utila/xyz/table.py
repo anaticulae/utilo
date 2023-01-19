@@ -63,7 +63,12 @@ def action(
         return utila.NEWLINE
     if sortby_column is not None:
         collected.sort(key=lambda x: utila.alphabetically(x[sortby_column]))  # pylint:disable=C3001
-    column_wdith = max(len(item[0]) for item in collected) + space_min
+    column_count = max((len(line) for line in collected))
+    column_wdith = [
+        max(len(item[column])
+            for item in collected) + space_min
+        for column in utila.rtuple(column_count)
+    ]
     result = []
     for item in collected:
         if len(item) == 1:
