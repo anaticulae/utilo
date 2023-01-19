@@ -63,23 +63,38 @@ def action(
         return utila.NEWLINE
     if sortby_column is not None:
         collected.sort(key=lambda x: utila.alphabetically(x[sortby_column]))  # pylint:disable=C3001
-    column_count = max((len(line) for line in collected))
-    column_wdith = [
-        max(len(item[column])
-            for item in collected) + space_min
-        for column in utila.rtuple(column_count)
-    ]
+    column_wdith = columns(collected, space_min)
+    numbers = utila.ranged_tuple(len(column_wdith))
     result = []
     for item in collected:
         if len(item) == 1:
             result.append(item[0])
             continue
         # TODO: DIRTY
-        line = item[0] + ' ' * (column_wdith - len(item[0])) + item[1]
+        data = [
+            item[number] + (column_wdith[number] - len(item[number])) * ' '
+            for number in numbers
+        ]
+        line = ''.join(data).rstrip()
         result.append(line)
     result: str = utila.NEWLINE.join(result)
     # ensure newline at the end
     result: str = utila.final_newline(result)
+    return result
+
+
+def columns(collected, space_min):
+    column_count = max((len(line) for line in collected))
+    result = []
+    for number in utila.rtuple(column_count):
+        widths = []
+        for item in collected:
+            try:
+                widths.append(len(item[number]))
+            except IndexError:
+                continue
+        result.append(max(widths) + space_min)
+    result: tuple = tuple(result)
     return result
 
 
