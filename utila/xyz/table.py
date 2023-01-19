@@ -34,20 +34,26 @@ SPACE_MIN = 30
 COLUMNS = 2
 
 
-def action(content: str, space_min=SPACE_MIN) -> str:
+def action(content: str, space_min=SPACE_MIN, separator=None) -> str:
     r"""\
     >>> action('Hier           spricht\nDer Mut           Helmut\nSchelm', 5)
     'Der Mut     Helmut\nHier        spricht\nSchelm\n'
     >>> action('')
     '\n'
     """
+    if separator:
+        separator = re.escape(separator)
     content = content.strip()
     collected = []
     for line in content.splitlines():
         line = line.strip()
         if not line:
             continue
-        collected.append(re.split(r'[ ]{5,}', line, maxsplit=COLUMNS - 1))
+        if separator is None:
+            # split data by spaces
+            collected.append(re.split(r'[ ]{5,}', line, maxsplit=COLUMNS - 1))
+        else:
+            collected.append(re.split(separator, line))
     if not collected:
         return utila.NEWLINE
     collected.sort(key=lambda x: utila.alphabetically(x[0]))  # pylint:disable=C3001
@@ -73,6 +79,12 @@ def sources() -> list:
         type=str,
         nargs='+',
         help='files to process',
+    )
+    parser.add_argument(
+        'seperator',
+        type=str,
+        default=' ',
+        help='split column by separator',
     )
     args = parser.parse_args()
     result = [utila.make_absolute(item) for item in args.files]
