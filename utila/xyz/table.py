@@ -20,7 +20,7 @@ Parse column file and replace with beautified file.
 
 @utila.saveme
 def main():
-    paths, separator, sortby = eval_cli()
+    paths, separator, sortby, spaces = eval_cli()
     for path in paths:
         utila.log(path)
         content = utila.file_read(path)
@@ -28,6 +28,7 @@ def main():
             content,
             separator=separator,
             sortby_column=sortby,
+            space_min=spaces,
         )
         utila.file_replace(path, content)
     utila.exitx(returncode=utila.SUCCESS)
@@ -127,6 +128,13 @@ def eval_cli() -> tuple:
         nargs='?',
         help='sort by column',
     )
+    parser.add_argument(
+        '--spaces',
+        default=-1,
+        type=int,
+        nargs='?',
+        help='minimal spaces inside a column',
+    )
     args = parser.parse_args()
     result = [utila.make_absolute(item) for item in args.files]
     failure = False
@@ -142,4 +150,5 @@ def eval_cli() -> tuple:
         utila.exitx()
     separator = args.separator
     sortby = args.sort
-    return result, separator, sortby
+    spaces = args.spaces
+    return result, separator, sortby, spaces
