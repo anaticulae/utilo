@@ -20,7 +20,7 @@ Parse column file and replace with beautified file.
 
 @utila.saveme
 def main():
-    paths, separator, sortby = sources()
+    paths, separator, sortby = eval_cli()
     for path in paths:
         utila.log(path)
         content = utila.file_read(path)
@@ -105,7 +105,7 @@ def columns(collected, space_min):
     return result
 
 
-def sources() -> list:
+def eval_cli() -> tuple:
     parser = argparse.ArgumentParser(description=DESCRIPTION)
     parser.add_argument(
         'files',
