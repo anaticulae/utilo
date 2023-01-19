@@ -34,7 +34,12 @@ SPACE_MIN = 30
 COLUMNS = 2
 
 
-def action(content: str, space_min=SPACE_MIN, separator=None) -> str:
+def action(
+    content: str,
+    space_min=SPACE_MIN,
+    separator=None,
+    sortby_column: int = 0,
+) -> str:
     r"""\
     >>> action('Hier           spricht\nDer Mut           Helmut\nSchelm', 5)
     'Der Mut     Helmut\nHier        spricht\nSchelm\n'
@@ -56,7 +61,8 @@ def action(content: str, space_min=SPACE_MIN, separator=None) -> str:
             collected.append(re.split(separator, line))
     if not collected:
         return utila.NEWLINE
-    collected.sort(key=lambda x: utila.alphabetically(x[0]))  # pylint:disable=C3001
+    if sortby_column is not None:
+        collected.sort(key=lambda x: utila.alphabetically(x[sortby_column]))  # pylint:disable=C3001
     column_wdith = max(len(item[0]) for item in collected) + space_min
     result = []
     for item in collected:
