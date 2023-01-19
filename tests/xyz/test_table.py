@@ -53,3 +53,26 @@ def test_normalize_table(td, mp):
 
 def test_table_invalid_input(mp):
     fail('INVALID', mp=mp)
+
+
+SEPARATOR = """
+A;B;C;D;E;F
+G;H;I
+J;K;L;M;N
+O;P;Q;R;S;T
+"""
+EXPECTED = """\
+A;     B;     C;     D;     E;     F
+G;     H;     I
+J;     K;     L;     M;     N
+O;     P;     Q;     R;     S;     T
+"""
+
+
+def test_normalize_table_separator(td, mp):
+    todo = td.tmpdir.join('separator.txt')
+    utila.file_create(todo, SEPARATOR)
+    run(f'{todo} --separator=; --sort=-1 --spaces=5', mp=mp)
+    better = utila.file_read(todo)
+    assert better != SEPARATOR
+    assert better == EXPECTED

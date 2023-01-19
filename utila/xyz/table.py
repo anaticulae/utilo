@@ -51,7 +51,7 @@ def action(
     >>> action('')
     '\n'
     >>> action('A;B;C;D;E\nF;G;H', 5, separator=';')
-    'A;     B;     C;     D;     E;\nF;     G;     H;\n'
+    'A;     B;     C;     D;     E\nF;     G;     H\n'
     """
     rawseparator = '' if not separator else separator
     if separator:
