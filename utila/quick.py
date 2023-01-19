@@ -177,7 +177,7 @@ def git_hash(root) -> str:
     # utila-2.93.0.post6+g3b6726a
     value = value[1:]
     value = value.replace('-', '.post', 1)
-    value = value.replace('-g', '+')
+    value = value.replace('-g', '+g')
     return value
 
 
