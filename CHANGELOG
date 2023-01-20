@@ -2,6 +2,19 @@
 
 Every noteable change is logged here.
 
+## v2.104.0 (2023-01-20)
+
+### Feature
+
+* add parameter to adjust spaces (d260074e2026)
+* use separator after content (386138a0df85)
+* connect separator (4a1dfad13a83)
+* support different separators (310a12ba011d)
+* format table column count independent (cf781b9c9424)
+* determine column width column count independent (42a8d5188938)
+* add parameter to select sorting column (a6b50fb660ab)
+* add option to change separator (4d8bd9a2656e)
+
 ## v2.103.1 (2023-01-19)
 
 ### Fix
