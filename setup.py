@@ -69,6 +69,7 @@ if __name__ == "__main__":
                 'utila_lock = utila.xyz.lock:main',
                 'utila_unlock = utila.xyz.lock:unlock',
                 'utila_table = utila.xyz.table:main',
+                'utila_tidy = utila.xyz.tidy:main',
             ],
         },
     )
