@@ -13,33 +13,18 @@ projectname/projectname-version. This operation is executed in place for
 **internal** and **external** package-repository.
 """
 
+import contextlib
 import os
 import shutil
-from contextlib import suppress
-from os.path import abspath
-from os.path import dirname
-from os.path import exists
-from os.path import join
-from shutil import Error
 
 import utila
 
 
-def forward_slash(path: str):
-    """Covert to forward slash to ease working on windows
-
-    Replace single and multiple \\
-    """
-    return path.replace(r'\\', '/').replace('\\', '/')
-
-
 def archive(archive_path):
-    if not exists(archive_path):
-        msg = '[ERROR] Path %s does not exists' % forward_slash(archive_path)
-        print(msg, flush=True)
-        exit(1)
-
-    print('Tidy: %s' % forward_slash(archive_path))
+    if not utila.exists(archive_path):
+        msg = f'[ERROR] Path {utila.forward_slash(archive_path)} does not exists'
+        utila.exitx(msg)
+    utila.log(f'Tidy: {utila.forward_slash(archive_path)}')
     for item in os.scandir(archive_path):
         if not item.is_file() and item.name.endswith('.py'):
             continue
@@ -48,16 +33,16 @@ def archive(archive_path):
         except ValueError:
             continue
 
-        new_path = os.path.join(archive_path, project)
-        new_item_path = join(new_path, item.name)
+        new_path = utila.join(archive_path, project)
+        new_item_path = utila.join(new_path, item.name)
         os.makedirs(new_path, exist_ok=True)
 
-        if exists(new_item_path):
-            print('Skip package. It already exists: %s' % new_item_path)
+        if utila.exists(new_item_path):
+            utila.log('Skip package. It already exists: {new_item_path}')
             continue
-
-        with suppress(Error):
+        with contextlib.suppress(shutil.Error):
             shutil.move(item.path, new_path)
+    utila.exitx('done', returncode=utila.SUCCESS)
 
 
 def main(cwd=None):
