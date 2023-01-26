@@ -44,8 +44,30 @@ pytest-konira-0.2.tar.gz
 
 
 def test_tidy_simple(testdir, mp, capsys):
+    testdir.tmpdir.join('astor').mkdir()
     for package in EXAMPLE:
         utila.file_create(testdir.tmpdir.join(package))
     run('', mp=mp)
     stdout = utilatest.stdout(capsys)
     assert 'done' in stdout
+    current = len(utila.directory_list(testdir.tmpdir))
+    # Do not merge different pytest package into the same folder.
+    assert current == 5
+
+
+def test_tidy_twice(testdir, mp, capsys):
+    testdir.tmpdir.join('astor').mkdir()
+    for package in EXAMPLE:
+        utila.file_create(testdir.tmpdir.join(package))
+    run('', mp=mp)
+    # create again to have double copy
+    for package in EXAMPLE:
+        utila.file_create(testdir.tmpdir.join(package))
+    # run again
+    run('', mp=mp)
+    stdout = utilatest.stdout(capsys)
+    assert 'done' in stdout
+    current = len(utila.directory_list(testdir.tmpdir))
+    # Do not merge different pytest package into the same folder.
+    assert current == 5
+    assert stdout.count('Skip package.') == len(EXAMPLE), stdout

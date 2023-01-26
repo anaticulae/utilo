@@ -28,21 +28,32 @@ def archive(archive_path):
     for item in os.scandir(archive_path):
         if not item.is_file() and item.name.endswith('.py'):
             continue
-        try:
-            project, version = item.name.split('-', maxsplit=1)
-        except ValueError:
-            continue
-
+        project = package_name(item.name)
         new_path = utila.join(archive_path, project)
         new_item_path = utila.join(new_path, item.name)
         os.makedirs(new_path, exist_ok=True)
-
         if utila.exists(new_item_path):
-            utila.log('Skip package. It already exists: {new_item_path}')
+            utila.log(f'Skip package. It already exists: {new_item_path}')
             continue
         with contextlib.suppress(shutil.Error):
             shutil.move(item.path, new_path)
     utila.exitx('done', returncode=utila.SUCCESS)
+
+
+SPLIT = utila.compiles(r'-\d{1,3}\.?')
+
+
+def package_name(name: str) -> str:
+    """\
+    >>> package_name('argon2_cffi-20.1.0-cp37-cp37m-win32.whl')
+    'argon2_cffi'
+    >>> package_name('pytest-konira-0.2.tar.gz')
+    'pytest-konira'
+    >>> package_name('astor')
+    'astor'
+    """
+    name = SPLIT.split(name, maxsplit=1)[0]
+    return name
 
 
 def main(cwd=None):
