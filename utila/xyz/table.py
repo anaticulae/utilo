@@ -20,7 +20,7 @@ Parse column file and replace with beautified file.
 
 @utila.saveme
 def main():
-    paths, separator, sortby, spaces = eval_cli()
+    paths, separator, sortby, spaces, empty = eval_cli()
     for path in paths:
         utila.log(path)
         content = utila.file_read(path)
@@ -29,6 +29,7 @@ def main():
             separator=separator,
             sortby_column=sortby,
             space_min=spaces,
+            empty=empty,
         )
         utila.file_replace(path, content)
     utila.exitx(returncode=utila.SUCCESS)
@@ -38,12 +39,15 @@ SPACE_MIN = 30
 
 COLUMNS = 2
 
+NO_SORT = -1
+
 
 def action(
     content: str,
     space_min=SPACE_MIN,
     separator=None,
     sortby_column: int = 0,
+    empty: bool = False,
 ) -> str:
     r"""\
     >>> action('Hier           spricht\nDer Mut           Helmut\nSchelm', 5)
@@ -52,7 +56,10 @@ def action(
     '\n'
     >>> action('A;B;C;D;E\nF;G;H', 5, separator=';')
     'A;     B;     C;     D;     E\nF;     G;     H\n'
+    >>> action('A;B;C;D;E\n\n\nF;G;H', 5, separator=';', sortby_column=-1, empty=True)
+    'A;     B;     C;     D;     E\n\n\nF;     G;     H\n'
     """
+    assert not (empty and sortby_column != NO_SORT), 'could not sort and preserve'  # yapf:disable
     rawseparator = '' if not separator else separator
     if separator:
         separator = re.escape(separator)
@@ -61,6 +68,8 @@ def action(
     for line in content.splitlines():
         line = line.strip()
         if not line:
+            if empty:
+                collected.append('')
             continue
         if separator is None:
             # split data by spaces
@@ -130,10 +139,15 @@ def eval_cli() -> tuple:
     )
     parser.add_argument(
         '--spaces',
-        default=-1,
+        default=NO_SORT,
         type=int,
         nargs='?',
         help='minimal spaces inside a column',
+    )
+    parser.add_argument(
+        '--preserve',
+        action='store_true',
+        help='preserve empty newlines',
     )
     args = parser.parse_args()
     result = [utila.make_absolute(item) for item in args.files]
@@ -151,4 +165,5 @@ def eval_cli() -> tuple:
     separator = args.separator
     sortby = args.sort
     spaces = args.spaces
-    return result, separator, sortby, spaces
+    empty = args.preserve
+    return result, separator, sortby, spaces, empty
