@@ -55,6 +55,12 @@ def test_table_invalid_input(mp):
     fail('INVALID', mp=mp)
 
 
+def test_table_not_a_file(td, mp, capsys):
+    fail(str(td.tmpdir), mp=mp)
+    stderr = utilatest.stderr(capsys)
+    assert 'not a file:' in stderr
+
+
 SEPARATOR = """
 A;B;C;D;E;F
 G;H;I

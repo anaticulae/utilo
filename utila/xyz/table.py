@@ -58,6 +58,8 @@ def action(
     'A;     B;     C;     D;     E\nF;     G;     H\n'
     >>> action('A;B;C;D;E\n\n\nF;G;H', 5, separator=';', sortby_column=-1, empty=True)
     'A;     B;     C;     D;     E\n\n\nF;     G;     H\n'
+    >>> action('A\n\n\nB', empty=False)  # increase test cov
+    'A\nB\n'
     """
     assert not (empty and sortby_column != NO_SORT), 'could not sort and preserve'  # yapf:disable
     rawseparator = '' if not separator else separator
