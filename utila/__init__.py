@@ -179,6 +179,7 @@ from utila.file.action import file_read_lines
 from utila.file.directory import directory_list
 from utila.file.directory import directory_lock
 from utila.file.directory import directory_unlock
+from utila.file.directory import tree_remove
 # hashed
 from utila.file.hashed import directory_hash
 from utila.file.hashed import file_hash

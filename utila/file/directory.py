@@ -8,6 +8,8 @@
 # =============================================================================
 
 import os
+import shutil
+import stat
 
 import utila
 
@@ -64,3 +66,18 @@ def directory_unlock(path: str, recursive: bool = True, noerror: bool = True):
             item,
             noerror=noerror,
         )
+
+
+def tree_remove(path: str):
+    path = str(path)
+    assert os.path.exists(path), path
+
+    def remove_readonly(func, path, _):  # pylint:disable=W0613
+        """Clear the readonly bit and reattempt the removal."""
+        os.chmod(path, stat.S_IWRITE)
+        func(path)
+
+    try:
+        shutil.rmtree(path, onerror=remove_readonly)
+    except PermissionError:
+        utila.exitx(f'Could not remove {path}')

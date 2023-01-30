@@ -34,3 +34,11 @@ def test_directory_list_recursive_absolute():
         absolute=True,
     )
     assert len(directories) > 40
+
+
+def test_tree_remove(testdir):
+    testdir.tmpdir.mkdir('test')
+    testdir.tmpdir.mkdir('test/abc')
+    assert len(utila.directory_list(testdir.tmpdir)) == 1
+    utila.tree_remove(testdir.tmpdir.join('test'))
+    assert not utila.directory_list(testdir.tmpdir)
