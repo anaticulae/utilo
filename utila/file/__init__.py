@@ -554,7 +554,7 @@ def tmpdir(root, create: bool = True, trys: int = 10):
 
 
 @contextlib.contextmanager
-def make_tmpdir(root: str, remove: bool = False, max_file_guard=100):
+def make_tmpdir(root: str, remove: bool = False, file_count_max: int = 100):
     """\
     root: project root as backup for temporary path. This path will be
     used if SHARED_TMP does not exists.
@@ -571,7 +571,7 @@ def make_tmpdir(root: str, remove: bool = False, max_file_guard=100):
 
     if remove:
         msg = f'do you really want to remove this recursively? {path}'
-        assert len(utila.file_list(path)) < max_file_guard, msg
+        assert len(utila.file_list(path)) < file_count_max, msg
         utila.tree_remove(path)
 
 
