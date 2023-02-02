@@ -2,6 +2,23 @@
 
 Every noteable change is logged here.
 
+## v2.105.0 (2023-02-02)
+
+### Feature
+
+* add method to remove tree (11ba5d183b94)
+* add parameter to preserve empty lines (dc883dcd9f7e)
+* add tidy application (a8f5a7bf1d55)
+
+### Fix
+
+* adjust merge pattern (daa4d5b9e1e9)
+
+### Chore
+
+* fix project invocation (f14847cc0568)
+* upgrade Jenkinsfile (69072eb20c44)
+
 ## v2.104.0 (2023-01-20)
 
 ### Feature
