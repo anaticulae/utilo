@@ -427,7 +427,7 @@ def file_name(path: str, ext: bool = False) -> str:
     >>> file_name('etc/dev/raw.png', ext=True)
     'raw.png'
     """
-    assert path
+    assert path, path
     path = utila.forward_slash(path)
     try:
         _, name = path.rsplit('/', 1)
