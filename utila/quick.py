@@ -27,6 +27,7 @@ def install(
     root: str,
     include_package_data: bool = True,
 ):
+    utila.log(f'install: {root}')
     root = str(root)
     module = utila.load_module(root)
     xpackages = packages(module)
