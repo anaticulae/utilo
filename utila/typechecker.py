@@ -168,9 +168,15 @@ def isfloat_(item) -> bool:
     True
     >>> isfloat_(0.0)
     True
+    >>> isfloat_('1.0')
+    True
+    >>> isfloat_('0')
+    False
     """
     if (isinstance(item, float)):
         return True
+    if (isinstance(item, str)):
+        return '.' in item and isfloat_(float(item))
     return False
 
 
