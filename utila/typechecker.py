@@ -162,6 +162,18 @@ def isfloat(*floats) -> bool:
     return all(isinstance(item, float) for item in floats)
 
 
+def isfloat_(item) -> bool:
+    """
+    >>> isfloat_(1.0)
+    True
+    >>> isfloat_(0.0)
+    True
+    """
+    if (isinstance(item, float)):
+        return True
+    return False
+
+
 def asserts(item, typ):
     """\
     >>> asserts('hello', int)
