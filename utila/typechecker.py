@@ -152,9 +152,8 @@ def isfloat(*floats) -> bool:
     False
     >>> isfloat(1.5, 3.0, -0.3)
     True
-
-    # >>> isfloat('2.5')
-    # True
+    >>> isfloat('2.5')
+    True
     """
     # TODO: RENAME TO isfloats
     return all(isfloat_(item) for item in floats)
@@ -165,6 +164,8 @@ def isfloat_(item) -> bool:
     >>> isfloat_(1.0)
     True
     >>> isfloat_(0.0)
+    True
+    >>> isfloat_(-0.0)
     True
     >>> isfloat_('1.0')
     True
