@@ -157,9 +157,7 @@ def isfloat(*floats) -> bool:
     # True
     """
     # TODO: RENAME TO isfloats
-    # TODO: use isfloat for single checkup
-    # TODO: add str support
-    return all(isinstance(item, float) for item in floats)
+    return all(isfloat_(item) for item in floats)
 
 
 def isfloat_(item) -> bool:
