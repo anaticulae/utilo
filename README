@@ -1,10 +1,9 @@
-# utila
+UTILA
+=====
 
-Utila as a base packages provides functions in the following fields:
+utila is the base package which include redundant functionality for the
+project. The most common steps are implemented in this package to reduce the
+amount of code.
 
-* command line interface
-* datetime
-* error
-* file
-* logging
-* test
+>>> import utila
+>>> utila.file_read('README)
