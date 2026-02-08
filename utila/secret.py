@@ -14,7 +14,7 @@ import utila
 try:
     import utilasafe
 except ModuleNotFoundError:
-    utila.error('could not use utilasafe')
+    print(f"Error: could not use utilasafe", file=sys.stderr)
     utilasafe = None  # pylint:disable=C0103
 
 
