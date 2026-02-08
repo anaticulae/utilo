@@ -6,15 +6,15 @@
 # use or distribution is an offensive act against international law and may
 # be prosecuted under federal law. Its content is company confidential.
 # =============================================================================
-import utila
+import utilo
 
-PDF = utila.Pattern('*', 'pdf')
+PDF = utilo.Pattern('*', 'pdf')
 
-CHAR_MARGIN = utila.Value('char_margin', float, defaultvar=2.0, minimum=0.1)
-LINE_OVERLAP = utila.Value('line_overlap', float, defaultvar=0.5, minimum=0.1)
-LINE_MARGIN = utila.Value('line_margin', float, defaultvar=0.5, minimum=0.1)
-WORD_MARGIN = utila.Value('word_margin', float, defaultvar=0.1, minimum=0.1)
-BOXES_FLOW = utila.Value('boxes_flow', float, defaultvar=0.5, minimum=0.1)
+CHAR_MARGIN = utilo.Value('char_margin', float, defaultvar=2.0, minimum=0.1)
+LINE_OVERLAP = utilo.Value('line_overlap', float, defaultvar=0.5, minimum=0.1)
+LINE_MARGIN = utilo.Value('line_margin', float, defaultvar=0.5, minimum=0.1)
+WORD_MARGIN = utilo.Value('word_margin', float, defaultvar=0.1, minimum=0.1)
+BOXES_FLOW = utilo.Value('boxes_flow', float, defaultvar=0.5, minimum=0.1)
 
 PDF_INPUT = [PDF]
 
@@ -29,12 +29,12 @@ CONFIG_INPUTS = [
 
 ROOT = 'rawmaker'
 WORKPLAN = [
-    utila.create_step(
+    utilo.create_step(
         'annotation',
         inputs=PDF_INPUT,
         output=('annotation',),
     ),
-    utila.create_step(
+    utilo.create_step(
         'border',
         inputs=PDF_INPUT,
         output=(
@@ -42,7 +42,7 @@ WORKPLAN = [
             'boundingboxes',
         ),
     ),
-    utila.create_step(
+    utilo.create_step(
         'boxes',
         inputs=PDF_INPUT,
         output=(
@@ -50,7 +50,7 @@ WORKPLAN = [
             'horizontal',
         ),
     ),
-    utila.create_step(
+    utilo.create_step(
         'fonts',
         inputs=CONFIG_INPUTS,
         output=(
@@ -58,7 +58,7 @@ WORKPLAN = [
             'content',
         ),
     ),
-    utila.create_step(
+    utilo.create_step(
         'text',
         inputs=CONFIG_INPUTS,
         output=(
@@ -66,7 +66,7 @@ WORKPLAN = [
             'positions',
         ),
     ),
-    utila.create_step(
+    utilo.create_step(
         'toc',
         inputs=PDF_INPUT,
         output=('toc',),

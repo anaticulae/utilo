@@ -11,37 +11,37 @@ import functools
 
 import utilatest
 
-import utila
-import utila.utils
-import utila.xyz.lock
+import utilo
+import utilo.utils
+import utilo.xyz.lock
 
 lock = functools.partial(
     utilatest.run_cov,
-    main=utila.xyz.lock.main,
-    process=utila.xyz.lock.LOCK,
+    main=utilo.xyz.lock.main,
+    process=utilo.xyz.lock.LOCK,
     expect=True,
 )
 
 unlock = functools.partial(
     utilatest.run_cov,
-    main=utila.xyz.lock.unlock,
-    process=utila.xyz.lock.UNLOCK,
+    main=utilo.xyz.lock.unlock,
+    process=utilo.xyz.lock.UNLOCK,
     expect=True,
 )
 
 
 def test_lock_unlock(td, mp):
     example = td.tmpdir.join('exmaple.txt')
-    utila.file_create(
+    utilo.file_create(
         example,
         'CONTENT',
     )
-    assert not utila.file_islocked(example)
+    assert not utilo.file_islocked(example)
     with mp.context() as context:
-        context.setattr(utila, 'wait', lambda: True)
+        context.setattr(utilo, 'wait', lambda: True)
         lock('', mp=mp)
-    assert utila.file_islocked(example)
+    assert utilo.file_islocked(example)
     with mp.context() as context:
-        context.setattr(utila, 'wait', lambda: True)
+        context.setattr(utilo, 'wait', lambda: True)
         unlock('', mp=mp)
-    assert not utila.file_islocked(example)
+    assert not utilo.file_islocked(example)

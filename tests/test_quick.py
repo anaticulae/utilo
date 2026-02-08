@@ -9,14 +9,14 @@
 
 import setuptools._distutils.core
 
-import utila
+import utilo
 
 
 def test_quick_install(td, mp):
     root = str(td.tmpdir)
     project = 'no_project'
     cmd = f'baw init {project} "nice example"'
-    utila.run(
+    utilo.run(
         cmd,
         cwd=root,
     )
@@ -27,4 +27,4 @@ def test_quick_install(td, mp):
 
     with mp.context() as context:
         context.setattr(setuptools._distutils.core, 'setup', no_install)  # pylint:disable=W0212
-        utila.install(root=setup)
+        utilo.install(root=setup)

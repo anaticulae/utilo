@@ -11,8 +11,8 @@ import functools
 
 import utilatest
 
-import utila
-import utila.xyz.table
+import utilo
+import utilo.xyz.table
 
 DATA = """
 FAR                     false alarm rate
@@ -31,23 +31,23 @@ FIRE-ACE                                   First International Satellite Cloud C
 
 run = functools.partial(
     utilatest.run_cov,
-    main=utila.xyz.table.main,
-    process='utila_table',
+    main=utilo.xyz.table.main,
+    process='utilo_table',
     expect=True,
 )
 fail = functools.partial(
     utilatest.run_cov,
-    main=utila.xyz.table.main,
-    process='utila_table',
+    main=utilo.xyz.table.main,
+    process='utilo_table',
     expect=False,
 )
 
 
 def test_normalize_table(td, mp):
     todo = td.tmpdir.join('table.txt')
-    utila.file_create(todo, DATA)
+    utilo.file_create(todo, DATA)
     run(f'{todo}', mp=mp)
-    better = utila.file_read(todo)
+    better = utilo.file_read(todo)
     assert better != DATA
 
 
@@ -77,8 +77,8 @@ O;     P;     Q;     R;     S;     T
 
 def test_normalize_table_separator(td, mp):
     todo = td.tmpdir.join('separator.txt')
-    utila.file_create(todo, SEPARATOR)
+    utilo.file_create(todo, SEPARATOR)
     run(f'{todo} --separator=; --sort=-1 --spaces=5', mp=mp)
-    better = utila.file_read(todo)
+    better = utilo.file_read(todo)
     assert better != SEPARATOR
     assert better == EXPECTED

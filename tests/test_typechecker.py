@@ -8,7 +8,7 @@
 # =============================================================================
 from pytest import raises
 
-from utila import checkdatatype
+from utilo import checkdatatype
 
 
 @checkdatatype

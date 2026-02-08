@@ -8,7 +8,7 @@
 #==============================================================================
 
 # pylint:disable=wildcard-import, unused-wildcard-import
-from utila import *
+from utilo import *
 
 
 def test_import():

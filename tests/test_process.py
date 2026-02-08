@@ -13,7 +13,7 @@ import time
 import pytest
 import utilatest
 
-import utila
+import utilo
 
 
 def test_process_run_parallel():
@@ -21,12 +21,12 @@ def test_process_run_parallel():
     for _ in range(12):
         items.append('ls')
 
-    success = utila.run_parallel(items)
-    assert success == utila.SUCCESS
+    success = utilo.run_parallel(items)
+    assert success == utilo.SUCCESS
 
     failures = ['wasd']
-    error = utila.run_parallel(failures, expect=False)
-    assert error >= utila.FAILURE
+    error = utilo.run_parallel(failures, expect=False)
+    assert error >= utilo.FAILURE
 
 
 def test_fork():
@@ -37,19 +37,19 @@ def test_fork():
     def second():
         assert 0
 
-    completed = utila.fork(first, second, worker=3)
-    assert completed != utila.SUCCESS
+    completed = utilo.fork(first, second, worker=3)
+    assert completed != utilo.SUCCESS
 
 
 def test_georg_fork(capsys):
 
     def first(a, b):  # pylint:disable=C0103
-        utila.log(f'{a} {b}')
+        utilo.log(f'{a} {b}')
 
     def second(c, d=13):  # pylint:disable=C0103
-        utila.log(f'{c} {d}')
+        utilo.log(f'{c} {d}')
 
-    with utila.GeorgFork() as todo:
+    with utilo.GeorgFork() as todo:
         todo.fork(first, a=10, b=10)
         todo.fork(second, c=5)
 
@@ -60,20 +60,20 @@ def test_georg_fork(capsys):
 
 def test_run_timeout_complex():
     cmd = 'sleep 2'
-    error = utila.run(cmd, timeout=utila.Timeout(seconds=0))
+    error = utilo.run(cmd, timeout=utilo.Timeout(seconds=0))
     assert isinstance(error, subprocess.TimeoutExpired)
 
 
 def test_run_timeout_float():
     cmd = 'sleep 2'
-    error = utila.run(cmd, timeout=0.0)
+    error = utilo.run(cmd, timeout=0.0)
     assert isinstance(error, subprocess.TimeoutExpired)
 
 
 def test_run_timeout_not_gracefully():
     cmd = 'sleep 2'
     with pytest.raises(subprocess.TimeoutExpired):
-        utila.run(cmd, timeout=utila.Timeout(seconds=0, gracefully=False))
+        utilo.run(cmd, timeout=utilo.Timeout(seconds=0, gracefully=False))
 
 
 @pytest.mark.timeout(4, method="thread")
@@ -84,7 +84,7 @@ def test_waiter():
         time.sleep(1)
         return a + b
 
-    waiter = utila.Waiter()
+    waiter = utilo.Waiter()
     first = waiter.please(run, a=10, b=10)
     waiter.please(run, a=15, b=10)
     third = waiter.please(run, a=10, b=10)
@@ -95,4 +95,4 @@ def test_waiter():
 
 def test_exit():
     with pytest.raises(SystemExit):
-        utila.exitx('this is a failure')
+        utilo.exitx('this is a failure')

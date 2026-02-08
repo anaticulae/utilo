@@ -9,58 +9,58 @@
 
 import os
 
-import utila
+import utilo
 
 ROOT = os.path.abspath(os.path.join(os.path.dirname(__file__), '..'))
 VERSION = '1.33.7'
 PROCESS = 'testfield'
 WORKPLAN = [
-    utila.create_step(
+    utilo.create_step(
         'household',
         inputs=[
-            utila.File('infile'),
-            utila.Value('char_margin', float, defaultvar=2.0, minimum=0.1),
-            utila.Bool('sync'),
+            utilo.File('infile'),
+            utilo.Value('char_margin', float, defaultvar=2.0, minimum=0.1),
+            utilo.Bool('sync'),
         ],
         output=('first',),
     ),
-    utila.create_step(
+    utilo.create_step(
         'binary',
         output=(('binary', 'hex'),),
     ),
-    utila.create_step(
+    utilo.create_step(
         'multiple',
         output=[
             ('*_info', 'yaml'),
             ('*_binary', 'hex'),
         ],
     ),
-    utila.create_step(
+    utilo.create_step(
         'datatype',
         output=[
             ('selected', '???'),
         ],
     ),
-    utila.create_step(
+    utilo.create_step(
         'datatype_multi',
         output=[
             ('*', '???'),
         ],
     ),
-    utila.create_step(
+    utilo.create_step(
         'hashed',
         output=[
             ('{FILEHASHS}', 'bin'),
         ],
     ),
-    utila.create_step(
+    utilo.create_step(
         'hashed_multi',
         output=[
             ('figures/{FILEHASH_1}', 'yaml'),
             ('figures/{FILEHASHS}', '???'),
         ],
     ),
-    utila.create_step(
+    utilo.create_step(
         'hashed_list_ext',
         output=[
             ('figures/{FILEHASHS}', '???'),
@@ -70,7 +70,7 @@ WORKPLAN = [
 
 
 def main(**kwargs):
-    config = utila.FeaturePackConfig(
+    config = utilo.FeaturePackConfig(
         description='This is a default feature pack to increase test coverage',
         multiprocessed=True,
         name=PROCESS,
@@ -80,7 +80,7 @@ def main(**kwargs):
         version=VERSION,
         **kwargs,
     )
-    utila.featurepack(
+    utilo.featurepack(
         config=config,
         featurepackage='testfield.features',
         root=ROOT,

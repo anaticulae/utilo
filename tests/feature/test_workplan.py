@@ -12,55 +12,55 @@ import pytest
 import tests.examples.workplan.groupme
 import tests.examples.workplan.multistep
 import tests.examples.workplan.resources
-import utila
-import utila.feature
-import utila.feature.workplan
+import utilo
+import utilo.feature
+import utilo.feature.workplan
 
-# utila.refactor(major=3, description='move examples to separate files')
+# utilo.refactor(major=3, description='move examples to separate files')
 
 PROCESS = 'process'
 PLAN = [
-    utila.create_step(
+    utilo.create_step(
         'second',
         [
-            utila.ResultFile(producer=PROCESS, name='third_result'),
-            utila.ResultFile(producer='first', name='b'),
-            utila.ResultFile(producer='B', name='c'),
+            utilo.ResultFile(producer=PROCESS, name='third_result'),
+            utilo.ResultFile(producer='first', name='b'),
+            utilo.ResultFile(producer='B', name='c'),
         ],
         ('result',),
     ),
-    utila.create_step(
+    utilo.create_step(
         'third',
         [
-            utila.ResultFile(producer=PROCESS, name='first_result'),
-            utila.ResultFile(producer=PROCESS, name='b_b'),
+            utilo.ResultFile(producer=PROCESS, name='first_result'),
+            utilo.ResultFile(producer=PROCESS, name='b_b'),
         ],
         ('result',),
     ),
-    utila.create_step(
+    utilo.create_step(
         'first',
         [
-            utila.ResultFile(producer='A', name='a'),
-            utila.ResultFile(producer='A', name='b'),
-            utila.ResultFile(producer='A', name='c'),
+            utilo.ResultFile(producer='A', name='a'),
+            utilo.ResultFile(producer='A', name='b'),
+            utilo.ResultFile(producer='A', name='c'),
         ],
         ('result',),
     ),
-    utila.create_step(
+    utilo.create_step(
         'fourth',
         [
-            utila.ResultFile(producer='A', name='a'),
-            utila.ResultFile(producer='A', name='b'),
-            utila.ResultFile(producer='A', name='c'),
+            utilo.ResultFile(producer='A', name='a'),
+            utilo.ResultFile(producer='A', name='b'),
+            utilo.ResultFile(producer='A', name='c'),
         ],
         ('result',),
     ),
-    utila.create_step(
+    utilo.create_step(
         'fifth',
         [
-            utila.ResultFile(producer='A', name='a'),
-            utila.ResultFile(producer='A', name='b'),
-            utila.ResultFile(producer='A', name='c'),
+            utilo.ResultFile(producer='A', name='a'),
+            utilo.ResultFile(producer='A', name='b'),
+            utilo.ResultFile(producer='A', name='c'),
         ],
         ('result',),
     ),
@@ -69,8 +69,8 @@ PLAN = [
 
 def test_parallelize_workplan_order():
     # 3 level's
-    process_and_separator = f'{PROCESS}{utila.feature.workplan.REQUIREMENT_SEPARATOR}'
-    order = utila.feature.workplan.input_order(PLAN, root=PROCESS)
+    process_and_separator = f'{PROCESS}{utilo.feature.workplan.REQUIREMENT_SEPARATOR}'
+    order = utilo.feature.workplan.input_order(PLAN, root=PROCESS)
     expected = [
         [
             f'{process_and_separator}fifth',
@@ -80,13 +80,13 @@ def test_parallelize_workplan_order():
         [f'{process_and_separator}third'],
         [f'{process_and_separator}second'],
     ]
-    assert len(order) == 3, utila.log_raw(order)
-    assert order == expected, utila.log_raw(order)
+    assert len(order) == 3, utilo.log_raw(order)
+    assert order == expected, utilo.log_raw(order)
 
 
 def test_parallelize_workplan():
     # 3 level
-    single_processed = utila.parallelize_workplan(
+    single_processed = utilo.parallelize_workplan(
         PLAN,
         root=PROCESS,
         max_processes=1,
@@ -94,7 +94,7 @@ def test_parallelize_workplan():
     assert len(single_processed) == 5, str(single_processed)
 
     # multilevel limited by required resource
-    multi_processed = utila.parallelize_workplan(
+    multi_processed = utilo.parallelize_workplan(
         PLAN,
         root=PROCESS,
         max_processes=10,
@@ -102,7 +102,7 @@ def test_parallelize_workplan():
     assert len(multi_processed) == 3, str(multi_processed)
 
     # multilevel limited by required resource and limited by cores
-    multi_processed = utila.parallelize_workplan(
+    multi_processed = utilo.parallelize_workplan(
         PLAN,
         root=PROCESS,
         max_processes=2,
@@ -111,8 +111,8 @@ def test_parallelize_workplan():
 
 
 def test_feature_resultfile_ctor_position():
-    expected = utila.ResultFile(producer='abc', name='def')
-    assert utila.ResultFile('abc', 'def') == expected
+    expected = utilo.ResultFile(producer='abc', name='def')
+    assert utilo.ResultFile('abc', 'def') == expected
 
 
 def test_parallelize_workplan_multiprocessing():
@@ -121,15 +121,15 @@ def test_parallelize_workplan_multiprocessing():
     example = tests.examples.workplan.multistep.WORKPLAN
     root = tests.examples.workplan.multistep.ROOT
 
-    parallelized = utila.parallelize_workplan(
+    parallelized = utilo.parallelize_workplan(
         example,
         root=root,
         max_processes=20,
     )
 
-    assert len(parallelized) == 2, utila.log_raw(parallelized)
-    assert len(parallelized[0]) == 5, utila.log_raw(parallelized[0])
-    assert len(parallelized[1]) == 1, utila.log_raw(parallelized[1])
+    assert len(parallelized) == 2, utilo.log_raw(parallelized)
+    assert len(parallelized[0]) == 5, utilo.log_raw(parallelized[0])
+    assert len(parallelized[1]) == 1, utilo.log_raw(parallelized[1])
 
 
 @pytest.mark.parametrize('max_processes, expected_steps', [
@@ -142,12 +142,12 @@ def test_parallelize_workplan_pdf_resources(max_processes, expected_steps):
     example = tests.examples.workplan.resources.WORKPLAN
     root = tests.examples.workplan.resources.ROOT
 
-    workplan = utila.parallelize_workplan(
+    workplan = utilo.parallelize_workplan(
         example,
         root=root,
         max_processes=max_processes,
     )
-    assert len(workplan) == expected_steps, utila.log_raw(workplan)
+    assert len(workplan) == expected_steps, utilo.log_raw(workplan)
 
 
 def test_parallelize_workplan_groupme():
@@ -160,46 +160,46 @@ def test_parallelize_workplan_groupme():
         ['footer'],
     ]
 
-    workplan = utila.parallelize_workplan(
+    workplan = utilo.parallelize_workplan(
         example,
         root=root,
         max_processes=4,
     )
-    assert len(workplan) == 2, utila.log_raw(workplan)
+    assert len(workplan) == 2, utilo.log_raw(workplan)
 
     workplan = [[item.name for item in step] for step in workplan]
-    assert workplan == expected, utila.log_raw(workplan)
+    assert workplan == expected, utilo.log_raw(workplan)
 
 
 def test_feature_input_order():
     """Test to remove common path's for correct requirement determination."""
     plan_with_path = tests.examples.workplan.groupme.PLAN_WITH_PATH
     root = tests.examples.workplan.groupme.ROOT
-    order = utila.feature.workplan.input_order(plan_with_path, root)
-    assert len(order) == 2, utila.log_raw(order)
-    assert len(order[0]) == 3, utila.log_raw(order)
-    assert len(order[1]) == 1, utila.log_raw(order)
+    order = utilo.feature.workplan.input_order(plan_with_path, root)
+    assert len(order) == 2, utilo.log_raw(order)
+    assert len(order[0]) == 3, utilo.log_raw(order)
+    assert len(order[1]) == 1, utilo.log_raw(order)
 
 
 def test_reserved_workstep_names():
     """Do not allow reserved workstep names."""
     with pytest.raises(AssertionError):
-        utila.create_step('all')
+        utilo.create_step('all')
 
 
 def test_workplan_prepare_variables_invalid_datatype():
     variables = [
-        utila.Value(name='valid', typ=int, defaultvar=10),
-        utila.Value(name='on', typ=bool, defaultvar=True),
+        utilo.Value(name='valid', typ=int, defaultvar=10),
+        utilo.Value(name='on', typ=bool, defaultvar=True),
     ]
     args = {'valid': 'not an int', 'on': 'False'}
-    prepared = utila.feature.workplan.prepare_variables(variables, args)
+    prepared = utilo.feature.workplan.prepare_variables(variables, args)
     assert prepared == [False], prepared
 
 
 def test_workplan_prepare_outputs_invalid_outputs():
     with pytest.raises(SystemExit):
-        utila.feature.workplan.prepare_outputs(
+        utilo.feature.workplan.prepare_outputs(
             process='rawmaker',
             stepname='stepname',
             prefix='oneline',

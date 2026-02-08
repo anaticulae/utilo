@@ -11,7 +11,7 @@ import math
 
 import pytest
 
-import utila
+import utilo
 
 
 @pytest.mark.parametrize('min_elements, expected_groups', [
@@ -29,7 +29,7 @@ def test_cluster_common_items_2groups(min_elements, expected_groups):
             ((10, 2, 15, 4), '2'),
         ],
     ]
-    collected = utila.common_items(
+    collected = utilo.common_items(
         example,
         min_elements=min_elements,
     )
@@ -46,8 +46,8 @@ EXAMPLE = [
 
 
 def test_cluster_max_distance_no_diff():
-    unique = utila.make_unique(EXAMPLE)
-    clustered = utila.max_distance(
+    unique = utilo.make_unique(EXAMPLE)
+    clustered = utilo.max_distance(
         unique,
         diff=0.0,
         min_elements=1,
@@ -56,9 +56,9 @@ def test_cluster_max_distance_no_diff():
 
 
 def test_cluster_max_distance():
-    unique = sorted(utila.make_unique(EXAMPLE))
+    unique = sorted(utilo.make_unique(EXAMPLE))
     max_diff = 5.0
-    clustered = utila.max_distance(
+    clustered = utilo.max_distance(
         unique,
         diff=max_diff,
         min_elements=2,

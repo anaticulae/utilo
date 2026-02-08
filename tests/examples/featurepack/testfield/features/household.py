@@ -7,11 +7,11 @@
 # be prosecuted under federal law. Its content is company confidential.
 # =============================================================================
 
-import utila
+import utilo
 
 
 def work(path: str, char_margin: float, sync: bool = False) -> str:
-    utila.log(path)
-    utila.log(char_margin)
-    utila.log(sync)
+    utilo.log(path)
+    utilo.log(char_margin)
+    utilo.log(sync)
     return 'hello'

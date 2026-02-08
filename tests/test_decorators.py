@@ -9,11 +9,11 @@
 
 import pytest
 
-import utila
+import utilo
 
 
-@utila.empty_replace(member=10, glember='hello')
-def replace_default(first=None, glember=utila.EMPTY, member=utila.EMPTY):
+@utilo.empty_replace(member=10, glember='hello')
+def replace_default(first=None, glember=utilo.EMPTY, member=utilo.EMPTY):
     return first, member, glember
 
 
@@ -24,14 +24,14 @@ def test_empty_replace():
 def test_empty_replace_invalid_signature_does_not_match():
     with pytest.raises(ValueError):
 
-        @utila.empty_replace(tember=10, september='hello')
-        def replacce(first=None, member=utila.EMPTY, glember=utila.EMPTY):
+        @utilo.empty_replace(tember=10, september='hello')
+        def replacce(first=None, member=utilo.EMPTY, glember=utilo.EMPTY):
             return first, member, glember
 
 
 def test_empty_replace_invalid_signature_missing_default():
     with pytest.raises(ValueError):
 
-        @utila.empty_replace(member=1, glember=2, tember=3)
-        def replacce(first=None, member=utila.EMPTY, glember=utila.EMPTY):
+        @utilo.empty_replace(member=1, glember=2, tember=3)
+        def replacce(first=None, member=utilo.EMPTY, glember=utilo.EMPTY):
             return first, member, glember

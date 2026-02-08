@@ -8,8 +8,8 @@
 # =============================================================================
 
 import tests.examples.workplan.groupme
-import utila.feature.collector
-import utila.feature.description
+import utilo.feature.collector
+import utilo.feature.description
 
 
 def test_feature_description_groupme():
@@ -17,13 +17,13 @@ def test_feature_description_groupme():
     name = tests.examples.workplan.groupme.ROOT
     description = ''
     features = [
-        utila.feature.collector.FeatureInterface(
+        utilo.feature.collector.FeatureInterface(
             message='First Message\nMultiline\nMessage'),
-        utila.feature.collector.FeatureInterface(message='Second Message'),
-        utila.feature.collector.FeatureInterface(),
-        utila.feature.collector.FeatureInterface(),
+        utilo.feature.collector.FeatureInterface(message='Second Message'),
+        utilo.feature.collector.FeatureInterface(),
+        utilo.feature.collector.FeatureInterface(),
     ]
-    result = utila.feature.description.prepare_description(
+    result = utilo.feature.description.prepare_description(
         name,
         description,
         workplan,

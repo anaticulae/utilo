@@ -9,7 +9,7 @@
 
 import re
 
-import utila
+import utilo
 
 
 def test_regex_extract_match():
@@ -17,9 +17,9 @@ def test_regex_extract_match():
     text = 'this is helmut'
     matched = re.match(word, text)
 
-    extracted = utila.extract_match(matched)
+    extracted = utilo.extract_match(matched)
     assert extracted == 'this', extracted
 
     matched = re.finditer(word, text)
-    raw = [utila.extract_match(item) for item in matched]
+    raw = [utilo.extract_match(item) for item in matched]
     assert raw == text.split()

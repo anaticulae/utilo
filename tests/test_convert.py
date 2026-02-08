@@ -9,13 +9,13 @@
 
 import dataclasses
 
-import utila
+import utilo
 
 
 def test_simplify():
     """Convert object to python basic data structures."""
-    example = utila.FeaturePackConfig()
-    simple = utila.simplify(example)
+    example = utilo.FeaturePackConfig()
+    simple = utilo.simplify(example)
     assert 'prefixflag' in simple
 
 
@@ -28,6 +28,6 @@ class Human:
 def test_simplify_dataclass():
     data = Human('Helm', 1920)
     before = hash(str(data))
-    simple = utila.simplify(data)
+    simple = utilo.simplify(data)
     assert simple
     assert hash(str(data)) == before, 'do not change data while simplify'

@@ -7,7 +7,7 @@
 # be prosecuted under federal law. Its content is company confidential.
 # =============================================================================
 
-import utila
+import utilo
 
 EXPECTED = """\
 =========================
@@ -24,7 +24,7 @@ EXPECTED = """\
 
 
 def test_table_print():
-    table = utila.TablePrinter(2, 3, width=10, height=10)
+    table = utilo.TablePrinter(2, 3, width=10, height=10)
     table.insert(0, 0, '(0x0)')
     table.insert(1, 1, '(1x1)')
     table.insert(1, 1, '(1x1)')
@@ -53,5 +53,5 @@ def test_table_smallest():
         ),
         ('hello', 'wello', 'dell'),
     ]
-    raw = utila.table_smallest(table)
+    raw = utilo.table_smallest(table)
     assert raw == SMALLEST

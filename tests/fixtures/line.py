@@ -9,11 +9,11 @@
 
 import pytest
 
-import utila
+import utilo
 
 
 def linecount(count):
-    generator = utila.numbers_random(count=count, mini=0, maxi=768, seed=1.0)
+    generator = utilo.numbers_random(count=count, mini=0, maxi=768, seed=1.0)
     result = []
     for _ in range(int(count / 4)):
         result.append(tuple(next(generator) for _ in range(4)))

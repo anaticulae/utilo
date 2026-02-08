@@ -7,7 +7,7 @@
 # be prosecuted under federal law. Its content is company confidential.
 # =============================================================================
 
-import utila
+import utilo
 
 
 def test_classifier_same_area_cluster():
@@ -17,7 +17,7 @@ def test_classifier_same_area_cluster():
         ((0, 0, 50, 50), 'C'),
         ((250, 250, 300, 300), 'D'),
     ]
-    clusters = utila.same_area_cluster(todo, max_difference=0.0)
+    clusters = utilo.same_area_cluster(todo, max_difference=0.0)
     clusters = [item[:] for item in clusters]
     expected = [[
         ((0, 0, 50, 50), 'A'),
@@ -34,7 +34,7 @@ def test_classifier_three_side_equal():
         ((0, 0, 200, 50), 'D'),
         ((200, 200, 250, 250), 'E'),
     ]
-    clusters = utila.three_side_equal_cluster(todo)
+    clusters = utilo.three_side_equal_cluster(todo)
     expected = [[
         ((0, 0, 50, 50), 'A'),
         ((0, 0, 100, 50), 'B'),
@@ -42,10 +42,10 @@ def test_classifier_three_side_equal():
         ((0, 0, 200, 50), 'D'),
     ]]
     assert len(clusters) == len(expected), clusters
-    sorted_result = sorted(clusters[0], key=utila.ssecond)
+    sorted_result = sorted(clusters[0], key=utilo.ssecond)
     assert sorted_result == expected[0], sorted_result
 
 
 def test_intersecting_line_cluster(thousand_lines):
-    clustered = utila.intersecting_line_cluster(thousand_lines)
+    clustered = utilo.intersecting_line_cluster(thousand_lines)
     assert len(clustered) == 1

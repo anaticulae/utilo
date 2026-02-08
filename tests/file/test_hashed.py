@@ -7,14 +7,14 @@
 # be prosecuted under federal law. Its content is company confidential.
 # =============================================================================
 
-import utila
+import utilo
 
 
 def test_file_hash():
-    hashed = utila.file_hash(__file__)
+    hashed = utilo.file_hash(__file__)
     assert hashed
 
 
 def test_directory_hash():
-    hashed = utila.directory_hash('.', ftype='py')
+    hashed = utilo.directory_hash('.', ftype='py')
     assert hashed

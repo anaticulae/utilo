@@ -12,7 +12,7 @@ import collections
 import pytest
 import texmex
 
-import utila
+import utilo
 
 MAX_PAGES = 100
 
@@ -36,14 +36,14 @@ MinimalPage = collections.namedtuple('MinimalPage', 'page')
     ('a,10', None),
 ])
 def test_pages(pattern, expected):
-    result = utila.parse_pages(pattern, pagecount=MAX_PAGES)
+    result = utilo.parse_pages(pattern, pagecount=MAX_PAGES)
     assert result == expected, str(result)
 
 
 def test_pages_should_skip():
-    assert utila.should_skip(5, (1, 2, 3))
-    assert not utila.should_skip(5, (1, 2, 3, 5))
-    assert not utila.should_skip(5, None)
+    assert utilo.should_skip(5, (1, 2, 3))
+    assert not utilo.should_skip(5, (1, 2, 3, 5))
+    assert not utilo.should_skip(5, None)
 
 
 @pytest.fixture
@@ -53,28 +53,28 @@ def minimal_pages():
 
 
 def test_pages_select_page(minimal_pages):  # pylint:disable=W0621
-    assert utila.select_page(minimal_pages, 4) == MinimalPage(4)
+    assert utilo.select_page(minimal_pages, 4) == MinimalPage(4)
 
 
 def test_pages_select_pages(minimal_pages):  # pylint:disable=W0621
     expect_sorted = [MinimalPage(1), MinimalPage(4)]
-    assert utila.select_pages(minimal_pages, (4, 1)) == expect_sorted
+    assert utilo.select_pages(minimal_pages, (4, 1)) == expect_sorted
 
 
 def test_pages_select_page_invalid(minimal_pages):  # pylint:disable=W0621
-    none = utila.select_page(minimal_pages, 10)
+    none = utilo.select_page(minimal_pages, 10)
     assert none is None, none
 
 
 def test_pages_select_page_duplicated_source():
     pages = [MinimalPage(0), MinimalPage(0), MinimalPage(0), MinimalPage(4)]
     with pytest.raises(ValueError):
-        utila.select_page(pages, 0)
+        utilo.select_page(pages, 0)
 
 
 def test_page_select_page_none():
     with pytest.raises(ValueError):
-        utila.select_page(None, 0)
+        utilo.select_page(None, 0)
 
 
 MiniPageContent = collections.namedtuple('MiniPageContent', 'page, content')
@@ -107,7 +107,7 @@ EXPECTED = [
 
 
 def test_sync_pages_iterator():
-    synced = list(utila.sync_pages(EXAMPLE))
+    synced = list(utilo.sync_pages(EXAMPLE))
     assert synced == EXPECTED
 
 
@@ -128,7 +128,7 @@ DOUBLE_EXPECTED = [
 
 
 def test_sync_double_empty():
-    synced = list(utila.sync_pages(
+    synced = list(utilo.sync_pages(
         DOUBLE_EMPTY,
         default=None,
     ))
@@ -143,7 +143,7 @@ DOUBLE_LIST_EXPECTED = [
 
 
 def test_sync_double_list():
-    synced = list(utila.sync_pages(
+    synced = list(utilo.sync_pages(
         DOUBLE_EMPTY,
         default=[],
     ))
@@ -168,7 +168,7 @@ PTNS_EXPECTED = [
 
 
 def test_sync_ptns():
-    synced = list(utila.sync_pages(
+    synced = list(utilo.sync_pages(
         PTNS,
         default=[],
     ))

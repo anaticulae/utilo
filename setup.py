@@ -19,7 +19,7 @@ ROOT = os.path.dirname(__file__)
 with open(os.path.join(ROOT, 'README'), encoding='utf8') as fp:
     README = fp.read()
 
-with open(os.path.join(ROOT, 'utila/__init__.py'), encoding='utf8') as fp:
+with open(os.path.join(ROOT, 'utilo/__init__.py'), encoding='utf8') as fp:
     VERSION = re.search(r'__version__ = \'(.*?)\'', fp.read()).group(1)
 
 
@@ -46,30 +46,30 @@ if __name__ == "__main__":
         description='write it once',
         include_package_data=True,
         long_description=README,
-        name='utila',
+        name='utilo',
         platforms='any',
-        url='http://dev.package.checkitweg.de/utila',
+        url='http://dev.package.checkitweg.de/utilo',
         version=version(),
         zip_safe=False,  # create 'zip'-file if True. Don't do it!
         classifiers=[
             'Programming Language :: Python :: 3.8',
         ],
         packages=[
-            'utila',
-            'utila.classifier',
-            'utila.cli',
-            'utila.feature',
-            'utila.file',
-            'utila.math',
-            'utila.string',
-            'utila.xyz',
+            'utilo',
+            'utilo.classifier',
+            'utilo.cli',
+            'utilo.feature',
+            'utilo.file',
+            'utilo.math',
+            'utilo.string',
+            'utilo.xyz',
         ],
         entry_points={
             'console_scripts': [
-                'utila_lock = utila.xyz.lock:main',
-                'utila_unlock = utila.xyz.lock:unlock',
-                'utila_table = utila.xyz.table:main',
-                'utila_tidy = utila.xyz.tidy:main',
+                'utilo_lock = utilo.xyz.lock:main',
+                'utilo_unlock = utilo.xyz.lock:unlock',
+                'utilo_table = utilo.xyz.table:main',
+                'utilo_tidy = utilo.xyz.tidy:main',
             ],
         },
     )

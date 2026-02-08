@@ -9,7 +9,7 @@
 
 import pytest
 
-import utila
+import utilo
 
 NO_YAML = """
 PDFInfo(pages=51, generator=<PDFGenerator.UNDEFINED: 1>, \
@@ -22,4 +22,4 @@ version=PDFVersion(major=1, minor=4), meta={'author': 'Innendienst',
 
 def test_yaml_from_error():
     with pytest.raises(ValueError, match='no valid yaml input'):
-        utila.yaml_load(NO_YAML)
+        utilo.yaml_load(NO_YAML)

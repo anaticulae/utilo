@@ -9,37 +9,37 @@
 
 import pytest
 
-import utila
+import utilo
 
 
 def test_refactor_contextmanager(mp):
-    with utila.refactor(major=5, minor=10):
+    with utilo.refactor(major=5, minor=10):
         pass
 
     with pytest.raises(AssertionError):
-        with utila.refactor(major=1, minor=1):
+        with utilo.refactor(major=1, minor=1):
             pass
 
     with mp.context() as context:
-        context.setattr(utila, '__version__', '2.1.0')
+        context.setattr(utilo, '__version__', '2.1.0')
         with pytest.raises(AssertionError):
-            with utila.refactor(major=2, minor=1, patch=0):
+            with utilo.refactor(major=2, minor=1, patch=0):
                 pass
 
 
 def test_refactor_decorator():
 
-    @utila.refactor(major=5, minor=1)  # pylint:disable=W0612
+    @utilo.refactor(major=5, minor=1)  # pylint:disable=W0612
     class ValidVersion:  # pylint:disable=W0612
         pass
 
     with pytest.raises(AssertionError):
 
-        @utila.refactor(major=1, minor=1)  # pylint:disable=W0612,W0621
+        @utilo.refactor(major=1, minor=1)  # pylint:disable=W0612,W0621
         class OutdatedVersion:  # pylint:disable=W0612
             pass
 
-    @utila.refactor(major=5, minor=1)
+    @utilo.refactor(major=5, minor=1)
     def ten():
         # ensure that decorator does not overwrite return result
         return 10

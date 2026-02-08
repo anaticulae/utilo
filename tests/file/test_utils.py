@@ -9,12 +9,12 @@
 
 import pytest
 
-import utila
+import utilo
 
 
 def test_file_utils_verify_decorator():
 
-    @utila.pathexists
+    @utilo.pathexists
     def mojo_file(inpath: int, path: str, config: float):  # pylint:disable=W0613
         return 10
 
@@ -26,7 +26,7 @@ def test_file_utils_verify_decorator():
 
 def test_file_utils_verify_invalid_decorator():
 
-    @utila.pathexists
+    @utilo.pathexists
     def nopath(abc):
         return abc
 

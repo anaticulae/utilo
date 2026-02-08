@@ -24,8 +24,8 @@ import pytest
 import utilatest
 
 import tests.feature.runner
-import utila
-import utila.logger
+import utilo
+import utilo.logger
 
 
 def run_playground(
@@ -36,7 +36,7 @@ def run_playground(
     capsys=None,
 ):
     import tests.examples.featurepack.testfield.playground as exe  # pylint:disable=C0415
-    utila.file_create(os.path.join(str(td), 'infile.yaml'))
+    utilo.file_create(os.path.join(str(td), 'infile.yaml'))
     result = tests.feature.runner.run_featurepack(
         cmd=cmd,
         main=main,
@@ -66,7 +66,7 @@ def test_feature_playground_cli_profile(cmd, td, mp, capsys):
 def test_feature_playground_cli_quite(quite, td, mp, capsys):
     """Test to suppress logging when using --quite flag."""
     cmd = f'--profile {quite}'
-    with utila.level_tmp(utila.LEVEL_DEFAULT):
+    with utilo.level_tmp(utilo.LEVEL_DEFAULT):
         stdout = run_playground(
             cmd,
             dict(profileflag=True, quiteflag=True),
@@ -81,7 +81,7 @@ def test_feature_playground_pass_config_file(td, mp, capsys):
     """Test overwriting global flag in input parameter of working step."""
     config = str(os.path.join(td.tmpdir, 'config.cfg'))
 
-    utila.file_create(
+    utilo.file_create(
         config, """\
             # change global flag
             profile = True\n\n
@@ -124,7 +124,7 @@ def test_write_binary_data(td, mp):
     # test writing hex file
     run_playground('--binary', {}, td, mp)
     expected_path = os.path.join(td.tmpdir, 'testfield__binary_binary.hex')
-    binary = utila.file_read_binary(expected_path)
+    binary = utilo.file_read_binary(expected_path)
     assert binary == b'I Love Binaries.', binary
 
 
@@ -148,7 +148,7 @@ def test_write_selective_datatype(td, mp):
         run_playground('--datatype', {}, td, mp)
     path = os.path.join(td.tmpdir, 'testfield__datatype_selected.txt')
     assert os.path.exists(path), path
-    written = utila.file_read(path)
+    written = utilo.file_read(path)
     assert written == 'CONTENT', written
 
 
@@ -165,7 +165,7 @@ def test_write_selective_datatype_multi(td, mp):
     for content, filename in expected:
         path = os.path.join(td.tmpdir, filename)
         assert os.path.exists(path), path
-        written = utila.file_read_binary(path)
+        written = utilo.file_read_binary(path)
         assert written == content, written
 
 
@@ -190,12 +190,12 @@ def test_run_hashed_step(td, mp):
     with utilatest.increased_filecount(mindiff=3):
         run_playground('--hashed', {}, td, mp)
 
-    current = utila.file_list(td.tmpdir, include='bin')
+    current = utilo.file_list(td.tmpdir, include='bin')
     assert len(current) == 2
 
-    expected_first = utila.freehash(b'second')
+    expected_first = utilo.freehash(b'second')
     assert expected_first in current[0] or expected_first in current[1]
-    expected_second = utila.freehash(b'imageinfo')
+    expected_second = utilo.freehash(b'imageinfo')
     assert expected_second in current[1] or expected_second in current[0]
 
 
@@ -212,10 +212,10 @@ def test_run_hashed_multi_step(td, mp):
         b'third content',
     ])
 
-    with utila.chdir('testfield__hashed_multi_figures'):
-        current = utila.file_list('.')
+    with utilo.chdir('testfield__hashed_multi_figures'):
+        current = utilo.file_list('.')
         assert len(current) == len(expected)
-        content = {utila.file_read_binary(item) for item in current}
+        content = {utilo.file_read_binary(item) for item in current}
     assert content == expected
 
 
@@ -229,8 +229,8 @@ def test_run_hashed_list_ext(td, mp):
         b'third content',
     ])
 
-    with utila.chdir('testfield__hashed_list_ext_figures'):
-        current = utila.file_list('.')
+    with utilo.chdir('testfield__hashed_list_ext_figures'):
+        current = utilo.file_list('.')
         assert len(current) == len(expected)
-        content = {utila.file_read_binary(item) for item in current}
+        content = {utilo.file_read_binary(item) for item in current}
     assert content == expected

@@ -9,40 +9,40 @@
 
 import os
 
-import utila
+import utilo
 
 ROOT = os.path.abspath(os.path.join(os.path.dirname(__file__), '..'))
 VERSION = '2.33.7'
 PROCESS = 'foldme'
 WORKPLAN = [
-    utila.create_step(
+    utilo.create_step(
         'directory_input',
         inputs=[
-            utila.Directory('iamadirectory'),
+            utilo.Directory('iamadirectory'),
         ],
         output=('message',),
     ),
-    utila.create_step(
+    utilo.create_step(
         'custom_output',
         inputs=[
-            utila.Directory('iamadirectory'),
+            utilo.Directory('iamadirectory'),
         ],
-        output=(utila.File('helm/iamsounique', ext='txt'),),
+        output=(utilo.File('helm/iamsounique', ext='txt'),),
     ),
-    utila.create_step(
+    utilo.create_step(
         'different_datatype',
         inputs=[
-            utila.Directory('iamadirectory'),
+            utilo.Directory('iamadirectory'),
         ],
         output=[
-            utila.File('schelm/*', ext='???'),
+            utilo.File('schelm/*', ext='???'),
         ],
     ),
 ]
 
 
 def main(**kwargs):
-    config = utila.FeaturePackConfig(
+    config = utilo.FeaturePackConfig(
         description='This is a second feature playground.',
         multiprocessed=False,
         name=PROCESS,
@@ -54,7 +54,7 @@ def main(**kwargs):
         version=VERSION,
         **kwargs,
     )
-    utila.featurepack(
+    utilo.featurepack(
         config=config,
         featurepackage='foldme.features',
         root=ROOT,

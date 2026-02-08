@@ -9,22 +9,22 @@
 
 import os
 
-import utila
+import utilo
 
 ROOT = os.path.abspath(os.path.join(os.path.dirname(__file__), '..'))
 VERSION = '1.33.7'
 PROCESS = 'brokenworker'
 WORKPLAN = [
-    utila.create_step(
+    utilo.create_step(
         'brokenworker',
-        inputs=[utila.File('inputso')],
+        inputs=[utilo.File('inputso')],
         output=('first', 'second'),
     ),
 ]
 
 
 def main():
-    config = utila.FeaturePackConfig(
+    config = utilo.FeaturePackConfig(
         description='Test the error hook feature',
         errorhook=errorhook,
         multiprocessed=True,
@@ -35,7 +35,7 @@ def main():
         before=before,
         after=after,
     )
-    utila.featurepack(
+    utilo.featurepack(
         config=config,
         featurepackage='withexception.features',
         root=ROOT,

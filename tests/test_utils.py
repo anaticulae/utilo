@@ -12,11 +12,11 @@ import os
 
 import pytest
 
-import utila
+import utilo
 
 
 def test_roundme():
-    rounded = utila.roundme(2.3333)
+    rounded = utilo.roundme(2.3333)
     assert rounded == 2.33
 
 
@@ -26,7 +26,7 @@ def test_flat():
         [1, 2],
         [1, 2, 3, 4],
     ]
-    flat = utila.flat(todo)
+    flat = utilo.flat(todo)
     assert len(flat) == 7, str(flat)
 
 
@@ -39,8 +39,8 @@ def test_select_type():
         pass
 
     todo = [A(), B(), A()]
-    assert len(utila.select_type(todo, A)) == 3
-    assert len(utila.select_type(todo, B)) == 1
+    assert len(utilo.select_type(todo, A)) == 3
+    assert len(utilo.select_type(todo, B)) == 1
 
 
 def test_chdir(td):
@@ -52,23 +52,23 @@ def test_chdir(td):
     os.makedirs(folder)
     assert os.path.exists(folder)
 
-    assert root == utila.cwdget()
+    assert root == utilo.cwdget()
 
-    with utila.chdir(folder):
+    with utilo.chdir(folder):
         # check to change current working directory
-        assert utila.cwdget() == folder
+        assert utilo.cwdget() == folder
 
     # check going back to preview working directory
-    assert utila.cwdget() == root
+    assert utilo.cwdget() == root
 
     with pytest.raises(ValueError):
-        with utila.chdir(folder):
+        with utilo.chdir(folder):
             # check to change current working directory
-            assert utila.cwdget() == folder
+            assert utilo.cwdget() == folder
             raise ValueError()
 
     # check going back to preview working directory
-    assert utila.cwdget() == root
+    assert utilo.cwdget() == root
 
 
 def test_chdir_to_filepath(td):
@@ -76,11 +76,11 @@ def test_chdir_to_filepath(td):
     root = str(td)
 
     filepath = os.path.join(root, 'hello')
-    utila.file_create(filepath)
+    utilo.file_create(filepath)
 
     assert os.path.exists(filepath)
     with pytest.raises(AssertionError):
-        with utila.chdir(filepath):
+        with utilo.chdir(filepath):
             pass
 
 
@@ -88,7 +88,7 @@ def test_unset_env(mp):
     with mp.context() as context:
         context.setattr(os, 'environ', {})
         os.environ['abc'] = '10'
-        with utila.unset_env('abc'):
+        with utilo.unset_env('abc'):
             assert not 'abc' in os.environ
         assert 'abc' in os.environ
         del os.environ['abc']
@@ -98,7 +98,7 @@ def test_unset_env_keyerror(mp):
     with mp.context() as context:
         context.setattr(os, 'environ', {})
         with pytest.raises(KeyError):
-            with utila.unset_env('abc', skip=False):
+            with utilo.unset_env('abc', skip=False):
                 pass
 
 
@@ -106,7 +106,7 @@ def test_selbstwirksamkeit_all():
     Driver = collections.namedtuple('Driver', 'first second third')
     data = Driver(10, 15, 20)
 
-    @utila.selbstwirksamkeit
+    @utilo.selbstwirksamkeit
     def method(first, second):
         return first + second
 
@@ -124,7 +124,7 @@ def test_selbstwirksamkeit_missing():
     Driver = collections.namedtuple('Driver', 'first second third')
     data = Driver(10, 15, 20)
 
-    @utila.selbstwirksamkeit
+    @utilo.selbstwirksamkeit
     def method(first, missing):  # pylint:disable=W0613
         return first
 
@@ -136,7 +136,7 @@ def test_selbstwirksamkeit_replace():
     Driver = collections.namedtuple('Driver', 'first second third')
     data = Driver(10, 15, 20)
 
-    @utila.selbstwirksamkeit(usenone=True)
+    @utilo.selbstwirksamkeit(usenone=True)
     def method(first, missing):
         assert missing is None
         return first

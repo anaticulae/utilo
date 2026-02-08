@@ -7,7 +7,7 @@
 # be prosecuted under federal law. Its content is company confidential.
 # =============================================================================
 
-import utila.feature.pack
+import utilo.feature.pack
 
 
 def test_feature_determine_todo():
@@ -24,5 +24,5 @@ def test_feature_determine_todo():
         'not_there',
     ]
 
-    result = utila.feature.pack.determine_todo(args, flags)
+    result = utilo.feature.pack.determine_todo(args, flags)
     assert result == [], str(result)

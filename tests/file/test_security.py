@@ -9,43 +9,43 @@
 
 import os
 
-import utila
+import utilo
 
 
 def test_file_create_private_str(td):
     content = 'This is Helmut.'
     path = os.path.join(td.tmpdir, 'helm.txt')
-    utila.file_create(path, content, private=True)
-    assert utila.file_read(path) == content
+    utilo.file_create(path, content, private=True)
+    assert utilo.file_read(path) == content
 
 
 def test_file_append_private_str(td):
     content = 'This is Helmut.'
     path = os.path.join(td.tmpdir, 'helm.txt')
-    utila.file_append(path, content, create=True, private=True)
-    utila.file_append(path, content, private=True)
-    utila.file_append(path, content, private=True)
-    assert utila.file_read(path) == content + content + content
+    utilo.file_append(path, content, create=True, private=True)
+    utilo.file_append(path, content, private=True)
+    utilo.file_append(path, content, private=True)
+    assert utilo.file_read(path) == content + content + content
 
 
 def test_file_create_private_binary(td):
     content = b'This is Helmut.'
     path = os.path.join(td.tmpdir, 'helm.txt')
-    utila.file_create_binary(path, content, private=True)
-    assert utila.file_read_binary(path) == content
+    utilo.file_create_binary(path, content, private=True)
+    assert utilo.file_read_binary(path) == content
 
 
 def test_copy_content_private(td):
     td.mkdir('open')
     td.mkdir('second')
 
-    utila.file_create('open/public.txt', utila.file_read(__file__))
+    utilo.file_create('open/public.txt', utilo.file_read(__file__))
     binary_content = b'\xAA& Binary Content &\n'
-    utila.file_create_binary('second/binary.txt', binary_content)
+    utilo.file_create_binary('second/binary.txt', binary_content)
 
-    utila.copy_content('.', 'private', recursive=True, private=True)
+    utilo.copy_content('.', 'private', recursive=True, private=True)
 
-    public = utila.file_read('private/open/public.txt')
-    assert public == utila.file_read(__file__)
-    binary = utila.file_read_binary('private/second/binary.txt')
+    public = utilo.file_read('private/open/public.txt')
+    assert public == utilo.file_read(__file__)
+    binary = utilo.file_read_binary('private/second/binary.txt')
     assert binary == binary_content

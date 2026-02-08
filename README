@@ -6,4 +6,4 @@ project. The most common steps are implemented in this package to reduce the
 amount of code.
 
 >>> import utila
->>> utila.file_read('README)
+>>> utilo.file_read('README)

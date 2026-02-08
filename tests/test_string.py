@@ -12,7 +12,7 @@ import sys
 
 import pytest
 
-import utila
+import utilo
 
 
 @pytest.mark.parametrize('platform,given,expected', [
@@ -24,13 +24,13 @@ def test_fix_encoding(platform, given, expected, mp):
     """Fix encoding depending used platform"""
     with mp.context() as context:
         context.setattr(sys, 'platform', platform)
-        fixed = utila.fix_encoding(given)
+        fixed = utilo.fix_encoding(given)
     assert fixed == expected
 
 
 def test_forward_slash_do_not_replace_newline():
     text_with_newline = r'Hello\n\nHello' + '\n'
-    forwarded = utila.forward_slash(text_with_newline, keep_newline=True)
+    forwarded = utilo.forward_slash(text_with_newline, keep_newline=True)
     assert forwarded == text_with_newline
 
 
@@ -41,7 +41,7 @@ def test_forward_slash_do_not_replace_newline():
     pytest.param('\\\n', '/\n', id='replace backslash before newline'),
 ])
 def test_forward_slash_replace_backslash(string, expected):
-    replaced = utila.forward_slash(string, keep_newline=True)
+    replaced = utilo.forward_slash(string, keep_newline=True)
     assert replaced == expected
 
 
@@ -52,23 +52,23 @@ def test_extract_match():
     matched = re.finditer(pattern, content)
     first_item = list(matched)[0]
 
-    extracted = utila.extract_match(first_item)
+    extracted = utilo.extract_match(first_item)
     assert extracted == '123', str(extracted)
 
 
 def test_parse_tuple():
     raw = '1.0 2.0 3.0 4.01'
-    parsed = utila.parse_tuple(raw)
+    parsed = utilo.parse_tuple(raw)
     assert parsed == (1.0, 2.0, 3.0, 4.01), str(parsed)
 
 
 def test_parse_tuple_convert_int():
     raw = '1.0 2.0 3.0 4.01'
-    parsed = utila.parse_tuple(raw, typ=int)
+    parsed = utilo.parse_tuple(raw, typ=int)
     assert parsed == (1, 2, 3, 4), str(parsed)
 
 
 def test_similar():
     expected = ['Inhalt', 'Inhaltsverzeichnis', 'Contents']
     current = ['Inhaltsverzeichnis', 'Vorwort']
-    assert utila.similar(expected=expected, current=current)
+    assert utilo.similar(expected=expected, current=current)

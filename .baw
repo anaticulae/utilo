@@ -8,7 +8,7 @@
 # =============================================================================
 
 [project]
-short = utila
+short = utilo
 name = write it once
 
 [test]

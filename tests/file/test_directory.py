@@ -7,29 +7,29 @@
 # be prosecuted under federal law. Its content is company confidential.
 # =============================================================================
 
-import utila
+import utilo
 
 
 def test_directory_lock(tmpdir):
     write = tmpdir.mkdir('sub').join('hello.txt')
     write.write('content')
-    utila.directory_lock(tmpdir)
-    assert utila.file_islocked(write)
-    utila.directory_unlock(tmpdir)
-    assert not utila.file_islocked(write)
+    utilo.directory_lock(tmpdir)
+    assert utilo.file_islocked(write)
+    utilo.directory_unlock(tmpdir)
+    assert not utilo.file_islocked(write)
 
 
 def test_directory_list_noparam(td):
     td.tmpdir.mkdir('abc')
     td.tmpdir.mkdir('abcd')
-    utila.file_create('abc.txt')
-    listed = utila.directory_list(td.tmpdir)
+    utilo.file_create('abc.txt')
+    listed = utilo.directory_list(td.tmpdir)
     assert len(listed) == 2
 
 
 def test_directory_list_recursive_absolute():
-    directories = utila.directory_list(
-        utila.ROOT,
+    directories = utilo.directory_list(
+        utilo.ROOT,
         recursive=True,
         absolute=True,
     )
@@ -39,6 +39,6 @@ def test_directory_list_recursive_absolute():
 def test_tree_remove(testdir):
     testdir.tmpdir.mkdir('test')
     testdir.tmpdir.mkdir('test/abc')
-    assert len(utila.directory_list(testdir.tmpdir)) == 1
-    utila.tree_remove(testdir.tmpdir.join('test'))
-    assert not utila.directory_list(testdir.tmpdir)
+    assert len(utilo.directory_list(testdir.tmpdir)) == 1
+    utilo.tree_remove(testdir.tmpdir.join('test'))
+    assert not utilo.directory_list(testdir.tmpdir)

@@ -12,24 +12,24 @@ import os
 import pytest
 import utilatest
 
-import utila
-import utila.file
-import utila.file.securewrapper
+import utilo
+import utilo.file
+import utilo.file.securewrapper
 
 
 def test_file_append_assert(tmpdir):
     first = os.path.join(tmpdir, 'abc.txt')
     with pytest.raises(AssertionError):
-        utila.file_append(first, '')
+        utilo.file_append(first, '')
 
 
 def test_file_append_create(tmpdir):
     first = os.path.join(tmpdir, 'abc.txt')
-    utila.file_append(first, 'BBB', create=True)
+    utilo.file_append(first, 'BBB', create=True)
     assert os.path.exists(first)
 
-    utila.file_append(first, 'AAA', create=True)
-    content = utila.file_read(first)
+    utilo.file_append(first, 'AAA', create=True)
+    content = utilo.file_read(first)
     assert 'AAA' in content
 
 
@@ -41,10 +41,10 @@ def test_file_from_path_or_raw(tmpdir):
     """
 
     path = os.path.join(tmpdir, 'example.yaml')
-    utila.file_create(path, content)
+    utilo.file_create(path, content)
 
-    from_path = utila.from_raw_or_path(path)
-    from_raw = utila.from_raw_or_path(content)
+    from_path = utilo.from_raw_or_path(path)
+    from_raw = utilo.from_raw_or_path(content)
 
     assert from_raw == content
     assert from_path == from_raw
@@ -52,8 +52,8 @@ def test_file_from_path_or_raw(tmpdir):
 
 def test_file_from_path_or_raw_default(tmpdir):
     path = tmpdir.join('example.yaml')
-    utila.file_create(path, 'defaultcontent')
-    default = utila.from_raw_or_path(
+    utilo.file_create(path, 'defaultcontent')
+    default = utilo.from_raw_or_path(
         path,
         ftype='yaml',
         fname='example',
@@ -64,46 +64,46 @@ def test_file_from_path_or_raw_default(tmpdir):
 def test_file_from_path_or_raw_default_not_exists(td):
     root = str(td.tmpdir)
     with pytest.raises(FileNotFoundError):
-        utila.from_raw_or_path(root, ftype='yaml', fname='abc')
+        utilo.from_raw_or_path(root, ftype='yaml', fname='abc')
 
 
 def test_file_from_path_or_raw_not_exists():
     with pytest.raises(FileNotFoundError):
-        utila.from_raw_or_path('/c/test.yaml')
+        utilo.from_raw_or_path('/c/test.yaml')
 
 
 @pytest.mark.usefixtures('testdir')
 def test_yaml_from_path():
-    dumped = utila.yaml_dump(['test', 'data'])
-    utila.file_create('test.yaml', dumped)
+    dumped = utilo.yaml_dump(['test', 'data'])
+    utilo.file_create('test.yaml', dumped)
 
     def verify(item):
         assert len(item) == 2
 
-    loaded = utila.yaml_load('test.yaml', verify=verify)
+    loaded = utilo.yaml_load('test.yaml', verify=verify)
     assert len(loaded) == 2
-    loaded = utila.yaml_load('test.yaml', safe=False)
+    loaded = utilo.yaml_load('test.yaml', safe=False)
     assert len(loaded) == 2
 
 
 def test_file_tmpname():
-    name = utila.tmpname(width=15)
+    name = utilo.tmpname(width=15)
     assert len(name) == 15, name
 
-    name = utila.tmpname(width=20)
+    name = utilo.tmpname(width=20)
     assert len(name) == 20, name
 
 
 def test_file_tmpfile():
-    random_path = utila.tmpfile(utila.ROOT)
+    random_path = utilo.tmpfile(utilo.ROOT)
     assert not os.path.exists(random_path), random_path
 
 
 def test_file_tmp_redirect(td, mp):
     """Redirect tmp-path with KIWI_TEMPBASE environ variable"""
     with mp.context() as context:
-        context.setattr(os, 'environ', {utila.file.SHARED_TMP: str(td)})
-        temp = utila.tmp(utila.ROOT)
+        context.setattr(os, 'environ', {utilo.file.SHARED_TMP: str(td)})
+        temp = utilo.tmp(utilo.ROOT)
         assert os.path.exists(temp), temp
 
 
@@ -113,29 +113,29 @@ def test_file_assert_html_files():
         'test/www.html',
         'test/elfe.html',
     ]
-    utila.assert_html(files)
+    utilo.assert_html(files)
 
     with pytest.raises(AssertionError):
-        utila.assert_file(files, '.txt')
+        utilo.assert_file(files, '.txt')
 
 
 @pytest.fixture
 def content_folder(tmpdir):
     root = str(tmpdir)
-    utila.file_create(os.path.join(root, 'test.txt'))
-    utila.file_create(os.path.join(root, 'abc.txt'))
-    utila.file_create(os.path.join(root, 'www.txt'))
+    utilo.file_create(os.path.join(root, 'test.txt'))
+    utilo.file_create(os.path.join(root, 'abc.txt'))
+    utilo.file_create(os.path.join(root, 'www.txt'))
 
     os.makedirs(os.path.join(root, 'abc', 'def', 'ghi', 'jklm'))
-    utila.file_create(os.path.join(root, 'abc/def/ghi/www.txt'))
-    utila.file_create(os.path.join(root, 'abc/def/ghi/jklm/ggg.txt'))
+    utilo.file_create(os.path.join(root, 'abc/def/ghi/www.txt'))
+    utilo.file_create(os.path.join(root, 'abc/def/ghi/jklm/ggg.txt'))
     return root
 
 
 def test_file_copy_content_recursive(td, content_folder):  #pylint:disable=W0621
     """Test to copy `content_folder` recursive"""
     goal = str(td)
-    utila.copy_content(content_folder, goal, recursive=True)
+    utilo.copy_content(content_folder, goal, recursive=True)
 
     assert os.path.exists(os.path.join(goal, 'test.txt'))
     assert os.path.exists(os.path.join(goal, 'abc.txt'))
@@ -149,7 +149,7 @@ def test_file_copy_content_recursive(td, content_folder):  #pylint:disable=W0621
 def test_file_copy_content_verbose(td, content_folder, capsys):  #pylint:disable=W0621
     """Test that operation are logged to console"""
     goal = str(td)
-    utila.copy_content(content_folder, goal, recursive=True, verbose=True)
+    utilo.copy_content(content_folder, goal, recursive=True, verbose=True)
 
     stdout = capsys.readouterr().out
 
@@ -160,7 +160,7 @@ def test_file_copy_content_verbose(td, content_folder, capsys):  #pylint:disable
 def test_file_copy_content_recursive_false(td, content_folder):  #pylint:disable=W0621
     """Test to copy `content_folder` non recursive"""
     goal = str(td)
-    utila.copy_content(content_folder, goal, recursive=False)
+    utilo.copy_content(content_folder, goal, recursive=False)
 
     assert os.path.exists(os.path.join(goal, 'test.txt'))
     assert os.path.exists(os.path.join(goal, 'abc.txt'))
@@ -196,12 +196,12 @@ def test_file_copy_content_pattern(
     content_folder,
 ):  # pylint:disable=W0621
     source = content_folder
-    utila.file_create(os.path.join(source, 'hallotxt'))
+    utilo.file_create(os.path.join(source, 'hallotxt'))
 
     root = str(td)
 
-    utila.copy_content(source, root, pattern=pattern, recursive=recursive)
-    files = [item for item in os.listdir(root) if utila.isfilepath(item)]
+    utilo.copy_content(source, root, pattern=pattern, recursive=recursive)
+    files = [item for item in os.listdir(root) if utilo.isfilepath(item)]
     assert len(files) == expected, root
 
 
@@ -209,25 +209,25 @@ def test_file_replace_file(td):
     path = os.path.join(str(td), 'file.txt')
     assert not os.path.exists(path)
 
-    utila.file_replace(path, 'Content')
+    utilo.file_replace(path, 'Content')
     assert os.path.exists(path)
-    utila.file_replace(path, 'NewContent')
+    utilo.file_replace(path, 'NewContent')
 
-    content = utila.file_read(path)
+    content = utilo.file_read(path)
     assert content == 'NewContent'
 
     # no changes in file
-    utila.file_replace(path, 'NewContent')
-    content = utila.file_read(path)
+    utilo.file_replace(path, 'NewContent')
+    content = utilo.file_read(path)
     assert content == 'NewContent'
 
 
 def test_file_copy_content_file_to_directory(td):
     td = str(td)
     filename = 'abc.txt'
-    utila.file_create(filename)
+    utilo.file_create(filename)
     destination = os.path.join(td, 'destination')
-    utila.copy_content(filename, destination)
+    utilo.copy_content(filename, destination)
 
     assert os.path.exists(os.path.join(destination, filename))
 
@@ -235,9 +235,9 @@ def test_file_copy_content_file_to_directory(td):
 def test_file_copy_content_file_to_file(td):
     td = str(td)
     filename = 'abc.txt'
-    utila.file_create(filename)
+    utilo.file_create(filename)
     destination = os.path.join(td, 'cba.txt')
-    utila.copy_content(filename, destination)
+    utilo.copy_content(filename, destination)
 
     assert os.path.exists(destination)
 
@@ -247,7 +247,7 @@ def test_file_copy_content_directory_to_directory(td):
     folder = prepare_example(td)
 
     goal = os.path.join(td, 'goal')
-    utila.copy_content(folder, goal)
+    utilo.copy_content(folder, goal)
 
     assert len(os.listdir(goal)) == 3, os.listdir(goal)
 
@@ -283,9 +283,9 @@ def test_file_copy_content_access_error(
     for item in [source, sink]:
         os.makedirs(item)
         pdf = os.path.join(item, 'single.pdf')
-        utila.file_create(pdf)
+        utilo.file_create(pdf)
     notdouble = os.path.join(source, 'not_double.pdf')
-    utila.file_create(notdouble)
+    utilo.file_create(notdouble)
 
     def copy(source, _, private: bool = False):  # pylint:disable=W0613
         if source == notdouble:
@@ -294,13 +294,13 @@ def test_file_copy_content_access_error(
         raise OSError()
 
     with mp.context() as context:
-        context.setattr(utila.file.securewrapper, 'copy', copy)
-        context.setattr(utila, 'file_age_update', lambda path, seconds: True)  # pylint:disable=C3001
+        context.setattr(utilo.file.securewrapper, 'copy', copy)
+        context.setattr(utilo, 'file_age_update', lambda path, seconds: True)  # pylint:disable=C3001
         if update:
-            utila.copy_content(source, sink, update=True)
+            utilo.copy_content(source, sink, update=True)
             return
         with pytest.raises(SystemExit):
-            utila.copy_content(
+            utilo.copy_content(
                 source,
                 sink,
             )
@@ -310,23 +310,23 @@ def test_file_copy_content_access_error(
 
 def test_file_copy_lock_nolock(testdir):
     locked = testdir.tmpdir.join('path')
-    utila.file_create(locked, content='locked')
-    utila.file_lock(locked)
-    utila.file_islocked(locked)
+    utilo.file_create(locked, content='locked')
+    utilo.file_lock(locked)
+    utilo.file_islocked(locked)
     # copy without lock
     unlocked = testdir.tmpdir.join('unlocked')
-    utila.copy_content(src=locked, dst=unlocked, unlock=True)
-    assert not utila.file_islocked(unlocked.join('path'))
+    utilo.copy_content(src=locked, dst=unlocked, unlock=True)
+    assert not utilo.file_islocked(unlocked.join('path'))
 
 
 def test_file_copy_lock_withlock(testdir):
     locked = testdir.tmpdir.join('path')
-    utila.file_create(locked, content='locked')
-    utila.file_lock(locked)
+    utilo.file_create(locked, content='locked')
+    utilo.file_lock(locked)
     # copy with lock
     skip_unlock = testdir.tmpdir.join('superlock')
-    utila.copy_content(src=locked, dst=skip_unlock)
-    assert utila.file_islocked(skip_unlock.join('path'))
+    utilo.copy_content(src=locked, dst=skip_unlock)
+    assert utilo.file_islocked(skip_unlock.join('path'))
 
 
 def prepare_example(directory):
@@ -342,7 +342,7 @@ def prepare_example(directory):
             folder_def,
             folder_ghi,
     ]:
-        utila.file_create(item, item)
+        utilo.file_create(item, item)
 
     return folder
 
@@ -358,14 +358,14 @@ def prepare_example(directory):
     ),
 ])
 def test_file_make_single(path, expected):
-    converted = utila.make_single(path)
+    converted = utilo.make_single(path)
     assert converted == expected
 
 
 def test_file_make_single_shorten():
     path = 'C:/helmut/this/is/a/very/long/folder/ending.txt'
     expected_length = 20
-    shorten = utila.make_single(path, length=expected_length)
+    shorten = utilo.make_single(path, length=expected_length)
 
     assert len(shorten) == expected_length, str(shorten)
     assert shorten.endswith('folder_ending_txt'), str(shorten)
@@ -384,7 +384,7 @@ def test_file_make_single_shorten():
     ),
 ])
 def test_file_make_relative(path, root, expected):
-    converted = utila.make_relative(path, root=root)
+    converted = utilo.make_relative(path, root=root)
     assert converted == expected
 
 
@@ -393,14 +393,14 @@ def test_file_make_relative(path, root, expected):
     'example',
 ])
 def test_file_yaml(filename):
-    yaml_file = utila.yaml(filename)
+    yaml_file = utilo.yaml(filename)
     assert yaml_file == 'example.yaml'
 
 
 def test_file_yaml_path_given():
     path = 'C:\\usr\\dev\\example.yaml'
     with pytest.raises(AssertionError):
-        utila.yaml(path)
+        utilo.yaml(path)
 
 
 @pytest.mark.parametrize('first_content, second_content, expected_result', [
@@ -414,9 +414,9 @@ def test_file_compare(first_content, second_content, expected_result, td):
 
     first = os.path.join(root, 'first')
     second = os.path.join(root, 'second')
-    utila.file_create(first, first_content)
-    utila.file_create(second, second_content)
-    equals = utila.file_compare(first, second)
+    utilo.file_create(first, first_content)
+    utilo.file_create(second, second_content)
+    equals = utilo.file_compare(first, second)
     assert equals == expected_result
 
 
@@ -425,33 +425,33 @@ def test_file_compare_binary_file(td):
     utf32 = os.path.join(root, 'example.utf32')
     with open(utf32, mode='w', encoding='utf32') as fp:
         fp.write('\u1234')
-    equal = utila.file_compare(utf32, __file__)
+    equal = utilo.file_compare(utf32, __file__)
     assert not equal
 
 
 def test_file_compare_not_exists():
     first = '/c/data/abc.text'
     second = __file__
-    equals = utila.file_compare(first, second)
+    equals = utilo.file_compare(first, second)
     assert not equals
-    equals = utila.file_compare(first=second, second=first)
+    equals = utilo.file_compare(first=second, second=first)
     assert not equals
 
 
 def test_file_lock(td):
     root = str(td)
     first = os.path.join(root, 'locked.abc')
-    utila.file_create(first, 'file to lock')
-    assert not utila.file_islocked(first)
-    utila.file_lock(first)
-    assert utila.file_islocked(first)
+    utilo.file_create(first, 'file to lock')
+    assert not utilo.file_islocked(first)
+    utilo.file_lock(first)
+    assert utilo.file_islocked(first)
     # test write protection
     with pytest.raises(PermissionError):
-        utila.file_remove(first)
+        utilo.file_remove(first)
     assert os.path.exists(first)
-    utila.file_unlock(first)
-    assert not utila.file_islocked(first)
-    utila.file_remove(first)
+    utilo.file_unlock(first)
+    assert not utilo.file_islocked(first)
+    utilo.file_remove(first)
     assert not os.path.exists(first), 'write protection is already there'
 
 
@@ -461,7 +461,7 @@ def test_file_lock(td):
     ('abc\\www\\nbc', 'abc.www.nbc'),
 ])
 def test_file_make_package(path, expected):
-    result = utila.make_package(path)
+    result = utilo.make_package(path)
 
     assert result == expected, str(result)
 
@@ -470,7 +470,7 @@ def test_file_make_package_root():
     path = 'www/helmut/test.py'
     expected = 'helmut.test'
 
-    result = utila.make_package(path, root='www')
+    result = utilo.make_package(path, root='www')
 
     assert result == expected, str(result)
 
@@ -483,18 +483,18 @@ def test_file_copy_single_file(td):
     os.makedirs(dest)
 
     sourcefile = os.path.join(source, 'hello')
-    utila.file_create(sourcefile)
+    utilo.file_create(sourcefile)
 
-    utila.file_copy(sourcefile, dest)
+    utilo.file_copy(sourcefile, dest)
     assert os.path.exists(os.path.join(dest, 'hello'))
 
 
 def test_file_copy_content_mult(td):
     td.mkdir('source')
-    utila.file_create('source/groupme__selm.yaml')
-    utila.file_create('source/rawmaker__helm.yaml')
+    utilo.file_create('source/groupme__selm.yaml')
+    utilo.file_create('source/rawmaker__helm.yaml')
     td.mkdir('dest')
-    utila.copy_content(
+    utilo.copy_content(
         'source',
         'dest',
         pattern='(rawmaker|groupme)__*.yaml',
@@ -507,10 +507,10 @@ def test_file_copy_content_mult(td):
 
 def test_file_copy_content_verbose_ignore(td):
     td.mkdir('src')
-    utila.file_create('src/groupme__selm.yaml')
-    utila.file_create('src/rawmaker__helm.yaml')
+    utilo.file_create('src/groupme__selm.yaml')
+    utilo.file_create('src/rawmaker__helm.yaml')
     td.mkdir('dst')
-    utila.copy_content(
+    utilo.copy_content(
         'src',
         'dst',
         pattern='(rawmaker|groupme)__*.yaml',
@@ -518,79 +518,79 @@ def test_file_copy_content_verbose_ignore(td):
         verbose=True,
         ignore=lambda x: 'groupme' in x,
     )
-    assert utila.file_count(td.tmpdir.join('dst')) == 1
+    assert utilo.file_count(td.tmpdir.join('dst')) == 1
 
 
 def test_file_count(tmpdir):
-    assert not utila.file_count(tmpdir)
+    assert not utilo.file_count(tmpdir)
 
-    with utila.chdir(tmpdir):
-        utila.file_create('hi.yaml')
-        utila.file_create('hi.txt')
+    with utilo.chdir(tmpdir):
+        utilo.file_create('hi.yaml')
+        utilo.file_create('hi.txt')
 
-    assert utila.file_count(tmpdir, ext='yaml') == 1
-    assert utila.file_count(tmpdir) == 2
+    assert utilo.file_count(tmpdir, ext='yaml') == 1
+    assert utilo.file_count(tmpdir) == 2
 
 
 def test_file_tmpdir():
-    create = utila.tmpdir(utila.ROOT)
+    create = utilo.tmpdir(utilo.ROOT)
     assert os.path.exists(create), create
 
 
 def test_file_replace_binary(tmpdir):
     path = os.path.join(tmpdir, 'file.hex')
-    utila.file_replace_binary(path, b'Helm')
+    utilo.file_replace_binary(path, b'Helm')
     # replace content
-    utila.file_replace_binary(path, b'Helm2')
+    utilo.file_replace_binary(path, b'Helm2')
     # do nothing
-    utila.file_replace_binary(path, b'Helm2')
+    utilo.file_replace_binary(path, b'Helm2')
 
 
 def test_file_list():
-    files = utila.file_list(utila.ROOT)
+    files = utilo.file_list(utilo.ROOT)
     assert files
 
-    txt = utila.file_list(utila.ROOT, include='txt')
+    txt = utilo.file_list(utilo.ROOT, include='txt')
     assert len(txt) <= len(files)
 
-    py = utila.file_list(utila.ROOT, include='py')  # pylint:disable=C0103
+    py = utilo.file_list(utilo.ROOT, include='py')  # pylint:disable=C0103
     assert len(py) > len(txt)
 
-    py_txt = utila.file_list(utila.ROOT, include=['py', 'txt'])
+    py_txt = utilo.file_list(utilo.ROOT, include=['py', 'txt'])
     assert len(py_txt) == (len(txt) + len(py))
 
-    exclude_txt = utila.file_list(utila.ROOT, exclude='txt')
+    exclude_txt = utilo.file_list(utilo.ROOT, exclude='txt')
     assert len(exclude_txt) == (len(files) - len(txt))
 
 
 def test_file_list_relative(td):
-    utila.file_create('test.txt')
-    files = utila.file_list(td.tmpdir)
+    utilo.file_create('test.txt')
+    files = utilo.file_list(td.tmpdir)
     assert files == ['test.txt']
-    files = utila.file_list(td.tmpdir, absolute=True)
+    files = utilo.file_list(td.tmpdir, absolute=True)
     assert files != ['test.txt']
 
 
 def test_make_tmpdir():
-    with utila.make_tmpdir(utila.ROOT) as tmp_dir:
+    with utilo.make_tmpdir(utilo.ROOT) as tmp_dir:
         assert os.path.exists(tmp_dir)
     assert os.path.exists(tmp_dir)
 
 
 def test_make_tmpdir_remove():
-    with utila.make_tmpdir(utila.ROOT, remove=True) as tmp_dir:
+    with utilo.make_tmpdir(utilo.ROOT, remove=True) as tmp_dir:
         assert os.path.exists(tmp_dir)
         os.makedirs(os.path.join(tmp_dir, 'recursive_path'))
-        utila.file_create(os.path.join(tmp_dir, 'helm.txt'))
+        utilo.file_create(os.path.join(tmp_dir, 'helm.txt'))
     assert not os.path.exists(tmp_dir), tmp_dir
 
 
 @pytest.mark.skip(reason='no PermissionError on linux')
 def test_inform_file_permission(tmpdir, capsys):
     path = tmpdir.join('locked')
-    utila.file_create(path)
-    utila.file_lock(path)
-    assert utila.file_islocked(path)
+    utilo.file_create(path)
+    utilo.file_lock(path)
+    assert utilo.file_islocked(path)
     with pytest.raises(PermissionError, match='Permission denied'):
-        utila.file_append(path, content='data')
+        utilo.file_append(path, content='data')
     assert 'HINT: Ensure that' in utilatest.stderr(capsys)

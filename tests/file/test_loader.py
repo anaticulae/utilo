@@ -7,13 +7,13 @@
 # be prosecuted under federal law. Its content is company confidential.
 # =============================================================================
 
-import utila
-import utila.file.loader
+import utilo
+import utilo.file.loader
 
 
 def test_file_find(tmpdir):
-    utila.file_create(tmpdir.join('debug'))
-    detected = utila.file.loader.file_find(
+    utilo.file_create(tmpdir.join('debug'))
+    detected = utilo.file.loader.file_find(
         tmpdir,
         fnames='debug',
     )

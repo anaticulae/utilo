@@ -13,18 +13,18 @@ import sys
 import pytest
 import utilatest
 
-import utila
-from utila import FAILURE
-from utila import SUCCESS
-from utila import FeaturePackConfig
-from utila import Pattern
-from utila import ResultFile
-from utila import Value
-from utila import create_step
-from utila import featurepack
-from utila import file_create
-from utila import file_read
-from utila import returncode
+import utilo
+from utilo import FAILURE
+from utilo import SUCCESS
+from utilo import FeaturePackConfig
+from utilo import Pattern
+from utilo import ResultFile
+from utilo import Value
+from utilo import create_step
+from utilo import featurepack
+from utilo import file_create
+from utilo import file_read
+from utilo import returncode
 
 WORKER = """
 from typing import Tuple
@@ -420,7 +420,7 @@ def test_error_hook(hook, failfast, td, mp):
     """Test passing exception to error hook and without hook"""
     import tests.examples.featurepack.withexception.withexception as exe  # pylint:disable=C0415
     root = exe.ROOT
-    utila.file_create(os.path.join(str(td), 'inputso.yaml'))
+    utilo.file_create(os.path.join(str(td), 'inputso.yaml'))
 
     def errorhook(name, exception):  # pylint:disable=W0613
         errorhook.hooked = True
@@ -437,7 +437,7 @@ def test_error_hook(hook, failfast, td, mp):
         with pytest.raises(SystemExit) as result:
             exe.main()
 
-    assert utila.returncode(result) == utila.FAILURE
+    assert utilo.returncode(result) == utilo.FAILURE
     assert not hook or errorhook.hooked
 
 
@@ -450,7 +450,7 @@ def test_featurepack_config_valid():
         pass
 
     hook = install, run
-    utila.FeaturePackConfig(cli_hook=hook)
+    utilo.FeaturePackConfig(cli_hook=hook)
 
 
 def test_featurepack_config_invalid():
@@ -463,4 +463,4 @@ def test_featurepack_config_invalid():
 
     hook = install, run
     with pytest.raises(AssertionError):
-        utila.FeaturePackConfig(cli_hook=hook)
+        utilo.FeaturePackConfig(cli_hook=hook)

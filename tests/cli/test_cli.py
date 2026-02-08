@@ -13,23 +13,23 @@ import sys
 import pytest
 import utilatest
 
-import utila
-import utila.cli
+import utilo
+import utilo.cli
 
 
 def test_cli_parse_args(mp):
     """Create a parser with 2 parameter, pass arguments and evaluate the
     result"""
     todo = [
-        utila.Parameter('-a', '--alls', 'Do all!'),
-        utila.Parameter('-n', '--nothing', 'Do nothing!'),
+        utilo.Parameter('-a', '--alls', 'Do all!'),
+        utilo.Parameter('-n', '--nothing', 'Do nothing!'),
     ]
-    config = utila.cli.ParserConfiguration(
+    config = utilo.cli.ParserConfiguration(
         failfastflag=True,
         verboseflag=True,
         prefix=True,
     )
-    parser = utila.cli.create_parser(
+    parser = utilo.cli.create_parser(
         description='This is just a sample parser',
         prog='parser',
         todo=todo,
@@ -40,7 +40,7 @@ def test_cli_parse_args(mp):
     with mp.context() as context:
         context.setattr(sys, 'argv', argv)
         parser.print_help()
-        args = utila.parse(parser)
+        args = utilo.parse(parser)
     # for verbose level
     verbose_prefix_failfast = len('--verbose --prefix --ff --cache --cprofile '
                                   '--pages --j --wait'.split())
@@ -52,11 +52,11 @@ def test_cli_parse_args(mp):
 @pytest.mark.parametrize('prefix', [True, False])
 def test_cli_prefix_activation(mp, prefix):
     todo = [
-        utila.Flag(longcut='--longcut', message='display longcuts'),
+        utilo.Flag(longcut='--longcut', message='display longcuts'),
     ]
     parsername = 'parser'
-    config = utila.cli.ParserConfiguration(prefix=prefix,)
-    parser = utila.cli.create_parser(
+    config = utilo.cli.ParserConfiguration(prefix=prefix,)
+    parser = utilo.cli.create_parser(
         description='This is just a sample parser',
         prog=parsername,
         todo=todo,
@@ -66,8 +66,8 @@ def test_cli_prefix_activation(mp, prefix):
     argv = [parsername, '--longcut']
     with mp.context() as context:
         context.setattr(sys, 'argv', argv)
-        args = utila.parse(parser)
-        source = utila.sources(args)
+        args = utilo.parse(parser)
+        source = utilo.sources(args)
 
     expected_return_count = 3 if prefix else 2
     assert len(source) == expected_return_count
@@ -82,7 +82,7 @@ def test_cli_non_existing_input(tmpdir, mp):
             mp,
             ['-i', 'abc'],
         )
-    assert utila.returncode(result) == 2, str(result)
+    assert utilo.returncode(result) == 2, str(result)
 
 
 def test_cli_non_existing_output(tmpdir, mp):
@@ -123,14 +123,14 @@ def test_cli_relative_output(tmpdir, mp):
 
 
 def test_cli_file_as_output(tmpdir, mp):
-    utila.file_create(os.path.join(tmpdir, 'test.txt'), 'I am a file.')
+    utilo.file_create(os.path.join(tmpdir, 'test.txt'), 'I am a file.')
     with pytest.raises(SystemExit) as result:
         create_and_run_parser(
             tmpdir,
             mp,
             ['-o', os.path.join(tmpdir, 'test.txt')],
         )
-    assert utila.returncode(result) == 2, str(result)
+    assert utilo.returncode(result) == 2, str(result)
 
 
 RUN_ME = """\
@@ -138,7 +138,7 @@ RUN_ME = """\
 import sys
 sys.path.append("%s")
 from utila import RequiredCommand
-from utila.cli import create_parser
+from utilo.cli import create_parser
 
 parser = create_parser(RequiredCommand('-a', '--alls', 'I need it all'))
 parser.parse_args()
@@ -147,7 +147,7 @@ parser.parse_args()
 
 def test_cli_parse_required_command_missing(tmpdir):
     runner = os.path.join(tmpdir, 'run.py')
-    utila.file_create(runner, RUN_ME % utila.forward_slash(utila.ROOT))
+    utilo.file_create(runner, RUN_ME % utilo.forward_slash(utilo.ROOT))
 
     command = f'python "{runner}"'
     completed = utilatest.run(command, tmpdir, expect=False)
@@ -159,7 +159,7 @@ def test_cli_parse_required_command_missing(tmpdir):
 
 def test_cli_parse_required_command(tmpdir):
     runner = os.path.join(tmpdir, 'run.py')
-    utila.file_create(runner, RUN_ME % utila.forward_slash(utila.ROOT))
+    utilo.file_create(runner, RUN_ME % utilo.forward_slash(utilo.ROOT))
     command = f'python "{runner}" -a Samba'
     completed = utilatest.run(command, tmpdir)
     assert not completed.returncode, str(completed)
@@ -169,7 +169,7 @@ EMPTY_PARSER = """\
 #! /usr/bin/env python
 import sys
 sys.path.append("%s")
-from utila.cli import create_parser, parse, ParserConfiguration
+from utilo.cli import create_parser, parse, ParserConfiguration
 parser = create_parser(%s)
 args = parse(parser)
 """
@@ -186,8 +186,8 @@ def parser_example(tmpdir):
     runner = os.path.join(tmpdir, 'empty.py')
     config = ("config=ParserConfiguration('inputparameter=True, "
               "outputparameter=True')")
-    content = EMPTY_PARSER % (utila.forward_slash(utila.ROOT), config)
-    utila.file_create(runner, content)
+    content = EMPTY_PARSER % (utilo.forward_slash(utilo.ROOT), config)
+    utilo.file_create(runner, content)
     cwd = os.path.split(tmpdir)[0]
     return cwd, runner
 
@@ -198,16 +198,16 @@ def test_cli_parse_empty_parser_help(parser_example):  # pylint: disable=W0621
     command = f'python "{runner}" --help'
     completed = utilatest.run(command, cwd)
 
-    assert completed.returncode == utila.SUCCESS, str(completed)
+    assert completed.returncode == utilo.SUCCESS, str(completed)
 
 
 def test_cli_parser_source_in_out(parser_example):  # pylint: disable=W0621
     """Test default parser with --help"""
     cwd, runner = parser_example
-    utila.file_append(runner, SOURCES)
+    utilo.file_append(runner, SOURCES)
     command = f'python "{runner}" -i {runner} -o out.file'
     completed = utilatest.run(command, cwd, expect=False)
-    assert completed.returncode == utila.INVALID_COMMAND, str(completed)
+    assert completed.returncode == utilo.INVALID_COMMAND, str(completed)
 
 
 def test_cli_parse_empty_parser_version(parser_example):  # pylint: disable=W0621
@@ -215,7 +215,7 @@ def test_cli_parse_empty_parser_version(parser_example):  # pylint: disable=W062
     cwd, runner = parser_example
     command = f'python "{runner}" --version'
     completed = utilatest.run(command, cwd, expect=False)
-    assert completed.returncode == utila.INVALID_COMMAND, str(completed)
+    assert completed.returncode == utilo.INVALID_COMMAND, str(completed)
 
 
 def test_cli_parse_version_parser_version(tmpdir):
@@ -223,11 +223,11 @@ def test_cli_parse_version_parser_version(tmpdir):
     version = "1.1.1"
     runner = os.path.join(tmpdir, 'version.py')
 
-    root = utila.forward_slash(utila.ROOT)
+    root = utilo.forward_slash(utilo.ROOT)
     config = (f'version="{version}", prog="testo",'
               'config=ParserConfiguration(verboseflag=True,)')
     parser = EMPTY_PARSER % (root, config)
-    utila.file_create(runner, parser)
+    utilo.file_create(runner, parser)
 
     cmd = f'python {runner} --version'
     completed = utilatest.run(cmd, tmpdir)
@@ -247,12 +247,12 @@ def create_and_run_parser(
 ):
     prog = 'parser'
     argv = [prog] + argv
-    config = utila.cli.ParserConfiguration(
+    config = utilo.cli.ParserConfiguration(
         inputparameter=True,
         outputparameter=True,
         prefix=prefix,
     )
-    parser = utila.cli.create_parser(
+    parser = utilo.cli.create_parser(
         prog=prog,
         config=config,
     )
@@ -260,8 +260,8 @@ def create_and_run_parser(
     with mp.context() as context:
         context.setattr(sys, 'argv', argv)
         context.setattr(os, 'getcwd', lambda: str(td))  # pylint:disable=C3001
-        parsed = utila.parse(parser)
-        inpath, outpath, _ = utila.sources(  # pylint:disable=unbalanced-tuple-unpacking
+        parsed = utilo.parse(parser)
+        inpath, outpath, _ = utilo.sources(  # pylint:disable=unbalanced-tuple-unpacking
             parsed,
             singleinput=singleinput,
         )
@@ -282,7 +282,7 @@ def test_cli_singlefile_input(td, mp, singlefile):
     root = str(td)
     # Create input file
     filepath = os.path.join(root, 'sample.txt')
-    utila.file_create(filepath)
+    utilo.file_create(filepath)
 
     # read root
     argv = ['-i', root, '-o', root]
@@ -313,12 +313,12 @@ def test_cli_singlefile_input(td, mp, singlefile):
                 argv=argv,
                 singleinput=False,
             )
-        assert utila.returncode(result) == utila.INVALID_COMMAND
+        assert utilo.returncode(result) == utilo.INVALID_COMMAND
 
 
 def test_cli_sort_parameter():
     expected = [
-        utila.NumberedParameter(
+        utilo.NumberedParameter(
             shortcut='j',
             longcut='',
             message='select number of jobs',
@@ -329,31 +329,31 @@ def test_cli_sort_parameter():
             },
             default=1,
         ),
-        utila.Flag(
+        utilo.Flag(
             shortcut='V',
             longcut='verbose',
             message='define verbose level of logging',
             args={'action': 'count'},
         ),
-        utila.Flag(
+        utilo.Flag(
             shortcut='',
             longcut='all',
             message='',
             args={},
         ),
-        utila.Flag(
+        utilo.Flag(
             shortcut='',
             longcut='brokenworker',
             message='export brokenworker',
             args={},
         ),
-        utila.Flag(
+        utilo.Flag(
             shortcut='',
             longcut='ff',
             message='failfast: quit after the first error',
             args={},
         ),
-        utila.Parameter(
+        utilo.Parameter(
             shortcut='',
             longcut='pages',
             message='shrink to given pages',
@@ -362,25 +362,25 @@ def test_cli_sort_parameter():
                 'default': ':'
             },
         ),
-        utila.Parameter(
+        utilo.Parameter(
             shortcut='',
             longcut='prefix',
             message='add prefix to separate different output files',
             args={'dest': 'prefix'},
         ),
     ]
-    result = utila.cli.sort(expected)
+    result = utilo.cli.sort(expected)
     assert result == expected, 'is not sorted correctly'
 
 
 def test_evaluate_multiple_pages_flags():
     args = {'pages': ['5:10', '9', '19', '50:58']}
-    pages = utila.cli.evaluate_flags(args)[2]
+    pages = utilo.cli.evaluate_flags(args)[2]
     expected = (5, 6, 7, 8, 9, 19, 50, 51, 52, 53, 54, 55, 56, 57)
     assert pages == expected
 
 
 def test_evaluate_multiple_pages_flags_empty():
     args = {'pages': []}
-    pages = utila.cli.evaluate_flags(args)[2]
+    pages = utilo.cli.evaluate_flags(args)[2]
     assert pages is None, pages

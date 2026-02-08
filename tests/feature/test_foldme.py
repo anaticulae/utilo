@@ -12,7 +12,7 @@ import os
 import utilatest
 
 import tests.feature.runner
-import utila
+import utilo
 
 
 def run_foldme(
@@ -49,7 +49,7 @@ def test_directory_asinput(td, mp):
     run_foldme('--directory_input', {}, td, mp)
 
     written = os.path.join(root, 'foldme__directory_input_message.yaml')
-    loaded = utila.file_read(written)
+    loaded = utilo.file_read(written)
     assert loaded.endswith('iamadirectory'), loaded
 
 

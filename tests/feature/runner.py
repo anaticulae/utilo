@@ -12,8 +12,8 @@ import sys
 
 import pytest
 
-import utila
-import utila.logger
+import utilo
+import utilo.logger
 
 
 def run_featurepack(
@@ -35,7 +35,7 @@ def run_featurepack(
         context.setattr(sys, 'argv', cmd)
         with pytest.raises(SystemExit) as result:
             exe.main(**main)
-    verified = (utila.returncode(result) == utila.SUCCESS)
+    verified = (utilo.returncode(result) == utilo.SUCCESS)
     assert verified == success, str(result)
     if capsys:
         stdout = capsys.readouterr().out

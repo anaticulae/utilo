@@ -15,15 +15,15 @@ import sys
 import pytest
 import utilatest
 
-import utila
+import utilo
 
 WORKPLAN = [
-    utila.create_step(
+    utilo.create_step(
         'first_cli_step',
         [
-            utila.File('first'),
-            utila.File('second', 'html'),
-            utila.File('third'),
+            utilo.File('first'),
+            utilo.File('second', 'html'),
+            utilo.File('third'),
         ],
         (('result'),),
     ),
@@ -48,11 +48,11 @@ def name():
 """
 
 EXAMPLE_WITH_PAGE_WORKPLAN = [
-    utila.create_step(
+    utilo.create_step(
         'cli_with_pages',
         [
-            utila.File('second', 'html'),
-            utila.File('third'),
+            utilo.File('second', 'html'),
+            utilo.File('third'),
         ],
         (('result'),),
     ),
@@ -73,24 +73,24 @@ def name():
 """
 
 EXAMPLE_MULTIPLE_RETURNVALUES_WORKPLAN = [
-    utila.create_step(
+    utilo.create_step(
         'multistep',
         [
-            utila.File('third'),
+            utilo.File('third'),
         ],
         (('pages/view_*', 'html'),),
     ),
 ]
 
 INVALID_WORKPLAN = [
-    utila.create_step(
+    utilo.create_step(
         'cli_with_pages',
         [
             # Pages parameter is not allowed in workplan, it is delivered
             # automatically if needed
-            utila.File(utila.PAGES_FLAG),
-            utila.File('second', 'html'),
-            utila.File('third'),
+            utilo.File(utilo.PAGES_FLAG),
+            utilo.File('second', 'html'),
+            utilo.File('third'),
         ],
         (('result'),),
     ),
@@ -105,20 +105,20 @@ def cli_example(td, example=EXAMPLE):
     os.makedirs(featurepath)
 
     cli_example_feature = os.path.join(featurepath, 'cli_example.py')
-    utila.file_create(cli_example_feature, example)
+    utilo.file_create(cli_example_feature, example)
 
     cli_example_feature_init = os.path.join(featurepath, '__init__.py')
-    utila.file_create(cli_example_feature_init, '')
+    utilo.file_create(cli_example_feature_init, '')
 
     cli_example_init = os.path.join(example_path, '__init__.py')
-    utila.file_create(cli_example_init, '')
+    utilo.file_create(cli_example_init, '')
 
     sys.path.append(root)
 
     # create test files
-    utila.file_create('first.yaml')
-    utila.file_create('second.html')
-    utila.file_create('third.yaml')
+    utilo.file_create('first.yaml')
+    utilo.file_create('second.html')
+    utilo.file_create('third.yaml')
 
     return (root, featurepath)
 
@@ -127,7 +127,7 @@ PROCESSNAME = 'cli_example'
 
 
 def create_runner(
-    featurepack_=utila.featurepack,
+    featurepack_=utilo.featurepack,
     description='',
     featurepackage='example.features',
     multiprocessed=False,
@@ -139,7 +139,7 @@ def create_runner(
 ):
     if workplan is None:
         workplan = list(WORKPLAN)
-    config = utila.FeaturePackConfig(
+    config = utilo.FeaturePackConfig(
         description=description,
         multiprocessed=multiprocessed,
         name=name,
@@ -179,7 +179,7 @@ def test_workplan_invalid(td, mp, capsys):  # pylint:disable=W0621
     with run_cli(root, mp, '--all', runner=invalid) as result:
         out, err = capsys.readouterr()
     assert 'parameter `pages` is not allowed' in err
-    assert utila.returncode(result) == utila.FAILURE, str(out) + str(err)
+    assert utilo.returncode(result) == utilo.FAILURE, str(out) + str(err)
 
 
 def test_workplan_valid_with_pages(td, mp, capsys):  # pylint:disable=W0621
@@ -188,7 +188,7 @@ def test_workplan_valid_with_pages(td, mp, capsys):  # pylint:disable=W0621
     command = '--all --pages=5:10'
     with run_cli(root, mp, command, runner=valid) as result:
         out, err = capsys.readouterr()
-    assert utila.returncode(result) == utila.SUCCESS, str(out) + str(err)
+    assert utilo.returncode(result) == utilo.SUCCESS, str(out) + str(err)
 
 
 def test_cli_example(td, mp, capsys):  # pylint:disable=W0621
@@ -204,7 +204,7 @@ def test_cli_example(td, mp, capsys):  # pylint:disable=W0621
     # outputs
     assert '>' in captured, str(captured)
 
-    assert utila.returncode(result) == utila.SUCCESS, str(result)
+    assert utilo.returncode(result) == utilo.SUCCESS, str(result)
 
 
 @pytest.mark.parametrize('command', [
@@ -218,7 +218,7 @@ def test_cli_example_all(td, mp, capsys, command):
         out, err = capsys.readouterr()
     assert len(out) > 50, str(out) + str(err)
     assert not err, str(err)
-    assert utila.returncode(result) == utila.SUCCESS, str(result)
+    assert utilo.returncode(result) == utilo.SUCCESS, str(result)
 
 
 def test_cli_print_processing_step(td, mp, capsys):
@@ -227,9 +227,9 @@ def test_cli_print_processing_step(td, mp, capsys):
     root, _ = cli_example(td)
     with run_cli(root, mp, '--all -VVV') as result:
         out = capsys.readouterr().out
-    assert utila.returncode(result) == utila.SUCCESS, str(result)
+    assert utilo.returncode(result) == utilo.SUCCESS, str(result)
     assert len(out) > 100
-    assert 'processing: first_cli_step' in out, utila.log_raw(out)
+    assert 'processing: first_cli_step' in out, utilo.log_raw(out)
 
 
 def test_cli_profile(td, mp, capsys):
@@ -256,23 +256,23 @@ def test_cli_multiple_input(
     # remove file out of first example to test multiple -i sources
     first_yaml = os.path.join(root, 'first.yaml')
     assert os.path.exists(first_yaml), first_yaml
-    utila.file_remove(first_yaml)
+    utilo.file_remove(first_yaml)
     assert not os.path.exists(first_yaml), first_yaml
     second_input = os.path.join(root, 'second')
     os.makedirs(second_input)
     if create_missing_input:
         second_first_yaml = os.path.join(second_input, 'first.yaml')
         assert not os.path.exists(second_first_yaml), second_first_yaml
-        utila.file_create(second_first_yaml)
+        utilo.file_create(second_first_yaml)
         assert os.path.exists(second_first_yaml), second_first_yaml
     # run
     inputcmd = f'-i {root} -i {second_input} -VVV'
     with run_cli(root, mp, inputcmd) as result:
         out, err = capsys.readouterr()
     # check
-    expected_result = utila.SUCCESS if create_missing_input else utila.FAILURE
+    expected_result = utilo.SUCCESS if create_missing_input else utilo.FAILURE
     error_message = f'{result}\n{out}\n{err}'
-    assert utila.returncode(result) == expected_result, error_message
+    assert utilo.returncode(result) == expected_result, error_message
 
 
 def test_cli_multiple_input_with_double_input(
@@ -286,13 +286,13 @@ def test_cli_multiple_input_with_double_input(
     second_input = os.path.join(root, 'second')
     os.makedirs(second_input)
     third_path = os.path.join(second_input, 'third.yaml')
-    utila.file_create(third_path)
+    utilo.file_create(third_path)
     assert os.path.exists(third_path)
     inputcmd = f'-i {root} -i {second_input} -VVV'
     with run_cli(root, mp, inputcmd) as result:
         out, err = capsys.readouterr()
-    assert utila.returncode(
-        result) == utila.SUCCESS, str(result) + str(out) + str(err)
+    assert utilo.returncode(
+        result) == utilo.SUCCESS, str(result) + str(out) + str(err)
 
 
 MULTI_RUNNER = create_runner(multiprocessed=True)
@@ -313,7 +313,7 @@ def test_cli_multiple_jobs(
     with run_cli(td.tmpdir, mp, cmd, MULTI_RUNNER) as result:
         out, err = capsys.readouterr()
     error_message = f'{result}\n{out}\n{err}'
-    assert utila.returncode(result) == utila.SUCCESS, str(error_message)
+    assert utilo.returncode(result) == utilo.SUCCESS, str(error_message)
 
 
 def test_workplan_multiple_returnvalues(td, mp, capsys):  # pylint:disable=W0621
@@ -321,7 +321,7 @@ def test_workplan_multiple_returnvalues(td, mp, capsys):  # pylint:disable=W0621
     root, _ = cli_example(td, EXAMPLE_MULTIPLE_RETURNVALUES)
     with run_cli(root, mp, '--all', runner=invalid) as result:
         out, err = capsys.readouterr()
-    assert utila.returncode(result) == utila.SUCCESS, str(out) + str(err)
+    assert utilo.returncode(result) == utilo.SUCCESS, str(out) + str(err)
     path = str(td)
     pages = os.path.join(path, 'cli_example__multistep_pages')
     assert os.path.exists(pages), str(pages)

@@ -15,14 +15,14 @@
 """
 import pytest
 
-import utila
+import utilo
 
 
 def test_likelihood_uniform_result_list():
     """Determine uniformed occurrence of item in `list` collection."""
     items = [10, 20, 20, 50]
 
-    result = utila.uniform_result(items)
+    result = utilo.uniform_result(items)
     expected = [0.1, 0.2, 0.2, 0.5]
 
     assert result == expected
@@ -43,7 +43,7 @@ def test_likelihood_uniform_result_dict():
         'D': 0.3,
     }
 
-    result = utila.uniform_result(items)
+    result = utilo.uniform_result(items)
     assert result == expected
 
 
@@ -58,7 +58,7 @@ def test_likelihood_uniform_result_dict():
 def test_likelihood_uniform_result_none(items):
     """Run uniformation with expected empty result, because input has no
     numbers."""
-    result = utila.uniform_result(items)
+    result = utilo.uniform_result(items)
     assert result is None
 
 
@@ -85,7 +85,7 @@ def test_likelihood_uniform_result_none(items):
 def test_likelihood_maxi(items, expected):
     """Test to extract maximized feature for `list` and `dict` example.
     If there are more than one minimal items, all are returned."""
-    maximized = utila.maxi(items, count=3)
+    maximized = utilo.maxi(items, count=3)
     assert maximized == expected
 
 
@@ -108,5 +108,5 @@ def test_likelihood_maxi(items, expected):
 def test_likelihood_mini(items, expected):
     """Test to extract minimized feature for `list` and `dict` example.
     If there are more than one minimal items, all are returned."""
-    minimized = utila.mini(items, count=2)
+    minimized = utilo.mini(items, count=2)
     assert minimized == expected

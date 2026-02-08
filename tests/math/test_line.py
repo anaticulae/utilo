@@ -10,7 +10,7 @@
 import pytest
 import utilatest
 
-import utila
+import utilo
 
 
 @pytest.mark.parametrize('first, second, expected', [
@@ -21,7 +21,7 @@ import utila
     pytest.param((10, 10, 0, 10), (5, 10, 5, 5), (5, 10), id='m_inf_switched'),
 ])
 def test_math_intersecting_lines(first, second, expected):
-    match = utila.intersecting_lines(first, second)
+    match = utilo.intersecting_lines(first, second)
     assert match == expected, match
 
 
@@ -31,14 +31,14 @@ def test_math_intersecting_lines(first, second, expected):
 ])
 def test_math_intersecting_line_invalid_input(first, second):
     with pytest.raises(ValueError):
-        utila.intersecting_lines(first, second)
+        utilo.intersecting_lines(first, second)
 
 
 def test_math_intersecting_line_with_offset():
     first = (479.71, 755.4, 479.71, 767.36)
     second = (479.71, 743.05, 479.71, 755.0)
 
-    with_error = utila.intersecting_lines(first, second, max_diff=5.0)
+    with_error = utilo.intersecting_lines(first, second, max_diff=5.0)
     assert with_error
 
 
@@ -47,4 +47,4 @@ def test_math_intersecting_line_with_offset():
 def test_intersecting_timeit(lines):
     """Measure intersecting line times."""
     for first, second in zip(lines[0::2], lines[1::2]):
-        utila.intersecting_lines(first, second)
+        utilo.intersecting_lines(first, second)

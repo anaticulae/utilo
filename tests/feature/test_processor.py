@@ -7,7 +7,7 @@
 # be prosecuted under federal law. Its content is company confidential.
 # =============================================================================
 
-import utila
+import utilo
 
 PIPELINE = """\
 import utila
@@ -21,7 +21,7 @@ def todo(pipeline):
     print(pipeline.run(sum, 20, 30))
 
 if __name__ == "__main__":
-    pipe = utila.Pipeline()
+    pipe = utilo.Pipeline()
     with concurrent.futures.ProcessPoolExecutor(max_workers=4) as pool:
         pool.submit(todo, pipe)
 """
@@ -30,5 +30,5 @@ if __name__ == "__main__":
 def test_pipeline(testdir):
     """Ensure to pickle pipeline object."""
     path = testdir.tmpdir.join('run.py')
-    utila.file_create(path, PIPELINE)
-    utila.log(utila.run(f'python {path}'))
+    utilo.file_create(path, PIPELINE)
+    utilo.log(utilo.run(f'python {path}'))
