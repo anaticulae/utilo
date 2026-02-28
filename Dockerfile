@@ -44,7 +44,8 @@ WORKDIR /var/install
 RUN pip install --upgrade pip &&\
     pip install baw==1.70.2&&\
     pip install -r requirements.txt &&\
-    pip install -r requirements.dev
+    pip install -r requirements.dev&&\
+    baw sync all
 
 COPY . /var/install
 
