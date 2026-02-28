@@ -334,7 +334,7 @@ def load_module(path: str):
     """\
     >>> load_module(__file__).__name__
     'utilo.typechecker'
-    >>> import utila; load_module(utilo.ROOT)
+    >>> import utilo; load_module(utilo.ROOT)
     Traceback (most recent call last):
     ...
     ValueError: invalid spec in ...; parent: ...

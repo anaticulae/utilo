@@ -7,7 +7,7 @@
 # be prosecuted under federal law. Its content is company confidential.
 # =============================================================================
 """\
->>> import utila
+>>> import utilo
 >>> maximize = lambda x: utilo.decorateme(x, 'maximize')
 
 >>> @maximize

@@ -95,7 +95,7 @@ def iflat(lists, append: bool = False) -> 'yield':
 
 def flatten_content(items: 'iamraw.PageContents') -> list:
     """\
-    >>> import utila; flatten_content([utilo.driver(content=['Helmut'])])
+    >>> import utilo; flatten_content([utilo.driver(content=['Helmut'])])
     ['Helmut']
     """
     result = []
@@ -178,7 +178,7 @@ def sthird(item, convert=None):
 def sattr(name: str, convert=None):
     """Select value by attribute name.
 
-    >>> import utila
+    >>> import utilo
     >>> sorted((utilo.Command(shortcut='C'), utilo.Command(shortcut='Aello')), key=sattr('shortcut'))
     [Command(shortcut='Aello', longcut='', message='', args={}), Command(shortcut='C', longcut='', message='', args={})]
     """
@@ -294,7 +294,7 @@ def nothing(*args, **kwargs):  # pylint:disable=W0613
     """Use empty contextmanager to ease code.
 
     Example:
-    >>> import utila
+    >>> import utilo
     >>> profiling = False
     >>> contextmanager = utilo.profile if profiling else utilo.nothing
     >>> with contextmanager():

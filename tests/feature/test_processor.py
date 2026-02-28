@@ -10,7 +10,7 @@
 import utilo
 
 PIPELINE = """\
-import utila
+import utilo
 import concurrent.futures
 
 def todo(pipeline):

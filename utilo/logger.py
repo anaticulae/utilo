@@ -404,7 +404,7 @@ def capture_stdout():
 def capture_stderr():
     r"""\
     >>> with capture_stderr() as stderr:
-    ...     import utila;utilo.error('helmut first')
+    ...     import utilo;utilo.error('helmut first')
     >>> stderr()
     '[ERROR] helmut first\n'
     """

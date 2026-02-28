@@ -106,7 +106,7 @@ def package_data(module):
 def version(package):
     """Determine precise package version/githash.
 
-    >>> import utila; version(utila)
+    >>> import utilo; version(utila)
     '...'
     >>> import re; version(re)
     Traceback (most recent call last):

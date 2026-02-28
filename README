@@ -5,5 +5,5 @@ utila is the base package which include redundant functionality for the
 project. The most common steps are implemented in this package to reduce the
 amount of code.
 
->>> import utila
+>>> import utilo
 >>> utilo.file_read('README)

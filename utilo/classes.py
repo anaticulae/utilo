@@ -7,8 +7,8 @@
 # be prosecuted under federal law. Its content is company confidential.
 # =============================================================================
 """\
->>> import utila
->>> collected = collect_classes(utila)
+>>> import utilo
+>>> collected = collect_classes(utilo)
 >>> name_classes(collected)
 {...>, 'TablePrinter': <class 'utilo.string.table.TablePrinter'>...}
 """

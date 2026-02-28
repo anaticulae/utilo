@@ -13,7 +13,7 @@ import sys
 import utilo
 
 try:
-    import utilasafe
+    import utilosafe
 except ModuleNotFoundError:
     print(f"Error: could not use utilasafe", file=sys.stderr)
     utilasafe = None  # pylint:disable=C0103
