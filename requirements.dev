@@ -11,6 +11,8 @@
 
 PyYAML>=6.0.0,<7.0.0
 
+pytest-timeout==2.4.0
+
 # utilasafe==0.4.3
 # test data
 # iamraw>=4.89.1,<5.0.0
