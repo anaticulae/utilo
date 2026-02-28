@@ -11,7 +11,7 @@ import subprocess  # nosec
 import time
 
 import pytest
-import utilatest
+import utilotest
 
 import utilo
 
@@ -53,7 +53,7 @@ def test_georg_fork(capsys):
         todo.fork(first, a=10, b=10)
         todo.fork(second, c=5)
 
-    stdout = utilatest.stdout(capsys)
+    stdout = utilotest.stdout(capsys)
     assert '10 10' in stdout
     assert '5 13' in stdout
 

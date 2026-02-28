@@ -9,7 +9,7 @@
 
 import functools
 
-import utilatest
+import utilotest
 
 import utilo
 import utilo.xyz.table
@@ -30,13 +30,13 @@ FIRE-ACE                                   First International Satellite Cloud C
 """
 
 run = functools.partial(
-    utilatest.run_cov,
+    utilotest.run_cov,
     main=utilo.xyz.table.main,
     process='utilo_table',
     expect=True,
 )
 fail = functools.partial(
-    utilatest.run_cov,
+    utilotest.run_cov,
     main=utilo.xyz.table.main,
     process='utilo_table',
     expect=False,
@@ -57,7 +57,7 @@ def test_table_invalid_input(mp):
 
 def test_table_not_a_file(td, mp, capsys):
     fail(str(td.tmpdir), mp=mp)
-    stderr = utilatest.stderr(capsys)
+    stderr = utilotest.stderr(capsys)
     assert 'not a file:' in stderr
 
 

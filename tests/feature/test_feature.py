@@ -11,7 +11,7 @@ import os
 import sys
 
 import pytest
-import utilatest
+import utilotest
 
 import utilo
 from utilo import FAILURE
@@ -169,7 +169,7 @@ def test_featurepack_with_broken_feature(featureexample, mp):
         'worker_with_pages',
     ],
 )
-@utilatest.longrun
+@utilotest.longrun
 def test_featurepack_with_different_worker(  #pylint:disable=W0621
         featureexample,
         mp,
@@ -211,7 +211,7 @@ def test_featurepack_wrong_featurepath(featureexample, mp, capsys):  #pylint:dis
         with pytest.raises(SystemExit) as result:
             pack(workplan(), root=root, featurepackage='features.wrongpath')
         assert returncode(result) == FAILURE, str(result)
-        err = utilatest.stderr(capsys)
+        err = utilotest.stderr(capsys)
         expected = '[ERROR] wrong featurepack configuration,\n check'
         assert expected in err, err
 
@@ -253,7 +253,7 @@ def create_example(
     create_worker(stepname, worker, featurepath)
 
 
-@utilatest.longrun
+@utilotest.longrun
 def test_feature_featurepack_workplan_pdf_parser(td, mp):
     """Test featurepack with multiple input via `*.PDF`
 
@@ -349,7 +349,7 @@ def work(pdf : str, result: str, char_margin : float, char_align : float) -> str
     assert written == '1.00 50.50', str(written)
 
 
-@utilatest.longrun
+@utilotest.longrun
 def test_feature_featurepack_help_with_variable(td, mp, capsys):
     # TODO: DIRTY CODE
     root = str(td)
@@ -415,7 +415,7 @@ def work(pdf : str, result: str, char_margin : float, char_align : float) -> str
     (False, False),
     (False, True),
 ])
-@utilatest.longrun
+@utilotest.longrun
 def test_error_hook(hook, failfast, td, mp):
     """Test passing exception to error hook and without hook"""
     import tests.examples.featurepack.withexception.withexception as exe  # pylint:disable=C0415

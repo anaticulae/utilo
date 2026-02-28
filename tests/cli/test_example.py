@@ -13,7 +13,7 @@ import os
 import sys
 
 import pytest
-import utilatest
+import utilotest
 
 import utilo
 
@@ -237,7 +237,7 @@ def test_cli_profile(td, mp, capsys):
     root, _ = cli_example(td)
     runner = create_runner(profile=True)
     with run_cli(root, mp, '--profile', runner=runner):
-        out = utilatest.stdout(capsys)
+        out = utilotest.stdout(capsys)
     assert 'runtime(first_cli_step):' in out
 
 

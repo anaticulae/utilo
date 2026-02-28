@@ -8,7 +8,7 @@
 # =============================================================================
 
 import pytest
-import utilatest
+import utilotest
 
 import utilo
 
@@ -42,8 +42,8 @@ def test_math_intersecting_line_with_offset():
     assert with_error
 
 
-@utilatest.no_cov
-@utilatest.longrun
+@utilotest.no_cov
+@utilotest.longrun
 def test_intersecting_timeit(lines):
     """Measure intersecting line times."""
     for first, second in zip(lines[0::2], lines[1::2]):

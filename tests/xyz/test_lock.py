@@ -9,21 +9,21 @@
 
 import functools
 
-import utilatest
+import utilotest
 
 import utilo
 import utilo.utils
 import utilo.xyz.lock
 
 lock = functools.partial(
-    utilatest.run_cov,
+    utilotest.run_cov,
     main=utilo.xyz.lock.main,
     process=utilo.xyz.lock.LOCK,
     expect=True,
 )
 
 unlock = functools.partial(
-    utilatest.run_cov,
+    utilotest.run_cov,
     main=utilo.xyz.lock.unlock,
     process=utilo.xyz.lock.UNLOCK,
     expect=True,

@@ -10,7 +10,7 @@
 import os
 
 import pytest
-import utilatest
+import utilotest
 
 import utilo
 import utilo.file
@@ -593,4 +593,4 @@ def test_inform_file_permission(tmpdir, capsys):
     assert utilo.file_islocked(path)
     with pytest.raises(PermissionError, match='Permission denied'):
         utilo.file_append(path, content='data')
-    assert 'HINT: Ensure that' in utilatest.stderr(capsys)
+    assert 'HINT: Ensure that' in utilotest.stderr(capsys)

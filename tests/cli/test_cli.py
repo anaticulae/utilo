@@ -11,7 +11,7 @@ import os
 import sys
 
 import pytest
-import utilatest
+import utilotest
 
 import utilo
 import utilo.cli
@@ -150,7 +150,7 @@ def test_cli_parse_required_command_missing(tmpdir):
     utilo.file_create(runner, RUN_ME % utilo.forward_slash(utilo.ROOT))
 
     command = f'python "{runner}"'
-    completed = utilatest.run(command, tmpdir, expect=False)
+    completed = utilotest.run(command, tmpdir, expect=False)
 
     in_stderr = 'the following arguments are required'
     assert in_stderr in completed.stderr
@@ -161,7 +161,7 @@ def test_cli_parse_required_command(tmpdir):
     runner = os.path.join(tmpdir, 'run.py')
     utilo.file_create(runner, RUN_ME % utilo.forward_slash(utilo.ROOT))
     command = f'python "{runner}" -a Samba'
-    completed = utilatest.run(command, tmpdir)
+    completed = utilotest.run(command, tmpdir)
     assert not completed.returncode, str(completed)
 
 
@@ -196,7 +196,7 @@ def test_cli_parse_empty_parser_help(parser_example):  # pylint: disable=W0621
     """Test default parser with --help"""
     cwd, runner = parser_example
     command = f'python "{runner}" --help'
-    completed = utilatest.run(command, cwd)
+    completed = utilotest.run(command, cwd)
 
     assert completed.returncode == utilo.SUCCESS, str(completed)
 
@@ -206,7 +206,7 @@ def test_cli_parser_source_in_out(parser_example):  # pylint: disable=W0621
     cwd, runner = parser_example
     utilo.file_append(runner, SOURCES)
     command = f'python "{runner}" -i {runner} -o out.file'
-    completed = utilatest.run(command, cwd, expect=False)
+    completed = utilotest.run(command, cwd, expect=False)
     assert completed.returncode == utilo.INVALID_COMMAND, str(completed)
 
 
@@ -214,7 +214,7 @@ def test_cli_parse_empty_parser_version(parser_example):  # pylint: disable=W062
     """Test default parser with --version"""
     cwd, runner = parser_example
     command = f'python "{runner}" --version'
-    completed = utilatest.run(command, cwd, expect=False)
+    completed = utilotest.run(command, cwd, expect=False)
     assert completed.returncode == utilo.INVALID_COMMAND, str(completed)
 
 
@@ -230,11 +230,11 @@ def test_cli_parse_version_parser_version(tmpdir):
     utilo.file_create(runner, parser)
 
     cmd = f'python {runner} --version'
-    completed = utilatest.run(cmd, tmpdir)
+    completed = utilotest.run(cmd, tmpdir)
     assert completed.stdout.strip() == version
 
     cmd = f'python {runner} --verbose --version '
-    completed = utilatest.run(cmd, tmpdir)
+    completed = utilotest.run(cmd, tmpdir)
     assert completed.stdout.strip() == f'testo {version}'
 
 

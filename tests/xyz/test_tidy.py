@@ -9,18 +9,18 @@
 
 import functools
 
-import utilatest
+import utilotest
 
 import utilo.xyz.tidy
 
 run = functools.partial(
-    utilatest.run_cov,
+    utilotest.run_cov,
     main=utilo.xyz.tidy.main,
     process='utilo_tidy',
     expect=True,
 )
 fail = functools.partial(
-    utilatest.run_cov,
+    utilotest.run_cov,
     main=utilo.xyz.tidy.main,
     process='utilo_tidy',
     expect=False,
@@ -29,7 +29,7 @@ fail = functools.partial(
 
 def test_tidy_cli(testdir, mp, capsys):
     run('', mp=mp)
-    stdout = utilatest.stdout(capsys)
+    stdout = utilotest.stdout(capsys)
     assert 'done' in stdout
 
 
@@ -48,7 +48,7 @@ def test_tidy_simple(testdir, mp, capsys):
     for package in EXAMPLE:
         utilo.file_create(testdir.tmpdir.join(package))
     run('', mp=mp)
-    stdout = utilatest.stdout(capsys)
+    stdout = utilotest.stdout(capsys)
     assert 'done' in stdout
     current = len(utilo.directory_list(testdir.tmpdir))
     # Do not merge different pytest package into the same folder.
@@ -65,7 +65,7 @@ def test_tidy_twice(testdir, mp, capsys):
         utilo.file_create(testdir.tmpdir.join(package))
     # run again
     run('', mp=mp)
-    stdout = utilatest.stdout(capsys)
+    stdout = utilotest.stdout(capsys)
     assert 'done' in stdout
     current = len(utilo.directory_list(testdir.tmpdir))
     # Do not merge different pytest package into the same folder.

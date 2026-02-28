@@ -11,7 +11,7 @@ import os
 import time
 
 import pytest
-import utilatest
+import utilotest
 
 import utilo
 import utilo.logger
@@ -57,7 +57,7 @@ def test_profile(capsys, message):
     with utilo.level_tmp(utilo.Level.INFO):
         with utilo.profile(message):
             pass
-    stdout = utilatest.stdout(capsys)
+    stdout = utilotest.stdout(capsys)
     assert message in stdout, str(stdout)
 
 
@@ -67,7 +67,7 @@ def test_profile_with_exception(capsys):
         with utilo.level_tmp(utilo.Level.INFO):
             with utilo.profile():
                 raise ValueError('some problems in invocation')
-    stdout = utilatest.stdout(capsys)
+    stdout = utilotest.stdout(capsys)
     assert 'runtime' in stdout, str(stdout)
 
 
@@ -79,19 +79,19 @@ def test_profiler_decorator(capsys):
 
     with utilo.level_tmp(utilo.Level.INFO):
         runtime()
-    stdout = utilatest.stdout(capsys)
+    stdout = utilotest.stdout(capsys)
     assert 'decorated profiler' in stdout, str(stdout)
 
 
 def test_print_env(capsys):
     with utilo.level_tmp(utilo.Level.INFO):
         utilo.print_env()
-    stdout = utilatest.stdout(capsys)
+    stdout = utilotest.stdout(capsys)
     assert len(stdout) > 500, str(stdout)
 
 
 def test_format_completed():
-    completed = utilatest.run('pingosuperdumpa --help', expect=None)
+    completed = utilotest.run('pingosuperdumpa --help', expect=None)
     formatted = utilo.format_completed(completed)
     assert len(formatted) > 150, str(formatted)
     assert 'returncode: 1' in formatted, str(formatted)
@@ -122,7 +122,7 @@ def add(x, y, z):  # pylint:disable=C0103
 def test_log_args(level, expected_log, capsys):
     with utilo.level_tmp(level):
         add(1, 2, 3)
-    stdout = utilatest.stdout(capsys)
+    stdout = utilotest.stdout(capsys)
     for item in expected_log:
         assert item in stdout, stdout
     # ensure that no_logging does not log anything
@@ -133,7 +133,7 @@ def test_log_args_loglevel_to_low(capsys):
     """Set `LEVEL` to `LOGGING` to avoid any output"""
     with utilo.level_tmp(utilo.Level.LOGGING):
         add(1, 2, 3)
-    stdout = utilatest.stdout(capsys)
+    stdout = utilotest.stdout(capsys)
     assert not stdout, str(stdout)
 
 
@@ -187,7 +187,7 @@ def test_outfile_delete_double(td):
 
 def test_multi_string(capsys):
     utilo.log('helm', 'schelm', end='')
-    assert utilatest.stdout(capsys) == 'helm schelm'
+    assert utilotest.stdout(capsys) == 'helm schelm'
 
 
 def test_log_return_invalid_selection(capsys):
@@ -198,11 +198,11 @@ def test_log_return_invalid_selection(capsys):
 
     with utilo.level_tmp(utilo.Level.DEBUG):
         method_name([10, 11])
-    stdout = utilatest.stdout(capsys)
+    stdout = utilotest.stdout(capsys)
     assert 'selected index: 0' in stdout
 
     with utilo.level_tmp(utilo.Level.ERROR):
         method_name((1, 2, 3, 4))
 
-    stderr = utilatest.stderr(capsys)
+    stderr = utilotest.stderr(capsys)
     assert '[ERROR] method_name select 10 is not possible' in stderr

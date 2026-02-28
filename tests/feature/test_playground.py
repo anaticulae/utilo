@@ -21,7 +21,7 @@ currently tested:
 import os
 
 import pytest
-import utilatest
+import utilotest
 
 import tests.feature.runner
 import utilo
@@ -48,7 +48,7 @@ def run_playground(
 
 
 @pytest.mark.parametrize('cmd', ['', '--profile'])
-@utilatest.longrun
+@utilotest.longrun
 def test_feature_playground_cli_profile(cmd, td, mp, capsys):
     """Print runtime for each working step."""
     stdout, _, = run_playground(
@@ -62,7 +62,7 @@ def test_feature_playground_cli_profile(cmd, td, mp, capsys):
 
 
 @pytest.mark.parametrize('quite', ['', '--quite'])
-@utilatest.longrun
+@utilotest.longrun
 def test_feature_playground_cli_quite(quite, td, mp, capsys):
     """Test to suppress logging when using --quite flag."""
     cmd = f'--profile {quite}'
@@ -103,7 +103,7 @@ def test_feature_playground_pass_config_file(td, mp, capsys):
 
 
 @pytest.mark.parametrize('flag', [True, False])
-@utilatest.longrun
+@utilotest.longrun
 def test_feature_playground_pass_flag(flag, td, mp, capsys):
     cmd = '--sync' if flag else ''
     stdout, _, = run_playground(
@@ -144,7 +144,7 @@ def test_write_list_of_tuple(td, mp):
 
 
 def test_write_selective_datatype(td, mp):
-    with utilatest.increased_filecount(td.tmpdir, mindiff=2, maxdiff=2):
+    with utilotest.increased_filecount(td.tmpdir, mindiff=2, maxdiff=2):
         run_playground('--datatype', {}, td, mp)
     path = os.path.join(td.tmpdir, 'testfield__datatype_selected.txt')
     assert os.path.exists(path), path
@@ -159,7 +159,7 @@ def test_write_selective_datatype_multi(td, mp):
         (b'\x00\x11\x22', 'testfield__datatype_multi_2.png'),
     ]
 
-    with utilatest.increased_filecount(td.tmpdir, mindiff=4, maxdiff=4):
+    with utilotest.increased_filecount(td.tmpdir, mindiff=4, maxdiff=4):
         run_playground('--datatype_multi', {}, td, mp)
 
     for content, filename in expected:
@@ -169,7 +169,7 @@ def test_write_selective_datatype_multi(td, mp):
         assert written == content, written
 
 
-@utilatest.longrun
+@utilotest.longrun
 def test_write_binary_data_disable(td, mp):
     # test writing hex file
     run_playground('--binary!', {}, td, mp)
@@ -177,17 +177,17 @@ def test_write_binary_data_disable(td, mp):
     assert not os.path.exists(expected_path)
 
 
-@utilatest.longrun
+@utilotest.longrun
 def test_write_binary_data_all_and_disable(td, mp):
     # test writing hex file
-    with utilatest.increased_filecount(mindiff=3):
+    with utilotest.increased_filecount(mindiff=3):
         run_playground('--binary! --all', {}, td, mp)
     expected_path = os.path.join(td.tmpdir, 'testfield__binary_binary.hex')
     assert not os.path.exists(expected_path)
 
 
 def test_run_hashed_step(td, mp):
-    with utilatest.increased_filecount(mindiff=3):
+    with utilotest.increased_filecount(mindiff=3):
         run_playground('--hashed', {}, td, mp)
 
     current = utilo.file_list(td.tmpdir, include='bin')
@@ -200,7 +200,7 @@ def test_run_hashed_step(td, mp):
 
 
 def test_run_hashed_multi_step(td, mp):
-    with utilatest.increased_filecount(mindiff=6):
+    with utilotest.increased_filecount(mindiff=6):
         run_playground('--hashed_multi', {}, td, mp)
 
     expected = set([
@@ -220,7 +220,7 @@ def test_run_hashed_multi_step(td, mp):
 
 
 def test_run_hashed_list_ext(td, mp):
-    with utilatest.increased_filecount(mindiff=3):
+    with utilotest.increased_filecount(mindiff=3):
         run_playground('--hashed_list_ext', {}, td, mp)
 
     expected = set([

@@ -9,7 +9,7 @@
 
 import os
 
-import utilatest
+import utilotest
 
 import tests.feature.runner
 import utilo
@@ -43,7 +43,7 @@ def run_foldme(
     return result
 
 
-@utilatest.longrun
+@utilotest.longrun
 def test_directory_asinput(td, mp):
     root = td.tmpdir
     run_foldme('--directory_input', {}, td, mp)
@@ -53,7 +53,7 @@ def test_directory_asinput(td, mp):
     assert loaded.endswith('iamadirectory'), loaded
 
 
-@utilatest.longrun
+@utilotest.longrun
 def test_directory_asinput_missing_input(td, mp):
     # input directory does not exists
     run_foldme(
@@ -66,7 +66,7 @@ def test_directory_asinput_missing_input(td, mp):
     )
 
 
-@utilatest.longrun
+@utilotest.longrun
 def test_custom_output_folder_file(td, mp):
     # input directory does not exists
     run_foldme(
@@ -79,7 +79,7 @@ def test_custom_output_folder_file(td, mp):
     assert os.path.exists(expected), str(expected)
 
 
-@utilatest.longrun
+@utilotest.longrun
 def test_custom_output_folder_different_datatype(td, mp):
     # input directory does not exists
     run_foldme(
