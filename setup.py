@@ -42,17 +42,22 @@ def version() -> str:
 if __name__ == "__main__":
     setuptools.setup(
         author='Helmut Konrad Schewe',
-        author_email='info@checkitweg.de',
+        author_email='helmutus@outlook.com',
         description='write it once',
         include_package_data=True,
         long_description=README,
+        long_description_content_type='type/markdown',
         name='utilo',
         platforms='any',
-        url='http://dev.package.checkitweg.de/utilo',
+        url='https://github.com/anaticulae/utilo',
         version=version(),
         zip_safe=False,  # create 'zip'-file if True. Don't do it!
         classifiers=[
-            'Programming Language :: Python :: 3.8',
+            'Programming Language :: Python :: 3.10',
+            'Programming Language :: Python :: 3.11',
+            'Programming Language :: Python :: 3.12',
+            'Programming Language :: Python :: 3.13',
+            'Programming Language :: Python :: 3.14',
         ],
         packages=[
             'utilo',
