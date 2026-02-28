@@ -68,6 +68,7 @@ if __name__ == "__main__":
             'utilo.math',
             'utilo.string',
             'utilo.xyz',
+            'utilotest',
         ],
         entry_points={
             'console_scripts': [
