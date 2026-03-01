@@ -50,7 +50,7 @@ RUN pip install --upgrade pip &&\
 
 COPY . /var/install
 
-RUN pip install --no-deps .
+RUN pip install -vvv --no-deps .
 
 WORKDIR /var/outdir
 WORKDIR /var/workdir

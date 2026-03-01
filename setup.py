@@ -24,6 +24,7 @@ with open(os.path.join(ROOT, 'utilo/__init__.py'), encoding='utf8') as fp:
 
 
 def version() -> str:
+    assert VERSION, VERSION
     completed = subprocess.run(
         'git describe'.split(),
         capture_output=True,
@@ -36,6 +37,8 @@ def version() -> str:
     value = value[1:]
     value = value.replace('-', '.post', 1)
     value = value.replace('-g', '+g')
+    if not value:
+        return VERSION
     return value
 
 
