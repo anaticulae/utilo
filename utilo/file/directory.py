@@ -78,6 +78,6 @@ def tree_remove(path: str):
         func(path)
 
     try:
-        shutil.rmtree(path, onerror=remove_readonly)
+        shutil.rmtree(path, onexc=remove_readonly)
     except PermissionError:
         utilo.exitx(f'Could not remove {path}')

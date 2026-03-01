@@ -254,8 +254,8 @@ def line_raising(item, diff=1.0) -> float:
     >>> line_raising((0, 0, 0, 100)) # inf line_raising
     2147483647
     """
-    xdiff = (item[2] - item[0])
-    ydiff = (item[3] - item[1])
+    xdiff = item[2] - item[0]
+    ydiff = item[3] - item[1]
     if -diff <= ydiff <= diff:
         return 0.0
     if -diff <= xdiff <= diff:

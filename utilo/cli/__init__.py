@@ -51,8 +51,7 @@ class Command:
     args: dict = dataclasses.field(default_factory=dict)
 
     def __iter__(self):
-        for item in [self.shortcut, self.longcut, self.message, self.args]:
-            yield item
+        yield from (self.shortcut, self.longcut, self.message, self.args)
 
 
 Commands = list[Command]

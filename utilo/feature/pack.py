@@ -208,7 +208,7 @@ def evaluate_userchoice(config, parser) -> UserChoice:  # pylint:disable=R0914
         singleinput=config.singleinput,
         verbose=True,
     )
-    argv = dict(inputs=inputpath, outputs=outputpath, prefix=prefix)
+    argv = {'inputs': inputpath, 'outputs': outputpath, 'prefix': prefix}
     if optional_data:
         # add hooked data to automated vars
         argv = utilo.dicts_united(argv, optional_data)

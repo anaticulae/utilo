@@ -89,7 +89,7 @@ def process(  # pylint:disable=R0913,R0914,R1260
     )
     pipeline = Pipeline()
     if not argv:
-        argv = dict(pipeline=pipeline)
+        argv = {'pipeline': pipeline}
     else:
         argv['pipeline'] = pipeline
     with executor(max_workers=processes, initializer=initializer) as pool:

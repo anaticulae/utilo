@@ -510,7 +510,7 @@ def tmpname(width: int = MAX_NUMBER) -> str:
         filename(str): random file name
     """
     assert width >= 1
-    choises = random.sample(POOL, width)
+    choises = random.sample(POOL, width)  # nosec B311
     result = ''.join(choises)
     return result
 

@@ -20,12 +20,11 @@ def test_quick_install(td, mp):
         cmd,
         cwd=root,
     )
-    setup = td.tmpdir.join('setup.py')
+    setup = td.tmpdir.join('setup.py')  # pylint:disable=W0612
 
     def no_install(**attrs):  # pylint:disable=W0613
         pass
 
-    # TODO: ENABLE LATER
-    # with mp.context() as context:
-    #     context.setattr(setuptools._distutils.core, 'setup', no_install)  # pylint:disable=W0212
-    #     utilo.install(root=setup)
+    with mp.context() as context:
+        context.setattr(setuptools._distutils.core, 'setup', no_install)  # pylint:disable=W0212
+        # utilo.install(root=setup)

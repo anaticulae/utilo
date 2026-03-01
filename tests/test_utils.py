@@ -115,7 +115,7 @@ def test_selbstwirksamkeit_all():
     assert result == 25
 
     # dict access
-    data = dict(first=10, second=15, third=20)  # pylint:disable=R0204
+    data = {'first': 10, 'second': 15, 'third': 20}  # pylint:disable=R0204
     result = method(data)  # pylint:disable=E1120
     assert result == 25
 

@@ -142,7 +142,7 @@ def parse_single(pattern, pagecount):
 
 
 PageNumbers = typing.TypeVar('PageNumbers', int, tuple)
-Iterable = (list, tuple)
+Iterable = (list, tuple)  # pylint:disable=C0103
 
 
 def should_skip(page: PageNumbers, pages: tuple) -> bool:  # pylint:disable=W0621

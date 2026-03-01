@@ -12,7 +12,7 @@ import shutil
 
 import utilo
 
-OPEN = open
+OPEN = open  # pylint:disable=C0103,E0601
 HEADER_STR = br'%ENC-STR'
 HEADER_BIN = br'%ENC-BIN'
 
@@ -102,7 +102,7 @@ def open(  # pylint:disable=redefined-builtin
         yield secure
 
 
-COPY = shutil.copy
+COPY = shutil.copy  # pylint:disable=C0103
 
 
 def copy(src, dst, private: bool = False):

@@ -280,7 +280,7 @@ def test_file_copy_content_access_error(
     source = os.path.join(root, 'source')
     sink = os.path.join(root, 'sink')
 
-    for item in [source, sink]:
+    for item in (source, sink):
         os.makedirs(item)
         pdf = os.path.join(item, 'single.pdf')
         utilo.file_create(pdf)
@@ -337,11 +337,11 @@ def prepare_example(directory):
     folder_ghi = os.path.join(folder, 'ghi.txt')
 
     os.makedirs(folder)
-    for item in [
+    for item in (
             folder_abc,
             folder_def,
             folder_ghi,
-    ]:
+    ):
         utilo.file_create(item, item)
 
     return folder
