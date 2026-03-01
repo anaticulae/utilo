@@ -10,18 +10,15 @@
 import os
 import sys
 
-import utilo
-
 try:
     import utilosafe
 except ModuleNotFoundError:
-    import sys
     print(f"Error: could not use utilosafe", file=sys.stderr)
     utilosafe = None  # pylint:disable=C0103
 
 
 def encrypt(plaintext: bytes) -> bytes:
-    r"""Convert plain text to cipher text."""
+    """Convert plain text to cipher text."""
     if isinstance(plaintext, str):
         plaintext = plaintext.encode(
             encoding='utf8',
