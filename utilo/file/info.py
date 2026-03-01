@@ -78,7 +78,7 @@ def file_size(path: str) -> float:
 def path_parent(path: str) -> str:
     """\
     >>> path_parent(__file__)
-    '.../utila/file'
+    '.../utilo/file'
     """
     parent = os.path.split(path)[0]
     parent = utilo.forward_slash(parent, keep_newline=False)

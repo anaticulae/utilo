@@ -106,7 +106,7 @@ def package_data(module):
 def version(package):
     """Determine precise package version/githash.
 
-    >>> import utilo; version(utila)
+    >>> import utilo; version(utilo)
     '...'
     >>> import re; version(re)
     Traceback (most recent call last):
@@ -175,7 +175,7 @@ def git_hash(root) -> str:
     if value == static(root):
         return value
     # transform v2.40.1-5-gc1b4bee to
-    # utila-2.93.0.post6+g3b6726a
+    # utilo-2.93.0.post6+g3b6726a
     value = value[1:]
     value = value.replace('-', '.post', 1)
     value = value.replace('-g', '+g')

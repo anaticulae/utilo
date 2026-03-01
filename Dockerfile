@@ -32,6 +32,7 @@ RUN python3 -m venv /opt/venv
 # Use venv's pip explicitly
 ENV PATH="/opt/venv/bin:$PATH"
 
+RUN git config --global --add safe.directory /var/workdir
 # TODO: INVESTIGATE THIS HACK
 RUN mkdir -m 777 /.local /.cache /.pylint.d && chmod -R 777 /tmp
 
@@ -44,8 +45,8 @@ WORKDIR /var/install
 RUN pip install --upgrade pip &&\
     pip install baw==1.70.2&&\
     pip install -r requirements.txt &&\
-    pip install -r requirements.dev&&\
-    baw sync all
+    baw sync all&&\
+    pip install -r requirements.dev
 
 COPY . /var/install
 

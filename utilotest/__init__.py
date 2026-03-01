@@ -235,10 +235,10 @@ displayed = register_marker('displayed')
 
 # def requires(resource, folder=None):
 #     exists = _exists(resource, folder)
-#     if utila.iterable(resource):  # pylint:disable=W0160
-#         resource = [utila.forward_slash(item) for item in resource]
+#     if utilo.iterable(resource):  # pylint:disable=W0160
+#         resource = [utilo.forward_slash(item) for item in resource]
 #     else:
-#         resource = utila.forward_slash(resource)
+#         resource = utilo.forward_slash(resource)
 #     marker = pytest.mark.skipif(
 #         not exists,
 #         reason=f'require/generated: {resource}; folder: {folder}',
@@ -249,15 +249,15 @@ displayed = register_marker('displayed')
 # def fixture_requires(resource, folder=None):
 #     if _exists(resource, folder):
 #         return
-#     if utila.iterable(resource):  # pylint:disable=W0160
-#         resource = [utila.forward_slash(item) for item in resource]
+#     if utilo.iterable(resource):  # pylint:disable=W0160
+#         resource = [utilo.forward_slash(item) for item in resource]
 #     else:
-#         resource = utila.forward_slash(resource)
+#         resource = utilo.forward_slash(resource)
 #     pytest.skip(f'require/generated: {resource}; folder: {folder}')
 
 
 # def _exists(resource, folder=None):
-#     if utila.iterable(resource):
+#     if utilo.iterable(resource):
 #         return all(_exists(item, folder=folder) for item in resource)
 #     exists = os.path.exists(resinf.link(resource, folder=folder))
 #     # non generated resources
@@ -325,7 +325,7 @@ def increased_filecount(
         path(str): path to check for file creation, if path is None use cwd
         ext(str): look for a special file extention
         mindiff(int): minimal number of created files, if None: 1 is used
-        maxdiff(int): maximal number of created files, if None: utila.INF is used
+        maxdiff(int): maximal number of created files, if None: utilo.INF is used
     Raises:
         AssertionError: if to few or less files are created
     Yields:

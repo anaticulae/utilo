@@ -166,7 +166,6 @@ def test_sync_double_list():
 #     (4, (texmex.PTN(page=4), [])),
 # ]
 
-
 # def test_sync_ptns():
 #     synced = list(utilo.sync_pages(
 #         PTNS,

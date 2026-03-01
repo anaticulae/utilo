@@ -32,7 +32,7 @@ def version() -> str:
     if value == VERSION:
         return VERSION
     # transform v2.40.1-5-gc1b4bee to
-    # utila-2.93.0.post6+g3b6726a
+    # utilo-2.93.0.post6+g3b6726a
     value = value[1:]
     value = value.replace('-', '.post', 1)
     value = value.replace('-g', '+g')

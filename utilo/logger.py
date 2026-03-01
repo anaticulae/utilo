@@ -20,8 +20,8 @@ import time
 import traceback
 
 import utilo
-# do not change import cause: if utilasafe is not installed, utila is not
-# fully imported when utilasafe raises an error, therefore importing
+# do not change import cause: if utilosafe is not installed, utilo is not
+# fully imported when utilosafe raises an error, therefore importing
 # fix_encoding and forward_slash is important
 from utilo.string import fix_encoding
 from utilo.string import forward_slash

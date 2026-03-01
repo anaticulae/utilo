@@ -13,7 +13,7 @@ The T0D0-List aims to use code to describe t0d0s and make them more
 important.
 
 Hint: This special module name ensures that the code is loaded very
-early and we can this use even in `utila` package.
+early and we can this use even in `utilo` package.
 """
 
 import contextlib

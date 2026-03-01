@@ -12,4 +12,5 @@ from utilo import *
 
 
 def test_import():
+    """Nothing todo"""
     pass

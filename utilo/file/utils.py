@@ -35,7 +35,7 @@ def exists(path: str) -> bool:
 def exists_assert(path: str):
     """\
     >>> exists_assert(__file__)
-    '...utila/file/utils.py'
+    '...utilo/file/utils.py'
     """
     path = str(path)
     assert os.path.exists(path), utilo.shrink(path, maxlength=100)

@@ -110,13 +110,13 @@ def work():
     """)
     file_create(
         os.path.join(feature_path, 'complete_worker.py'), """
-from utila import Flag
+from utilo import Flag
 def name():
     return 'complete_worker'
 def commandline():
     return Flag(longcut=name(), message='export the html result of %s' % name())
 from typing import Tuple
-from utila import checkdatatype
+from utilo import checkdatatype
 @checkdatatype
 def work(path : str) -> Tuple[str, str]:
     return 'work completed', 'Error'
@@ -222,7 +222,7 @@ def create_worker(
     featurepath: str,
 ):
     example = """
-from utila import Flag
+from utilo import Flag
 
 def name():
     return '{stepname}'
