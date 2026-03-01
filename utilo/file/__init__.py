@@ -19,6 +19,7 @@ import os
 import random
 import stat
 import sys
+import tempfile
 
 import utilo
 import utilo.file.securewrapper
@@ -48,10 +49,10 @@ def tmp(root) -> str:
     projectname = os.path.split(root)[1]
     # queuemo-1.17.2-py3.8.egg
     projectname = projectname.split('-', maxsplit=1)[0]
-    try:
-        path = os.path.join(os.environ[SHARED_TMP], projectname)
-    except KeyError:
-        utilo.exitx('DEFINE $SHARED_TMP')
+    path = os.path.join(
+        os.environ.get(SHARED_TMP, tempfile.gettempdir()),
+        projectname,
+    )
     os.makedirs(path, exist_ok=True)
     return path
 

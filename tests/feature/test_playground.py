@@ -69,7 +69,10 @@ def test_feature_playground_cli_quite(quite, td, mp, capsys):
     with utilo.level_tmp(utilo.LEVEL_DEFAULT):
         stdout = run_playground(
             cmd,
-            dict(profileflag=True, quiteflag=True),
+            {
+                'profileflag': True,
+                'quiteflag': True
+            },
             td,
             mp,
             capsys,

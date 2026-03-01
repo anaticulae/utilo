@@ -88,6 +88,6 @@ def test_custom_output_folder_different_datatype(td, mp):
         td,
         mp,
     )
-    for item in ['0.txt', '1.fdp', '2.png']:
+    for item in ('0.txt', '1.fdp', '2.png'):
         expected = os.path.join(td.tmpdir, f'schelm/{item}')
         assert os.path.exists(expected), str(expected)

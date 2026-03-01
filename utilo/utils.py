@@ -84,8 +84,7 @@ def iflat(lists, append: bool = False) -> 'yield':
     """
     for group in lists:
         try:
-            for item in group:
-                yield item
+            yield from group
         except TypeError:
             if append:
                 yield group
@@ -285,8 +284,7 @@ def chdir(path: str) -> typing.NoReturn:
     except Exception:
         os.chdir(before)
         raise
-    else:
-        os.chdir(before)
+    os.chdir(before)
 
 
 @contextlib.contextmanager
@@ -388,9 +386,8 @@ def unset_env(
             # restore environmental variable
             os.environ[var] = before
         raise error
-    else:
-        if before is not None:
-            os.environ[var] = before
+    if before is not None:
+        os.environ[var] = before
 
 
 def ifnone(value, *, default):

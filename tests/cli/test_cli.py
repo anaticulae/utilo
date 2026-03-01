@@ -150,9 +150,9 @@ def test_cli_parse_required_command_missing(tmpdir):
     utilo.file_create(runner, RUN_ME % utilo.forward_slash(utilo.ROOT))
 
     command = f'python "{runner}"'
-    completed = utilotest.run(command, tmpdir, expect=False)
+    completed = utilotest.run(command, tmpdir, expect=False)  # pylint:disable=W0612
 
-    in_stderr = 'the following arguments are required'
+    # in_stderr = 'the following arguments are required'
     # TODO: ENABLE LATER
     # assert in_stderr in completed.stderr
     # assert completed.returncode > 0, str(completed)
@@ -163,7 +163,7 @@ def test_cli_parse_required_command(tmpdir):
     utilo.file_create(runner, RUN_ME % utilo.forward_slash(utilo.ROOT))
     command = f'python "{runner}" -a Samba'
     # TODO: ENABLE LATER
-    # completed = utilotest.run(command, tmpdir)
+    completed = utilotest.run(command, tmpdir)  # pylint:disable=W0612
     # assert not completed.returncode, str(completed)
 
 
@@ -199,8 +199,8 @@ def test_cli_parse_empty_parser_help(parser_example):  # pylint: disable=W0621
     cwd, runner = parser_example
     command = f'python "{runner}" --help'
 
-    # # TODO:
-    # completed = utilotest.run(command, cwd)
+    completed = utilotest.run(command, cwd)  # pylint: disable=W0612
+    # TODO:
     # assert completed.returncode == utilo.SUCCESS, str(completed)
 
 
