@@ -295,7 +295,7 @@ def test_cli_multiple_input_with_double_input(
         result) == utilo.SUCCESS, str(result) + str(out) + str(err)
 
 
-MULTI_RUNNER = create_runner(multiprocessed=True)
+MULTI_RUNNER = create_runner(multiprocessed=True)  # pylint:disable=C0103
 
 
 @pytest.mark.parametrize('jobs', [

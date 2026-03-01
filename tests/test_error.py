@@ -19,7 +19,7 @@ def test_invoking_exception():
 
     @saveme
     def function_with_exception():
-        raise Exception()
+        raise Exception()  # pylint:disable=W0719
 
     with raises(SystemExit) as exception:
         function_with_exception()
@@ -32,7 +32,7 @@ def test_invoking_exception_with_argument():
 
     @saveme(systemexit=True)
     def function_with_exception():
-        raise Exception()
+        raise Exception()  # pylint:disable=W0719
 
     with raises(SystemExit) as exception:
         function_with_exception()
@@ -67,7 +67,7 @@ def test_invoking_exception_without_system_exit():
 
     @saveme(systemexit=False)
     def function_with_exception():
-        raise Exception()
+        raise Exception()  # pylint:disable=W0719
 
     returncode = function_with_exception()
 
