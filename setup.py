@@ -49,7 +49,7 @@ if __name__ == "__main__":
         description='write it once',
         include_package_data=True,
         long_description=README,
-        long_description_content_type='type/markdown',
+        long_description_content_type='text/markdown',
         name='utilo',
         platforms='any',
         url='https://github.com/anaticulae/utilo',
