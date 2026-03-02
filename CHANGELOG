@@ -1,6 +1,14 @@
 # CHANGELOG
 
 
+## v2.106.1 (2026-03-02)
+
+### Bug Fixes
+
+- **setup**: Adjust readme type
+  ([`4aaf2ba`](https://github.com/anaticulae/utilo/commit/4aaf2baf911379aa77515cb86e6ebe79a715dc01))
+
+
 ## v2.106.0 (2026-03-02)
 
 ### Bug Fixes
