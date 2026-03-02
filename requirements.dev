@@ -9,7 +9,7 @@
 
 # utilotest==0.28.1
 
-PyYAML>=6.0.0,<7.0.0
+PyYAML>=6.0.3,<7.0.0
 
 pytest-timeout==2.4.0
 setuptools==82.0.0
