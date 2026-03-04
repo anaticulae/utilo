@@ -1,6 +1,22 @@
 # CHANGELOG
 
 
+## v2.106.2 (2026-03-04)
+
+### Bug Fixes
+
+- **quick**: Adjust module path
+  ([`10bc197`](https://github.com/anaticulae/utilo/commit/10bc197a92e33b2fd3b0bc48f4ff1d9f1dbe6fa4))
+
+- **quick**: Adjust url
+  ([`dcecc20`](https://github.com/anaticulae/utilo/commit/dcecc203e10590dc8cce582de8d5e13f3aad31bc))
+
+### Chores
+
+- **quick**: Extend python labels
+  ([`57770c3`](https://github.com/anaticulae/utilo/commit/57770c3a8b292776cbe8932b82fb7116afab5222))
+
+
 ## v2.106.1 (2026-03-02)
 
 ### Bug Fixes
