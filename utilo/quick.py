@@ -26,6 +26,8 @@ CLASSIFIERS = [
     'Programming Language :: Python :: 3.14',
 ]
 
+URL = 'https://github.com/anaticulae/'
+
 
 def install(
     root: str,
@@ -55,7 +57,7 @@ def install(
         package_data=xpackage_data,
         packages=xpackages,
         platforms='any',
-        url=f'https//pip.ostia.la/{short}',
+        url=f'{URL}{short}',
         version=current(root),
         zip_safe=False,  # create 'zip'-file if True. Don't do it!
     )
