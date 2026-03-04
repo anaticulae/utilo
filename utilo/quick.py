@@ -33,7 +33,7 @@ def install(
     xpackages = packages(module)
     xentry = entry_points(module)
     root = utilo.baw_root(root)
-    short = utilo.baw.baw_name(root)
+    short = utilo.baw_name(root)
     xreadme = readme(root)
     xrequires = requires(root)
     xpackage_data = package_data(module)
