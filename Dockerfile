@@ -7,52 +7,17 @@
 # be prosecuted under federal law. Its content is company confidential.
 # =============================================================================
 
-FROM alpine:3.23.3
+FROM ghcr.io/anaticulae/baw:384399f-test
 
-LABEL maintainer="Helmut Konrad Schewe <helmutus@outlook.com>"
-
-# ALPINE
-RUN apk add --no-cache \
-    git \
-    python3 \
-    py3-pip \
-    python3-dev
-
-ENV BAW=/tmp/dev
-
-ENV PYLINTHOME=/tmp/pylint
-
-ENV SHARED_SPACE=/tmp/shared
-ENV SHARED_TMP=/tmp/shared/tmp
-ENV SHARED_TODO=/tmp/shared/todo
-ENV SHARED_READY=/tmp/shared/ready
-
-# Create venv
-RUN python3 -m venv /opt/venv
-# Use venv's pip explicitly
-ENV PATH="/opt/venv/bin:$PATH"
-
-RUN git config --global --add safe.directory /var/workdir
-# TODO: INVESTIGATE THIS HACK
-RUN mkdir -m 777 /.local /.cache /.pylint.d && chmod -R 777 /tmp
-
-COPY /requirements.txt\
-     /requirements.dev\
-     /var/install/
-
-WORKDIR /var/install
-
-RUN pip install --upgrade pip &&\
-    pip install baw==1.70.2&&\
-    pip install -r requirements.txt &&\
-    baw sync all&&\
-    pip install -r requirements.dev
+COPY requirements.dev /var/install/requirements.dev
+RUN pip install -vvv -r /var/install/requirements.dev
+RUN baw sync all
 
 COPY . /var/install
 
-RUN pip install -vvv --no-deps .
+WORKDIR /var/install
+RUN pip install -e .
 
-WORKDIR /var/outdir
 WORKDIR /var/workdir
 
 ENTRYPOINT ["sh", "-c"]
