@@ -171,13 +171,21 @@ def current(root, backup: bool = False):
 
 
 def git_hash(root) -> str:
+    """\
+    >>> git_hash('.')
+    '...'
+    """
     if not utilo.hasprog('git'):
         utilo.exitx('install git, please')
     completed = utilo.run(
         'git describe',
         cwd=root,
+        expect=None,
     )
     value = completed.stdout.strip()
+    if value == 'empty!':
+        # no git repository available
+        return static(root)
     if value == static(root):
         return value
     # transform v2.40.1-5-gc1b4bee to

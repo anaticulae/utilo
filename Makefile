@@ -5,10 +5,24 @@ CURDIR := $(CURDIR)
 
 NAME = utilo
 IMAGE := $(NAME):$(VERSION)
-
+IMAGE_BASE_NAME := ghcr.io/anaticulae/$(NAME):$(VERSION)
+IMAGE_TEST_NAME := ghcr.io/anaticulae/$(NAME):$(VERSION)-test
 
 docker-build:
 	docker build -t $(IMAGE) .
+
+# --progress=plain
+docker-build-test:
+	docker build -f env/test/Dockerfile -t $(IMAGE_TEST_NAME) .
+
+docker-build-base:
+	docker build -f env/base/Dockerfile -t $(IMAGE_BASE_NAME) .
+
+docker-upload-test:
+	docker push $(IMAGE_TEST_NAME)
+
+docker-upload-base:
+	docker push $(IMAGE_BASE_NAME)
 
 docker-doctest: docker-build
 	docker run -v $(CURDIR):/var/workdir $(IMAGE) "baw test docs"
@@ -20,7 +34,12 @@ docker-longtest: docker-build
 	docker run -v $(CURDIR):/var/workdir $(IMAGE) "baw test long"
 
 docker-alltest: docker-build
-	docker run -v $(CURDIR):/var/workdir $(IMAGE) "baw test all -n16"
+	docker run -v $(CURDIR):/var/workdir $(IMAGE) "baw test all -n1"
 
 docker-lint: docker-build
 	docker run -v $(CURDIR):/var/workdir $(IMAGE) "baw lint all"
+
+docker-release: docker-build
+	docker run -v $(CURDIR):/var/workdir\
+			-e GH_TOKEN=$(GH_TOKEN) $(IMAGE)\
+			"baw release --no_test --no_linter"
