@@ -1,6 +1,28 @@
 # CHANGELOG
 
 
+## v2.106.3 (2026-03-27)
+
+### Bug Fixes
+
+- **make**: Adjust dockerfile
+  ([`2531571`](https://github.com/anaticulae/utilo/commit/253157159217c447c7f3aa17840b0f449dd5bc65))
+
+- **quick**: Do not fail without git repository
+  ([`54b549d`](https://github.com/anaticulae/utilo/commit/54b549de2511b2301c74b52754a9c3c7fca317ee))
+
+### Chores
+
+- **build**: Remove old build chain
+  ([`b437feb`](https://github.com/anaticulae/utilo/commit/b437febc7cba32f049417585caa5208500681836))
+
+- **docker**: Use baw base imgage
+  ([`ba80a8b`](https://github.com/anaticulae/utilo/commit/ba80a8bc35b49afcd4646f1f4aa98053ebb69dc5))
+
+- **github**: Add .github
+  ([`77e425c`](https://github.com/anaticulae/utilo/commit/77e425cd71b90f64cb0d8c9b29287df7082ad3e5))
+
+
 ## v2.106.2 (2026-03-04)
 
 ### Bug Fixes
