@@ -156,17 +156,15 @@ def current(root, backup: bool = False):
     True
     """
     root = utilo.baw_root(root)
-    backup |= not utilo.hasprog('git')
-    # git is installed, but no git repository is available
-    backup |= not utilo.exists(utilo.join(root, '.git'))
     if backup:
-        package = utilo.baw_name(root)
-        content = utilo.file_read(utilo.join(root, package, '__init__.py'))
-        result = re.search(
-            r'__version__ = \'(.*?)\'',
-            content,
-        ).group(1)
-        return result
+        # determine version out of package information
+        return static(root)
+    if not utilo.hasprog('git'):
+        # determine version out of package information
+        return static(root)
+    if not utilo.exists(utilo.join(root, '.git')):
+        # determine version out of package information
+        return static(root)
     return git_hash(root)
 
 
