@@ -26,7 +26,7 @@ def run(
     cmd: str,
     cwd: str = None,
     env: dict = None,
-    expect: bool = True,
+    expect: bool | None = True,
     verbose: bool = False,
     live: bool = False,
     timeout: 'Timeout' = None,
@@ -38,7 +38,7 @@ def run(
         cwd(str): current working directory
         env(dict): modify environment variable for test run. If nothing is
                    passed, the global environment variable is used.
-        expect(bool): if True: fail on error
+        expect(bool | None): if True: fail on error
                       if False: fail on success
                       if None: return completed process
         verbose(bool): log executed command and location
