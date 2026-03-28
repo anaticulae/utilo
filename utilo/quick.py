@@ -156,16 +156,18 @@ def current(root, backup: bool = False):
     True
     """
     root = utilo.baw_root(root)
+    backup |= not utilo.hasprog('git')
+    backup |= not utilo.exists(utilo.join(root, '.git'))
     if backup:
         # determine version out of package information
         return static(root)
-    if not utilo.hasprog('git'):
+    result = git_hash(root)
+    result = result.strip()
+    if not result:
         # determine version out of package information
-        return static(root)
-    if not utilo.exists(utilo.join(root, '.git')):
-        # determine version out of package information
-        return static(root)
-    return git_hash(root)
+        result = static(root)
+    assert result, result
+    return result
 
 
 def git_hash(root) -> str:
