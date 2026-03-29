@@ -7,7 +7,7 @@
 # be prosecuted under federal law. Its content is company confidential.
 # =============================================================================
 
-FROM ghcr.io/anaticulae/baw:384399f-test
+FROM ghcr.io/anaticulae/baw:0b21f1b-test
 
 COPY requirements.dev /var/install/requirements.dev
 RUN pip install -vvv -r /var/install/requirements.dev

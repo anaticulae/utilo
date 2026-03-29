@@ -53,6 +53,7 @@ def install(
         include_package_data=include_package_data,
         install_requires=xrequires,
         long_description=xreadme,
+        long_description_content_type='text/markdown',
         name=short,
         package_data=xpackage_data,
         packages=xpackages,
@@ -157,17 +158,17 @@ def current(root, backup: bool = False):
     """
     root = utilo.baw_root(root)
     backup |= not utilo.hasprog('git')
-    # git is installed, but no git repository is available
     backup |= not utilo.exists(utilo.join(root, '.git'))
     if backup:
-        package = utilo.baw_name(root)
-        content = utilo.file_read(utilo.join(root, package, '__init__.py'))
-        result = re.search(
-            r'__version__ = \'(.*?)\'',
-            content,
-        ).group(1)
-        return result
-    return git_hash(root)
+        # determine version out of package information
+        return static(root)
+    result = git_hash(root)
+    result = result.strip()
+    if not result:
+        # determine version out of package information
+        result = static(root)
+    assert result, result
+    return result
 
 
 def git_hash(root) -> str:
@@ -196,11 +197,13 @@ def git_hash(root) -> str:
     return value
 
 
-def static(root):
+def static(root) -> str:
     short = utilo.baw_name(root)
     if not short:
         utilo.exitx(msg=f'missing short `{short}` def in .baw: {root}')
     path = utilo.join(root, short, '__init__.py', exist=True)
     content = utilo.file_read(path)
-    result = re.search(r'__version__ = \'(.*?)\'', content).group(1)
+    searched = re.search(r'__version__ = \'(.*?)\'', content)
+    assert searched, f'{searched}'
+    result = searched.group(1)
     return result
