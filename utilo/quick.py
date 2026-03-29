@@ -53,6 +53,7 @@ def install(
         include_package_data=include_package_data,
         install_requires=xrequires,
         long_description=xreadme,
+        long_description_content_type='text/markdown',
         name=short,
         package_data=xpackage_data,
         packages=xpackages,
