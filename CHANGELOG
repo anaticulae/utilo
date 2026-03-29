@@ -1,7 +1,38 @@
 # CHANGELOG
 
 
-## v2.106.3 (2026-03-27)
+## v2.107.0 (2026-03-29)
+
+### Bug Fixes
+
+- **quick**: Ensure content type for publishing in pypi
+  ([`dfde249`](https://github.com/anaticulae/utilo/commit/dfde249fc0eb72073be129298b2d6816947fee68))
+
+- **quick**: Ensure that version is not empty
+  ([`bdc61b1`](https://github.com/anaticulae/utilo/commit/bdc61b1404b2646080e5a95e8fab6c5b19672da6))
+
+### Chores
+
+- **docker**: Upgrade baw environment
+  ([`1acc08b`](https://github.com/anaticulae/utilo/commit/1acc08b5c0a98798e8a4f6ff32c90b3f61d88690))
+
+### Documentation
+
+- **process**: Extend interface documentation
+  ([`1c443a9`](https://github.com/anaticulae/utilo/commit/1c443a937114329216b768130d71d01a0b79040b))
+
+### Features
+
+- **quick**: Ensure that return value is properly
+  ([`a2edc3d`](https://github.com/anaticulae/utilo/commit/a2edc3d1d568283959e1057e32a62afdf6d0da6d))
+
+### Refactoring
+
+- **quick**: Simplify code
+  ([`1237778`](https://github.com/anaticulae/utilo/commit/123777811b08427dc3e3b9800464f3af700f4650))
+
+
+## v2.106.3 (2026-03-28)
 
 ### Bug Fixes
 
