@@ -197,11 +197,13 @@ def git_hash(root) -> str:
     return value
 
 
-def static(root):
+def static(root) -> str:
     short = utilo.baw_name(root)
     if not short:
         utilo.exitx(msg=f'missing short `{short}` def in .baw: {root}')
     path = utilo.join(root, short, '__init__.py', exist=True)
     content = utilo.file_read(path)
-    result = re.search(r'__version__ = \'(.*?)\'', content).group(1)
+    searched = re.search(r'__version__ = \'(.*?)\'', content)
+    assert searched, f'{searched}'
+    result = searched.group(1)
     return result
