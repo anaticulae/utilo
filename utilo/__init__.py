@@ -7,7 +7,9 @@
 # be prosecuted under federal law. Its content is company confidential.
 #==============================================================================
 
-__version__ = '2.107.0'
+from importlib.metadata import version as metaversion
+
+__version__ = metaversion('utilo')
 
 import os
 
