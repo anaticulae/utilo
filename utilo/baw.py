@@ -56,7 +56,7 @@ def baw_desc(path: str) -> str:
 def baw_config(path: str) -> dict:
     """\
     >>> baw_config(__file__)
-    {'project': {'short': 'utilo', 'name': 'write it once'},...'test': {'plugins': 'timeout'}}
+    {'project': {'short': 'utilo', 'name': 'write it once'}}
     """
     root = baw_root(path)
     if not root:
