@@ -9,14 +9,14 @@
 
 FROM ghcr.io/anaticulae/baw:34ccae9-test
 
-COPY requirements.dev /var/install/requirements.dev
-RUN pip install -vvv -r /var/install/requirements.dev
-RUN baw sync all
+COPY pyproject.toml .
+
+RUN pip install .[dev]
+RUN pip install .
 
 COPY . /var/install
 
-WORKDIR /var/install
-RUN pip install -e .
+RUN pip install .
 
 WORKDIR /var/workdir
 
