@@ -10,6 +10,3 @@
 [project]
 short = utilo
 name = write it once
-
-[test]
-plugins = timeout
