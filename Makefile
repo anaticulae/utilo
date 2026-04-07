@@ -34,7 +34,7 @@ docker-longtest: docker-build
 	docker run -v $(CURDIR):/var/workdir $(IMAGE_BASE_NAME) "baw test long"
 
 docker-alltest: docker-build
-	docker run -v $(CURDIR):/var/workdir $(IMAGE_BASE_NAME) "baw test all -n1"
+	docker run -v $(CURDIR):/var/workdir $(IMAGE_BASE_NAME) "baw test all"
 
 docker-lint: docker-build
 	docker run -v $(CURDIR):/var/workdir $(IMAGE_BASE_NAME) "baw lint all"
