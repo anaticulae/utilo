@@ -7,7 +7,7 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "utilo"
-version = "2.107.0"
+version = "2.107.1"
 description = ""
 readme = {file = "README", content-type = "text/markdown"}
 requires-python = ">=3.12"

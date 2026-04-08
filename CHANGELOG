@@ -1,6 +1,54 @@
 # CHANGELOG
 
 
+## v2.107.1 (2026-04-07)
+
+### Bug Fixes
+
+- **quick**: Use automated version determination
+  ([`de9f2c0`](https://github.com/anaticulae/utilo/commit/de9f2c0d318d508b4097fd7fdd626fc9c60fe3fa))
+
+### Chores
+
+- **dependabot**: Do not open a single pr for every requirement
+  ([`b00983a`](https://github.com/anaticulae/utilo/commit/b00983a580ef3ee688d803a6e00d8c1286da9618))
+
+- **docker**: Adjust build process
+  ([`078ca1e`](https://github.com/anaticulae/utilo/commit/078ca1e0e096884fc00cd69f3b3359574ec8c0e2))
+
+- **docker**: Upgrade base image
+  ([`c541975`](https://github.com/anaticulae/utilo/commit/c541975c5c027bc1005d86585815178d4c1eb7d0))
+
+- **make**: Adjust make file
+  ([`0352c13`](https://github.com/anaticulae/utilo/commit/0352c138f3f1d190633c2187c46e2988ddbfdfec))
+
+- **make**: Reduce test time
+  ([`196fd3d`](https://github.com/anaticulae/utilo/commit/196fd3d8d8668ed79116a6ec51c1b99c28773221))
+
+- **requirements**: Add missing pytest timeout
+  ([`d4b8dec`](https://github.com/anaticulae/utilo/commit/d4b8dec927ba737ceaf5accb01ca205db633f4fc))
+
+- **requirements**: Remove outdated requirements
+  ([`0070ab8`](https://github.com/anaticulae/utilo/commit/0070ab870baffe4324994296507c2242d3737e90))
+
+- **setup**: Change to pyproject
+  ([`af57732`](https://github.com/anaticulae/utilo/commit/af57732060eb5c42ddd37f5083f71316e41ed2cc))
+
+- **setup**: Remove outdated setup.py
+  ([`3149409`](https://github.com/anaticulae/utilo/commit/31494094995cb2c9b9012de7a0b6087700df8e01))
+
+- **setup**: Solves test error
+  ([`971707e`](https://github.com/anaticulae/utilo/commit/971707e25775fe8d7098c761e20af272e4f4642d))
+
+### Testing
+
+- **fix**: Disable failing test
+  ([`5519f9e`](https://github.com/anaticulae/utilo/commit/5519f9ef55e7091b50b0a3b6c1ea5876d45d4337))
+
+- **fix**: Disable unit test
+  ([`d332aab`](https://github.com/anaticulae/utilo/commit/d332aab4c029491a617875de6595688fcc48095b))
+
+
 ## v2.107.0 (2026-03-29)
 
 ### Bug Fixes
