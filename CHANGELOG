@@ -1,6 +1,14 @@
 # CHANGELOG
 
 
+## v2.107.3 (2026-04-10)
+
+### Testing
+
+- **fix**: Enable unit test after improving installer
+  ([`3a96aef`](https://github.com/anaticulae/utilo/commit/3a96aef7fc94ea6a1e837d3ca54105312e3509cb))
+
+
 ## v2.107.2 (2026-04-10)
 
 ### Bug Fixes
