@@ -7,7 +7,7 @@
 # be prosecuted under federal law. Its content is company confidential.
 # =============================================================================
 
-FROM ghcr.io/anaticulae/baw:34ccae9-test
+FROM ghcr.io/anaticulae/baw:447bf27
 
 COPY pyproject.toml .
 
