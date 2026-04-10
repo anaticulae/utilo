@@ -1,7 +1,29 @@
 # CHANGELOG
 
 
-## v2.107.1 (2026-04-07)
+## v2.107.2 (2026-04-10)
+
+### Bug Fixes
+
+- **license**: Add missing license file
+  ([`151357d`](https://github.com/anaticulae/utilo/commit/151357d2186cc9e170d3aca04b1bf359ac7ae77e))
+
+- **make**: Do not run sync
+  ([`3f8c364`](https://github.com/anaticulae/utilo/commit/3f8c364074e41e915478464a5d9d7e2535898379))
+
+- **pyproject**: Adjust requirements
+  ([`00392d7`](https://github.com/anaticulae/utilo/commit/00392d7f26335b57c9d13e65ca00a3b51d2464c4))
+
+### Chores
+
+- **build**: Upgrade docker image
+  ([`a74a4ca`](https://github.com/anaticulae/utilo/commit/a74a4cacb8dec18449b3663dcc0a9918811985f4))
+
+- **docker**: Install utilo correctly
+  ([`33ab931`](https://github.com/anaticulae/utilo/commit/33ab931e83720e26a982a516902e3b82b464ae31))
+
+
+## v2.107.1 (2026-04-09)
 
 ### Bug Fixes
 
@@ -24,6 +46,9 @@
 
 - **make**: Reduce test time
   ([`196fd3d`](https://github.com/anaticulae/utilo/commit/196fd3d8d8668ed79116a6ec51c1b99c28773221))
+
+- **release**: 2.107.1
+  ([`cdca607`](https://github.com/anaticulae/utilo/commit/cdca60772bb9348d1f46941032cdfdef5afdf10a))
 
 - **requirements**: Add missing pytest timeout
   ([`d4b8dec`](https://github.com/anaticulae/utilo/commit/d4b8dec927ba737ceaf5accb01ca205db633f4fc))
@@ -64,6 +89,9 @@
 - **docker**: Upgrade baw environment
   ([`1acc08b`](https://github.com/anaticulae/utilo/commit/1acc08b5c0a98798e8a4f6ff32c90b3f61d88690))
 
+- **release**: 2.107.0
+  ([`ff13a40`](https://github.com/anaticulae/utilo/commit/ff13a4027b9162cad760ef4c2cc894806f218d77))
+
 ### Documentation
 
 - **process**: Extend interface documentation
@@ -101,6 +129,9 @@
 - **github**: Add .github
   ([`77e425c`](https://github.com/anaticulae/utilo/commit/77e425cd71b90f64cb0d8c9b29287df7082ad3e5))
 
+- **release**: 2.106.3
+  ([`2d6d658`](https://github.com/anaticulae/utilo/commit/2d6d658e4234ab469ab7d6e553daf356e077380b))
+
 
 ## v2.106.2 (2026-03-04)
 
@@ -117,6 +148,9 @@
 - **quick**: Extend python labels
   ([`57770c3`](https://github.com/anaticulae/utilo/commit/57770c3a8b292776cbe8932b82fb7116afab5222))
 
+- **release**: 2.106.2
+  ([`3841350`](https://github.com/anaticulae/utilo/commit/384135047a64cb9beaf33b55b65d700225d35138))
+
 
 ## v2.106.1 (2026-03-02)
 
@@ -124,6 +158,11 @@
 
 - **setup**: Adjust readme type
   ([`4aaf2ba`](https://github.com/anaticulae/utilo/commit/4aaf2baf911379aa77515cb86e6ebe79a715dc01))
+
+### Chores
+
+- **release**: 2.106.1
+  ([`0cfd125`](https://github.com/anaticulae/utilo/commit/0cfd1254dfe9d6e8283870091c02e718600724ce))
 
 
 ## v2.106.0 (2026-03-02)
@@ -173,6 +212,9 @@
 
 - **README**: Update README
   ([`0b7f4bf`](https://github.com/anaticulae/utilo/commit/0b7f4bfc787b2c9f5f9317fc99ce8d07ae852c67))
+
+- **release**: 2.106.0
+  ([`27e67fb`](https://github.com/anaticulae/utilo/commit/27e67fbe6e442a98d5923d4846d0c9456df52db9))
 
 - **requirements**: Add missing requirement
   ([`0d1cecf`](https://github.com/anaticulae/utilo/commit/0d1cecf11427b112ec8a51297408588a4345ba01))
