@@ -7,8 +7,6 @@
 # be prosecuted under federal law. Its content is company confidential.
 # =============================================================================
 
-import pytest
-
 import utilo
 
 PIPELINE = """\
@@ -29,7 +27,6 @@ if __name__ == "__main__":
 """
 
 
-@pytest.mark.xfail(reason='ENABLE LATER')
 def test_pipeline(testdir):
     """Ensure to pickle pipeline object."""
     path = testdir.tmpdir.join('run.py')
