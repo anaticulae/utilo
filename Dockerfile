@@ -9,6 +9,8 @@
 
 FROM ghcr.io/anaticulae/baw:447bf27
 
+WORKDIR /var/install
+
 COPY pyproject.toml .
 
 RUN pip install .[dev]
