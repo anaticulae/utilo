@@ -1,6 +1,25 @@
 # CHANGELOG
 
 
+## v2.107.4 (2026-04-12)
+
+### Chores
+
+- **requirements**: Enable utilosafe
+  ([`3618d18`](https://github.com/anaticulae/utilo/commit/3618d181a07b1d1ca0729203407396c18145254b))
+
+### Testing
+
+- **cli**: Enable unit test
+  ([`f673e8e`](https://github.com/anaticulae/utilo/commit/f673e8e8b291fbcc18f7325fdfbda3ae287a733e))
+
+- **collection**: Enable unit test
+  ([`1a3d74e`](https://github.com/anaticulae/utilo/commit/1a3d74e5f7b126432e2f2c6685f0473311d48573))
+
+- **string**: Enable unit test
+  ([`c6aac1d`](https://github.com/anaticulae/utilo/commit/c6aac1d94161096b927bf189ba4a1d0e5211f0a1))
+
+
 ## v2.107.3 (2026-04-10)
 
 ### Testing
