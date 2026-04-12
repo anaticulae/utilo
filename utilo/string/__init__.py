@@ -266,11 +266,10 @@ def splitlines(
 ) -> set:
     r"""Split string by newlines and convert to set.
 
-    # TODO: ENABLE LATER
-    # >>> splitlines('First\nThird\nSecond')
-    # {'third', 'second', 'first'}
-    # >>> splitlines('First\nThird\n\n\n')
-    # {'third', 'first'}
+    >>> splitlines('First\nThird\nSecond')
+    ['first', 'second', 'third']
+    >>> splitlines('First\nThird\n\n\n')
+    ['first', 'third']
     """
     if lowers:
         raw = raw.lower()
@@ -280,6 +279,7 @@ def splitlines(
     splitted = utilo.notempty(splitted)
     assert not unique_assert or len(set(splitted)) == len(splitted)
     result = set(splitted) if unique else splitted
+    result = sorted(result)
     return result
 
 
