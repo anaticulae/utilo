@@ -299,11 +299,10 @@ class LowerCasedSet(CasedSet):
 
 class UpperCasedSet(CasedSet):
     """\
-    # TODO: ENABLE LATER
-    # >>> data = UpperCasedSet('helm telm melm'.split())
-    # >>> assert 'HELM' in data
-    #  >>> list(data)
-    # ['HELM', 'TELM', 'MELM']
+    >>> data = UpperCasedSet('helm telm melm'.split())
+    >>> assert 'HELM' in data
+    >>> sorted(list(data))
+    ['HELM', 'MELM', 'TELM']
     """
 
     def __init__(self, values):
