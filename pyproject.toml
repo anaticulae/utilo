@@ -16,6 +16,7 @@ authors = [
 ]
 
 dependencies = [
+    "utilosafe>=1.0.0,<2.0.0",
 ]
 
 # Optional but recommended metadata

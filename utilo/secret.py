@@ -8,13 +8,8 @@
 # =============================================================================
 
 import os
-import sys
 
-try:
-    import utilosafe
-except ModuleNotFoundError:
-    print("Error: could not use utilosafe", file=sys.stderr)
-    utilosafe = None  # pylint:disable=C0103
+import utilosafe
 
 
 def encrypt(plaintext: bytes) -> bytes:
@@ -24,19 +19,13 @@ def encrypt(plaintext: bytes) -> bytes:
             encoding='utf8',
             errors='xmlcharrefreplace',
         )
-    if utilosafe:  # pylint:disable=W0160
-        ciphertext = utilosafe.encrypt_password(plaintext)
-    else:
-        ciphertext = _encrypt_toy(plaintext)
+    ciphertext = utilosafe.encrypt_password(plaintext)
     return ciphertext
 
 
 def decrypt(ciphertext: bytes, string: bool = False) -> bytes:
     """Convert cipher text to plain text."""
-    if utilosafe:  # pylint:disable=W0160
-        plaintext = utilosafe.decrypt_password(ciphertext)
-    else:
-        plaintext = _decrypt_toy(ciphertext)
+    plaintext = utilosafe.decrypt_password(ciphertext)
     if string:
         plaintext: str = plaintext.decode(encoding='utf8')
     return plaintext
