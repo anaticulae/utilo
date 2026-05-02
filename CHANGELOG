@@ -1,6 +1,22 @@
 # CHANGELOG
 
 
+## v2.107.5 (2026-05-02)
+
+### Chores
+
+- **pyproject**: Add utilotest
+  ([`fdf2766`](https://github.com/anaticulae/utilo/commit/fdf27666a7423adb06cdf94b355a1c2459377e98))
+
+- **requirements**: Upgrade requirements
+  ([`4600949`](https://github.com/anaticulae/utilo/commit/4600949cafe35926947bb51a1474c25ae8a2e7e8))
+
+### Refactoring
+
+- **utilotest**: Remove local code
+  ([`b8bbfd1`](https://github.com/anaticulae/utilo/commit/b8bbfd127d3849dd08be226b6e9ba01f0d5ac594))
+
+
 ## v2.107.4 (2026-04-12)
 
 ### Chores
