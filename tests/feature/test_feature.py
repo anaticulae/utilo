@@ -352,10 +352,10 @@ def work(pdf : str, result: str, char_margin : float, char_align : float) -> str
 @utilotest.longrun
 def test_feature_featurepack_help_with_variable(td, mp, capsys):
     # TODO: DIRTY CODE
-    root = str(td)
+    root = td.tmpdir
     processname = 'pdfparser'
     featurepackage = 'feedback.features'
-    featurepath = os.path.join(root, featurepackage.replace('.', '/'))
+    featurepath = utilo.join(root, featurepackage.replace('.', '/'))
 
     path_with_value_worker = """
 def work(pdf : str, result: str, char_margin : float, char_align : float) -> str:
