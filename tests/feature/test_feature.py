@@ -97,19 +97,19 @@ def pack(plan, root, featurepackage):
 def featureexample(td):
     root = str(td)
     featurepackage = 'feedback.features.border'
-    feature_path = os.path.join(root, featurepackage.replace('.', '/'))
+    feature_path = utilo.join(root, featurepackage.replace('.', '/'))
     os.makedirs(feature_path)
-    file_create(os.path.join(root, '__init__.py'))
-    file_create(os.path.join(root, 'feedback/__init__.py'))
-    file_create(os.path.join(root, 'feedback/features/__init__.py'))
-    file_create(os.path.join(feature_path, '__init__.py'))
+    file_create(utilo.join(root, '__init__.py'))
+    file_create(utilo.join(root, 'feedback/__init__.py'))
+    file_create(utilo.join(root, 'feedback/features/__init__.py'))
+    file_create(utilo.join(feature_path, '__init__.py'))
 
-    file_create(os.path.join(feature_path, 'incomplete_worker.py'), """
+    file_create(utilo.join(feature_path, 'incomplete_worker.py'), """
 def work():
     return 'work'
     """)
     file_create(
-        os.path.join(feature_path, 'complete_worker.py'), """
+        utilo.join(feature_path, 'complete_worker.py'), """
 from utilo import Flag
 def name():
     return 'complete_worker'
@@ -142,7 +142,7 @@ def test_featurepack_with_broken_feature(featureexample, mp):
     """Skip broken worker"""
     root, package = featureexample
     # create the broken feature
-    file_create(os.path.join(package.replace('.', '/'), 'broken_worker.py'))
+    file_create(utilo.join(package.replace('.', '/'), 'broken_worker.py'))
 
     with mp.context() as context:
         context.setattr(sys, 'argv', [PROCESS_NAME, '-i', root, '-o', root])
@@ -178,9 +178,9 @@ def test_featurepack_with_different_worker(  #pylint:disable=W0621
         expected_result,
 ):
     root, package = featureexample
-    featurepath = os.path.join(root, package.replace('.', '/'))
+    featurepath = utilo.join(root, package.replace('.', '/'))
     # create feature
-    file_create(os.path.join(
+    file_create(utilo.join(
         featurepath,
         f'{name}.py',
     ), worker)
@@ -234,7 +234,7 @@ def commandline():
 """
 
     example = example.format(stepname=stepname, worker=worker)
-    outputpath = os.path.join(featurepath, f'{stepname}.py')
+    outputpath = utilo.join(featurepath, f'{stepname}.py')
     file_create(outputpath, example)
 
 
@@ -244,11 +244,11 @@ def create_example(
     stepname: str,
     worker: str,
 ):
-    featurepath = os.path.join(root, featurepackage.replace('.', '/'))
+    featurepath = utilo.join(root, featurepackage.replace('.', '/'))
     os.makedirs(featurepath)
-    file_create(os.path.join(root, '__init__.py'))
-    file_create(os.path.join(root, 'feedback/__init__.py'))
-    file_create(os.path.join(root, 'feedback/features/__init__.py'))
+    file_create(utilo.join(root, '__init__.py'))
+    file_create(utilo.join(root, 'feedback/__init__.py'))
+    file_create(utilo.join(root, 'feedback/features/__init__.py'))
 
     create_worker(stepname, worker, featurepath)
 
@@ -269,7 +269,7 @@ def test_feature_featurepack_workplan_pdf_parser(td, mp):
     root = str(td)
     processname = 'pdfparser'
     featurepackage = 'feedback.features'
-    featurepath = os.path.join(root, featurepackage.replace('.', '/'))
+    featurepath = utilo.join(root, featurepackage.replace('.', '/'))
     stepname = 'parser'
 
     # Define first working step
@@ -286,9 +286,9 @@ def work(pdffile : str) -> str:
             (('result'),),
         ),
     ]
-    examplepath = os.path.join(root, 'example')
+    examplepath = utilo.join(root, 'example')
     os.makedirs(examplepath)
-    file_create(os.path.join(examplepath, 'test.pdf'), 'this pdf is empty')
+    file_create(utilo.join(examplepath, 'test.pdf'), 'this pdf is empty')
 
     create_example(
         root,
@@ -330,7 +330,7 @@ def work(pdffile : str) -> str:
     )
 
     assert returncode(result) == SUCCESS
-    written = file_read(os.path.join(root, 'parsi__path_with_value_result.yaml')) # yapf:disable
+    written = file_read(utilo.join(root, 'parsi__path_with_value_result.yaml'))
     assert written == '1.00 50.50', str(written)
 
 
@@ -418,7 +418,7 @@ def test_error_hook(hook, failfast, td, mp):
     """Test passing exception to error hook and without hook"""
     import tests.examples.featurepack.withexception.withexception as exe  # pylint:disable=C0415
     root = exe.ROOT
-    utilo.file_create(os.path.join(str(td), 'inputso.yaml'))
+    utilo.file_create(utilo.join(str(td), 'inputso.yaml'))
 
     def errorhook(name, exception):  # pylint:disable=W0613
         errorhook.hooked = True
