@@ -82,16 +82,24 @@ def file_append(path: str, content: str, create: bool = False, private: bool = F
         fp.write(content)
 
 
-def file_create(path: str, content: str = '', private: bool = False):
+def file_create(
+    path: str,
+    content: str = '',
+    private: bool = False,
+    base: str = None,
+):
     """Create file `path` with the content `content`
 
     Args:
         path(str): path to write file, path must not exists
         content(str): content to write in given `path`
         private(bool): if True, use encryption
+        base(str): add base to path
     Hint:
         If file exists, an assertion is raised.
     """
+    if base:
+        path = utilo.join(base, path)
     parent = utilo.path_parent(path)
     assert os.path.exists(parent) or not parent, f'{parent} does not exists'
     assert not os.path.exists(path), f'{path} already exists'
