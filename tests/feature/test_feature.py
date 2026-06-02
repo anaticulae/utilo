@@ -298,13 +298,7 @@ def work(pdffile : str) -> str:
     )
 
     # Define second work step
-    path_with_value_worker =\
-"""
-def work(pdf : str, result: str, char_margin : float, char_align : float) -> str:
-    return '%.2f %.2f' % (char_margin,char_align)
-"""
-
-    create_worker('path_with_value', path_with_value_worker, featurepath)
+    create_worker('path_with_value', PATH_WITH_VALUE_WORKER, featurepath)
     workplan.append(
         create_step(
             'path_with_value',
@@ -317,9 +311,9 @@ def work(pdf : str, result: str, char_margin : float, char_align : float) -> str
             (('result'),),
         ))
 
-    with mp.context() as context:
-        context.setattr(sys, 'argv', [
-            processname,
+    result = run_patched(
+        processname,
+        [
             '-i',
             examplepath,
             '-o',
@@ -328,22 +322,13 @@ def work(pdf : str, result: str, char_margin : float, char_align : float) -> str
             '1.0',
             '--char_align',
             '50.5',
-        ])
-        context.syspath_prepend(root)
-        config = FeaturePackConfig(
-            description='Description',
-            name='parsi',
-            singleinput=True,
-            version='1.0.0',
-        )
-        with pytest.raises(SystemExit) as result:
-            context.syspath_prepend(root)
-            featurepack(
-                config=config,
-                featurepackage=featurepackage,
-                root=root,
-                workplan=workplan,
-            )
+        ],
+        root,
+        featurepackage,
+        workplan,
+        mp,
+    )
+
     assert returncode(result) == SUCCESS
     written = file_read(os.path.join(root, 'parsi__path_with_value_result.yaml')) # yapf:disable
     assert written == '1.00 50.50', str(written)
@@ -381,12 +366,29 @@ def test_feature_featurepack_help_with_variable(td, mp, capsys):
         (('result'),),
     ))]
 
+    result = run_patched(
+        processname,
+        ['--help'],
+        root,
+        featurepackage,
+        workplan,
+        mp,
+    )
+
+    out, err = capsys.readouterr()
+    assert not err, str(err)
+    assert 'char_align(float)=20' in out
+    assert 'char_margin(float)=0.1' in out
+
+    assert returncode(result) == SUCCESS
+
+
+def run_patched(processname, argv, root, featurepackage, workplan, mp):
     # check --help
     with mp.context() as context:
         context.setattr(sys, 'argv', [
             processname,
-            '--help',
-        ])
+        ] + argv)
         context.syspath_prepend(root)
         config = FeaturePackConfig(
             name='parsi',
@@ -402,12 +404,7 @@ def test_feature_featurepack_help_with_variable(td, mp, capsys):
                 root=root,
                 workplan=workplan,
             )
-    out, err = capsys.readouterr()
-    assert not err, str(err)
-    assert 'char_align(float)=20' in out
-    assert 'char_margin(float)=0.1' in out
-
-    assert returncode(result) == SUCCESS
+    return result
 
 
 @pytest.mark.parametrize('hook, failfast', [
