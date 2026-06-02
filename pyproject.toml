@@ -7,7 +7,7 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "utilo"
-version = "2.107.5"
+version = "2.108.0"
 description = ""
 requires-python = ">=3.12"
 authors = [

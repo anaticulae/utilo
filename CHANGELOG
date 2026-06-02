@@ -1,6 +1,60 @@
 # CHANGELOG
 
 
+## v2.108.0 (2026-06-02)
+
+### Bug Fixes
+
+- **cli**: Make pattern more robust
+  ([`55c35e9`](https://github.com/anaticulae/utilo/commit/55c35e9ff8c26549eb731fd022a23d4ac7a68b5e))
+
+- **string**: Revert c6aac1d94161096b927bf189ba4a1d0e5211f0a1
+  ([`87c4d9d`](https://github.com/anaticulae/utilo/commit/87c4d9d774247f3cdfe6e08dc35f6e1851d64ee3))
+
+### Code Style
+
+- **github**: Format code
+  ([`8d9245d`](https://github.com/anaticulae/utilo/commit/8d9245daa647505a99875b5d95d1d427b22fb76e))
+
+- **string**: Remove unused import
+  ([`3d266cb`](https://github.com/anaticulae/utilo/commit/3d266cb7d77498f429f3f405051e8663a0457e94))
+
+### Documentation
+
+- **collection**: Extend interface documentation
+  ([`1fe2440`](https://github.com/anaticulae/utilo/commit/1fe2440cb0430f54ae96aa7d2ac1560623c77b81))
+
+### Features
+
+- **file**: Add base parameter to ease file creation
+  ([`3669a9b`](https://github.com/anaticulae/utilo/commit/3669a9b57d95062a6777dac09baf1e8140db53df))
+
+### Refactoring
+
+- **test**: Move to separate method
+  ([`3e4d674`](https://github.com/anaticulae/utilo/commit/3e4d674b8f56e31e8b28864922fba92a4d98d635))
+
+- **test**: Simplify code
+  ([`d8e8736`](https://github.com/anaticulae/utilo/commit/d8e873626950e04e9f1a76c945b8c1812440f8b5))
+
+### Testing
+
+- **feature**: Ease code style
+  ([`7eb38ae`](https://github.com/anaticulae/utilo/commit/7eb38ae3e993867ae7aa9b348f2bd34f3735aa4b))
+
+- **feature**: Simplify code
+  ([`1d326d0`](https://github.com/anaticulae/utilo/commit/1d326d089ba0722b66c0299929528b519c61a241))
+
+- **feature**: Simplify code
+  ([`74e761c`](https://github.com/anaticulae/utilo/commit/74e761ca6635d27ac0c2118263e91d9850af571f))
+
+- **feature**: Simplify test
+  ([`8ff95e4`](https://github.com/anaticulae/utilo/commit/8ff95e4bf91deb4c47bf116242aa0e7e52d90e63))
+
+- **refactor**: Replace with utilo code
+  ([`9d941c3`](https://github.com/anaticulae/utilo/commit/9d941c3ec4ba1794233999f4551d89156d609213))
+
+
 ## v2.107.5 (2026-05-02)
 
 ### Chores
