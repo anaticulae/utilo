@@ -263,10 +263,8 @@ def test_feature_featurepack_workplan_pdf_parser(td, mp):
     Worker structure:
         - parser(*.pdf)
         - path_with_value(*.pdf, pdfparser_result, char_margin, char_align)
-
-    TODO: This example is very dirty and must be reworked.
     """
-    root = str(td)
+    root = td.tmpdir
     processname = 'pdfparser'
     featurepackage = 'feedback.features'
     featurepath = utilo.join(root, featurepackage.replace('.', '/'))
