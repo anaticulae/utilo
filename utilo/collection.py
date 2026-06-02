@@ -14,7 +14,7 @@ import random
 import utilo
 
 
-def unique(items, converter: callable = None):
+def unique(items, converter: callable = None) -> list:
     """Convert collection where every element exists only once.
 
     >>> unique((1, 2, 3, 3, 4, 5, 1))

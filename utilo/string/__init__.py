@@ -262,7 +262,7 @@ def splitlines(
     pattern: str = REGEX_NEWLINE,
     unique: bool = True,
     unique_assert: bool = False,
-) -> set:
+) -> set | list:
     r"""Split string by newlines and convert to set.
 
     >>> splitlines('First\nThird\nSecond')
