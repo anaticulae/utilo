@@ -9,7 +9,6 @@
 
 import binascii
 import contextlib
-import difflib
 import functools
 import re
 import statistics
