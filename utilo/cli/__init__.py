@@ -456,6 +456,8 @@ def split_args(items):
     """
     enable, disable = [], []
     for item in items:
+        # convert possible PathLib
+        item: str = str(item)
         matched = re.match(DISABLE_PATTERN, item)
         if matched:
             disable.append(matched['text'])
