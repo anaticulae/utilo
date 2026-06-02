@@ -99,17 +99,20 @@ def featureexample(td):
     featurepackage = 'feedback.features.border'
     feature_path = utilo.join(root, featurepackage.replace('.', '/'))
     os.makedirs(feature_path)
-    file_create(utilo.join(root, '__init__.py'))
-    file_create(utilo.join(root, 'feedback/__init__.py'))
-    file_create(utilo.join(root, 'feedback/features/__init__.py'))
-    file_create(utilo.join(feature_path, '__init__.py'))
+    file_create('__init__.py', base=root)
+    file_create('feedback/__init__.py', base=root)
+    file_create('feedback/features/__init__.py', base=root)
+    file_create('__init__.py', base=feature_path)
 
-    file_create(utilo.join(feature_path, 'incomplete_worker.py'), """
+    file_create('incomplete_worker.py',
+                """
 def work():
     return 'work'
-    """)
+    """,
+                base=feature_path)
     file_create(
-        utilo.join(feature_path, 'complete_worker.py'), """
+        'complete_worker.py',
+        """
 from utilo import Flag
 def name():
     return 'complete_worker'
@@ -120,7 +123,9 @@ from utilo import checkdatatype
 @checkdatatype
 def work(path : str) -> Tuple[str, str]:
     return 'work completed', 'Error'
-    """)
+    """,
+        base=feature_path,
+    )
     file_create('decider_border_hitthebox__hits.yaml', '')
     return root, featurepackage
 
@@ -246,9 +251,9 @@ def create_example(
 ):
     featurepath = utilo.join(root, featurepackage.replace('.', '/'))
     os.makedirs(featurepath)
-    file_create(utilo.join(root, '__init__.py'))
-    file_create(utilo.join(root, 'feedback/__init__.py'))
-    file_create(utilo.join(root, 'feedback/features/__init__.py'))
+    file_create('__init__.py', base=root)
+    file_create('feedback/__init__.py', base=root)
+    file_create('feedback/features/__init__.py', base=root)
 
     create_worker(stepname, worker, featurepath)
 
