@@ -349,26 +349,27 @@ def work(pdf : str, result: str, char_margin : float, char_align : float) -> str
     assert written == '1.00 50.50', str(written)
 
 
+PATH_WITH_VALUE_WORKER = """
+def work(pdf : str, result: str, char_margin : float, char_align : float) -> str:
+    return '%.2f %.2f' % (char_margin,char_align)
+"""
+
+
 @utilotest.longrun
 def test_feature_featurepack_help_with_variable(td, mp, capsys):
-    # TODO: DIRTY CODE
     root = td.tmpdir
     processname = 'pdfparser'
     featurepackage = 'feedback.features'
     featurepath = utilo.join(root, featurepackage.replace('.', '/'))
 
-    path_with_value_worker = """
-def work(pdf : str, result: str, char_margin : float, char_align : float) -> str:
-    return '%.2f %.2f' % (char_margin,char_align)
-"""
     os.makedirs(featurepath)
 
     # make directories to packages
-    file_create(os.path.join(root, '__init__.py'), '')
-    file_create(os.path.join(root, 'feedback/__init__.py'), '')
-    file_create(os.path.join(root, 'feedback/features/__init__.py'), '')
+    file_create('__init__.py', base=root)
+    file_create('feedback/__init__.py', base=root)
+    file_create('feedback/features/__init__.py', base=root)
 
-    create_worker('path_with_value', path_with_value_worker, featurepath)
+    create_worker('path_with_value', PATH_WITH_VALUE_WORKER, featurepath)
     workplan = [(create_step(
         'path_with_value',
         [
