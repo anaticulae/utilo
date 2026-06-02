@@ -266,7 +266,7 @@ def splitlines(
     r"""Split string by newlines and convert to set.
 
     >>> splitlines('First\nThird\nSecond')
-    ['first', 'second', 'third']
+    ['first', 'third', 'second']
     >>> splitlines('First\nThird\n\n\n')
     ['first', 'third']
     """
@@ -277,8 +277,7 @@ def splitlines(
     splitted = pattern.split(raw)
     splitted = utilo.notempty(splitted)
     assert not unique_assert or len(set(splitted)) == len(splitted)
-    result = set(splitted) if unique else splitted
-    result = sorted(result)
+    result = utilo.unique(splitted) if unique else splitted
     return result
 
 
