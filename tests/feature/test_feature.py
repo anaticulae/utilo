@@ -345,16 +345,13 @@ def test_feature_featurepack_help_with_variable(td, mp, capsys):
     root = td.tmpdir
     processname = 'pdfparser'
     featurepackage = 'feedback.features'
-    featurepath = utilo.join(root, featurepackage.replace('.', '/'))
 
-    os.makedirs(featurepath)
-
-    # make directories to packages
-    file_create('__init__.py', base=root)
-    file_create('feedback/__init__.py', base=root)
-    file_create('feedback/features/__init__.py', base=root)
-
-    create_worker('path_with_value', PATH_WITH_VALUE_WORKER, featurepath)
+    create_example(
+        root,
+        featurepackage,
+        'path_with_value',
+        PATH_WITH_VALUE_WORKER,
+    )
     workplan = [(create_step(
         'path_with_value',
         [
