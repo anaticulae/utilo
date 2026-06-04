@@ -1,6 +1,14 @@
 # CHANGELOG
 
 
+## v2.109.0 (2026-06-04)
+
+### Features
+
+- **path**: Add parameter to normpath to improve display/logging
+  ([`6cf5541`](https://github.com/anaticulae/utilo/commit/6cf5541450b1dbeebacf25a1edf74c7677c3c8ef))
+
+
 ## v2.108.0 (2026-06-02)
 
 ### Bug Fixes
