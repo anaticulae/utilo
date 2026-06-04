@@ -43,12 +43,27 @@ def exists_assert(path: str):
     return path
 
 
-def join(*items, exist: bool = False, assert_exists: bool = False) -> str:
+def join(
+    *items,
+    exist: bool = False,
+    assert_exists: bool = False,
+    normpath: bool = True,
+) -> str:
     """\
     >>> join('hello', 'tello/well', 'wello')
     'hello/tello/well/wello'
+    >>> join('a/b/c/d/../../c/e', normpath=True)
+    'a/b/c/e'
+    >>> join('a/b/c/d/../../c/e', normpath=False)
+    'a/b/c/d/../../c/e'
+
+    # TODO: DISCUSS LATER, SECURITY?
+    >>> join('a/../../../')
+    '../..'
     """
     path = os.path.join(*items)
+    if normpath:
+        path = os.path.normpath(path)
     path = utilo.forward_slash(path)
     exist |= assert_exists
     assert not exist or exists(path), path
