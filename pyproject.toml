@@ -1,7 +1,7 @@
 [build-system]
 requires = [
-    "setuptools>=82.0.1",
-    "wheel>=0.46.3",
+    "setuptools>=83.0.0",
+    "wheel>=0.47.0",
 ]
 build-backend = "setuptools.build_meta"
 
@@ -63,16 +63,19 @@ changelog_file = "CHANGELOG"
 
 [tool.semantic_release.commit_parser_options]
 patch_tags = [
-    "fix",
-    "perf",
     "build",
     "chore",
     "ci",
-    "docs",
-    "style",
-    "refactor",
-    "test",
     "deps",
+    "docs",
+    "fix",
+    "perf",
+    "refactor",
+    "style",
+    "test",
+]
+minor_tags = [
+    "feat",
 ]
 
 [tool.setuptools.packages.find]
