@@ -287,9 +287,8 @@ splitdouble = functools.partial(splitlines, pattern=re.compile(r'\n\n'))
 def splititems(raw: str, lowers: bool = True) -> set:
     r"""Split string by whitespace and convert to set.
 
-    # TODO: ENABLE LATER
-    # >>> splititems('First   Third\nSecond')
-    # {'third', 'second', 'first'}
+    >>> splititems('First   Third\nSecond') == {'third', 'second', 'first'}
+    True
     """
     raw = raw.strip()
     if lowers:

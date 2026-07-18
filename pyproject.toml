@@ -1,7 +1,7 @@
 [build-system]
 requires = [
-    "setuptools>=82.0.1",
-    "wheel>=0.46.3",
+    "setuptools>=83.0.0",
+    "wheel>=0.47.0",
 ]
 build-backend = "setuptools.build_meta"
 
@@ -41,7 +41,8 @@ utilo_tidy = "utilo.xyz.tidy:main"
 dev = [
     "PyYAML>=6.0.3,<7.0.0",
     "pytest-timeout>=2.4.0,<3.0.0",
-    "utilotest>=1.0.2,<2.0.0",
+    "utilotest>=1.0.4,<2.0.0",
+    "iamraw>=4.92.0,<5.0.0",
 ]
 
 [project.urls]
@@ -62,16 +63,19 @@ changelog_file = "CHANGELOG"
 
 [tool.semantic_release.commit_parser_options]
 patch_tags = [
-    "fix",
-    "perf",
     "build",
     "chore",
     "ci",
-    "docs",
-    "style",
-    "refactor",
-    "test",
     "deps",
+    "docs",
+    "fix",
+    "perf",
+    "refactor",
+    "style",
+    "test",
+]
+minor_tags = [
+    "feat",
 ]
 
 [tool.setuptools.packages.find]
