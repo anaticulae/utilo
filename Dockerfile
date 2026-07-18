@@ -7,7 +7,7 @@
 # be prosecuted under federal law. Its content is company confidential.
 # =============================================================================
 
-FROM ghcr.io/anaticulae/baw:447bf27
+FROM ghcr.io/anaticulae/baw:696994f
 
 WORKDIR /var/install
 
