@@ -7,6 +7,7 @@
 # be prosecuted under federal law. Its content is company confidential.
 # =============================================================================
 
+import hashlib
 import os
 
 import utilosafe
@@ -33,20 +34,19 @@ def decrypt(ciphertext: bytes, string: bool = False) -> bytes:
 
 def _encrypt_toy(plaintext: bytes) -> bytes:
     r"""\
-    # TODO: ENABLE LATER
-    # >>> _encrypt_toy(b'hello')
-    # b'\xea\xe7\xee\xee\xf1'
-    # >>> _decrypt_toy(_encrypt_toy(b'hello'))
-    # b'hello'
+    >>> _encrypt_toy(b'hello')
+    b'\xae\xab\xb2\xb2\xb5'
+    >>> _decrypt_toy(_encrypt_toy(b'hello'))
+    b'hello'
     """
-    key = hash(password()) // 256
+    key = int(hashlib.sha256(password().encode()).hexdigest(), 16) // 256
     ciphertext = [(item + key) % 256 for item in plaintext]
     ciphertext = bytes(ciphertext)
     return ciphertext
 
 
 def _decrypt_toy(ciphertext: bytes) -> bytes:
-    key = hash(password()) // 256
+    key = int(hashlib.sha256(password().encode()).hexdigest(), 16) // 256
     plaintext = ([(item - key) % 256 for item in ciphertext])
     plaintext = bytes(plaintext)
     return plaintext
