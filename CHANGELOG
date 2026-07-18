@@ -1,6 +1,44 @@
 # CHANGELOG
 
 
+## v2.109.1 (2026-07-18)
+
+### Bug Fixes
+
+- **secret**: Make password hashing stable
+  ([`0684fc1`](https://github.com/anaticulae/utilo/commit/0684fc1e003099638bd98eea3376e7c024cf7f12))
+
+### Chores
+
+- **docker**: Ugprade baw image
+  ([`eb8caa1`](https://github.com/anaticulae/utilo/commit/eb8caa146956853effe8f63fa588e983a24ce41c))
+
+- **make**: Do not release on release tag
+  ([`8671c61`](https://github.com/anaticulae/utilo/commit/8671c6109d3ae5b1ceff2be2545603e39f1f2e27))
+
+- **release**: Release on every commit
+  ([`654b01e`](https://github.com/anaticulae/utilo/commit/654b01e237c5efebd2bb35538e2d578d06baacd8))
+
+- **requirements**: Enable iamraw
+  ([`a555650`](https://github.com/anaticulae/utilo/commit/a5556508238197258fae4ee28f3c94c32e8564c6))
+
+- **requirements**: Upgrade pyproject.toml
+  ([`ef44f3b`](https://github.com/anaticulae/utilo/commit/ef44f3bd32fd22cb49aad5c86cffb2625508285d))
+
+### Refactoring
+
+- **string**: Enable unit test
+  ([`94af537`](https://github.com/anaticulae/utilo/commit/94af5373fad1d7190dbd8e2bac50718da4e8e82e))
+
+### Testing
+
+- **import**: Remove useless test
+  ([`ebc239f`](https://github.com/anaticulae/utilo/commit/ebc239ffad01c94bb4abd1b0e4c6c46864dda724))
+
+- **pages**: Enable unit test
+  ([`efdc194`](https://github.com/anaticulae/utilo/commit/efdc194a01174f7ae582c52d29e222daab3d9d93))
+
+
 ## v2.109.0 (2026-06-04)
 
 ### Features
