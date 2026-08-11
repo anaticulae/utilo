@@ -11,7 +11,7 @@ import hashlib
 import math
 
 
-def freehash(data: bytes, digits: int = 16) -> str:
+def freehash(data: bytes | str, digits: int = 16, returns=str) -> str:
     """Hash data to ease using.
 
     Hint: Use this for non secure approaches only.
@@ -22,6 +22,8 @@ def freehash(data: bytes, digits: int = 16) -> str:
     '6eb828'
     >>> freehash(13371337, digits=20)
     '1d6894801cdd2e11e98f'
+    >>> freehash(13371337, digits=20, returns=int)
+    '13689480123324114985'
     """
     if not isinstance(data, (bytes, str)):
         data = str(data)
@@ -32,6 +34,9 @@ def freehash(data: bytes, digits: int = 16) -> str:
     digits = math.ceil(digits / 2)
     hashed = hashlib.blake2b(data, digest_size=digits)
     result = hashed.hexdigest()
+    if returns == int:
+        result = (c if c.isdigit() else str(ord(c) - ord('a')) for c in result)
+        result = ''.join(result)
     return result
 
 
