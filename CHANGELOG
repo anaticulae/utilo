@@ -1,6 +1,19 @@
 # CHANGELOG
 
 
+## v2.110.0 (2026-08-11)
+
+### Chores
+
+- **requirements**: Upgrade pyproject.toml
+  ([`4fe9be9`](https://github.com/anaticulae/utilo/commit/4fe9be99c22e1319bc506c42f3ec8638996b35b9))
+
+### Features
+
+- **hash**: Add option to produce int only hash
+  ([`bc44e0c`](https://github.com/anaticulae/utilo/commit/bc44e0cb353757c8a673ba8f2f75f0610e9038a6))
+
+
 ## v2.109.1 (2026-07-18)
 
 ### Bug Fixes
