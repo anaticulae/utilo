@@ -1,6 +1,19 @@
 # CHANGELOG
 
 
+## v2.110.1 (2026-08-13)
+
+### Bug Fixes
+
+- **hash**: Return int for freehash int
+  ([`7a51be8`](https://github.com/anaticulae/utilo/commit/7a51be850587d317f4da9f30124cadc9735a78d0))
+
+### Chores
+
+- **requirements**: Upgrade pyproject.toml
+  ([`5853961`](https://github.com/anaticulae/utilo/commit/585396172164f22155dc57869a131a31014d7f4c))
+
+
 ## v2.110.0 (2026-08-11)
 
 ### Chores
