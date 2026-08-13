@@ -11,7 +11,7 @@ import hashlib
 import math
 
 
-def freehash(data: bytes | str, digits: int = 16, returns=str) -> str:
+def freehash(data: bytes | str, digits: int = 16, returns=str) -> str | int:
     """Hash data to ease using.
 
     Hint: Use this for non secure approaches only.
@@ -23,7 +23,7 @@ def freehash(data: bytes | str, digits: int = 16, returns=str) -> str:
     >>> freehash(13371337, digits=20)
     '1d6894801cdd2e11e98f'
     >>> freehash(13371337, digits=20, returns=int)
-    '13689480123324114985'
+    13689480123324114985
     """
     if not isinstance(data, (bytes, str)):
         data = str(data)
@@ -36,7 +36,7 @@ def freehash(data: bytes | str, digits: int = 16, returns=str) -> str:
     result = hashed.hexdigest()
     if returns == int:
         result = (c if c.isdigit() else str(ord(c) - ord('a')) for c in result)
-        result = ''.join(result)
+        result: int = int(''.join(result))
     return result
 
 
