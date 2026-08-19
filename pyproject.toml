@@ -1,7 +1,7 @@
 [build-system]
 requires = [
-    "setuptools>=83.0.0",
-    "wheel>=0.47.0",
+    "setuptools>=84.0.0",
+    "wheel>=0.48.0",
 ]
 build-backend = "setuptools.build_meta"
 
@@ -42,7 +42,7 @@ dev = [
     "PyYAML>=6.0.3,<7.0.0",
     "pytest-timeout>=2.4.0,<3.0.0",
     "utilotest>=1.0.5,<2.0.0",
-    "iamraw>=4.94.1,<5.0.0",
+    "iamraw>=4.95.0,<5.0.0",
 ]
 
 [project.urls]
