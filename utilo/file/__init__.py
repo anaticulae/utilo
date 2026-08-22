@@ -479,13 +479,16 @@ def file_ext(path: str) -> str:
         return None
 
 
-def files_sort(files: list) -> list:
+def files_sort(files: list) -> list[str]:
     """Sort `files` path alphabetically. Sort file names by number if given.
 
     >>> files_sort(('/c/a', '/c/200.txt', '/c/2.txt', '/c/3', '/c/0.bmp'))
     ['/c/0.bmp', '/c/2.txt', '/c/3', '/c/200.txt', '/c/a']
+    >>> import os
+    >>> files_sort(os.scandir('.'))
+    [...]
     """
-    files = [utilo.forward_slash(item) for item in files]
+    files = [file_path(item) for item in files]
 
     def number_filename(item):
         # sort file names if they are numbers: 0,1,2,3,4,5,6,7,8,9,10
@@ -500,6 +503,13 @@ def files_sort(files: list) -> list:
 
     files = sorted(files, key=number_filename)
     return files
+
+
+def file_path(path):
+    if isinstance(path, os.DirEntry):
+        return file_path(str(path.path))
+    path = utilo.forward_slash(path)
+    return path
 
 
 # Alphabetic with Nn and Tt to avoid \n\t in connex with file names
