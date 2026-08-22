@@ -1,6 +1,22 @@
 # CHANGELOG
 
 
+## v2.110.2 (2026-08-22)
+
+### Bug Fixes
+
+- **file**: Support sorting DirEntry
+  ([`3ff81d0`](https://github.com/anaticulae/utilo/commit/3ff81d00a1d894d2d852bb09b9261419a6c1f141))
+
+### Chores
+
+- **github**: Do not run test twice on pull request
+  ([`863e429`](https://github.com/anaticulae/utilo/commit/863e429bbe2d8972abfc31e25c2d7a554feda6ee))
+
+- **requirements**: Upgrade pyproject.toml
+  ([`d3d98e1`](https://github.com/anaticulae/utilo/commit/d3d98e170a69348a90d617caadca899827b09793))
+
+
 ## v2.110.1 (2026-08-13)
 
 ### Bug Fixes
