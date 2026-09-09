@@ -48,7 +48,7 @@ def test_directory_asinput(td, mp):
     root = td.tmpdir
     run_foldme('--directory_input', {}, td, mp)
 
-    written = os.path.join(root, 'foldme__directory_input_message.yaml')
+    written = utilo.join(root, 'foldme__directory_input_message.yaml')
     loaded = utilo.file_read(written)
     assert loaded.endswith('iamadirectory'), loaded
 
@@ -75,7 +75,7 @@ def test_custom_output_folder_file(td, mp):
         td,
         mp,
     )
-    expected = os.path.join(td.tmpdir, 'helm/iamsounique.txt')
+    expected = utilo.join(td.tmpdir, 'helm/iamsounique.txt')
     assert os.path.exists(expected), str(expected)
 
 
@@ -89,5 +89,5 @@ def test_custom_output_folder_different_datatype(td, mp):
         mp,
     )
     for item in ('0.txt', '1.fdp', '2.png'):
-        expected = os.path.join(td.tmpdir, f'schelm/{item}')
+        expected = utilo.join(td.tmpdir, f'schelm/{item}')
         assert os.path.exists(expected), str(expected)

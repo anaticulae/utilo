@@ -99,18 +99,18 @@ INVALID_WORKPLAN = [
 
 def cli_example(td, example=EXAMPLE):
     root = str(td)
-    example_path = os.path.join(root, 'example')
+    example_path = utilo.join(root, 'example')
     os.makedirs(example_path)
-    featurepath = os.path.join(example_path, 'features')
+    featurepath = utilo.join(example_path, 'features')
     os.makedirs(featurepath)
 
-    cli_example_feature = os.path.join(featurepath, 'cli_example.py')
+    cli_example_feature = utilo.join(featurepath, 'cli_example.py')
     utilo.file_create(cli_example_feature, example)
 
-    cli_example_feature_init = os.path.join(featurepath, '__init__.py')
+    cli_example_feature_init = utilo.join(featurepath, '__init__.py')
     utilo.file_create(cli_example_feature_init, '')
 
-    cli_example_init = os.path.join(example_path, '__init__.py')
+    cli_example_init = utilo.join(example_path, '__init__.py')
     utilo.file_create(cli_example_init, '')
 
     sys.path.append(root)
@@ -254,14 +254,14 @@ def test_cli_multiple_input(
     cli_example(td)
     root = str(td)
     # remove file out of first example to test multiple -i sources
-    first_yaml = os.path.join(root, 'first.yaml')
+    first_yaml = utilo.join(root, 'first.yaml')
     assert os.path.exists(first_yaml), first_yaml
     utilo.file_remove(first_yaml)
     assert not os.path.exists(first_yaml), first_yaml
-    second_input = os.path.join(root, 'second')
+    second_input = utilo.join(root, 'second')
     os.makedirs(second_input)
     if create_missing_input:
-        second_first_yaml = os.path.join(second_input, 'first.yaml')
+        second_first_yaml = utilo.join(second_input, 'first.yaml')
         assert not os.path.exists(second_first_yaml), second_first_yaml
         utilo.file_create(second_first_yaml)
         assert os.path.exists(second_first_yaml), second_first_yaml
@@ -283,9 +283,9 @@ def test_cli_multiple_input_with_double_input(
     """Test that resources exists in both input source"""
     cli_example(td)
     root = str(td)
-    second_input = os.path.join(root, 'second')
+    second_input = utilo.join(root, 'second')
     os.makedirs(second_input)
-    third_path = os.path.join(second_input, 'third.yaml')
+    third_path = utilo.join(second_input, 'third.yaml')
     utilo.file_create(third_path)
     assert os.path.exists(third_path)
     inputcmd = f'-i {root} -i {second_input} -VVV'
@@ -323,7 +323,7 @@ def test_workplan_multiple_returnvalues(td, mp, capsys):  # pylint:disable=W0621
         out, err = capsys.readouterr()
     assert utilo.returncode(result) == utilo.SUCCESS, str(out) + str(err)
     path = str(td)
-    pages = os.path.join(path, 'cli_example__multistep_pages')
+    pages = utilo.join(path, 'cli_example__multistep_pages')
     assert os.path.exists(pages), str(pages)
     # test to create multiple return files
     created_files = os.listdir(pages)

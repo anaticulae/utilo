@@ -48,7 +48,7 @@ def test_chdir(td):
     exceptions are handled correctly."""
     root = str(td)
 
-    folder = os.path.join(root, 'folder')
+    folder = utilo.join(root, 'folder')
     os.makedirs(folder)
     assert os.path.exists(folder)
 
@@ -75,7 +75,7 @@ def test_chdir_to_filepath(td):
     """Test to change to a file location with contextmanager."""
     root = str(td)
 
-    filepath = os.path.join(root, 'hello')
+    filepath = utilo.join(root, 'hello')
     utilo.file_create(filepath)
 
     assert os.path.exists(filepath)
