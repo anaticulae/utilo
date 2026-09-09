@@ -18,13 +18,13 @@ import utilo.file.securewrapper
 
 
 def test_file_append_assert(tmpdir):
-    first = os.path.join(tmpdir, 'abc.txt')
+    first = utilo.join(tmpdir, 'abc.txt')
     with pytest.raises(AssertionError):
         utilo.file_append(first, '')
 
 
 def test_file_append_create(tmpdir):
-    first = os.path.join(tmpdir, 'abc.txt')
+    first = utilo.join(tmpdir, 'abc.txt')
     utilo.file_append(first, 'BBB', create=True)
     assert os.path.exists(first)
 
@@ -40,7 +40,7 @@ def test_file_from_path_or_raw(tmpdir):
         load and write
     """
 
-    path = os.path.join(tmpdir, 'example.yaml')
+    path = utilo.join(tmpdir, 'example.yaml')
     utilo.file_create(path, content)
 
     from_path = utilo.from_raw_or_path(path)
@@ -122,13 +122,13 @@ def test_file_assert_html_files():
 @pytest.fixture
 def content_folder(tmpdir):
     root = str(tmpdir)
-    utilo.file_create(os.path.join(root, 'test.txt'))
-    utilo.file_create(os.path.join(root, 'abc.txt'))
-    utilo.file_create(os.path.join(root, 'www.txt'))
+    utilo.file_create(utilo.join(root, 'test.txt'))
+    utilo.file_create(utilo.join(root, 'abc.txt'))
+    utilo.file_create(utilo.join(root, 'www.txt'))
 
-    os.makedirs(os.path.join(root, 'abc', 'def', 'ghi', 'jklm'))
-    utilo.file_create(os.path.join(root, 'abc/def/ghi/www.txt'))
-    utilo.file_create(os.path.join(root, 'abc/def/ghi/jklm/ggg.txt'))
+    os.makedirs(utilo.join(root, 'abc', 'def', 'ghi', 'jklm'))
+    utilo.file_create(utilo.join(root, 'abc/def/ghi/www.txt'))
+    utilo.file_create(utilo.join(root, 'abc/def/ghi/jklm/ggg.txt'))
     return root
 
 
@@ -137,13 +137,13 @@ def test_file_copy_content_recursive(td, content_folder):  #pylint:disable=W0621
     goal = str(td)
     utilo.copy_content(content_folder, goal, recursive=True)
 
-    assert os.path.exists(os.path.join(goal, 'test.txt'))
-    assert os.path.exists(os.path.join(goal, 'abc.txt'))
-    assert os.path.exists(os.path.join(goal, 'www.txt'))
+    assert os.path.exists(utilo.join(goal, 'test.txt'))
+    assert os.path.exists(utilo.join(goal, 'abc.txt'))
+    assert os.path.exists(utilo.join(goal, 'www.txt'))
 
-    assert os.path.exists(os.path.join(goal, 'abc/def/ghi/jklm'))
-    assert os.path.exists(os.path.join(goal, 'abc/def/ghi/www.txt'))
-    assert os.path.exists(os.path.join(goal, 'abc/def/ghi/jklm/ggg.txt'))
+    assert os.path.exists(utilo.join(goal, 'abc/def/ghi/jklm'))
+    assert os.path.exists(utilo.join(goal, 'abc/def/ghi/www.txt'))
+    assert os.path.exists(utilo.join(goal, 'abc/def/ghi/jklm/ggg.txt'))
 
 
 def test_file_copy_content_verbose(td, content_folder, capsys):  #pylint:disable=W0621
@@ -162,11 +162,11 @@ def test_file_copy_content_recursive_false(td, content_folder):  #pylint:disable
     goal = str(td)
     utilo.copy_content(content_folder, goal, recursive=False)
 
-    assert os.path.exists(os.path.join(goal, 'test.txt'))
-    assert os.path.exists(os.path.join(goal, 'abc.txt'))
-    assert os.path.exists(os.path.join(goal, 'www.txt'))
+    assert os.path.exists(utilo.join(goal, 'test.txt'))
+    assert os.path.exists(utilo.join(goal, 'abc.txt'))
+    assert os.path.exists(utilo.join(goal, 'www.txt'))
 
-    assert os.path.exists(os.path.join(goal, 'abc'))
+    assert os.path.exists(utilo.join(goal, 'abc'))
 
 
 @pytest.mark.parametrize(
@@ -196,7 +196,7 @@ def test_file_copy_content_pattern(
     content_folder,
 ):  # pylint:disable=W0621
     source = content_folder
-    utilo.file_create(os.path.join(source, 'hallotxt'))
+    utilo.file_create(utilo.join(source, 'hallotxt'))
 
     root = str(td)
 
@@ -206,7 +206,7 @@ def test_file_copy_content_pattern(
 
 
 def test_file_replace_file(td):
-    path = os.path.join(str(td), 'file.txt')
+    path = utilo.join(str(td), 'file.txt')
     assert not os.path.exists(path)
 
     utilo.file_replace(path, 'Content')
@@ -226,17 +226,17 @@ def test_file_copy_content_file_to_directory(td):
     td = str(td)
     filename = 'abc.txt'
     utilo.file_create(filename)
-    destination = os.path.join(td, 'destination')
+    destination = utilo.join(td, 'destination')
     utilo.copy_content(filename, destination)
 
-    assert os.path.exists(os.path.join(destination, filename))
+    assert os.path.exists(utilo.join(destination, filename))
 
 
 def test_file_copy_content_file_to_file(td):
     td = str(td)
     filename = 'abc.txt'
     utilo.file_create(filename)
-    destination = os.path.join(td, 'cba.txt')
+    destination = utilo.join(td, 'cba.txt')
     utilo.copy_content(filename, destination)
 
     assert os.path.exists(destination)
@@ -246,7 +246,7 @@ def test_file_copy_content_directory_to_directory(td):
     td = str(td)
     folder = prepare_example(td)
 
-    goal = os.path.join(td, 'goal')
+    goal = utilo.join(td, 'goal')
     utilo.copy_content(folder, goal)
 
     assert len(os.listdir(goal)) == 3, os.listdir(goal)
@@ -277,14 +277,14 @@ def test_file_copy_content_access_error(
     TODO: refactor/simplify with: file_lock/file_unlock
     """
     root = str(td)
-    source = os.path.join(root, 'source')
-    sink = os.path.join(root, 'sink')
+    source = utilo.join(root, 'source')
+    sink = utilo.join(root, 'sink')
 
     for item in (source, sink):
         os.makedirs(item)
-        pdf = os.path.join(item, 'single.pdf')
+        pdf = utilo.join(item, 'single.pdf')
         utilo.file_create(pdf)
-    notdouble = os.path.join(source, 'not_double.pdf')
+    notdouble = utilo.join(source, 'not_double.pdf')
     utilo.file_create(notdouble)
 
     def copy(source, _, private: bool = False):  # pylint:disable=W0613
@@ -330,11 +330,11 @@ def test_file_copy_lock_withlock(testdir):
 
 
 def prepare_example(directory):
-    folder = os.path.join(directory, 'first')
+    folder = utilo.join(directory, 'first')
 
-    folder_abc = os.path.join(folder, 'abc.txt')
-    folder_def = os.path.join(folder, 'def.txt')
-    folder_ghi = os.path.join(folder, 'ghi.txt')
+    folder_abc = utilo.join(folder, 'abc.txt')
+    folder_def = utilo.join(folder, 'def.txt')
+    folder_ghi = utilo.join(folder, 'ghi.txt')
 
     os.makedirs(folder)
     for item in (
@@ -412,8 +412,8 @@ def test_file_yaml_path_given():
 def test_file_compare(first_content, second_content, expected_result, td):
     root = str(td)
 
-    first = os.path.join(root, 'first')
-    second = os.path.join(root, 'second')
+    first = utilo.join(root, 'first')
+    second = utilo.join(root, 'second')
     utilo.file_create(first, first_content)
     utilo.file_create(second, second_content)
     equals = utilo.file_compare(first, second)
@@ -422,7 +422,7 @@ def test_file_compare(first_content, second_content, expected_result, td):
 
 def test_file_compare_binary_file(td):
     root = str(td)
-    utf32 = os.path.join(root, 'example.utf32')
+    utf32 = utilo.join(root, 'example.utf32')
     with open(utf32, mode='w', encoding='utf32') as fp:
         fp.write('\u1234')
     equal = utilo.file_compare(utf32, __file__)
@@ -440,7 +440,7 @@ def test_file_compare_not_exists():
 
 def test_file_lock(td):
     root = str(td)
-    first = os.path.join(root, 'locked.abc')
+    first = utilo.join(root, 'locked.abc')
     utilo.file_create(first, 'file to lock')
     assert not utilo.file_islocked(first)
     utilo.file_lock(first)
@@ -477,16 +477,16 @@ def test_file_make_package_root():
 
 def test_file_copy_single_file(td):
     root = str(td)
-    source = os.path.join(root, 'source')
-    dest = os.path.join(root, 'destination')
+    source = utilo.join(root, 'source')
+    dest = utilo.join(root, 'destination')
     os.makedirs(source)
     os.makedirs(dest)
 
-    sourcefile = os.path.join(source, 'hello')
+    sourcefile = utilo.join(source, 'hello')
     utilo.file_create(sourcefile)
 
     utilo.file_copy(sourcefile, dest)
-    assert os.path.exists(os.path.join(dest, 'hello'))
+    assert os.path.exists(utilo.join(dest, 'hello'))
 
 
 def test_file_copy_content_mult(td):
@@ -538,7 +538,7 @@ def test_file_tmpdir():
 
 
 def test_file_replace_binary(tmpdir):
-    path = os.path.join(tmpdir, 'file.hex')
+    path = utilo.join(tmpdir, 'file.hex')
     utilo.file_replace_binary(path, b'Helm')
     # replace content
     utilo.file_replace_binary(path, b'Helm2')
@@ -580,8 +580,8 @@ def test_make_tmpdir():
 def test_make_tmpdir_remove():
     with utilo.make_tmpdir(utilo.ROOT, remove=True) as tmp_dir:
         assert os.path.exists(tmp_dir)
-        os.makedirs(os.path.join(tmp_dir, 'recursive_path'))
-        utilo.file_create(os.path.join(tmp_dir, 'helm.txt'))
+        os.makedirs(utilo.join(tmp_dir, 'recursive_path'))
+        utilo.file_create(utilo.join(tmp_dir, 'helm.txt'))
     assert not os.path.exists(tmp_dir), tmp_dir
 
 

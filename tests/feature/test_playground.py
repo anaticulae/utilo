@@ -36,7 +36,7 @@ def run_playground(
     capsys=None,
 ):
     import tests.examples.featurepack.testfield.playground as exe  # pylint:disable=C0415
-    utilo.file_create(os.path.join(str(td), 'infile.yaml'))
+    utilo.file_create(utilo.join(str(td), 'infile.yaml'))
     result = tests.feature.runner.run_featurepack(
         cmd=cmd,
         main=main,
@@ -82,7 +82,7 @@ def test_feature_playground_cli_quite(quite, td, mp, capsys):
 
 def test_feature_playground_pass_config_file(td, mp, capsys):
     """Test overwriting global flag in input parameter of working step."""
-    config = str(os.path.join(td.tmpdir, 'config.cfg'))
+    config = str(utilo.join(td.tmpdir, 'config.cfg'))
 
     utilo.file_create(
         config, """\
@@ -126,7 +126,7 @@ def test_feature_playground_pass_flag(flag, td, mp, capsys):
 def test_write_binary_data(td, mp):
     # test writing hex file
     run_playground('--binary', {}, td, mp)
-    expected_path = os.path.join(td.tmpdir, 'testfield__binary_binary.hex')
+    expected_path = utilo.join(td.tmpdir, 'testfield__binary_binary.hex')
     binary = utilo.file_read_binary(expected_path)
     assert binary == b'I Love Binaries.', binary
 
@@ -141,7 +141,7 @@ def test_write_list_of_tuple(td, mp):
         'testfield__multiple_1_info.yaml',
         'testfield__multiple_1_binary.hex',
     ]
-    expected = [os.path.join(td.tmpdir, item) for item in expected]
+    expected = [utilo.join(td.tmpdir, item) for item in expected]
     for item in expected:
         assert os.path.exists(item), str(item)
 
@@ -149,7 +149,7 @@ def test_write_list_of_tuple(td, mp):
 def test_write_selective_datatype(td, mp):
     with utilotest.increased_filecount(td.tmpdir, mindiff=2, maxdiff=2):
         run_playground('--datatype', {}, td, mp)
-    path = os.path.join(td.tmpdir, 'testfield__datatype_selected.txt')
+    path = utilo.join(td.tmpdir, 'testfield__datatype_selected.txt')
     assert os.path.exists(path), path
     written = utilo.file_read(path)
     assert written == 'CONTENT', written
@@ -166,7 +166,7 @@ def test_write_selective_datatype_multi(td, mp):
         run_playground('--datatype_multi', {}, td, mp)
 
     for content, filename in expected:
-        path = os.path.join(td.tmpdir, filename)
+        path = utilo.join(td.tmpdir, filename)
         assert os.path.exists(path), path
         written = utilo.file_read_binary(path)
         assert written == content, written
@@ -176,7 +176,7 @@ def test_write_selective_datatype_multi(td, mp):
 def test_write_binary_data_disable(td, mp):
     # test writing hex file
     run_playground('--binary!', {}, td, mp)
-    expected_path = os.path.join(td.tmpdir, 'testfield__binary_binary.hex')
+    expected_path = utilo.join(td.tmpdir, 'testfield__binary_binary.hex')
     assert not os.path.exists(expected_path)
 
 
@@ -185,7 +185,7 @@ def test_write_binary_data_all_and_disable(td, mp):
     # test writing hex file
     with utilotest.increased_filecount(mindiff=3):
         run_playground('--binary! --all', {}, td, mp)
-    expected_path = os.path.join(td.tmpdir, 'testfield__binary_binary.hex')
+    expected_path = utilo.join(td.tmpdir, 'testfield__binary_binary.hex')
     assert not os.path.exists(expected_path)
 
 

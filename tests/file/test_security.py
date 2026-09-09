@@ -7,21 +7,19 @@
 # be prosecuted under federal law. Its content is company confidential.
 # =============================================================================
 
-import os
-
 import utilo
 
 
 def test_file_create_private_str(td):
     content = 'This is Helmut.'
-    path = os.path.join(td.tmpdir, 'helm.txt')
+    path = utilo.join(td.tmpdir, 'helm.txt')
     utilo.file_create(path, content, private=True)
     assert utilo.file_read(path) == content
 
 
 def test_file_append_private_str(td):
     content = 'This is Helmut.'
-    path = os.path.join(td.tmpdir, 'helm.txt')
+    path = utilo.join(td.tmpdir, 'helm.txt')
     utilo.file_append(path, content, create=True, private=True)
     utilo.file_append(path, content, private=True)
     utilo.file_append(path, content, private=True)
@@ -30,7 +28,7 @@ def test_file_append_private_str(td):
 
 def test_file_create_private_binary(td):
     content = b'This is Helmut.'
-    path = os.path.join(td.tmpdir, 'helm.txt')
+    path = utilo.join(td.tmpdir, 'helm.txt')
     utilo.file_create_binary(path, content, private=True)
     assert utilo.file_read_binary(path) == content
 

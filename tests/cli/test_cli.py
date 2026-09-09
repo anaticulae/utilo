@@ -87,7 +87,7 @@ def test_cli_non_existing_input(tmpdir, mp):
 
 def test_cli_non_existing_output(tmpdir, mp):
     """First invocation creates the folder, second invocation use it"""
-    expected_out = os.path.join(tmpdir.strpath, 'abc')
+    expected_out = utilo.join(tmpdir.strpath, 'abc')
     _, outpath = create_and_run_parser(
         tmpdir,
         mp,
@@ -113,22 +113,22 @@ def test_cli_existing_input(tmpdir, mp):
 
 
 def test_cli_relative_output(tmpdir, mp):
-    os.makedirs(os.path.join(tmpdir, 'abc'))
+    os.makedirs(utilo.join(tmpdir, 'abc'))
     create_and_run_parser(
         tmpdir,
         mp,
         ['-o', './abc'],
     )
-    assert os.path.exists(os.path.join(tmpdir, 'abc'))
+    assert os.path.exists(utilo.join(tmpdir, 'abc'))
 
 
 def test_cli_file_as_output(tmpdir, mp):
-    utilo.file_create(os.path.join(tmpdir, 'test.txt'), 'I am a file.')
+    utilo.file_create(utilo.join(tmpdir, 'test.txt'), 'I am a file.')
     with pytest.raises(SystemExit) as result:
         create_and_run_parser(
             tmpdir,
             mp,
-            ['-o', os.path.join(tmpdir, 'test.txt')],
+            ['-o', utilo.join(tmpdir, 'test.txt')],
         )
     assert utilo.returncode(result) == 2, str(result)
 
@@ -146,7 +146,7 @@ parser.parse_args()
 
 
 def test_cli_parse_required_command_missing(tmpdir):
-    runner = os.path.join(tmpdir, 'run.py')
+    runner = utilo.join(tmpdir, 'run.py')
     utilo.file_create(runner, RUN_ME % utilo.forward_slash(utilo.ROOT))
 
     command = f'python "{runner}"'
@@ -158,7 +158,7 @@ def test_cli_parse_required_command_missing(tmpdir):
 
 
 def test_cli_parse_required_command(tmpdir):
-    runner = os.path.join(tmpdir, 'run.py')
+    runner = utilo.join(tmpdir, 'run.py')
     utilo.file_create(runner, RUN_ME % utilo.forward_slash(utilo.ROOT))
     command = f'python "{runner}" -a Samba'
     completed = utilotest.run(command, tmpdir)  # pylint:disable=W0612
@@ -183,7 +183,7 @@ print(sources(args))
 
 @pytest.fixture
 def parser_example(tmpdir):
-    runner = os.path.join(tmpdir, 'empty.py')
+    runner = utilo.join(tmpdir, 'empty.py')
     config = ("config=ParserConfiguration('inputparameter=True, "
               "outputparameter=True')")
     content = EMPTY_PARSER % (utilo.forward_slash(utilo.ROOT), config)
@@ -222,7 +222,7 @@ def test_cli_parse_empty_parser_version(parser_example):  # pylint: disable=W062
 def test_cli_parse_version_parser_version(tmpdir):
     """Test version parser with --version flag"""
     version = "1.1.1"
-    runner = os.path.join(tmpdir, 'version.py')
+    runner = utilo.join(tmpdir, 'version.py')
 
     root = utilo.forward_slash(utilo.ROOT)
     config = (f'version="{version}", prog="testo",'
@@ -282,7 +282,7 @@ def test_cli_singlefile_input(td, mp, singlefile):
     """
     root = str(td)
     # Create input file
-    filepath = os.path.join(root, 'sample.txt')
+    filepath = utilo.join(root, 'sample.txt')
     utilo.file_create(filepath)
 
     # read root

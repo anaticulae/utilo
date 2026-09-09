@@ -15,17 +15,25 @@ import utilo
 BAW = '.baw'
 
 
-def baw_root(path: str) -> str:
+def baw_root(path: str, fail: bool = False) -> str:
     """Go upwards till project config file occurs.
 
     >>> baw_root(__file__)
     '...'
+    >>> baw_root('/does/not/exists/', fail=True)
+    Traceback (most recent call last):
+    ...
+    SystemExit: 1
+    >>> baw_root('/does/not/exists/', fail=False) is None
+    True
     """
     current = str(path)
-    while not utilo.exists(utilo.join(current, BAW)):  # pylint:disable=W0149
+    while not utilo.exists(utilo.join(current, BAW)):
         current, base = os.path.split(current)
         if not str(base).strip():
             # root of file sytem
+            if fail:
+                utilo.exitx('could not determine .baw file')
             return None
     return current
 

@@ -11,7 +11,7 @@ import os
 
 import utilo
 
-ROOT = os.path.abspath(os.path.join(os.path.dirname(__file__), '..'))
+ROOT = os.path.abspath(utilo.join(os.path.dirname(__file__), '..'))
 VERSION = '2.33.7'
 PROCESS = 'foldme'
 WORKPLAN = [

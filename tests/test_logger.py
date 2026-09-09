@@ -7,14 +7,12 @@
 # be prosecuted under federal law. Its content is company confidential.
 # =============================================================================
 
-import os
 import time
 
 import pytest
 import utilotest
 
 import utilo
-import utilo.logger
 
 
 def test_skipcollector():
@@ -166,7 +164,7 @@ def test_level_setup():
 
 
 def test_outfile(td):
-    logger = os.path.join(td.tmpdir, 'logging.txt')
+    logger = utilo.join(td.tmpdir, 'logging.txt')
     with utilo.outfile_tmp(logger):
         utilo.log('First Line')
         utilo.log('Second Line')
@@ -179,7 +177,7 @@ def test_outfile(td):
 
 
 def test_outfile_delete_double(td):
-    logger = os.path.join(td.tmpdir, 'logging.txt')
+    logger = utilo.join(td.tmpdir, 'logging.txt')
     with utilo.outfile_tmp(logger):
         utilo.outfile_setup(None)
         utilo.outfile_setup(None)
