@@ -1,6 +1,19 @@
 # CHANGELOG
 
 
+## v2.111.0 (2026-09-09)
+
+### Features
+
+- **baw**: Add option to raise sys exit if path does not exists
+  ([`a88e3de`](https://github.com/anaticulae/utilo/commit/a88e3de14a057a87fae588c8d9304bcb920a16a0))
+
+### Refactoring
+
+- **test**: Use utilo code
+  ([`a38d9a6`](https://github.com/anaticulae/utilo/commit/a38d9a6671b82f793ce26d5fe32143e8db366e03))
+
+
 ## v2.110.2 (2026-08-22)
 
 ### Bug Fixes
