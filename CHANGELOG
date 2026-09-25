@@ -1,6 +1,32 @@
 # CHANGELOG
 
 
+## v2.112.0 (2026-09-25)
+
+### Chores
+
+- **pyproject**: Add filelock dependency
+  ([`b28e250`](https://github.com/anaticulae/utilo/commit/b28e2508547160c2229f8b550b31d7cea3cac6c3))
+
+### Features
+
+- **file**: Add file lock while file create and check
+  ([`e52c22a`](https://github.com/anaticulae/utilo/commit/e52c22a33374281ced11b45c3b224ea69d48db6f))
+
+### Refactoring
+
+- **securewrappper**: Adjust import
+  ([`492c881`](https://github.com/anaticulae/utilo/commit/492c8811da22fec106d23ab4f99733405108b614))
+
+### Testing
+
+- **file**: Verify file mode after creation
+  ([`f331176`](https://github.com/anaticulae/utilo/commit/f33117692fd841ea48332f4a3878a7f0132b307d))
+
+- **refactor**: Simplify code
+  ([`4e8125b`](https://github.com/anaticulae/utilo/commit/4e8125b5c364c7c1036cf11b5634064f1c7acd72))
+
+
 ## v2.111.0 (2026-09-09)
 
 ### Features
