@@ -276,10 +276,8 @@ def test_file_copy_content_access_error(
 
     TODO: refactor/simplify with: file_lock/file_unlock
     """
-    root = str(td)
-    source = utilo.join(root, 'source')
-    sink = utilo.join(root, 'sink')
-
+    source = utilo.join(td.tmpdir, 'source')
+    sink = utilo.join(td.tmpdir, 'sink')
     for item in (source, sink):
         os.makedirs(item)
         pdf = utilo.join(item, 'single.pdf')
