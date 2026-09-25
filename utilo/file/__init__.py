@@ -21,6 +21,8 @@ import stat
 import sys
 import tempfile
 
+import filelock
+
 import utilo
 import utilo.file.securewrapper
 import utilo.typechecker
@@ -82,11 +84,22 @@ def file_append(path: str, content: str, create: bool = False, private: bool = F
         fp.write(content)
 
 
+@contextlib.contextmanager
+def lock_file(path: str, lock: bool = True):  # pylint:disable=unused-argument
+    if not lock:
+        yield
+        return
+    lockpath = utilo.tmpfile(root=tmp('/utilo'))
+    with filelock.FileLock(lockpath):
+        yield
+
+
 def file_create(
     path: str,
     content: str = '',
     private: bool = False,
-    base: str = None,
+    base: str | None = None,
+    lock: bool = True,
 ):
     """Create file `path` with the content `content`
 
@@ -94,23 +107,25 @@ def file_create(
         path(str): path to write file, path must not exists
         content(str): content to write in given `path`
         private(bool): if True, use encryption
-        base(str): add base to path
+        base(str | None): add base to path
+        lock(bool): if True use FileLock to protect file create
     Hint:
         If file exists, an assertion is raised.
     """
     if base:
         path = utilo.join(base, path)
-    parent = utilo.path_parent(path)
-    assert os.path.exists(parent) or not parent, f'{parent} does not exists'
-    assert not os.path.exists(path), f'{path} already exists'
-    with utilo.file.securewrapper.open(
-            path,
-            mode='w',
-            newline=utilo.NL,
-            encoding=utilo.U8,
-            private=private,
-    ) as fp:
-        fp.write(content)
+    with lock_file(path, lock=lock):
+        parent = utilo.path_parent(path)
+        assert os.path.exists(parent) or not parent, f'{parent} does not exists'
+        assert not os.path.exists(path), f'{path} already exists'
+        with utilo.file.securewrapper.open(
+                path,
+                mode='w',
+                newline=utilo.NL,
+                encoding=utilo.U8,
+                private=private,
+        ) as fp:
+            fp.write(content)
 
 
 def file_create_tmp(
@@ -141,40 +156,64 @@ def file_create_tmp(
     return path
 
 
-def file_create_binary(path: str, content: bytes = b'', private: bool = False):
+def file_create_binary(
+    path: str,
+    content: bytes = b'',
+    private: bool = False,
+    lock: bool = True,
+):
     """Create file `path` with the content `content`
 
     Args:
         path(str): path to write file, path must not exists
         content(str): content to write in given `path`
         private(bool): if True, use encryption
+        lock(bool): if True use FileLock to protect file create
     Hint:
         If file already exists, an assertion is raised.
     """
     parent = utilo.path_parent(path)
-    assert os.path.exists(parent) or not parent, f'{parent} does not exists'
-    assert not os.path.exists(path), f'{path} already exists'
-    with utilo.file.securewrapper.open(path, mode='wb', private=private) as fp:
-        fp.write(content)
+    with lock_file(path, lock=lock):
+        assert os.path.exists(parent) or not parent, f'{parent} does not exists'
+        assert not os.path.exists(path), f'{path} already exists'
+        with utilo.file.securewrapper.open(
+                path,
+                mode='wb',
+                private=private,
+        ) as fp:
+            fp.write(content)
 
 
-def file_read(path: str, size: int = -1, private: bool = False):
-    utilo.exists_assert(path)
-    with utilo.file.securewrapper.open(
-            path,
-            mode='r',
-            newline=utilo.NL,
-            encoding=utilo.U8,
-            private=private,
-    ) as fp:
-        return fp.read(size)
+def file_read(
+    path: str,
+    size: int = -1,
+    private: bool = False,
+    lock: bool = True,
+):
+    with lock_file(path, lock=lock):
+        utilo.exists_assert(path)
+        with utilo.file.securewrapper.open(
+                path,
+                mode='r',
+                newline=utilo.NL,
+                encoding=utilo.U8,
+                private=private,
+        ) as fp:
+            return fp.read(size)
 
 
-def file_read_binary(path: str, size: int = -1, private: bool = False) -> bytes:
+def file_read_binary(
+    path: str,
+    size: int = -1,
+    private: bool = False,
+    lock: bool = True,
+) -> bytes:
     """Read binary file content"""
-    utilo.exists_assert(path)
-    with utilo.file.securewrapper.open(path, mode='rb', private=private) as fp:
-        content = fp.read(size)
+    with lock_file(path, lock=lock):
+        utilo.exists_assert(path)
+        with utilo.file.securewrapper.open(path, mode='rb',
+                                           private=private) as fp:
+            content = fp.read(size)
     return content
 
 
@@ -186,33 +225,44 @@ def file_remove(path: str):
     os.remove(path)
 
 
-def file_replace(path: str, content: str, private: bool = False):
+def file_replace(
+    path: str,
+    content: str,
+    private: bool = False,
+    lock: bool = True,
+):
     """Replace file content.
 
     Args:
         path(str): path to file
         content(str): content to write
         private(bool): if True, use encryption
+        lock(bool): if True use FileLock to protect file create
 
     1. If not exit, create file
     2. If exists,   compare content, if changed than replace
                                      if not, do nothing
     """
-    if not os.path.exists(path):
-        file_create(path, content, private=private)
-        return
-    current_content = file_read(path, private=private)
-    if current_content == content:
-        return
-
-    with utilo.file.securewrapper.open(
-            path,
-            mode='w',
-            newline=utilo.NL,
-            encoding=utilo.U8,
-            private=private,
-    ) as fp:
-        fp.write(content)
+    with lock_file(path, lock=lock):
+        if not os.path.exists(path):
+            file_create(
+                path,
+                content,
+                private=private,
+                lock=False,
+            )
+            return
+        current_content = file_read(path, private=private)
+        if current_content == content:
+            return
+        with utilo.file.securewrapper.open(
+                path,
+                mode='w',
+                newline=utilo.NL,
+                encoding=utilo.U8,
+                private=private,
+        ) as fp:
+            fp.write(content)
 
 
 def file_replace_binary(path: str, content: bytes, private: bool = False):
@@ -227,15 +277,19 @@ def file_replace_binary(path: str, content: bytes, private: bool = False):
     2. If exists,   compare content, if changed than replace
                                      if not, do nothing
     """
-    if not os.path.exists(path):
-        file_create_binary(path, content, private=private)
-        return
-    current_content = file_read_binary(path, private=private)
-    if current_content == content:
-        return
-
-    with utilo.file.securewrapper.open(path, mode='wb', private=private) as fp:
-        fp.write(content)
+    with lock_file(path, lock=True):
+        if not os.path.exists(path):
+            file_create_binary(path, content, private=private)
+            return
+        current_content = file_read_binary(path, private=private)
+        if current_content == content:
+            return
+        with utilo.file.securewrapper.open(
+                path,
+                mode='wb',
+                private=private,
+        ) as fp:
+            fp.write(content)
 
 
 def file_compare(first: str, second: str) -> bool:
@@ -539,7 +593,7 @@ def tmpfile(root):
     Returns:
         filepath(str): to tempfile in TMPDIR
     """
-    assert root is None or os.path.exists(root)
+    assert root is None or os.path.exists(root), f'root: {root}'
     tmpfolder = tmp(root)
     name = tmpname()
     path = os.path.join(tmpfolder, name)

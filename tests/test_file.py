@@ -276,10 +276,8 @@ def test_file_copy_content_access_error(
 
     TODO: refactor/simplify with: file_lock/file_unlock
     """
-    root = str(td)
-    source = utilo.join(root, 'source')
-    sink = utilo.join(root, 'sink')
-
+    source = utilo.join(td.tmpdir, 'source')
+    sink = utilo.join(td.tmpdir, 'sink')
     for item in (source, sink):
         os.makedirs(item)
         pdf = utilo.join(item, 'single.pdf')
@@ -594,3 +592,13 @@ def test_inform_file_permission(tmpdir, capsys):
     with pytest.raises(PermissionError, match='Permission denied'):
         utilo.file_append(path, content='data')
     assert 'HINT: Ensure that' in utilotest.stderr(capsys)
+
+
+def test_file_create_owner(tmpdir):
+    path = utilo.join(tmpdir, 'file.txt')
+    utilo.file_create(path)
+    info = os.stat(path)
+    mode = info.st_mode
+    # -rw-rw-r-- local
+    # -rw-r--r-- github
+    assert mode in {33204, 33188}

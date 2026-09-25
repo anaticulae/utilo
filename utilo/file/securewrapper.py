@@ -110,12 +110,12 @@ def copy(src, dst, private: bool = False):
         COPY(src, dst)
         return
     header = utilo.file_read_binary(src)
-    header = header[0:len(utilo.file.securewrapper.HEADER_STR)]
-    if header == utilo.file.securewrapper.HEADER_STR:
+    header = header[0:len(HEADER_STR)]
+    if header == HEADER_STR:
         content = utilo.file_read(src, private=True)
         utilo.file_replace(dst, content, private=True)
         return
-    if header == utilo.file.securewrapper.HEADER_BIN:
+    if header == HEADER_BIN:
         content = utilo.file_read_binary(src, private=True)
         utilo.file_replace_binary(dst, content, private=True)
         return
