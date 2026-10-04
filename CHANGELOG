@@ -1,6 +1,32 @@
 # CHANGELOG
 
 
+## v2.112.1 (2026-10-04)
+
+### Bug Fixes
+
+- **file**: Lock file correctly
+  ([`5cad60d`](https://github.com/anaticulae/utilo/commit/5cad60dd062e6e60779d015fa6c54534dd8d015b))
+
+### Code Style
+
+- **file**: Format code
+  ([`259aa98`](https://github.com/anaticulae/utilo/commit/259aa98c000df11351a7fd911ed9629ac38e7b4f))
+
+- **make**: Format code
+  ([`7eea578`](https://github.com/anaticulae/utilo/commit/7eea57889913aa720923f379392a9bfddc8ce440))
+
+### Documentation
+
+- **string**: Extend documentation
+  ([`ae07294`](https://github.com/anaticulae/utilo/commit/ae07294a20a10e724f3669386531248d3d444da5))
+
+### Testing
+
+- **playground**: Simplify test code
+  ([`adadbd5`](https://github.com/anaticulae/utilo/commit/adadbd53191b370314f6c87db9c52c22847b9e30))
+
+
 ## v2.112.0 (2026-09-25)
 
 ### Chores
