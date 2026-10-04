@@ -203,9 +203,9 @@ def test_run_hashed_step(td, mp):
 
 
 def test_run_hashed_multi_step(td, mp):
+    path = utilo.join(td.tmpdir, 'testfield__hashed_multi_figures')
     with utilotest.increased_filecount(mindiff=6):
         run_playground('--hashed_multi', {}, td, mp)
-
     expected = set([
         b'info: yaml',
         b'content',
@@ -214,11 +214,10 @@ def test_run_hashed_multi_step(td, mp):
         b'third yaml',
         b'third content',
     ])
-
-    with utilo.chdir('testfield__hashed_multi_figures'):
-        current = utilo.file_list('.')
-        assert len(current) == len(expected)
-        content = {utilo.file_read_binary(item) for item in current}
+    with utilo.chdir(path):
+        current = utilo.file_list(path=path, absolute=True)
+    assert len(current) == len(expected)
+    content = {utilo.file_read_binary(item) for item in current}
     assert content == expected
 
 

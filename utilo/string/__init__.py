@@ -386,6 +386,8 @@ def simple(item: str, maxlength: int = 25) -> str:
 
     >>> simple('No spaces _+; 133')
     'Nospaces133'
+    >>> simple('/c/windows/tmp/abc/test.txt')
+    'cwindowstmpabctesttxt'
     """
     item = utilo.fix_encoding(item)
     item = item.translate(SIMPLIFY)

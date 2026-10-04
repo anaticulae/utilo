@@ -85,12 +85,14 @@ def file_append(path: str, content: str, create: bool = False, private: bool = F
 
 
 @contextlib.contextmanager
-def lock_file(path: str, lock: bool = True):  # pylint:disable=unused-argument
-    if not lock:
-        yield
-        return
-    lockpath = utilo.tmpfile(root=tmp('/utilo'))
-    with filelock.FileLock(lockpath):
+def lock_file(path: str, lock: bool = True):
+    if lock:
+        lockdir = tmp('/utilo')
+        simple = utilo.simple(path, maxlength=255)
+        lockpath = utilo.join(lockdir, simple)
+        with filelock.FileLock(lockpath):
+            yield
+    else:
         yield
 
 
@@ -211,8 +213,11 @@ def file_read_binary(
     """Read binary file content"""
     with lock_file(path, lock=lock):
         utilo.exists_assert(path)
-        with utilo.file.securewrapper.open(path, mode='rb',
-                                           private=private) as fp:
+        with utilo.file.securewrapper.open(
+                path,
+                mode='rb',
+                private=private,
+        ) as fp:
             content = fp.read(size)
     return content
 
@@ -252,7 +257,11 @@ def file_replace(
                 lock=False,
             )
             return
-        current_content = file_read(path, private=private)
+        current_content = file_read(
+            path,
+            private=private,
+            lock=False,
+        )
         if current_content == content:
             return
         with utilo.file.securewrapper.open(
@@ -279,9 +288,18 @@ def file_replace_binary(path: str, content: bytes, private: bool = False):
     """
     with lock_file(path, lock=True):
         if not os.path.exists(path):
-            file_create_binary(path, content, private=private)
+            file_create_binary(
+                path,
+                content,
+                private=private,
+                lock=False,
+            )
             return
-        current_content = file_read_binary(path, private=private)
+        current_content = file_read_binary(
+            path,
+            private=private,
+            lock=False,
+        )
         if current_content == content:
             return
         with utilo.file.securewrapper.open(
