@@ -213,8 +213,11 @@ def file_read_binary(
     """Read binary file content"""
     with lock_file(path, lock=lock):
         utilo.exists_assert(path)
-        with utilo.file.securewrapper.open(path, mode='rb',
-                                           private=private) as fp:
+        with utilo.file.securewrapper.open(
+                path,
+                mode='rb',
+                private=private,
+        ) as fp:
             content = fp.read(size)
     return content
 
