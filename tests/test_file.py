@@ -7,6 +7,7 @@
 # be prosecuted under federal law. Its content is company confidential.
 #==============================================================================
 
+import multiprocessing
 import os
 
 import pytest
@@ -602,3 +603,28 @@ def test_file_create_owner(tmpdir):
     # -rw-rw-r-- local
     # -rw-r--r-- github
     assert mode in {33204, 33188}
+
+
+def test_file_replace_binary_overlap(tmpdir):
+    """Verify that concurrent processes replace file correctly."""
+    expected = b'binary'
+    path = utilo.join(tmpdir, 'file.txt')
+    concurrent_run(
+        target=utilo.file_replace_binary,
+        args=(path, expected),
+    )
+    content = utilo.file_read_binary(path, lock=True)
+    assert content == expected
+
+
+def concurrent_run(target, args, times: int = 100):
+    processes = [
+        multiprocessing.Process(
+            target=target,
+            args=args,
+        ) for _ in range(times)
+    ]
+    for p in processes:
+        p.start()
+    for p in processes:
+        p.join()
