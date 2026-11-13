@@ -78,8 +78,12 @@ def safehash(item):
         return hash(str(item))
 
 
-functools._HashedSeq.__init__.__defaults__ = (safehash,)
-
+try:
+    # python <= 3.12
+    functools._HashedSeq.__init__.__defaults__ = (safehash,)
+except AttributeError:
+    pass
+    # python >= 3.13
 # pylint:disable=all
 
 ################################################################################
