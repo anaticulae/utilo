@@ -1,6 +1,25 @@
 # CHANGELOG
 
 
+## v2.112.2 (2026-11-13)
+
+### Bug Fixes
+
+- **utilo**: Disable safehash to enable python 3.14
+  ([`299a23e`](https://github.com/anaticulae/utilo/commit/299a23e595e50bcb1d91f74173b225934a95d553))
+
+### Chores
+
+- **github**: Clarify docker image creation
+  ([`ab65120`](https://github.com/anaticulae/utilo/commit/ab651201056dbb71fbc4065e720262a6ecc59c0b))
+
+- **pyproject**: Release on every commit
+  ([`02a255e`](https://github.com/anaticulae/utilo/commit/02a255ee8728a9ca05328c16d530c133ab5060bb))
+
+- **requirements**: Upgrade pyproject.toml
+  ([`49f6e25`](https://github.com/anaticulae/utilo/commit/49f6e2501c25e4fddcc0813da3d1bd77c2c1b807))
+
+
 ## v2.112.1 (2026-10-04)
 
 ### Bug Fixes
