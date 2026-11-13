@@ -16,9 +16,7 @@ jobs:
           --password-stdin
       - name: Build image
         run: |
-          make docker-build-base
-          make docker-build-test
+          make docker-build
       - name: Push image
         run: |-
-          make docker-upload-base
-          make docker-upload-test
+          make docker-upload
