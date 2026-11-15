@@ -1,6 +1,14 @@
 # CHANGELOG
 
 
+## v2.112.3 (2026-11-15)
+
+### Bug Fixes
+
+- **quick**: Remove outdated concept
+  ([`dad8914`](https://github.com/anaticulae/utilo/commit/dad8914048a0a4605ee102fa8025fa9dff6ed79c))
+
+
 ## v2.112.2 (2026-11-13)
 
 ### Bug Fixes
