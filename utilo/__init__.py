@@ -361,9 +361,6 @@ from utilo.process import process_ids
 from utilo.process import returnvalue as returncode
 from utilo.process import run
 from utilo.process import run_parallel
-# quick
-from utilo.quick import install
-from utilo.quick import version
 # regex
 from utilo.regex import NOCASE_VERBOSE
 from utilo.regex import compiles
